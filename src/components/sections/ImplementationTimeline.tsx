@@ -1,13 +1,13 @@
 const ImplementationTimeline = () => {
   return (
-    <section className="py-24 bg-white overflow-x-auto">
+    <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
           Processo de Implementação
         </h2>
         
         <div className="max-w-7xl mx-auto">
-          <div className="flex gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             {[
               {
                 step: 1,
@@ -39,13 +39,8 @@ const ImplementationTimeline = () => {
                 description: "Lançamento e monitoramento inicial",
                 duration: "1-2 dias"
               }
-            ].map((item, index, array) => (
-              <div key={item.step} className="relative flex-1 min-w-[250px]">
-                {/* Timeline line */}
-                {index !== array.length - 1 && (
-                  <div className="absolute left-[50%] top-6 w-full h-0.5 bg-primary/20"></div>
-                )}
-                
+            ].map((item, index) => (
+              <div key={item.step} className="relative">
                 {/* Timeline item */}
                 <div className="flex flex-col items-center group">
                   {/* Circle with number */}
