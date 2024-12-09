@@ -5,21 +5,24 @@ const HeroSection = () => {
   const themes = [
     {
       id: 1,
-      name: "Fashion Store",
-      image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
-      description: "Tema moderno para lojas de moda",
+      name: "Porto E-commerce",
+      image: "/lovable-uploads/1f1fbcff-dd75-41ac-8e2b-a1d5bdfec7f1.png",
+      description: "Template moderno para lojas virtuais",
+      features: ["Header com Mega Menu", "Carrossel de Produtos", "Seções Personalizáveis"]
     },
     {
       id: 2,
       name: "Tech Shop",
       image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
       description: "Layout ideal para produtos tecnológicos",
+      features: ["Design Minimalista", "Filtros Avançados", "Comparação de Produtos"]
     },
     {
       id: 3,
       name: "Marketplace",
       image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
       description: "Solução completa para marketplaces",
+      features: ["Multi-vendedor", "Sistema de Avaliações", "Painel do Vendedor"]
     },
   ];
 
@@ -73,22 +76,30 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hidden md:flex flex-col gap-4 relative animate-fade-up [animation-delay:600ms]">
+            <div className="hidden md:flex flex-col gap-6 relative animate-fade-up [animation-delay:600ms]">
               {themes.map((theme) => (
                 <div
                   key={theme.id}
-                  className="group relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-300 hover:scale-105 hover:z-10"
+                  className="group relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:scale-105 hover:z-10"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden">
                     <img
                       src={theme.image}
                       alt={theme.name}
-                      className="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-xl font-bold text-white mb-2">{theme.name}</h3>
-                        <p className="text-white/90 text-sm">{theme.description}</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 className="text-2xl font-bold text-white mb-3">{theme.name}</h3>
+                        <p className="text-white/90 text-base mb-4">{theme.description}</p>
+                        <ul className="space-y-2">
+                          {theme.features.map((feature, index) => (
+                            <li key={index} className="text-white/80 text-sm flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 bg-white/60 rounded-full" />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </div>
