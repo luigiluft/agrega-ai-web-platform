@@ -18,7 +18,7 @@ const HeroSection = () => {
               <div className="grid md:grid-cols-2 gap-8 animate-fade-up [animation-delay:400ms]">
                 <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
                   <img 
-                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
+                    src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
                     alt="E-commerce Express" 
                     className="w-full h-40 object-cover rounded-lg mb-6"
                   />
@@ -38,7 +38,7 @@ const HeroSection = () => {
 
                 <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
                   <img 
-                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" 
+                    src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
                     alt="Full-commerce Enterprise" 
                     className="w-full h-40 object-cover rounded-lg mb-6"
                   />
@@ -54,7 +54,7 @@ const HeroSection = () => {
             </div>
             <div className="hidden md:block">
               <img 
-                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
                 alt="Tecnologia Agrega AI"
                 className="w-full rounded-2xl shadow-2xl animate-fade-up [animation-delay:600ms]"
               />
