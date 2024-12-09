@@ -36,23 +36,23 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-primary via-accent-purple to-accent-blue min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+    <section className="relative bg-gradient-to-br from-primary via-accent to-primary-dark min-h-screen flex items-center overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20" />
       <div className="container mx-auto px-4 py-16 relative">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-12">
-              <div className="space-y-6">
+              <div className="space-y-6 backdrop-blur-sm bg-black/10 p-8 rounded-2xl border border-white/10">
                 <h1 className="text-4xl lg:text-6xl font-bold text-white animate-fade-up leading-tight">
-                  Soluções <span className="text-accent-orange">Sob Medida</span> para Seu{" "}
-                  <span className="text-7xl bg-gradient-to-r from-accent-purple to-accent-blue bg-clip-text text-transparent">
+                  Soluções <span className="text-white font-extrabold">Sob Medida</span> para Seu{" "}
+                  <span className="text-7xl font-extrabold text-white">
                     E-commerce
                   </span>
                 </h1>
-                <p className="text-lg text-white/90 animate-fade-up [animation-delay:200ms] leading-relaxed max-w-xl">
-                  Desenvolvemos, <span className="text-accent-orange font-semibold">integramos</span> e{" "}
-                  <span className="text-accent-green font-semibold">gerenciamos</span> seu e-commerce.{" "}
-                  <span className="text-xl font-bold">
+                <p className="text-lg text-white animate-fade-up [animation-delay:200ms] leading-relaxed max-w-xl">
+                  Desenvolvemos, <span className="text-white font-semibold">integramos</span> e{" "}
+                  <span className="text-white font-semibold">gerenciamos</span> seu e-commerce.{" "}
+                  <span className="text-xl font-bold text-white">
                     Escolha o que precisa e foque no crescimento do seu negócio.
                   </span>
                 </p>
@@ -60,7 +60,7 @@ const HeroSection = () => {
               
               <div className="grid sm:grid-cols-2 gap-6 animate-fade-up [animation-delay:400ms]">
                 <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:scale-105">
-                  <div className="w-14 h-14 bg-gradient-to-br from-accent-purple to-accent-blue rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Rocket className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">E-commerce Express</h3>
@@ -71,7 +71,7 @@ const HeroSection = () => {
                     to="pricing-section"
                     smooth={true}
                     duration={500}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-accent-purple to-accent-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all duration-300 cursor-pointer group"
+                    className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 cursor-pointer group"
                   >
                     Escolha seu plano
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -79,14 +79,14 @@ const HeroSection = () => {
                 </div>
 
                 <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:scale-105">
-                  <div className="w-14 h-14 bg-gradient-to-br from-accent-orange to-accent-purple rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Building2 className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">Full-commerce Enterprise</h3>
                   <p className="text-white/90 mb-4 text-sm leading-relaxed">
                     Solução completa de e-commerce com integrações avançadas e personalização total.
                   </p>
-                  <button className="inline-flex items-center gap-2 bg-gradient-to-r from-accent-orange to-accent-purple text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all duration-300 group">
+                  <button className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 group">
                     Fale com Especialista
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
