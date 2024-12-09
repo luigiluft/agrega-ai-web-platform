@@ -2,8 +2,15 @@ import { Link } from "react-scroll";
 import { ArrowRight, Rocket, Building2 } from "lucide-react";
 import { ThemeCard } from "../theme/ThemeCard";
 import { themes } from "../theme/themeData";
+import { useState } from "react";
 
 const HeroSection = () => {
+  const [selectedThemeId, setSelectedThemeId] = useState<number | null>(null);
+
+  const handleThemeSelect = (themeId: number) => {
+    setSelectedThemeId(themeId === selectedThemeId ? null : themeId);
+  };
+
   return (
     <section className="relative bg-primary overflow-hidden pt-20">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
@@ -54,7 +61,7 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hidden md:block relative animate-fade-up [animation-delay:600ms] h-[600px] perspective-1000">
+            <div className="hidden md:block relative animate-fade-up [animation-delay:600ms] h-[700px] perspective-1000">
               <div className="relative w-full h-full">
                 {themes.map((theme, index) => (
                   <ThemeCard
@@ -62,6 +69,8 @@ const HeroSection = () => {
                     theme={theme}
                     index={index}
                     totalThemes={themes.length}
+                    isSelected={theme.id === selectedThemeId}
+                    onSelect={handleThemeSelect}
                   />
                 ))}
               </div>

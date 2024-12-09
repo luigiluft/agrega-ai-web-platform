@@ -1,30 +1,46 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Theme } from "./types";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 interface ThemeCardProps {
   theme: Theme;
   index: number;
   totalThemes: number;
+  isSelected: boolean;
+  onSelect: (id: number) => void;
 }
 
-export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
-  const offset = 40; // Spacing between cards
-  const initialOffset = -20; // Initial offset from the top
+export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect }: ThemeCardProps) => {
+  const offset = 60; // Increased spacing between cards
+  const initialOffset = -30; // Adjusted initial offset from the top
+
+  const handleSelect = () => {
+    onSelect(theme.id);
+  };
+
+  const cardStyles = isSelected ? {
+    transform: `translateY(0px) scale(1.1)`,
+    zIndex: 50,
+    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+  } : {
+    transform: `translateY(${initialOffset + (index * offset)}px)`,
+    zIndex: totalThemes - index,
+    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+  };
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <div
-          style={{
-            transform: `translateY(${initialOffset + (index * offset)}px)`,
-            zIndex: totalThemes - index,
-            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
-          className="absolute w-full transition-all duration-500 hover:z-50 hover:-translate-x-4 hover:!translate-y-0 hover:!scale-110 group cursor-pointer"
+          style={cardStyles}
+          className={`absolute w-full transition-all duration-500 ${
+            !isSelected && 'hover:z-50 hover:-translate-x-4 hover:!translate-y-0 hover:!scale-110'
+          } group cursor-pointer`}
+          onClick={handleSelect}
         >
           <div className="relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
-            <div className="relative aspect-[21/9] overflow-hidden">
+            <div className="relative aspect-[16/9] overflow-hidden">
               <img
                 src={theme.image}
                 alt={theme.name}
