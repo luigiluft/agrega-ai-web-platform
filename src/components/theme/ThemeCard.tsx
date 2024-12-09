@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Theme } from "./types";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 interface ThemeCardProps {
@@ -24,18 +24,20 @@ export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect, onN
     <Sheet>
       <SheetTrigger asChild>
         <div
-          className={`relative w-full transition-all duration-500 ${
-            isSelected ? 'scale-100 z-50' : 'scale-95 opacity-0 pointer-events-none'
+          className={`absolute inset-0 transition-all duration-500 ${
+            isSelected 
+              ? 'opacity-100 translate-y-0 z-10' 
+              : 'opacity-0 translate-y-4 -z-10'
           }`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
-            <div className="relative aspect-[16/9] overflow-hidden">
+          <div className="relative h-full bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
+            <div className="relative h-full overflow-hidden">
               <img
                 src={theme.image}
                 alt={theme.name}
-                className="w-full h-full object-cover object-top transform transition-transform duration-500"
+                className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
                 <div className="absolute bottom-0 left-0 right-0 p-8">
@@ -68,17 +70,30 @@ export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect, onN
               </div>
             </div>
 
-            {/* Navigation Controls */}
-            <div className={`absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+            {/* Theme Navigation Controls */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
               <button
                 onClick={(e) => { e.stopPropagation(); onPrevious(); }}
-                className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm transition-all"
+                className="bg-white/20 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-all"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalThemes }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); onSelect(i + 1); }}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === i 
+                        ? 'bg-white w-4' 
+                        : 'bg-white/50 hover:bg-white/70'
+                    }`}
+                  />
+                ))}
+              </div>
               <button
                 onClick={(e) => { e.stopPropagation(); onNext(); }}
-                className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm transition-all"
+                className="bg-white/20 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-all"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
