@@ -12,8 +12,8 @@ interface ThemeCardProps {
 }
 
 export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect }: ThemeCardProps) => {
-  const offset = 60; // Increased spacing between cards
-  const initialOffset = -30; // Adjusted initial offset from the top
+  const offset = 60;
+  const initialOffset = -30;
 
   const handleSelect = () => {
     onSelect(theme.id);
@@ -46,8 +46,8 @@ export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect }: T
                 alt={theme.name}
                 className="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-100 transition-all duration-500">
+                <div className="absolute bottom-0 left-0 right-0 p-8">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="text-2xl font-bold text-white mb-2 animate-fade-up">{theme.name}</h3>
