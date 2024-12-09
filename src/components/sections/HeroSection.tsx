@@ -23,6 +23,20 @@ const HeroSection = () => {
       image: "/lovable-uploads/a39f3771-3345-47a4-9640-3e55326aac4c.png",
       description: "Layout ideal para produtos tecnológicos",
       features: ["Design Minimalista", "Filtros Avançados", "Comparação de Produtos"]
+    },
+    {
+      id: 4,
+      name: "Porto Classic",
+      image: "/lovable-uploads/cb7c848d-f291-4306-bc05-1a5f15d8b7d5.png",
+      description: "Design clássico para e-commerces tradicionais",
+      features: ["Menu Superior Completo", "Carrossel de Ofertas", "Produtos em Destaque"]
+    },
+    {
+      id: 5,
+      name: "Porto Shoes",
+      image: "/lovable-uploads/10d2f6c5-212d-4228-b10d-c47b22b101d8.png",
+      description: "Template especializado para lojas de calçados",
+      features: ["Layout Minimalista", "Categorias em Destaque", "Filtros Avançados"]
     }
   ];
 
@@ -82,7 +96,8 @@ const HeroSection = () => {
                   key={theme.id}
                   style={{
                     transform: `translateY(${index * -380}px)`,
-                    zIndex: themes.length - index
+                    zIndex: themes.length - index,
+                    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                   className="absolute w-full transition-all duration-500 hover:!translate-y-0 hover:!scale-100 group"
                 >
