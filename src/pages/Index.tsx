@@ -12,14 +12,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <NavigationMenuDemo />
-      <HeroSection />
-      <StatsSection />
-      <FeaturesSection />
-      <ComparisonSection />
-      <ImplementationTimeline />
-      <PricingSection />
-      <TestimonialsSection />
-      <CTASection />
+      <main className="pt-16">
+        <HeroSection />
+        <StatsSection />
+        <FeaturesSection />
+        <ComparisonSection />
+        <ImplementationTimeline />
+        <PricingSection />
+        <TestimonialsSection />
+        <CTASection />
+      </main>
     </div>
   );
 };
