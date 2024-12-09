@@ -13,14 +13,14 @@ export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
       <SheetTrigger asChild>
         <div
           style={{
-            transform: `translateY(${index * -380}px)`,
+            transform: `translateY(${index * 220}px)`,
             zIndex: totalThemes - index,
             transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
           className="absolute w-full transition-all duration-500 hover:!translate-y-0 hover:!scale-100 group cursor-pointer"
         >
           <div className="relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:scale-105">
-            <div className="relative aspect-[16/9] overflow-hidden">
+            <div className="relative aspect-[21/9] overflow-hidden">
               <img
                 src={theme.image}
                 alt={theme.name}
