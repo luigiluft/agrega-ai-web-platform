@@ -1,34 +1,34 @@
 export const themes = [
   {
     id: 1,
-    name: "Porto E-commerce",
+    name: "Tema Minimalista",
     image: "/lovable-uploads/d588d50d-ae20-4d85-bdc9-eda09646e347.png",
-    description: "Template moderno para lojas virtuais",
-    features: ["Header com Mega Menu", "Carrossel de Produtos", "Seções Personalizáveis", "Design Responsivo"],
-    fullDescription: "Uma solução completa e moderna para sua loja virtual, com design responsivo e alta performance. Ideal para empresas que buscam uma presença online profissional e eficiente."
+    description: "Design clean e moderno para lojas virtuais",
+    features: ["Layout Responsivo", "Menu Simplificado", "Carrossel de Produtos", "Checkout Otimizado"],
+    fullDescription: "Um tema elegante e minimalista que coloca seus produtos em destaque. Ideal para marcas que valorizam simplicidade e sofisticação."
   },
   {
     id: 2,
-    name: "Porto Fashion",
+    name: "Tema Fashion",
     image: "/lovable-uploads/4237844c-3dd6-4b62-a93a-a251cc0e0923.png",
-    description: "Layout ideal para moda e acessórios",
-    features: ["Menu Lateral", "Banners Promocionais", "Produtos em Destaque", "Lookbook Interativo"],
-    fullDescription: "Template especializado para o mercado da moda, com recursos visuais otimizados para destacar coleções e lookbooks. Perfeito para marcas que valorizam a apresentação visual."
+    description: "Layout exclusivo para moda e acessórios",
+    features: ["Zoom em Produtos", "Variações de Cores", "Guia de Tamanhos", "Instagram Feed"],
+    fullDescription: "Desenvolvido especialmente para o mercado fashion, com recursos visuais que destacam lookbooks e coleções de moda."
   },
   {
     id: 3,
-    name: "Porto Tech",
+    name: "Tema Marketplace",
     image: "/lovable-uploads/a39f3771-3345-47a4-9640-3e55326aac4c.png",
-    description: "Layout ideal para produtos tecnológicos",
-    features: ["Design Minimalista", "Filtros Avançados", "Comparação de Produtos", "Especificações Técnicas"],
-    fullDescription: "Desenvolvido especialmente para o setor de tecnologia, com foco em usabilidade e recursos avançados de filtro e comparação de produtos."
+    description: "Ideal para múltiplos vendedores",
+    features: ["Multi-vendedor", "Sistema de Avaliações", "Filtros Avançados", "Chat Integrado"],
+    fullDescription: "Perfeito para marketplaces, com recursos completos para gestão de múltiplos vendedores e grande variedade de produtos."
   },
   {
     id: 4,
-    name: "Porto Enterprise",
+    name: "Tema Food",
     image: "/lovable-uploads/34196f5d-e88b-486b-8866-e735eed09a6f.png",
-    description: "Solução completa para grandes empresas",
-    features: ["Múltiplos Catálogos", "B2B Integrado", "Gestão Avançada", "Integrações Personalizadas"],
-    fullDescription: "Uma solução robusta e escalável para grandes empresas, com recursos avançados de gestão e integração B2B."
+    description: "Especializado para delivery e restaurantes",
+    features: ["Cardápio Digital", "Pedido Online", "Rastreamento de Entrega", "Reservas Online"],
+    fullDescription: "Solução completa para restaurantes e delivery, com recursos específicos para o setor alimentício e gestão de pedidos."
   }
 ];

@@ -19,10 +19,10 @@ const HeroSection = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-up leading-tight">
-                Soluções completas para seu e-commerce
+                Soluções Sob Medida para Seu E-commerce
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-12 animate-fade-up [animation-delay:200ms] leading-relaxed">
-                Somos o braço tecnológico do Grupo Luft para e-commerce, transformando negócios através da tecnologia.
+                Desenvolvemos, integramos e gerenciamos seu e-commerce. Escolha o que precisa e foque no crescimento do seu negócio.
               </p>
               
               <div className="grid md:grid-cols-2 gap-8 animate-fade-up [animation-delay:400ms]">
