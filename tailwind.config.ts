@@ -35,10 +35,8 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
         },
         accent: {
-          purple: "#D946EF",
-          blue: "#0EA5E9",
-          orange: "#F97316",
-          green: "#22C55E",
+          DEFAULT: "#D946EF",
+          foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

@@ -12,22 +12,22 @@ const TestimonialsSection = () => {
     {
       icon: Circle,
       name: "Empresa 1",
-      color: "text-accent-purple",
+      color: "text-primary",
     },
     {
       icon: Square,
       name: "Empresa 2",
-      color: "text-accent-blue",
+      color: "text-primary-light",
     },
     {
       icon: Triangle,
       name: "Empresa 3",
-      color: "text-accent-green",
+      color: "text-primary",
     },
     {
       icon: Diamond,
       name: "Empresa 4",
-      color: "text-accent-orange",
+      color: "text-primary-light",
     },
     {
       icon: Hexagon,
@@ -47,11 +47,11 @@ const TestimonialsSection = () => {
   );
 
   return (
-    <section className="py-16 bg-gradient-to-br from-white via-primary/5 to-accent-purple/5 overflow-hidden">
+    <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           Empresas que{" "}
-          <span className="bg-gradient-to-r from-primary to-accent-purple bg-clip-text text-transparent">
+          <span className="text-primary">
             confiam
           </span>{" "}
           na Agrega AI
