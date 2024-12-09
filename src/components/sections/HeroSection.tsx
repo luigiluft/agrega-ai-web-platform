@@ -6,19 +6,26 @@ const HeroSection = () => {
     {
       id: 1,
       name: "Porto E-commerce",
-      image: "/lovable-uploads/1f1fbcff-dd75-41ac-8e2b-a1d5bdfec7f1.png",
+      image: "/lovable-uploads/34196f5d-e88b-486b-8866-e735eed09a6f.png",
       description: "Template moderno para lojas virtuais",
       features: ["Header com Mega Menu", "Carrossel de Produtos", "Seções Personalizáveis"]
     },
     {
       id: 2,
+      name: "Porto Fashion",
+      image: "/lovable-uploads/5e36967f-6363-4952-b43b-eace9c39b7f3.png",
+      description: "Layout ideal para moda e acessórios",
+      features: ["Menu Lateral", "Banners Promocionais", "Produtos em Destaque"]
+    },
+    {
+      id: 3,
       name: "Tech Shop",
       image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
       description: "Layout ideal para produtos tecnológicos",
       features: ["Design Minimalista", "Filtros Avançados", "Comparação de Produtos"]
     },
     {
-      id: 3,
+      id: 4,
       name: "Marketplace",
       image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
       description: "Solução completa para marketplaces",
