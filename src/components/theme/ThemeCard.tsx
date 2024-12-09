@@ -19,7 +19,7 @@ export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
           }}
           className="absolute w-full transition-all duration-500 hover:!translate-y-0 hover:!scale-100 group cursor-pointer"
         >
-          <div className="relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:scale-105">
+          <div className="relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-2xl">
             <div className="relative aspect-[21/9] overflow-hidden">
               <img
                 src={theme.image}
@@ -28,11 +28,15 @@ export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
                 <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
-                  <h3 className="text-2xl font-bold text-white mb-3">{theme.name}</h3>
-                  <p className="text-white/90 text-base mb-4">{theme.description}</p>
+                  <h3 className="text-2xl font-bold text-white mb-3 animate-fade-up">{theme.name}</h3>
+                  <p className="text-white/90 text-base mb-4 animate-fade-up [animation-delay:100ms]">{theme.description}</p>
                   <ul className="space-y-2">
                     {theme.features.map((feature, index) => (
-                      <li key={index} className="text-white/80 text-sm flex items-center gap-2">
+                      <li 
+                        key={index} 
+                        className="text-white/80 text-sm flex items-center gap-2 animate-slide-in"
+                        style={{ animationDelay: `${(index + 1) * 100}ms` }}
+                      >
                         <div className="w-1.5 h-1.5 bg-white/60 rounded-full" />
                         {feature}
                       </li>
@@ -44,38 +48,42 @@ export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
           </div>
         </div>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-xl">
+      <SheetContent side="right" className="w-full sm:max-w-xl bg-white/95 backdrop-blur-lg">
         <SheetHeader className="mb-6">
-          <SheetTitle className="text-2xl font-bold">{theme.name}</SheetTitle>
-          <SheetDescription className="text-base text-gray-600">
+          <SheetTitle className="text-2xl font-bold animate-fade-down">{theme.name}</SheetTitle>
+          <SheetDescription className="text-base text-gray-600 animate-fade-down [animation-delay:100ms]">
             {theme.description}
           </SheetDescription>
         </SheetHeader>
         <div className="space-y-6">
-          <div>
+          <div className="animate-scale-up">
             <img
               src={theme.image}
               alt={theme.name}
-              className="w-full rounded-lg object-cover aspect-video"
+              className="w-full rounded-lg object-cover aspect-video shadow-lg"
             />
           </div>
-          <div>
+          <div className="animate-fade-up [animation-delay:200ms]">
             <h3 className="text-lg font-semibold mb-3">Descrição Completa</h3>
             <p className="text-gray-600">{theme.fullDescription}</p>
           </div>
-          <div>
+          <div className="animate-fade-up [animation-delay:300ms]">
             <h3 className="text-lg font-semibold mb-3">Recursos</h3>
             <ul className="space-y-2">
               {theme.features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-2 text-gray-600">
+                <li 
+                  key={index} 
+                  className="flex items-center gap-2 text-gray-600 animate-slide-in"
+                  style={{ animationDelay: `${(index + 1) * 100}ms` }}
+                >
                   <div className="w-1.5 h-1.5 bg-primary rounded-full" />
                   {feature}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="pt-6">
-            <button className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+          <div className="pt-6 animate-fade-up [animation-delay:400ms]">
+            <button className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
               Escolher este tema
             </button>
           </div>
