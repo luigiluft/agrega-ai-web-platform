@@ -2,12 +2,33 @@ import { Link } from "react-scroll";
 import { ArrowRight, Rocket, Building2 } from "lucide-react";
 
 const HeroSection = () => {
+  const themes = [
+    {
+      id: 1,
+      name: "Fashion Store",
+      image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
+      description: "Tema moderno para lojas de moda",
+    },
+    {
+      id: 2,
+      name: "Tech Shop",
+      image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
+      description: "Layout ideal para produtos tecnológicos",
+    },
+    {
+      id: 3,
+      name: "Marketplace",
+      image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
+      description: "Solução completa para marketplaces",
+    },
+  ];
+
   return (
     <section className="relative bg-primary overflow-hidden pt-20">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
       <div className="container mx-auto px-4 py-24 relative">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
             <div>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-up leading-tight">
                 Soluções completas para seu e-commerce
@@ -51,24 +72,28 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:block relative">
-              <div className="absolute -inset-x-20 top-0">
-                <div className="w-full h-[600px] bg-gradient-to-br from-primary-dark via-primary to-blue-500 opacity-30 blur-3xl"></div>
-              </div>
-              <div className="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 animate-fade-up [animation-delay:600ms]">
-                <div className="grid grid-cols-2 gap-4">
-                  {[...Array(6)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-24 bg-white/10 rounded-lg animate-pulse"
-                      style={{
-                        animationDelay: `${i * 200}ms`,
-                        animationDuration: '2s',
-                      }}
+
+            <div className="hidden md:flex flex-col gap-4 relative animate-fade-up [animation-delay:600ms]">
+              {themes.map((theme) => (
+                <div
+                  key={theme.id}
+                  className="group relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-300 hover:scale-105 hover:z-10"
+                >
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    <img
+                      src={theme.image}
+                      alt={theme.name}
+                      className="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-300"
                     />
-                  ))}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-xl font-bold text-white mb-2">{theme.name}</h3>
+                        <p className="text-white/90 text-sm">{theme.description}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
