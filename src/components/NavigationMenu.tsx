@@ -90,6 +90,12 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link to="/planos" className="px-4 py-2 hover:text-primary">
+              Planos
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Link to="/contato" className="px-4 py-2 hover:text-primary">
               Contato
             </Link>
