@@ -11,53 +11,83 @@ const ComparisonSection = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* E-commerce Express */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
-            <h3 className="text-2xl font-bold mb-6">E-commerce Express</h3>
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Setup em até 2 semanas</span>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-6">E-commerce Express</h3>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Setup em até 2 semanas</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Templates otimizados</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Integrações essenciais</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <X className="text-gray-400" />
+                  <span className="text-gray-500">Personalização completa</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Templates otimizados</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Integrações essenciais</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <X className="text-gray-400" />
-                <span className="text-gray-500">Personalização completa</span>
+              <div className="text-sm text-gray-600 mb-6">
+                Ideal para pequenas e médias empresas que precisam começar a vender online rapidamente
               </div>
             </div>
-            <div className="text-sm text-gray-600 mb-6">
-              Ideal para pequenas e médias empresas que precisam começar a vender online rapidamente
+
+            {/* Case Movability */}
+            <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+              <h4 className="text-lg font-semibold mb-3">Case: Movability</h4>
+              <p className="text-gray-600 text-sm mb-4">
+                "Com o E-commerce Express, conseguimos iniciar nossas vendas online em apenas 10 dias. 
+                A solução simplificada e eficiente nos permitiu focar no crescimento do negócio sem 
+                preocupações técnicas."
+              </p>
+              <div className="text-sm text-primary font-medium">
+                Implementação em 2 semanas | ROI positivo no 1º mês
+              </div>
             </div>
           </div>
 
           {/* Full-commerce Enterprise */}
           <div className="bg-white p-8 rounded-xl shadow-lg border-2 border-primary">
-            <h3 className="text-2xl font-bold mb-6">Full-commerce Enterprise</h3>
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Personalização total</span>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-6">Full-commerce Enterprise</h3>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Personalização total</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Integrações avançadas</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Suporte 24/7</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Gestão operacional completa</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Integrações avançadas</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Suporte 24/7</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="text-primary" />
-                <span>Gestão operacional completa</span>
+              <div className="text-sm text-gray-600 mb-6">
+                Para empresas que necessitam de uma solução completa e personalizada
               </div>
             </div>
-            <div className="text-sm text-gray-600 mb-6">
-              Para empresas que necessitam de uma solução completa e personalizada
+
+            {/* Case Alcance Jeans */}
+            <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+              <h4 className="text-lg font-semibold mb-3">Case: Alcance Jeans</h4>
+              <p className="text-gray-600 text-sm mb-4">
+                "O Full-commerce nos permitiu escalar nossa operação com segurança. 
+                A personalização completa e o suporte dedicado foram fundamentais para 
+                atingirmos nossos objetivos de crescimento."
+              </p>
+              <div className="text-sm text-primary font-medium">
+                Crescimento de 300% em vendas | Integração com 5+ marketplaces
+              </div>
             </div>
           </div>
         </div>
