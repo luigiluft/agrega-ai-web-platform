@@ -12,27 +12,27 @@ const TestimonialsSection = () => {
     {
       icon: Circle,
       name: "Empresa 1",
-      color: "text-blue-500",
+      color: "text-accent-purple",
     },
     {
       icon: Square,
       name: "Empresa 2",
-      color: "text-purple-500",
+      color: "text-accent-blue",
     },
     {
       icon: Triangle,
       name: "Empresa 3",
-      color: "text-green-500",
+      color: "text-accent-green",
     },
     {
       icon: Diamond,
       name: "Empresa 4",
-      color: "text-red-500",
+      color: "text-accent-orange",
     },
     {
       icon: Hexagon,
       name: "Empresa 5",
-      color: "text-yellow-500",
+      color: "text-primary",
     },
   ];
 
@@ -47,11 +47,18 @@ const TestimonialsSection = () => {
   );
 
   return (
-    <section className="py-16 bg-white overflow-hidden">
+    <section className="py-16 bg-gradient-to-br from-white via-primary/5 to-accent-purple/5 overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Empresas que confiam na Agrega AI
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+          Empresas que{" "}
+          <span className="bg-gradient-to-r from-primary to-accent-purple bg-clip-text text-transparent">
+            confiam
+          </span>{" "}
+          na Agrega AI
         </h2>
+        <p className="text-gray-600 text-center mb-12 text-lg">
+          Junte-se a centenas de empresas que já transformaram seus negócios
+        </p>
         <div className="max-w-6xl mx-auto">
           <Carousel
             opts={{
