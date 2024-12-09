@@ -14,8 +14,8 @@ const Index = () => {
       <NavigationMenuDemo />
       <main className="pt-16">
         <HeroSection />
-        <StatsSection />
         <FeaturesSection />
+        <StatsSection />
         <ComparisonSection />
         <ImplementationTimeline />
         <PricingSection />
