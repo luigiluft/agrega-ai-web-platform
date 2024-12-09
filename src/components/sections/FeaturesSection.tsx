@@ -5,7 +5,7 @@ const FeaturesSection = () => {
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-          Por que escolher a Agrega AI?
+          Saiba como a gente <span className="text-primary">agregaí</span> na sua empresa
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
