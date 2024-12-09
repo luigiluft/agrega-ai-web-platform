@@ -38,6 +38,11 @@ const ComparisonSection = () => {
 
             {/* Case Movability */}
             <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+              <img 
+                src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
+                alt="Placeholder - Site Movability" 
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
               <h4 className="text-lg font-semibold mb-3">Case: Movability</h4>
               <p className="text-gray-600 text-sm mb-4">
                 "Com o E-commerce Express, conseguimos iniciar nossas vendas online em apenas 10 dias. 
@@ -79,6 +84,11 @@ const ComparisonSection = () => {
 
             {/* Case Alcance Jeans */}
             <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+              <img 
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" 
+                alt="Placeholder - Site Alcance Jeans" 
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
               <h4 className="text-lg font-semibold mb-3">Case: Alcance Jeans</h4>
               <p className="text-gray-600 text-sm mb-4">
                 "O Full-commerce nos permitiu escalar nossa operação com segurança. 

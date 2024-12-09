@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ArrowRight } from "lucide-react";
 
 const FAQSection = () => {
   const faqs = [
@@ -44,7 +45,7 @@ const FAQSection = () => {
             Encontre respostas para as principais dúvidas sobre nossas soluções
           </p>
           
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full mb-12">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger className="text-left">
@@ -56,6 +57,13 @@ const FAQSection = () => {
               </AccordionItem>
             ))}
           </Accordion>
+
+          <div className="text-center">
+            <button className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              Fale com Especialista
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
