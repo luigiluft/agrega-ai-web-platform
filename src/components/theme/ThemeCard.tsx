@@ -18,7 +18,7 @@ export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
             zIndex: totalThemes - index,
             transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
-          className="absolute w-full transition-all duration-500 hover:-translate-x-4 hover:!translate-y-0 hover:!scale-105 group cursor-pointer"
+          className="absolute w-full transition-all duration-500 hover:z-50 hover:-translate-x-4 hover:!translate-y-0 hover:!scale-110 group cursor-pointer"
         >
           <div className="relative bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20">
             <div className="relative aspect-[21/9] overflow-hidden">
