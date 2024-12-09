@@ -23,35 +23,18 @@ const NavigationMenuDemo = () => {
           <NavigationMenuItem>
             <NavigationMenuTrigger className="text-base font-medium">Soluções</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
-                <li className="row-span-3">
-                  <NavigationMenuLink asChild>
-                    <a
-                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/50 to-primary p-6 no-underline outline-none focus:shadow-md"
-                      href="/"
-                    >
-                      <img 
-                        src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
-                        alt="Tecnologia Agrega AI" 
-                        className="w-full h-32 object-cover rounded-md mb-4"
-                      />
-                      <div className="mb-2 text-lg font-medium text-white">
-                        Agrega AI
-                      </div>
-                      <p className="text-sm leading-tight text-white/90">
-                        Soluções tecnológicas completas para e-commerce e full-commerce
-                      </p>
-                    </a>
-                  </NavigationMenuLink>
-                </li>
-                <ListItem href="#" title="B2B" icon="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d">
+              <ul className="grid gap-3 p-6 w-[400px]">
+                <ListItem href="#" title="B2B">
                   Plataforma completa para vendas business-to-business
                 </ListItem>
-                <ListItem href="#" title="B2C" icon="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158">
+                <ListItem href="#" title="B2C">
                   Soluções para venda direta ao consumidor
                 </ListItem>
-                <ListItem href="#" title="D2C" icon="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7">
+                <ListItem href="#" title="D2C">
                   Estratégias direct-to-consumer personalizadas
+                </ListItem>
+                <ListItem href="#" title="Marketplace">
+                  Soluções tecnológicas completas para e-commerce e full-commerce
                 </ListItem>
               </ul>
             </NavigationMenuContent>
@@ -60,14 +43,14 @@ const NavigationMenuDemo = () => {
           <NavigationMenuItem>
             <NavigationMenuTrigger className="text-base font-medium">Integrações</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
-                <ListItem href="#" title="Automação" icon="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+              <ul className="grid gap-3 p-6 w-[400px]">
+                <ListItem href="#" title="Automação">
                   Automatize processos operacionais
                 </ListItem>
-                <ListItem href="#" title="Centralização" icon="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9">
+                <ListItem href="#" title="Centralização">
                   Gestão centralizada de operações
                 </ListItem>
-                <ListItem href="#" title="APIs" icon="https://images.unsplash.com/photo-1483058712412-4245e9b90334">
+                <ListItem href="#" title="APIs">
                   Integrações customizadas via API
                 </ListItem>
               </ul>
@@ -96,13 +79,11 @@ const ListItem = ({
   title,
   children,
   href,
-  icon,
 }: {
   className?: string;
   title: string;
   children: React.ReactNode;
   href: string;
-  icon: string;
 }) => {
   return (
     <li>
@@ -114,9 +95,8 @@ const ListItem = ({
             className
           )}
         >
-          <img src={icon} alt={title} className="w-full h-24 object-cover rounded-md mb-3" />
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground mt-2">
+          <div className="text-sm font-medium leading-none mb-2">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
         </a>
