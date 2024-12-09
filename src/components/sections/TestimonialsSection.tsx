@@ -5,28 +5,34 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { Circle, Diamond, Hexagon, Square, Triangle } from "lucide-react";
 
 const TestimonialsSection = () => {
   const logos = [
     {
-      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
-      alt: "Cosméticos Beauty Logo",
+      icon: Circle,
+      name: "Empresa 1",
+      color: "text-blue-500",
     },
     {
-      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
-      alt: "Fashion Store Logo",
+      icon: Square,
+      name: "Empresa 2",
+      color: "text-purple-500",
     },
     {
-      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
-      alt: "Tech Gadgets Logo",
+      icon: Triangle,
+      name: "Empresa 3",
+      color: "text-green-500",
     },
     {
-      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
-      alt: "Alcance Jeans Logo",
+      icon: Diamond,
+      name: "Empresa 4",
+      color: "text-red-500",
     },
     {
-      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
-      alt: "Movability Logo",
+      icon: Hexagon,
+      name: "Empresa 5",
+      color: "text-yellow-500",
     },
   ];
 
@@ -41,7 +47,7 @@ const TestimonialsSection = () => {
   );
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
           Empresas que confiam na Agrega AI
@@ -51,19 +57,24 @@ const TestimonialsSection = () => {
             opts={{
               align: "start",
               loop: true,
+              dragFree: true,
             }}
             plugins={[plugin]}
             className="w-full"
           >
             <CarouselContent className="-ml-2 md:-ml-4">
-              {logos.map((logo, index) => (
-                <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/2 md:basis-1/4 lg:basis-1/5">
-                  <div className="h-24 flex items-center justify-center p-4">
-                    <img
-                      src={logo.src}
-                      alt={logo.alt}
-                      className="max-h-full max-w-full object-contain opacity-60 hover:opacity-100 transition-opacity duration-300"
-                    />
+              {[...logos, ...logos].map((logo, index) => (
+                <CarouselItem
+                  key={index}
+                  className="pl-2 md:pl-4 basis-1/3 md:basis-1/5"
+                >
+                  <div className="h-24 flex items-center justify-center p-4 group">
+                    <div className="relative transition-all duration-300 ease-in-out transform group-hover:scale-110">
+                      {React.createElement(logo.icon, {
+                        className: `w-12 h-12 ${logo.color}`,
+                        strokeWidth: 1.5,
+                      })}
+                    </div>
                   </div>
                 </CarouselItem>
               ))}
