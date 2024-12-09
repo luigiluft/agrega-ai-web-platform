@@ -9,12 +9,15 @@ interface ThemeCardProps {
 }
 
 export const ThemeCard = ({ theme, index, totalThemes }: ThemeCardProps) => {
+  const offset = 40; // Spacing between cards
+  const initialOffset = -20; // Initial offset from the top
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <div
           style={{
-            transform: `translateY(${index * 220}px)`,
+            transform: `translateY(${initialOffset + (index * offset)}px)`,
             zIndex: totalThemes - index,
             transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
           }}

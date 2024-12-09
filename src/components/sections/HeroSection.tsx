@@ -9,7 +9,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
       <div className="container mx-auto px-4 py-24 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-up leading-tight">
                 Soluções completas para seu e-commerce
@@ -54,15 +54,17 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hidden md:flex flex-col gap-2 relative animate-fade-up [animation-delay:600ms] h-[600px] overflow-hidden">
-              {themes.map((theme, index) => (
-                <ThemeCard
-                  key={theme.id}
-                  theme={theme}
-                  index={index}
-                  totalThemes={themes.length}
-                />
-              ))}
+            <div className="hidden md:block relative animate-fade-up [animation-delay:600ms] h-[600px] perspective-1000">
+              <div className="relative w-full h-full">
+                {themes.map((theme, index) => (
+                  <ThemeCard
+                    key={theme.id}
+                    theme={theme}
+                    index={index}
+                    totalThemes={themes.length}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
