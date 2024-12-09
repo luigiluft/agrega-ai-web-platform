@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const NavigationMenuDemo = () => {
   return (
-    <NavigationMenu className="max-w-full w-full bg-white shadow-sm fixed top-0 z-50">
+    <NavigationMenu className="max-w-full w-full bg-white/95 backdrop-blur-sm shadow-sm fixed top-0 z-50">
       <NavigationMenuList className="container mx-auto px-6 py-4 flex justify-between items-center">
         <NavigationMenuItem>
           <Link to="/" className="text-2xl font-bold text-primary hover:opacity-90 transition-opacity">
@@ -19,9 +19,9 @@ const NavigationMenuDemo = () => {
           </Link>
         </NavigationMenuItem>
 
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-base">Soluções</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="text-base font-medium">Soluções</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
                 <li className="row-span-3">
@@ -58,7 +58,7 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-base">Integrações</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="text-base font-medium">Integrações</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
                 <ListItem href="#" title="Automação" icon="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
@@ -75,13 +75,13 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link to="/planos" className="text-base px-4 py-2 hover:text-primary transition-colors">
+            <Link to="/planos" className="text-base font-medium px-4 py-2 hover:text-primary transition-colors">
               Planos
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link to="/contato" className="text-base px-4 py-2 hover:text-primary transition-colors">
+            <Link to="/contato" className="text-base font-medium px-4 py-2 hover:text-primary transition-colors">
               Contato
             </Link>
           </NavigationMenuItem>

@@ -37,6 +37,20 @@ const HeroSection = () => {
       image: "/lovable-uploads/10d2f6c5-212d-4228-b10d-c47b22b101d8.png",
       description: "Template especializado para lojas de calçados",
       features: ["Layout Minimalista", "Categorias em Destaque", "Filtros Avançados"]
+    },
+    {
+      id: 6,
+      name: "Porto Digital",
+      image: "/lovable-uploads/1f1fbcff-dd75-41ac-8e2b-a1d5bdfec7f1.png",
+      description: "Template para produtos digitais e software",
+      features: ["Design Moderno", "Área de Downloads", "Documentação Integrada"]
+    },
+    {
+      id: 7,
+      name: "Porto Enterprise",
+      image: "/lovable-uploads/34196f5d-e88b-486b-8866-e735eed09a6f.png",
+      description: "Solução completa para grandes empresas",
+      features: ["Múltiplos Catálogos", "B2B Integrado", "Gestão Avançada"]
     }
   ];
 
