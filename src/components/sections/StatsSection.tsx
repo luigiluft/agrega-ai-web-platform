@@ -1,24 +1,59 @@
+import { Users, ShoppingBag, Timer, Building2 } from "lucide-react";
+
 const StatsSection = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-primary mb-2">500+</div>
-            <div className="text-gray-600">Clientes Ativos</div>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-primary mb-2">2M+</div>
-            <div className="text-gray-600">Pedidos Processados</div>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-primary mb-2">99.9%</div>
-            <div className="text-gray-600">Uptime Garantido</div>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-primary mb-2">45+</div>
-            <div className="text-gray-600">Anos de Experiência</div>
-          </div>
+          {[
+            {
+              icon: Users,
+              value: "500+",
+              label: "Clientes Ativos",
+              description: "Empresas confiam em nossas soluções"
+            },
+            {
+              icon: ShoppingBag,
+              value: "2M+",
+              label: "Pedidos Processados",
+              description: "Transações realizadas com sucesso"
+            },
+            {
+              icon: Timer,
+              value: "99.9%",
+              label: "Uptime Garantido",
+              description: "Disponibilidade constante"
+            },
+            {
+              icon: Building2,
+              value: "45+",
+              label: "Anos de Experiência",
+              description: "Do Grupo Luft em logística"
+            }
+          ].map((stat, index) => (
+            <div 
+              key={index} 
+              className="relative p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+            >
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <stat.icon className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              
+              <div className="mt-8 text-center">
+                <div className="text-4xl font-bold text-primary mb-2 group-hover:scale-105 transition-transform duration-300">
+                  {stat.value}
+                </div>
+                <div className="text-lg font-semibold text-gray-900 mb-1">
+                  {stat.label}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {stat.description}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
