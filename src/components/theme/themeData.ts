@@ -22,13 +22,5 @@ export const themes = [
     description: "Ideal para múltiplos vendedores",
     features: ["Multi-vendedor", "Sistema de Avaliações", "Filtros Avançados", "Chat Integrado"],
     fullDescription: "Perfeito para marketplaces, com recursos completos para gestão de múltiplos vendedores e grande variedade de produtos."
-  },
-  {
-    id: 4,
-    name: "Tema Food",
-    image: "/lovable-uploads/34196f5d-e88b-486b-8866-e735eed09a6f.png",
-    description: "Especializado para delivery e restaurantes",
-    features: ["Cardápio Digital", "Pedido Online", "Rastreamento de Entrega", "Reservas Online"],
-    fullDescription: "Solução completa para restaurantes e delivery, com recursos específicos para o setor alimentício e gestão de pedidos."
   }
 ];

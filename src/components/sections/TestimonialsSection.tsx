@@ -9,23 +9,23 @@ import Autoplay from "embla-carousel-autoplay";
 const TestimonialsSection = () => {
   const logos = [
     {
-      src: "/lovable-uploads/cosmeticos-beauty-logo.png",
+      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
       alt: "Cosméticos Beauty Logo",
     },
     {
-      src: "/lovable-uploads/fashion-store-logo.png",
+      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
       alt: "Fashion Store Logo",
     },
     {
-      src: "/lovable-uploads/tech-gadgets-logo.png",
+      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
       alt: "Tech Gadgets Logo",
     },
     {
-      src: "/lovable-uploads/alcance-jeans-logo.png",
+      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
       alt: "Alcance Jeans Logo",
     },
     {
-      src: "/lovable-uploads/movability-logo.png",
+      src: "/lovable-uploads/d291a6aa-0c55-4729-8471-7472dea51261.png",
       alt: "Movability Logo",
     },
   ];
