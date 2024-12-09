@@ -1,34 +1,58 @@
-import Testimonial from "../Testimonial";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const TestimonialsSection = () => {
-  const testimonials = [
-    {
-      quote: "A migração para a Agrega AI nos permitiu reduzir custos operacionais em 40% e aumentar nossas vendas em 2.5x no primeiro trimestre.",
-      author: "Cosméticos Beauty",
-      role: "Segmento Cosméticos",
-    },
-    {
-      quote: "O suporte 24/7 e a facilidade de integração com marketplaces foram decisivos para escolhermos a Agrega AI. Hoje processamos mais de 5000 pedidos/mês.",
-      author: "Fashion Store",
-      role: "Segmento Moda",
-    },
-    {
-      quote: "A implementação foi muito mais rápida do que esperávamos. Em 2 semanas já estávamos vendendo online com toda a operação integrada.",
-      author: "Tech Gadgets",
-      role: "Segmento Eletrônicos",
-    },
+  const logos = [
+    "/cosmeticos-beauty-logo.svg",
+    "/fashion-store-logo.svg",
+    "/tech-gadgets-logo.svg",
+    "/alcance-jeans-logo.svg",
+    "/movability-logo.svg",
   ];
 
+  const plugin = React.useMemo(
+    () =>
+      Autoplay({
+        delay: 2000,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+      }),
+    []
+  );
+
   return (
-    <section className="py-24 bg-white">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-          Cases de Sucesso
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          Empresas que confiam na Agrega AI
         </h2>
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {testimonials.map((testimonial, index) => (
-            <Testimonial key={index} {...testimonial} />
-          ))}
+        <div className="max-w-6xl mx-auto">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[plugin]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {logos.map((logo, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/2 md:basis-1/4 lg:basis-1/5">
+                  <div className="h-24 flex items-center justify-center p-4">
+                    <img
+                      src={logo}
+                      alt={`Logo ${index + 1}`}
+                      className="max-h-full max-w-full object-contain opacity-60 hover:opacity-100 transition-opacity duration-300"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </section>
