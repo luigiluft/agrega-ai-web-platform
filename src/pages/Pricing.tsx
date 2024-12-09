@@ -2,8 +2,18 @@ import React from "react";
 import NavigationMenuDemo from "@/components/NavigationMenu";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const PricingPage = () => {
+  const { toast } = useToast();
+  
+  const handleContactClick = () => {
+    toast({
+      title: "Contato iniciado",
+      description: "Em breve nossa equipe entrará em contato com você.",
+    });
+  };
+
   const plans = [
     {
       title: "Starter",
@@ -70,12 +80,12 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <NavigationMenuDemo />
       
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="text-4xl font-bold mb-6">
+        <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-up">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark">
             Escolha o plano ideal para seu negócio
           </h1>
           <p className="text-lg text-gray-600">
@@ -85,56 +95,71 @@ const PricingPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {plans.map((plan) => (
+          {plans.map((plan, index) => (
             <div
               key={plan.title}
               className={`
-                bg-white rounded-2xl shadow-lg p-8
-                ${plan.isPopular ? 'ring-2 ring-primary relative' : ''}
+                relative bg-white rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl
+                transform hover:-translate-y-2 animate-fade-up
+                ${plan.isPopular ? 'ring-2 ring-primary' : ''}
               `}
+              style={{
+                animationDelay: `${index * 150}ms`
+              }}
             >
               {plan.isPopular && (
-                <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-medium">
+                <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-medium animate-bounce">
                   Mais Popular
                 </span>
               )}
 
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">{plan.title}</h3>
-                <p className="text-gray-600 mb-4">{plan.description}</p>
-                <div className="text-3xl font-bold">{plan.price}</div>
-              </div>
-
-              <div className="space-y-4 mb-8">
-                {plan.features.map((feature, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                      <Check className="h-3 w-3 text-primary" />
-                    </div>
-                    <span className="text-gray-600">{feature}</span>
+              <div className="p-8">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold mb-2">{plan.title}</h3>
+                  <p className="text-gray-600 mb-4 min-h-[48px]">{plan.description}</p>
+                  <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark">
+                    {plan.price}
                   </div>
-                ))}
-              </div>
+                </div>
 
-              <Button 
-                className={`w-full py-6 ${
-                  plan.isPopular 
-                    ? 'bg-primary hover:bg-primary/90' 
-                    : 'bg-gray-900 hover:bg-gray-800'
-                }`}
-              >
-                Falar com consultor
-              </Button>
+                <div className="space-y-4 mb-8">
+                  {plan.features.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3 group">
+                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5 group-hover:bg-primary/20 transition-colors">
+                        <Check className="h-3 w-3 text-primary" />
+                      </div>
+                      <span className="text-gray-600 group-hover:text-gray-900 transition-colors">
+                        {feature}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <Button 
+                  className={`
+                    w-full py-6 transition-all duration-300
+                    ${plan.isPopular 
+                      ? 'bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/25' 
+                      : 'bg-gray-900 hover:bg-gray-800'}
+                  `}
+                  onClick={handleContactClick}
+                >
+                  Falar com consultor
+                </Button>
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
+        <div className="mt-16 text-center animate-fade-up" style={{ animationDelay: '450ms' }}>
           <p className="text-gray-600">
             Precisa de uma solução personalizada?{" "}
-            <a href="/contato" className="text-primary hover:underline">
+            <button 
+              onClick={handleContactClick}
+              className="text-primary hover:text-primary-dark hover:underline transition-colors"
+            >
               Entre em contato
-            </a>
+            </button>
           </p>
         </div>
       </div>
