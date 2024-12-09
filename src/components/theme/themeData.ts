@@ -70,5 +70,21 @@ export const themes = [
     description: "Layout moderno e clean para e-commerces",
     features: ["Header Moderno", "Banners Dinâmicos", "Categorias em Destaque", "Newsletter Integrada"],
     fullDescription: "Uma solução moderna e sofisticada para e-commerces que buscam um design clean e atual, com recursos avançados de personalização e performance."
+  },
+  {
+    id: 10,
+    name: "Porto Marketplace",
+    image: "/lovable-uploads/4e785165-73f0-4a20-bf05-8e0fe4a58da2.png",
+    description: "Template para marketplaces e múltiplos vendedores",
+    features: ["Multi-vendedor", "Sistema de Avaliações", "Painel do Vendedor", "Gestão de Comissões"],
+    fullDescription: "Solução completa para marketplaces, com suporte a múltiplos vendedores, sistema de comissões e ferramentas avançadas de gestão de vendedores."
+  },
+  {
+    id: 11,
+    name: "Porto Food",
+    image: "/lovable-uploads/5e36967f-6363-4952-b43b-eace9c39b7f3.png",
+    description: "Template especializado para delivery e restaurantes",
+    features: ["Cardápio Digital", "Pedidos Online", "Rastreamento de Entrega", "Integração com iFood"],
+    fullDescription: "Template ideal para restaurantes e serviços de delivery, com recursos específicos para o setor alimentício, incluindo cardápio digital interativo e sistema de pedidos online."
   }
 ];
