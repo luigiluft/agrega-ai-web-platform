@@ -2,13 +2,37 @@ import { Link } from "react-scroll";
 import { ArrowRight, Rocket, Building2 } from "lucide-react";
 import { ThemeCard } from "../theme/ThemeCard";
 import { themes } from "../theme/themeData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const HeroSection = () => {
-  const [selectedThemeId, setSelectedThemeId] = useState<number | null>(null);
+  const [selectedThemeId, setSelectedThemeId] = useState<number>(1);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      handleNextTheme();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [selectedThemeId, isAutoPlaying]);
 
   const handleThemeSelect = (themeId: number) => {
-    setSelectedThemeId(themeId === selectedThemeId ? null : themeId);
+    setSelectedThemeId(themeId);
+    setIsAutoPlaying(false);
+  };
+
+  const handleNextTheme = () => {
+    setSelectedThemeId(prev => 
+      prev === themes.length ? 1 : prev + 1
+    );
+  };
+
+  const handlePreviousTheme = () => {
+    setSelectedThemeId(prev => 
+      prev === 1 ? themes.length : prev - 1
+    );
   };
 
   return (
@@ -61,7 +85,7 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hidden md:block relative animate-fade-up [animation-delay:600ms] h-[700px] perspective-1000">
+            <div className="hidden md:block relative animate-fade-up [animation-delay:600ms] h-[700px]">
               <div className="relative w-full h-full">
                 {themes.map((theme, index) => (
                   <ThemeCard
@@ -71,6 +95,8 @@ const HeroSection = () => {
                     totalThemes={themes.length}
                     isSelected={theme.id === selectedThemeId}
                     onSelect={handleThemeSelect}
+                    onNext={handleNextTheme}
+                    onPrevious={handlePreviousTheme}
                   />
                 ))}
               </div>
