@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Calculator } from "lucide-react";
 import PriceCalculator from "./PriceCalculator";
 
 const NavigationMenuDemo = () => {
@@ -37,7 +37,7 @@ const NavigationMenuDemo = () => {
           isOpen ? "block" : "hidden"
         )}>
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <NavigationMenuTrigger className="text-base font-medium">Soluções</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="text-base font-medium h-10">Soluções</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 w-[400px]">
                 <ListItem href="#" title="B2B">
@@ -57,7 +57,7 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <NavigationMenuTrigger className="text-base font-medium">Integrações</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="text-base font-medium h-10">Integrações</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 w-[400px]">
                 <ListItem href="#" title="Automação">
@@ -74,25 +74,31 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <Link to="/temas" className="text-base font-medium hover:text-primary transition-colors block">
+            <Link to="/temas" className="text-base font-medium hover:text-primary transition-colors block h-10 flex items-center">
               Temas
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <Link to="/planos" className="text-base font-medium hover:text-primary transition-colors block">
+            <Link to="/planos" className="text-base font-medium hover:text-primary transition-colors block h-10 flex items-center">
               Planos
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <Link to="/contato" className="text-base font-medium hover:text-primary transition-colors block">
+            <Link to="/contato" className="text-base font-medium hover:text-primary transition-colors block h-10 flex items-center">
               Contato
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <PriceCalculator />
+            <Link 
+              to="/calculadora"
+              className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              <Calculator className="h-4 w-4" />
+              <span>Calculadora</span>
+            </Link>
           </NavigationMenuItem>
         </div>
       </NavigationMenuList>
