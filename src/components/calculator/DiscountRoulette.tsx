@@ -11,13 +11,13 @@ interface DiscountRouletteProps {
 }
 
 const DISCOUNT_OPTIONS = [
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FFA726' },
-  { value: 50, label: 'R$50', type: 'win', color: '#4CAF50' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D32F2F' },
-  { value: 100, label: 'R$100', type: 'win', color: '#2196F3' },
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FFA726' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FF9800' },
+  { value: 50, label: 'R$50', type: 'win', color: '#2196F3' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#F44336' },
+  { value: 100, label: 'R$100', type: 'win', color: '#4CAF50' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FF9800' },
   { value: 200, label: 'R$200', type: 'win', color: '#9C27B0' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D32F2F' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#F44336' },
   { value: 300, label: 'R$300', type: 'win', color: '#3F51B5' },
 ];
 
@@ -86,11 +86,10 @@ const DiscountRoulette = ({
           </p>
         </div>
 
-        <div className="relative w-72 h-72 mx-auto mb-8">
+        <div className="relative w-80 h-80 mx-auto mb-8">
           {/* Pointer */}
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
-            <div className="w-6 h-6 bg-[#C5A656] rotate-45 mb-1 shadow-lg" />
-            <div className="text-[#C5A656] text-sm font-bold">PRÊMIO</div>
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-20">
+            <div className="w-8 h-8 bg-[#C5A656] rotate-45 shadow-lg" />
           </div>
           
           {/* Roulette wheel */}
@@ -108,7 +107,7 @@ const DiscountRoulette = ({
               return (
                 <div
                   key={index}
-                  className="absolute w-full h-full"
+                  className="absolute w-full h-full origin-center"
                   style={{
                     transform: `rotate(${angle}deg)`,
                     background: option.color,
@@ -116,18 +115,31 @@ const DiscountRoulette = ({
                   }}
                 >
                   <div 
-                    className="absolute inset-0 flex items-center justify-center"
+                    className="absolute top-0 left-1/2 w-full h-full -translate-x-1/2 flex items-center justify-center"
                     style={{
-                      transform: `rotate(-${angle}deg) translateX(25%)`,
+                      transform: `rotate(-${angle}deg)`,
                     }}
                   >
-                    <div className="flex flex-col items-center justify-center">
-                      <span className="text-xl font-bold text-white drop-shadow-lg mb-1">
-                        {option.type === 'win' ? option.label : ''}
-                      </span>
-                      <span className="text-sm text-white font-medium px-2 text-center whitespace-nowrap">
-                        {option.type !== 'win' ? option.label : 'Desconto'}
-                      </span>
+                    <div 
+                      className="flex flex-col items-center justify-center text-white w-full px-2"
+                      style={{
+                        transform: 'translateX(50%)',
+                      }}
+                    >
+                      {option.type === 'win' ? (
+                        <>
+                          <span className="text-2xl font-bold whitespace-nowrap mb-1">
+                            {option.label}
+                          </span>
+                          <span className="text-sm font-medium">
+                            Desconto
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-lg font-semibold whitespace-nowrap">
+                          {option.label}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
