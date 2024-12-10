@@ -12,14 +12,22 @@ interface DiscountRouletteProps {
 }
 
 const DISCOUNT_OPTIONS = [
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FF9800' },
-  { value: 50, label: 'R$50', type: 'win', color: '#2196F3' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#F44336' },
-  { value: 100, label: 'R$100', type: 'win', color: '#4CAF50' },
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FF9800' },
-  { value: 200, label: 'R$200', type: 'win', color: '#9C27B0' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#F44336' },
-  { value: 300, label: 'R$300', type: 'win', color: '#3F51B5' },
+  { value: 50, label: 'R$50', type: 'win', color: '#4A90E2' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#F5A623' },
+  { value: 150, label: 'R$150', type: 'win', color: '#7ED321' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D0021B' },
+  { value: 200, label: 'R$200', type: 'win', color: '#9013FE' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#F5A623' },
+  { value: 100, label: 'R$100', type: 'win', color: '#50E3C2' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D0021B' },
+  { value: 300, label: 'R$300', type: 'win', color: '#BD10E0' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#F5A623' },
+  { value: 75, label: 'R$75', type: 'win', color: '#4A90E2' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D0021B' },
+  { value: 250, label: 'R$250', type: 'win', color: '#7ED321' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#F5A623' },
+  { value: 125, label: 'R$125', type: 'win', color: '#50E3C2' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D0021B' },
 ];
 
 const DiscountRoulette = ({ 
@@ -124,6 +132,7 @@ const DiscountRoulette = ({
           >
             {DISCOUNT_OPTIONS.map((option, index) => {
               const angle = (360 / DISCOUNT_OPTIONS.length) * index;
+              const segmentAngle = 360 / DISCOUNT_OPTIONS.length;
               
               return (
                 <div
@@ -132,7 +141,7 @@ const DiscountRoulette = ({
                   style={{
                     transform: `rotate(${angle}deg)`,
                     background: option.color,
-                    clipPath: 'polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)',
+                    clipPath: `polygon(50% 0%, ${50 + 50 * Math.cos((segmentAngle * Math.PI) / 180)}% ${50 + 50 * Math.sin((segmentAngle * Math.PI) / 180)}%, 50% 50%)`,
                   }}
                 >
                   <div 
@@ -144,20 +153,15 @@ const DiscountRoulette = ({
                     <div 
                       className="flex flex-col items-center justify-center text-white w-full px-2"
                       style={{
-                        transform: 'translateX(50%)',
+                        transform: 'translateY(-40%)',
                       }}
                     >
                       {option.type === 'win' ? (
-                        <>
-                          <span className="text-2xl font-bold whitespace-nowrap mb-1">
-                            {option.label}
-                          </span>
-                          <span className="text-sm font-medium">
-                            Desconto
-                          </span>
-                        </>
+                        <span className="text-lg font-bold whitespace-nowrap rotate-180">
+                          {option.label}
+                        </span>
                       ) : (
-                        <span className="text-lg font-semibold whitespace-nowrap">
+                        <span className="text-sm font-semibold whitespace-nowrap rotate-180">
                           {option.label}
                         </span>
                       )}
