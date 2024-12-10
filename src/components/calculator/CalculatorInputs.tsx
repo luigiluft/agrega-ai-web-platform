@@ -3,8 +3,6 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
 type CalculatorInputsProps = {
-  hourlyRate: string;
-  setHourlyRate: (value: string) => void;
   customLayoutHours: string;
   setCustomLayoutHours: (value: string) => void;
   customMaintenanceHours: string;
@@ -23,8 +21,6 @@ type CalculatorInputsProps = {
 };
 
 const CalculatorInputs = ({
-  hourlyRate,
-  setHourlyRate,
   customLayoutHours,
   setCustomLayoutHours,
   customMaintenanceHours,
@@ -56,17 +52,6 @@ const CalculatorInputs = ({
             </Button>
           ))}
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label>Valor Hora (R$)</Label>
-        <Input
-          type="number"
-          value={hourlyRate}
-          onChange={(e) => setHourlyRate(e.target.value)}
-          min="0"
-          step="10"
-        />
       </div>
 
       <div className="space-y-2">

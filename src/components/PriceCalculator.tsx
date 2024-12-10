@@ -12,6 +12,7 @@ import {
 } from "./ui/sheet";
 import CalculatorInputs from "./calculator/CalculatorInputs";
 import CalculatorResults from "./calculator/CalculatorResults";
+import DeveloperAnimation from "./calculator/DeveloperAnimation";
 
 type Plan = {
   name: string;
@@ -54,17 +55,16 @@ const defaultPlans: Plan[] = [
 ];
 
 const calculateRevenueShare = (revenue: number) => {
-  if (revenue <= 50000) return 0.15; // 15% até 50k
-  if (revenue <= 100000) return 0.12; // 12% até 100k
-  if (revenue <= 200000) return 0.10; // 10% até 200k
-  return 0.08; // 8% acima de 200k
+  if (revenue <= 50000) return 0.15;
+  if (revenue <= 100000) return 0.12;
+  if (revenue <= 200000) return 0.10;
+  return 0.08;
 };
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<Plan>(defaultPlans[0]);
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
-  const [hourlyRate, setHourlyRate] = useState<string>("100");
   const [customLayoutHours, setCustomLayoutHours] = useState<string>(defaultPlans[0].layoutHours.toString());
   const [customMaintenanceHours, setCustomMaintenanceHours] = useState<string>(defaultPlans[0].maintenanceHours.toString());
   const [customMeetingHours, setCustomMeetingHours] = useState<string>(defaultPlans[0].meetingHours.toString());
@@ -74,7 +74,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const calculatePrices = () => {
     const revenue = parseFloat(monthlyRevenue) || 0;
-    const rate = parseFloat(hourlyRate) || 100;
+    const rate = 100; // Fixed rate
     
     const layoutHours = parseFloat(customLayoutHours) || selectedPlan.layoutHours;
     const maintenanceHours = parseFloat(customMaintenanceHours) || selectedPlan.maintenanceHours;
@@ -86,15 +86,14 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const totalMaintenanceHours = maintenanceHours + campaignHours;
     
     const baseImplementationCost = totalImplementationHours * rate;
-    const implementationPrice = baseImplementationCost * 1.1; // Fixed 10% margin
+    const implementationPrice = baseImplementationCost * 1.1;
     
     const baseMaintenanceCost = totalMaintenanceHours * rate;
-    const maintenancePrice = baseMaintenanceCost * 1.3; // Fixed 30% margin
+    const maintenancePrice = baseMaintenanceCost * 1.3;
     
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
 
-    // Calculate discount based on total hours
     const totalHours = totalImplementationHours + totalMaintenanceHours;
     const discountAmount = Math.floor(totalHours / 50) * 50;
 
@@ -112,7 +111,6 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const prices = calculatePrices();
 
-  // Effect to handle discount notifications
   useEffect(() => {
     const currentTotalHours = prices.totalHours;
     const previousDiscountLevel = Math.floor(lastTotalHours / 50);
@@ -149,8 +147,6 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
           <CalculatorInputs
-            hourlyRate={hourlyRate}
-            setHourlyRate={setHourlyRate}
             customLayoutHours={customLayoutHours}
             setCustomLayoutHours={setCustomLayoutHours}
             customMaintenanceHours={customMaintenanceHours}
@@ -170,38 +166,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
         </div>
         <div className="relative">
           <div className="sticky top-4">
-            <div className="rounded-lg overflow-hidden shadow-xl bg-white">
-              <div className="p-4 border-b border-gray-200">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-              </div>
-              <div className="p-4">
-                <img
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
-                  alt="Developer coding"
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-                <div className="space-y-4">
-                  {prices.totalHours >= 50 && (
-                    <div className="relative">
-                      <img
-                        src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
-                        alt="New features"
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-4">
-                        <span className="text-white font-medium">
-                          + Novas funcionalidades desbloqueadas
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            <DeveloperAnimation totalHours={prices.totalHours} />
             <CalculatorResults prices={prices} onContactClick={handleContactClick} />
           </div>
         </div>
