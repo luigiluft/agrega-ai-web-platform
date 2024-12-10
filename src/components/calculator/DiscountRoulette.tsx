@@ -11,14 +11,14 @@ interface DiscountRouletteProps {
 }
 
 const DISCOUNT_OPTIONS = [
-  { value: 50, label: 'R$50', type: 'win', color: '#FF4D8D' },
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#4A90E2' },
-  { value: 150, label: 'R$150', type: 'win', color: '#FF4D8D' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#4A90E2' },
-  { value: 200, label: 'R$200', type: 'win', color: '#FF4D8D' },
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#4A90E2' },
-  { value: 100, label: 'R$100', type: 'win', color: '#FF4D8D' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#4A90E2' }
+  { value: 50, label: 'R$50', color: '#FF4D8D' },
+  { value: 100, label: 'R$100', color: '#4A90E2' },
+  { value: 150, label: 'R$150', color: '#FF4D8D' },
+  { value: 200, label: 'R$200', color: '#4A90E2' },
+  { value: 250, label: 'R$250', color: '#FF4D8D' },
+  { value: 300, label: 'R$300', color: '#4A90E2' },
+  { value: 350, label: 'R$350', color: '#FF4D8D' },
+  { value: 400, label: 'R$400', color: '#4A90E2' }
 ];
 
 const DiscountRoulette = ({ 
@@ -32,42 +32,36 @@ const DiscountRoulette = ({
   const [ballPosition, setBallPosition] = useState(0);
   const [result, setResult] = useState<number | null>(null);
   const [hasSpun, setHasSpun] = useState(false);
-  const [canRetry, setCanRetry] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setResult(null);
       setBallPosition(0);
       setHasSpun(false);
-      setCanRetry(false);
     }
   }, [isOpen]);
 
   const spinBall = () => {
-    if (isSpinning || (hasSpun && !canRetry)) return;
+    if (isSpinning || hasSpun) return;
     
     setIsSpinning(true);
     setResult(null);
     
-    let randomIndex;
-    do {
-      randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
-    } while (DISCOUNT_OPTIONS[randomIndex].type === 'lose');
-
-    const spins = 3 + Math.random(); // Random number between 3 and 4 spins
+    // Choose a random segment
+    const randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
+    
+    // Calculate final position (3-4 complete rotations + position of chosen segment)
+    const spins = 3 + Math.random(); // Random number between 3 and 4
     const finalPosition = (spins * 360) + (360 / DISCOUNT_OPTIONS.length) * randomIndex;
     
     setBallPosition(finalPosition);
 
+    // Wait for animation to complete before showing result
     setTimeout(() => {
       setIsSpinning(false);
-      const result = DISCOUNT_OPTIONS[randomIndex];
-      setResult(result.value);
+      setResult(DISCOUNT_OPTIONS[randomIndex].value);
       setHasSpun(true);
-      setCanRetry(result.type === 'retry');
-      if (result.value > 0) {
-        onWin(result.value);
-      }
+      onWin(DISCOUNT_OPTIONS[randomIndex].value);
     }, 4000);
   };
 
@@ -128,36 +122,23 @@ const DiscountRoulette = ({
           </div>
         </div>
 
-        {/* Results display */}
+        {/* Results and buttons */}
         <div className="text-center space-y-4">
-          {result !== null && (
+          {result !== null ? (
             <div className="animate-fade-in">
               <h4 className="text-xl font-bold mb-4">
-                {result === 0 
-                  ? (canRetry ? "Tente mais uma vez!" : "Não foi dessa vez!") 
-                  : `Parabéns! Você ganhou R$${result} de desconto!`}
+                Parabéns! Você ganhou R${result} de desconto!
               </h4>
-              {(result > 0 || (!canRetry && result === 0)) && (
-                <Button 
-                  onClick={onClose}
-                  className="w-full bg-green-500 hover:bg-green-600 text-white"
-                >
-                  Aplicar desconto
-                </Button>
-              )}
-              {canRetry && (
-                <Button 
-                  onClick={() => spinBall()}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-                >
-                  Tentar Novamente
-                </Button>
-              )}
+              <Button 
+                onClick={onClose}
+                className="w-full bg-green-500 hover:bg-green-600 text-white"
+              >
+                Aplicar desconto
+              </Button>
             </div>
-          )}
-          {result === null && (
+          ) : (
             <Button 
-              onClick={() => spinBall()}
+              onClick={spinBall}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
               disabled={isSpinning}
             >
