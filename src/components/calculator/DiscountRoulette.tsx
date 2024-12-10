@@ -10,16 +10,15 @@ interface DiscountRouletteProps {
   currentDiscountLevel: number;
 }
 
-// Adjusted prize options with better distribution
 const DISCOUNT_OPTIONS = [
-  { value: 0, label: 'Tente Novamente', type: 'retry' },
-  { value: 50, label: 'R$50', type: 'win' },
-  { value: 0, label: 'Não Ganhou', type: 'lose' },
-  { value: 100, label: 'R$100', type: 'win' },
-  { value: 0, label: 'Tente Novamente', type: 'retry' },
-  { value: 200, label: 'R$200', type: 'win' },
-  { value: 0, label: 'Não Ganhou', type: 'lose' },
-  { value: 300, label: 'R$300', type: 'win' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FFA726' },
+  { value: 50, label: 'R$50', type: 'win', color: '#4CAF50' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D32F2F' },
+  { value: 100, label: 'R$100', type: 'win', color: '#2196F3' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FFA726' },
+  { value: 200, label: 'R$200', type: 'win', color: '#9C27B0' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#D32F2F' },
+  { value: 300, label: 'R$300', type: 'win', color: '#3F51B5' },
 ];
 
 const DiscountRoulette = ({ 
@@ -50,13 +49,12 @@ const DiscountRoulette = ({
     setIsSpinning(true);
     setResult(null);
     
-    // Ensure we don't land on "Não Ganhou"
     let randomIndex;
     do {
       randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
     } while (DISCOUNT_OPTIONS[randomIndex].type === 'lose');
 
-    const baseRotations = (Math.floor(Math.random() * 3) + 5) * 360; // More rotations for better effect
+    const baseRotations = (Math.floor(Math.random() * 3) + 5) * 360;
     const resultRotation = (360 / DISCOUNT_OPTIONS.length) * randomIndex;
     const totalRotation = baseRotations + resultRotation;
     
@@ -71,7 +69,7 @@ const DiscountRoulette = ({
       if (result.value > 0) {
         onWin(result.value);
       }
-    }, 4000); // Longer spin time for better effect
+    }, 4000);
   };
 
   if (!isOpen) return null;
@@ -91,7 +89,7 @@ const DiscountRoulette = ({
         <div className="relative w-72 h-72 mx-auto mb-8">
           {/* Pointer */}
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
-            <div className="w-4 h-4 bg-[#C5A656] rotate-45 mb-1" />
+            <div className="w-6 h-6 bg-[#C5A656] rotate-45 mb-1 shadow-lg" />
             <div className="text-[#C5A656] text-sm font-bold">PRÊMIO</div>
           </div>
           
@@ -106,11 +104,6 @@ const DiscountRoulette = ({
           >
             {DISCOUNT_OPTIONS.map((option, index) => {
               const angle = (360 / DISCOUNT_OPTIONS.length) * index;
-              const bgColor = option.type === 'win' 
-                ? '#4CAF50' 
-                : option.type === 'retry' 
-                  ? '#FFA726'
-                  : '#D32F2F';
               
               return (
                 <div
@@ -118,7 +111,7 @@ const DiscountRoulette = ({
                   className="absolute w-full h-full"
                   style={{
                     transform: `rotate(${angle}deg)`,
-                    background: bgColor,
+                    background: option.color,
                     clipPath: 'polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)',
                   }}
                 >
@@ -129,10 +122,10 @@ const DiscountRoulette = ({
                     }}
                   >
                     <div className="flex flex-col items-center justify-center">
-                      <span className="text-2xl font-bold text-white drop-shadow-lg mb-1">
+                      <span className="text-xl font-bold text-white drop-shadow-lg mb-1">
                         {option.type === 'win' ? option.label : ''}
                       </span>
-                      <span className="text-sm text-white/90 font-medium px-2 text-center">
+                      <span className="text-sm text-white font-medium px-2 text-center whitespace-nowrap">
                         {option.type !== 'win' ? option.label : 'Desconto'}
                       </span>
                     </div>
