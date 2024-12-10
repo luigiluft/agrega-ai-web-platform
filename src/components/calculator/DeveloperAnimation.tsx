@@ -81,7 +81,8 @@ const DeveloperAnimation = ({
   selectedPlanName
 }: DeveloperAnimationProps) => {
   const [codeLines, setCodeLines] = useState<CodeLine[]>([]);
-  const [animationSpeed, setAnimationSpeed] = useState(1000);
+  const [typedText, setTypedText] = useState<string[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
   
   const getCodeLineForType = (type: CodeLine['type'], action: string): string => {
     switch(type) {
@@ -101,8 +102,6 @@ const DeveloperAnimation = ({
   };
 
   useEffect(() => {
-    setAnimationSpeed(Math.max(300, 1000 - (totalHours * 5)));
-
     const newCodeLines: CodeLine[] = [];
     
     // Always show Hello Client line
@@ -145,7 +144,34 @@ const DeveloperAnimation = ({
     }
 
     setCodeLines(newCodeLines);
-  }, [layoutHours, maintenanceHours, meetingHours, campaignHours, functionalityHours, totalHours, selectedPlanName]);
+    setIsTyping(true);
+    setTypedText(new Array(newCodeLines.length).fill(''));
+  }, [layoutHours, maintenanceHours, meetingHours, campaignHours, functionalityHours, selectedPlanName]);
+
+  useEffect(() => {
+    if (!isTyping) return;
+
+    const typeCharacters = async () => {
+      const duration = 4000; // 4 seconds total
+      const totalChars = codeLines.reduce((sum, line) => sum + line.code.length, 0);
+      const delayPerChar = duration / totalChars;
+
+      for (let lineIndex = 0; lineIndex < codeLines.length; lineIndex++) {
+        const line = codeLines[lineIndex];
+        for (let charIndex = 0; charIndex <= line.code.length; charIndex++) {
+          await new Promise(resolve => setTimeout(resolve, delayPerChar));
+          setTypedText(prev => {
+            const newTypedText = [...prev];
+            newTypedText[lineIndex] = line.code.substring(0, charIndex);
+            return newTypedText;
+          });
+        }
+      }
+      setIsTyping(false);
+    };
+
+    typeCharacters();
+  }, [codeLines, isTyping]);
 
   return (
     <div className="relative">
@@ -158,27 +184,15 @@ const DeveloperAnimation = ({
           </div>
         </div>
         <div className="p-6 space-y-2 min-h-[200px] font-mono">
-          {codeLines.map((line, index) => (
+          {typedText.map((text, index) => (
             <div 
               key={index}
-              className="text-primary-light text-sm animate-slide-in"
-              style={{
-                animationDelay: `${index * 0.2}s`,
-                opacity: 0,
-                animation: `slideIn 0.5s ease-out ${index * 0.2}s forwards`
-              }}
+              className="text-primary-light text-sm"
             >
-              {line.code}
+              {text}
             </div>
           ))}
-          <div 
-            className="animate-pulse text-primary-light"
-            style={{ 
-              animationDuration: `${animationSpeed}ms`,
-            }}
-          >
-            _
-          </div>
+          <div className="animate-pulse text-primary-light">_</div>
         </div>
       </div>
     </div>
