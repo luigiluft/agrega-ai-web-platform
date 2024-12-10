@@ -55,6 +55,18 @@ const defaultPlans: Plan[] = [
   },
 ];
 
+const calculateRevenueShare = (revenue: number): number => {
+  if (revenue <= 50000) {
+    return 0.15; // 15% for revenue up to 50k
+  } else if (revenue <= 100000) {
+    return 0.12; // 12% for revenue between 50k and 100k
+  } else if (revenue <= 200000) {
+    return 0.10; // 10% for revenue between 100k and 200k
+  } else {
+    return 0.08; // 8% for revenue above 200k
+  }
+};
+
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<Plan>(defaultPlans[0]);
