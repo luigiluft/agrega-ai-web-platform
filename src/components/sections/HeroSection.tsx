@@ -11,7 +11,6 @@ const HeroSection = () => {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
 
-  // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
 
   useEffect(() => {
@@ -74,20 +73,21 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-primary via-accent to-primary-dark min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20" />
-      <div className="container mx-auto px-4 py-16 relative">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-primary/90 via-accent/80 to-primary-dark/90">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10" />
+      
+      <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-12">
-              <div className="space-y-6 backdrop-blur-sm bg-black/10 p-8 rounded-2xl border border-white/10">
-                <h1 className="text-4xl lg:text-6xl font-bold text-white animate-fade-up leading-tight">
-                  Soluções <span className="text-white font-extrabold">Sob Medida</span> para Seu{" "}
-                  <span className="text-7xl font-extrabold text-white">
+            <div className="space-y-8">
+              <div className="space-y-6 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+                <h1 className="text-4xl lg:text-6xl font-bold text-white animate-fade-up">
+                  Soluções <span className="text-white/90">Sob Medida</span> para Seu{" "}
+                  <span className="text-7xl font-extrabold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                     E-commerce
                   </span>
                 </h1>
-                <p className="text-lg text-white animate-fade-up [animation-delay:200ms] leading-relaxed max-w-xl">
+                <p className="text-lg text-white/90 animate-fade-up [animation-delay:200ms] leading-relaxed max-w-xl">
                   Desenvolvemos, <span className="text-white font-semibold">integramos</span> e{" "}
                   <span className="text-white font-semibold">gerenciamos</span> seu e-commerce.{" "}
                   <span className="text-xl font-bold text-white">
@@ -97,7 +97,7 @@ const HeroSection = () => {
               </div>
               
               <div className="grid sm:grid-cols-2 gap-6 animate-fade-up [animation-delay:400ms]">
-                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:scale-105">
+                <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:scale-105">
                   <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Rocket className="w-7 h-7 text-white" />
                   </div>
@@ -116,7 +116,7 @@ const HeroSection = () => {
                   </Link>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:scale-105">
+                <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:scale-105">
                   <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Building2 className="w-7 h-7 text-white" />
                   </div>

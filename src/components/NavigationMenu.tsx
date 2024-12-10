@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,8 +9,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 const NavigationMenuDemo = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <NavigationMenu className="max-w-full w-full bg-white/95 backdrop-blur-sm shadow-sm fixed top-0 z-50">
       <NavigationMenuList className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -19,8 +23,19 @@ const NavigationMenuDemo = () => {
           </Link>
         </NavigationMenuItem>
 
-        <div className="flex gap-6">
-          <NavigationMenuItem>
+        <button 
+          onClick={() => setIsOpen(!isOpen)} 
+          className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        <div className={cn(
+          "lg:flex gap-6 absolute lg:static left-0 right-0 top-full bg-white/95 lg:bg-transparent shadow-lg lg:shadow-none",
+          "transition-all duration-300 ease-in-out",
+          isOpen ? "block" : "hidden"
+        )}>
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
             <NavigationMenuTrigger className="text-base font-medium">Soluções</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 w-[400px]">
@@ -40,7 +55,7 @@ const NavigationMenuDemo = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          <NavigationMenuItem>
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
             <NavigationMenuTrigger className="text-base font-medium">Integrações</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 w-[400px]">
@@ -57,14 +72,14 @@ const NavigationMenuDemo = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <Link to="/planos" className="text-base font-medium px-4 py-2 hover:text-primary transition-colors">
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
+            <Link to="/planos" className="text-base font-medium hover:text-primary transition-colors block">
               Planos
             </Link>
           </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <Link to="/contato" className="text-base font-medium px-4 py-2 hover:text-primary transition-colors">
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
+            <Link to="/contato" className="text-base font-medium hover:text-primary transition-colors block">
               Contato
             </Link>
           </NavigationMenuItem>
