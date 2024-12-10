@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 
 interface RouletteCardProps {
   isOpen: boolean;
@@ -23,18 +24,27 @@ const RouletteCard = ({
   previousDiscountLevel,
   currentDiscountLevel,
 }: RouletteCardProps) => {
+  const showConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50">
       <AnimatePresence>
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ type: "spring", duration: 0.5 }}
+          className="w-[90vw] max-w-lg"
         >
-          <Card className="w-[90vw] max-w-md p-8 bg-gradient-to-br from-background to-background/95 rounded-xl shadow-2xl border border-primary/20">
+          <Card className="p-8 bg-gradient-to-br from-background via-background/95 to-background/90 rounded-xl shadow-2xl border border-primary/20">
             <div className="text-center space-y-4 mb-8">
               <motion.div 
                 className="space-y-2"
@@ -48,11 +58,11 @@ const RouletteCard = ({
                   ease: "easeInOut"
                 }}
               >
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
                   🎉 Roda da Sorte 🎉
                 </h2>
-                <div className="inline-block px-4 py-2 rounded-full bg-primary/10">
-                  <p className="text-primary font-medium">
+                <div className="inline-block px-6 py-2 rounded-full bg-gradient-to-r from-primary/20 to-accent/20">
+                  <p className="text-lg font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s) de desconto!
                   </p>
                 </div>
@@ -61,27 +71,39 @@ const RouletteCard = ({
 
             {children}
 
-            <div className="space-y-4 mt-8">
+            <div className="space-y-6 mt-8">
               {selectedValue ? (
                 <motion.div 
-                  className="text-center space-y-4"
+                  className="text-center space-y-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
+                  onAnimationComplete={showConfetti}
                 >
-                  <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-xl">
-                    <h3 className="text-2xl font-bold text-primary mb-2">
+                  <motion.div 
+                    className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 p-8 rounded-xl"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                      borderRadius: ["0.75rem", "1rem", "0.75rem"],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
                       Parabéns! 🎊
                     </h3>
-                    <div className="inline-block bg-white px-4 py-2 rounded-full shadow-lg">
-                      <p className="text-lg font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    <div className="inline-block bg-white px-6 py-3 rounded-full shadow-lg border border-primary/20">
+                      <p className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                         Você ganhou R${selectedValue} de desconto!
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                   <Button 
                     onClick={onClose}
-                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white"
+                    className="w-full h-14 text-lg bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-lg"
                   >
                     Aplicar Desconto
                   </Button>
@@ -90,9 +112,18 @@ const RouletteCard = ({
                 <Button
                   onClick={onSpin}
                   disabled={isSpinning}
-                  className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white disabled:opacity-50"
+                  className="w-full h-14 text-lg bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSpinning ? "Girando..." : "Girar"}
+                  {isSpinning ? (
+                    <motion.span
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      Girando...
+                    </motion.span>
+                  ) : (
+                    "Girar"
+                  )}
                 </Button>
               )}
             </div>
