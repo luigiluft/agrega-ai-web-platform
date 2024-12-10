@@ -71,6 +71,16 @@ const DiscountRoulette = ({
         </div>
 
         <div className="relative w-72 h-72 mx-auto mb-8">
+          {/* Pointer triangle */}
+          <div 
+            className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10"
+            style={{
+              background: '#C5A656',
+              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+            }}
+          />
+          
+          {/* Roulette wheel */}
           <div 
             className="absolute inset-0 rounded-full border-4 border-[#C5A656] shadow-lg overflow-hidden"
             style={{
@@ -81,14 +91,14 @@ const DiscountRoulette = ({
           >
             {DISCOUNT_OPTIONS.map((discount, index) => {
               const angle = (360 / DISCOUNT_OPTIONS.length) * index;
-              const isEven = index % 2 === 0;
+              const isWinningSegment = discount > 0;
               return (
                 <div
                   key={index}
-                  className="absolute w-full h-full text-white flex items-center justify-center text-lg font-bold"
+                  className="absolute w-full h-full"
                   style={{
                     transform: `rotate(${angle}deg)`,
-                    background: isEven ? '#4CAF50' : '#D32F2F',
+                    background: isWinningSegment ? '#4CAF50' : '#D32F2F',
                     clipPath: 'polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)',
                   }}
                 >
@@ -98,21 +108,21 @@ const DiscountRoulette = ({
                       transform: `rotate(-${angle}deg) translateX(25%)`,
                     }}
                   >
-                    <span className="text-xl font-bold text-white drop-shadow-lg">
-                      {discount === 0 ? 'Tente\nNovamente' : `R$${discount}`}
-                    </span>
+                    <div className="flex flex-col items-center justify-center">
+                      <span className="text-2xl font-bold text-white drop-shadow-lg mb-1">
+                        {discount === 0 ? '0' : `R$${discount}`}
+                      </span>
+                      <span className="text-sm text-white/90 font-medium">
+                        {discount === 0 ? 'Tente Novamente' : 'Desconto'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-8 h-8"
-            style={{
-              background: '#C5A656',
-              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-            }}
-          />
+
+          {/* Center decoration */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-[#C5A656] flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#1A1F2C] border-2 border-[#C5A656]" />
