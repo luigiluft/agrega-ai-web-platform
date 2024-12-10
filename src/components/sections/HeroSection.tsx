@@ -2,20 +2,30 @@ import { Link } from "react-scroll";
 import { ArrowRight, Rocket, Building2 } from "lucide-react";
 import { ThemeCard } from "../theme/ThemeCard";
 import { themes } from "../theme/themeData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, TouchEvent } from "react";
 
 const HeroSection = () => {
   const [selectedThemeId, setSelectedThemeId] = useState<number>(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     if (!isAutoPlaying) return;
 
-    const interval = setInterval(() => {
+    autoPlayTimeoutRef.current = setInterval(() => {
       handleNextTheme();
     }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (autoPlayTimeoutRef.current) {
+        clearInterval(autoPlayTimeoutRef.current);
+      }
+    };
   }, [selectedThemeId, isAutoPlaying]);
 
   const handleThemeSelect = (themeId: number) => {
@@ -33,6 +43,34 @@ const HeroSection = () => {
     setSelectedThemeId(prev => 
       prev === 1 ? themes.length : prev - 1
     );
+  };
+
+  const onTouchStart = (e: TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsAutoPlaying(false);
+    if (autoPlayTimeoutRef.current) {
+      clearInterval(autoPlayTimeoutRef.current);
+    }
+  };
+
+  const onTouchMove = (e: TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      handleNextTheme();
+    }
+    if (isRightSwipe) {
+      handlePreviousTheme();
+    }
   };
 
   return (
@@ -94,7 +132,12 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hidden lg:block relative animate-fade-up [animation-delay:600ms] h-[600px]">
+            <div 
+              className="relative animate-fade-up [animation-delay:600ms] h-[600px] touch-pan-x"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               <div className="relative w-full h-full">
                 {themes.map((theme, index) => (
                   <ThemeCard
@@ -106,6 +149,18 @@ const HeroSection = () => {
                     onSelect={handleThemeSelect}
                     onNext={handleNextTheme}
                     onPrevious={handlePreviousTheme}
+                  />
+                ))}
+              </div>
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 lg:hidden">
+                {themes.map((theme) => (
+                  <button
+                    key={theme.id}
+                    onClick={() => handleThemeSelect(theme.id)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      theme.id === selectedThemeId ? 'bg-white w-4' : 'bg-white/50'
+                    }`}
+                    aria-label={`Select theme ${theme.id}`}
                   />
                 ))}
               </div>
