@@ -94,6 +94,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     
     const totalImplementationHours = layoutHours + meetingHours + functionalityHours;
     const totalMaintenanceHours = maintenanceHours + campaignHours;
+    const totalHours = totalImplementationHours + totalMaintenanceHours;
     
     const baseImplementationCost = totalImplementationHours * rate;
     const implementationPrice = (baseImplementationCost * 1.1) - rouletteDiscount;
@@ -103,8 +104,6 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
-
-    const totalHours = totalImplementationHours + totalMaintenanceHours;
 
     return {
       implementationPrice: implementationPrice.toFixed(2),
@@ -122,20 +121,11 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const prices = calculatePrices();
 
   useEffect(() => {
-    console.log('Current implementation hours:', prices.totalImplementationHours);
-    console.log('Last total hours:', lastTotalHours);
-    console.log('Previous discount level:', previousDiscountLevel);
-    console.log('Current discount level:', currentDiscountLevel);
-    
     if (prices.totalImplementationHours >= 50 && !showRoulette) {
       const prevLevel = Math.floor(lastTotalHours / 50);
       const currentLevel = Math.floor(prices.totalImplementationHours / 50);
       
-      console.log('Previous level:', prevLevel);
-      console.log('Current level:', currentLevel);
-      
       if (currentLevel > prevLevel) {
-        console.log('Showing roulette!');
         setPreviousDiscountLevel(prevLevel);
         setCurrentDiscountLevel(currentLevel);
         setShowRoulette(true);
@@ -143,7 +133,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     }
     
     setLastTotalHours(prices.totalImplementationHours);
-  }, [prices.totalImplementationHours]);
+  }, [prices.totalImplementationHours, lastTotalHours, showRoulette]);
 
   const handleRouletteWin = (amount: number) => {
     setRouletteDiscount(prev => prev + amount);

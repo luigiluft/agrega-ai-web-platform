@@ -60,19 +60,19 @@ const DiscountRoulette = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
-      <Card className="relative w-[90vw] max-w-md p-8 bg-gradient-to-br from-background to-secondary/5 rounded-xl shadow-2xl">
+      <Card className="relative w-[90vw] max-w-md p-8 bg-gradient-to-br from-[#1A1F2C] to-[#2C3E50] rounded-xl shadow-2xl border-2 border-[#C5A656]">
         <div className="text-center mb-8">
-          <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+          <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] bg-clip-text text-transparent">
             Roda da Sorte!
           </h3>
-          <p className="text-muted-foreground">
+          <p className="text-[#E6D5A7]">
             Você desbloqueou {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s) de girar!
           </p>
         </div>
 
         <div className="relative w-72 h-72 mx-auto mb-8">
           <div 
-            className="absolute inset-0 rounded-full border-4 border-[#C5A656] shadow-lg overflow-hidden bg-[#1A1F2C]"
+            className="absolute inset-0 rounded-full border-4 border-[#C5A656] shadow-lg overflow-hidden"
             style={{
               transform: `rotate(${rotation}deg)`,
               transition: 'transform 3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -122,14 +122,14 @@ const DiscountRoulette = ({
 
         {result !== null ? (
           <div className="text-center mb-6 animate-fade-in">
-            <h4 className="text-2xl font-bold mb-2">
+            <h4 className="text-2xl font-bold mb-2 text-[#E6D5A7]">
               {result === 0 
                 ? 'Tente novamente!' 
                 : `Parabéns! Você ganhou R$${result} de desconto!`}
             </h4>
             <Button 
               onClick={onClose}
-              className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-white font-semibold py-3 text-lg"
+              className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg"
             >
               Aplicar desconto no projeto
             </Button>
@@ -138,7 +138,7 @@ const DiscountRoulette = ({
           <Button 
             onClick={spinWheel} 
             disabled={isSpinning || hasSpun}
-            className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-white font-semibold py-3 text-lg"
+            className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg disabled:opacity-50"
           >
             {isSpinning ? 'Girando...' : hasSpun ? 'Roleta já utilizada' : 'Girar Roleta'}
           </Button>
