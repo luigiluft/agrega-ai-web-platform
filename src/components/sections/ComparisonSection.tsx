@@ -31,7 +31,7 @@ const ComparisonSection = () => {
                   <span className="text-gray-500">Personalização completa</span>
                 </div>
               </div>
-              <div className="text-sm text-gray-600 mb-6">
+              <div className="text-sm font-medium text-primary bg-primary/5 p-4 rounded-lg mb-6">
                 Ideal para pequenas e médias empresas que precisam começar a vender online rapidamente
               </div>
             </div>
@@ -77,7 +77,7 @@ const ComparisonSection = () => {
                   <span>Gestão operacional completa</span>
                 </div>
               </div>
-              <div className="text-sm text-gray-600 mb-6">
+              <div className="text-sm font-medium text-primary bg-primary/5 p-4 rounded-lg mb-6">
                 Para empresas que necessitam de uma solução completa e personalizada
               </div>
             </div>

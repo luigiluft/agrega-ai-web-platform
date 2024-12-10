@@ -1,8 +1,9 @@
 import { useState } from "react";
 import NavigationMenuDemo from "@/components/NavigationMenu";
-import { Filter, Palette, ShoppingBag, Shirt, Brush, PawPrint } from "lucide-react";
+import { Filter, Palette, ShoppingBag, Shirt, Brush, PawPrint, Eye, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { themes } from "@/components/theme/themeData";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 type Market = "all" | "fashion" | "cosmetics" | "pets";
 
@@ -74,10 +75,53 @@ const Themes = () => {
                   <div className="p-4">
                     <h3 className="text-lg font-semibold mb-2">{theme.name}</h3>
                     <p className="text-gray-600 text-sm mb-4">{theme.description}</p>
-                    <button className="w-full bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-                      <ShoppingBag className="w-4 h-4" />
-                      Ver Detalhes
-                    </button>
+                    <div className="flex gap-2">
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <button className="flex-1 bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+                            <Eye className="w-4 h-4" />
+                            Ver Detalhes
+                          </button>
+                        </SheetTrigger>
+                        <SheetContent side="right" className="w-full sm:max-w-xl">
+                          <SheetHeader className="mb-6">
+                            <SheetTitle>{theme.name}</SheetTitle>
+                            <SheetDescription>{theme.description}</SheetDescription>
+                          </SheetHeader>
+                          <div className="space-y-6">
+                            <img
+                              src={theme.image}
+                              alt={theme.name}
+                              className="w-full rounded-lg object-cover aspect-video"
+                            />
+                            <div>
+                              <h3 className="text-lg font-semibold mb-3">Descrição Completa</h3>
+                              <p className="text-gray-600">{theme.fullDescription}</p>
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-semibold mb-3">Recursos</h3>
+                              <ul className="space-y-2">
+                                {theme.features.map((feature, index) => (
+                                  <li key={index} className="flex items-center gap-2 text-gray-600">
+                                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <a
+                              href={theme.demoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors w-full justify-center"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                              Ver Demo
+                            </a>
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    </div>
                   </div>
                 </div>
               ))}

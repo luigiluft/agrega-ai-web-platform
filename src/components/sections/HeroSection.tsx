@@ -152,7 +152,7 @@ const HeroSection = () => {
                   />
                 ))}
               </div>
-              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+              <div className="absolute -bottom-24 md:-bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
                 <div className="flex gap-2">
                   {themes.map((theme) => (
                     <button
