@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import RouletteWheel from './roulette/RouletteWheel';
-import SpinningBall from './roulette/SpinningBall';
 import RouletteCard from './roulette/RouletteCard';
 
 interface DiscountRouletteProps {
@@ -23,24 +22,13 @@ const DiscountRoulette = ({
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedValue, setSelectedValue] = useState<number | null>(null);
   const [rotationDegrees, setRotationDegrees] = useState(0);
-  const [ballPosition, setBallPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (!isOpen) {
       setSelectedValue(null);
       setRotationDegrees(0);
-      setBallPosition({ x: 0, y: 0 });
     }
   }, [isOpen]);
-
-  const calculateBallPosition = (angle: number) => {
-    const radius = 120;
-    const radians = (angle - 90) * (Math.PI / 180);
-    return {
-      x: radius * Math.cos(radians),
-      y: radius * Math.sin(radians)
-    };
-  };
 
   const spin = () => {
     if (isSpinning || selectedValue !== null) return;
@@ -55,22 +43,6 @@ const DiscountRoulette = ({
     const totalRotation = fullRotations + finalAngle;
     
     setRotationDegrees(totalRotation);
-
-    const animateBall = () => {
-      let currentAngle = 0;
-      const intervalId = setInterval(() => {
-        currentAngle = (currentAngle + 15) % 360;
-        setBallPosition(calculateBallPosition(currentAngle));
-      }, 50);
-
-      setTimeout(() => {
-        clearInterval(intervalId);
-        const finalPosition = calculateBallPosition(finalAngle);
-        setBallPosition(finalPosition);
-      }, 4000);
-    };
-
-    animateBall();
 
     setTimeout(() => {
       setIsSpinning(false);
@@ -94,10 +66,6 @@ const DiscountRoulette = ({
           isSpinning={isSpinning}
           rotationDegrees={rotationDegrees}
           discountValues={DISCOUNT_VALUES}
-        />
-        <SpinningBall 
-          isSpinning={isSpinning}
-          ballPosition={ballPosition}
         />
       </div>
     </RouletteCard>

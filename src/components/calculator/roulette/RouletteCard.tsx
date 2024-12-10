@@ -36,8 +36,8 @@ const RouletteCard = ({
         >
           <Card className="w-[90vw] max-w-md p-8 bg-gradient-to-br from-background to-background/95 rounded-xl shadow-2xl border border-primary/20">
             <div className="text-center space-y-4 mb-8">
-              <motion.h2 
-                className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              <motion.div 
+                className="space-y-2"
                 animate={{ 
                   scale: [1, 1.05, 1],
                   opacity: [0.8, 1, 0.8] 
@@ -48,11 +48,15 @@ const RouletteCard = ({
                   ease: "easeInOut"
                 }}
               >
-                🎉 Roda da Sorte 🎉
-              </motion.h2>
-              <p className="text-muted-foreground">
-                Você desbloqueou {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s) de desconto!
-              </p>
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  🎉 Roda da Sorte 🎉
+                </h2>
+                <div className="inline-block px-4 py-2 rounded-full bg-primary/10">
+                  <p className="text-primary font-medium">
+                    {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s) de desconto!
+                  </p>
+                </div>
+              </motion.div>
             </div>
 
             {children}
@@ -65,12 +69,16 @@ const RouletteCard = ({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h3 className="text-2xl font-bold text-primary">
-                    Parabéns! 🎊
-                  </h3>
-                  <p className="text-lg">
-                    Você ganhou R${selectedValue} de desconto!
-                  </p>
+                  <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-xl">
+                    <h3 className="text-2xl font-bold text-primary mb-2">
+                      Parabéns! 🎊
+                    </h3>
+                    <div className="inline-block bg-white px-4 py-2 rounded-full shadow-lg">
+                      <p className="text-lg font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        Você ganhou R${selectedValue} de desconto!
+                      </p>
+                    </div>
+                  </div>
                   <Button 
                     onClick={onClose}
                     className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white"
