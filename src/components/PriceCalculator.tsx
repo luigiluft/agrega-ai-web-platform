@@ -166,7 +166,14 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
         </div>
         <div className="relative">
           <div className="sticky top-4">
-            <DeveloperAnimation totalHours={prices.totalHours} />
+            <DeveloperAnimation 
+              totalHours={prices.totalHours}
+              layoutHours={parseInt(customLayoutHours) || 0}
+              maintenanceHours={parseInt(customMaintenanceHours) || 0}
+              meetingHours={parseInt(customMeetingHours) || 0}
+              campaignHours={parseInt(customCampaignHours) || 0}
+              functionalityHours={parseInt(customFunctionalityHours) || 0}
+            />
             <CalculatorResults prices={prices} onContactClick={handleContactClick} />
           </div>
         </div>
