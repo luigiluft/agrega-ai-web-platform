@@ -124,9 +124,9 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const currentTotalHours = prices.totalHours;
     const implementationHours = parseFloat(customLayoutHours) + parseFloat(customMeetingHours) + parseFloat(customFunctionalityHours);
     
-    if (implementationHours >= 50) {
+    if (implementationHours >= 50 && !showRoulette) {
       const prevLevel = Math.floor(lastTotalHours / 50);
-      const currentLevel = Math.floor(currentTotalHours / 50);
+      const currentLevel = Math.floor(implementationHours / 50);
       
       if (currentLevel > prevLevel) {
         setPreviousDiscountLevel(prevLevel);

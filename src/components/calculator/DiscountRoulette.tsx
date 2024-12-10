@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 
@@ -23,21 +22,22 @@ const DiscountRoulette = ({
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState<number | null>(null);
+  const [hasSpun, setHasSpun] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setResult(null);
       setRotation(0);
+      setHasSpun(false);
     }
   }, [isOpen]);
 
   const spinWheel = () => {
-    if (isSpinning) return;
+    if (isSpinning || hasSpun) return;
     
     setIsSpinning(true);
     setResult(null);
     
-    // Random number of full rotations (3-5) plus the position for the result
     const randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
     const baseRotations = (Math.floor(Math.random() * 3) + 3) * 360;
     const resultRotation = (360 / DISCOUNT_OPTIONS.length) * randomIndex;
@@ -49,6 +49,7 @@ const DiscountRoulette = ({
       setIsSpinning(false);
       const winAmount = DISCOUNT_OPTIONS[randomIndex];
       setResult(winAmount);
+      setHasSpun(true);
       if (winAmount > 0) {
         onWin(winAmount);
       }
@@ -60,13 +61,6 @@ const DiscountRoulette = ({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
       <Card className="relative w-[90vw] max-w-md p-8 bg-gradient-to-br from-background to-secondary/5 rounded-xl shadow-2xl">
-        <button 
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 transition-colors"
-        >
-          <X size={24} />
-        </button>
-
         <div className="text-center mb-8">
           <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
             Roda da Sorte!
@@ -78,31 +72,52 @@ const DiscountRoulette = ({
 
         <div className="relative w-72 h-72 mx-auto mb-8">
           <div 
-            className="absolute inset-0 rounded-full border-8 border-primary shadow-lg overflow-hidden"
+            className="absolute inset-0 rounded-full border-4 border-[#C5A656] shadow-lg overflow-hidden bg-[#1A1F2C]"
             style={{
               transform: `rotate(${rotation}deg)`,
               transition: 'transform 3s cubic-bezier(0.4, 0, 0.2, 1)',
-              backgroundImage: 'conic-gradient(from 0deg, #f472b6, #ec4899, #db2777, #be185d, #9d174d, #831843)',
+              backgroundImage: 'radial-gradient(circle at center, #2C3E50 0%, #1A1F2C 100%)',
             }}
           >
             {DISCOUNT_OPTIONS.map((discount, index) => {
               const angle = (360 / DISCOUNT_OPTIONS.length) * index;
+              const isEven = index % 2 === 0;
               return (
                 <div
                   key={index}
                   className="absolute w-full h-full text-white flex items-center justify-center text-lg font-bold"
                   style={{
                     transform: `rotate(${angle}deg)`,
+                    background: isEven ? '#4CAF50' : '#D32F2F',
+                    clipPath: 'polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)',
                   }}
                 >
-                  <div className="absolute inset-0 flex items-center justify-center transform -rotate-[${angle}deg]">
-                    {discount === 0 ? 'Tente\nNovamente' : `R$${discount}`}
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{
+                      transform: `rotate(-${angle}deg) translateX(25%)`,
+                    }}
+                  >
+                    <span className="text-xl font-bold text-white drop-shadow-lg">
+                      {discount === 0 ? 'Tente\nNovamente' : `R$${discount}`}
+                    </span>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-6 h-6 bg-primary transform rotate-45 shadow-md" />
+          <div 
+            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-8 h-8"
+            style={{
+              background: '#C5A656',
+              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+            }}
+          />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-[#C5A656] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#1A1F2C] border-2 border-[#C5A656]" />
+            </div>
+          </div>
         </div>
 
         {result !== null ? (
@@ -112,16 +127,22 @@ const DiscountRoulette = ({
                 ? 'Tente novamente!' 
                 : `Parabéns! Você ganhou R$${result} de desconto!`}
             </h4>
+            <Button 
+              onClick={onClose}
+              className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-white font-semibold py-3 text-lg"
+            >
+              Aplicar desconto no projeto
+            </Button>
           </div>
-        ) : null}
-
-        <Button 
-          onClick={spinWheel} 
-          disabled={isSpinning}
-          className="w-full bg-gradient-to-r from-primary to-primary-dark hover:opacity-90 transition-opacity text-white font-semibold py-3 text-lg"
-        >
-          {isSpinning ? 'Girando...' : 'Girar Roleta'}
-        </Button>
+        ) : (
+          <Button 
+            onClick={spinWheel} 
+            disabled={isSpinning || hasSpun}
+            className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-white font-semibold py-3 text-lg"
+          >
+            {isSpinning ? 'Girando...' : hasSpun ? 'Roleta já utilizada' : 'Girar Roleta'}
+          </Button>
+        )}
       </Card>
     </div>
   );
