@@ -26,7 +26,47 @@ export const themes = [
     description: "Ideal para múltiplos vendedores",
     features: ["Multi-vendedor", "Sistema de Avaliações", "Filtros Avançados", "Chat Integrado"],
     fullDescription: "Perfeito para marketplaces, com recursos completos para gestão de múltiplos vendedores e grande variedade de produtos.",
-    market: "pets" as const,
+    market: "marketplace" as const,
     demoUrl: "https://demo-marketplace.agrega.ai"
+  },
+  {
+    id: 4,
+    name: "Porto Shoes",
+    image: "/lovable-uploads/2934d37f-6944-407c-9caa-74a1987bb210.png",
+    description: "Tema especializado para lojas de calçados",
+    features: ["Visualização 360°", "Grade de Tamanhos", "Comparador de Produtos", "Filtros Avançados"],
+    fullDescription: "Design moderno e dinâmico ideal para lojas de calçados, com recursos especializados para uma melhor experiência de compra.",
+    market: "fashion" as const,
+    demoUrl: "https://demo-shoes.agrega.ai"
+  },
+  {
+    id: 5,
+    name: "Porto Tech",
+    image: "/lovable-uploads/ff36e6ef-290f-4f4f-a7aa-8df3bd8dbff2.png",
+    description: "Tema para produtos eletrônicos",
+    features: ["Comparador Técnico", "Filtros Avançados", "Reviews Detalhados", "Zoom em Detalhes"],
+    fullDescription: "Layout profissional para lojas de eletrônicos e tecnologia, com foco em especificações técnicas e comparações de produtos.",
+    market: "tech" as const,
+    demoUrl: "https://demo-tech.agrega.ai"
+  },
+  {
+    id: 6,
+    name: "Porto Market",
+    image: "/lovable-uploads/8f8dd73b-5da8-4a3e-baae-32919b45cba3.png",
+    description: "Tema para supermercados online",
+    features: ["Lista de Compras", "Compra Recorrente", "Busca por Categorias", "Checkout Rápido"],
+    fullDescription: "Solução completa para supermercados online, com foco em praticidade e rapidez na compra de produtos do dia a dia.",
+    market: "market" as const,
+    demoUrl: "https://demo-market.agrega.ai"
+  },
+  {
+    id: 7,
+    name: "Porto Beauty",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema para cosméticos e beleza",
+    features: ["Zoom em Detalhes", "Reviews com Fotos", "Vídeos de Produtos", "Programa de Fidelidade"],
+    fullDescription: "Design elegante e sofisticado para lojas de cosméticos e produtos de beleza, com recursos especiais para demonstração de produtos.",
+    market: "cosmetics" as const,
+    demoUrl: "https://demo-beauty.agrega.ai"
   }
 ];

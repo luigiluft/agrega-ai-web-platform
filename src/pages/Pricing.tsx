@@ -3,15 +3,49 @@ import NavigationMenuDemo from "@/components/NavigationMenu";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const PricingPage = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
-  const handleContactClick = () => {
-    toast({
-      title: "Contato iniciado",
-      description: "Em breve nossa equipe entrará em contato com você.",
-    });
+  const handlePlanClick = (planTitle: string) => {
+    const planParams = {
+      starter: {
+        layoutHours: "40",
+        maintenanceHours: "10",
+        meetingHours: "5",
+        campaignHours: "10",
+        functionalityHours: "20"
+      },
+      business: {
+        layoutHours: "80",
+        maintenanceHours: "15",
+        meetingHours: "10",
+        campaignHours: "20",
+        functionalityHours: "40"
+      },
+      enterprise: {
+        layoutHours: "120",
+        maintenanceHours: "30",
+        meetingHours: "15",
+        campaignHours: "30",
+        functionalityHours: "60"
+      }
+    };
+
+    const params = planParams[planTitle.toLowerCase()];
+    if (params) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&');
+      navigate(`/calculadora?${queryString}`);
+    } else {
+      toast({
+        title: "Contato iniciado",
+        description: "Em breve nossa equipe entrará em contato com você.",
+      });
+    }
   };
 
   const plans = [
@@ -142,7 +176,7 @@ const PricingPage = () => {
                       ? 'bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/25' 
                       : 'bg-gray-900 hover:bg-gray-800'}
                   `}
-                  onClick={handleContactClick}
+                  onClick={() => handlePlanClick(plan.title)}
                 >
                   Falar com consultor
                 </Button>
@@ -155,7 +189,7 @@ const PricingPage = () => {
           <p className="text-gray-600">
             Precisa de uma solução personalizada?{" "}
             <button 
-              onClick={handleContactClick}
+              onClick={() => handlePlanClick("custom")}
               className="text-primary hover:text-primary-dark hover:underline transition-colors"
             >
               Entre em contato

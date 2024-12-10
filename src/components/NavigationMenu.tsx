@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { Menu, X, Calculator } from "lucide-react";
+import { Menu, X, Calculator, Sparkles } from "lucide-react";
 import PriceCalculator from "./PriceCalculator";
 
 const NavigationMenuDemo = () => {
@@ -92,7 +92,10 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <NavigationMenuTrigger className="text-base font-medium h-10">Calculadoras</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="text-base font-medium h-10 bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Calculadora de Preços
+            </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 w-[400px]">
                 <ListItem href="/calculadora" title="Calculadora por Horas">
