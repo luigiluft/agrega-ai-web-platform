@@ -173,6 +173,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
               meetingHours={parseInt(customMeetingHours) || 0}
               campaignHours={parseInt(customCampaignHours) || 0}
               functionalityHours={parseInt(customFunctionalityHours) || 0}
+              selectedPlanName={selectedPlan.name}
             />
             <CalculatorResults prices={prices} onContactClick={handleContactClick} />
           </div>

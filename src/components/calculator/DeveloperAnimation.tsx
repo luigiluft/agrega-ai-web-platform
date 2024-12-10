@@ -12,6 +12,63 @@ type DeveloperAnimationProps = {
   meetingHours: number;
   campaignHours: number;
   functionalityHours: number;
+  selectedPlanName: string;
+};
+
+const getRandomLayoutAction = () => {
+  const actions = [
+    "Criando Banner Promocional",
+    "Melhorando Imagens",
+    "Adicionando Menu Responsivo",
+    "Otimizando Layout Mobile",
+    "Personalizando Cores da Marca",
+    "Implementando Carrossel",
+  ];
+  return actions[Math.floor(Math.random() * actions.length)];
+};
+
+const getRandomMaintenanceAction = () => {
+  const actions = [
+    "Corrigindo Bugs",
+    "Adicionando Produtos",
+    "Otimizando Performance",
+    "Atualizando Sistema",
+    "Backup de Dados",
+  ];
+  return actions[Math.floor(Math.random() * actions.length)];
+};
+
+const getRandomMeetingAction = () => {
+  const actions = [
+    "Planejando Sprint",
+    "Alinhando Requisitos",
+    "Review de Features",
+    "Definindo Prioridades",
+    "Workshop de UX",
+  ];
+  return actions[Math.floor(Math.random() * actions.length)];
+};
+
+const getRandomCampaignAction = () => {
+  const actions = [
+    "Configurando SEO",
+    "Integrando Analytics",
+    "Setup de Remarketing",
+    "Criando Landing Page",
+    "Otimizando Conversão",
+  ];
+  return actions[Math.floor(Math.random() * actions.length)];
+};
+
+const getRandomFunctionalityAction = () => {
+  const actions = [
+    "Implementando Checkout",
+    "Integrando Gateway",
+    "Sistema de Busca",
+    "Área do Cliente",
+    "Gestão de Pedidos",
+  ];
+  return actions[Math.floor(Math.random() * actions.length)];
 };
 
 const DeveloperAnimation = ({ 
@@ -20,23 +77,24 @@ const DeveloperAnimation = ({
   maintenanceHours,
   meetingHours,
   campaignHours,
-  functionalityHours
+  functionalityHours,
+  selectedPlanName
 }: DeveloperAnimationProps) => {
   const [codeLines, setCodeLines] = useState<CodeLine[]>([]);
   const [animationSpeed, setAnimationSpeed] = useState(1000);
   
-  const getCodeLineForType = (type: CodeLine['type']): string => {
+  const getCodeLineForType = (type: CodeLine['type'], action: string): string => {
     switch(type) {
       case 'layout':
-        return `const layout = createLayout({ responsive: true, hours: ${layoutHours} });`;
+        return `const layout = createLayout({ action: "${action}", hours: ${layoutHours} });`;
       case 'maintenance':
-        return `await performMaintenance({ duration: ${maintenanceHours}h });`;
+        return `await performMaintenance({ task: "${action}", duration: ${maintenanceHours}h });`;
       case 'meeting':
-        return `schedule.addMeetings({ hours: ${meetingHours} });`;
+        return `schedule.addMeetings({ topic: "${action}", hours: ${meetingHours} });`;
       case 'campaign':
-        return `marketing.createCampaign({ duration: ${campaignHours}h });`;
+        return `marketing.createCampaign({ type: "${action}", duration: ${campaignHours}h });`;
       case 'functionality':
-        return `features.implement({ complexity: "high", hours: ${functionalityHours} });`;
+        return `features.implement({ task: "${action}", hours: ${functionalityHours} });`;
       default:
         return '';
     }
@@ -47,24 +105,47 @@ const DeveloperAnimation = ({
 
     const newCodeLines: CodeLine[] = [];
     
+    // Always show Hello Client line
+    if (selectedPlanName) {
+      newCodeLines.push({ 
+        code: `console.log("Hello Client! Welcome to ${selectedPlanName} Plan");`,
+        type: 'layout' 
+      });
+    }
+    
     if (layoutHours > 0) {
-      newCodeLines.push({ code: getCodeLineForType('layout'), type: 'layout' });
+      newCodeLines.push({ 
+        code: getCodeLineForType('layout', getRandomLayoutAction()),
+        type: 'layout' 
+      });
     }
     if (maintenanceHours > 0) {
-      newCodeLines.push({ code: getCodeLineForType('maintenance'), type: 'maintenance' });
+      newCodeLines.push({ 
+        code: getCodeLineForType('maintenance', getRandomMaintenanceAction()),
+        type: 'maintenance' 
+      });
     }
     if (meetingHours > 0) {
-      newCodeLines.push({ code: getCodeLineForType('meeting'), type: 'meeting' });
+      newCodeLines.push({ 
+        code: getCodeLineForType('meeting', getRandomMeetingAction()),
+        type: 'meeting' 
+      });
     }
     if (campaignHours > 0) {
-      newCodeLines.push({ code: getCodeLineForType('campaign'), type: 'campaign' });
+      newCodeLines.push({ 
+        code: getCodeLineForType('campaign', getRandomCampaignAction()),
+        type: 'campaign' 
+      });
     }
     if (functionalityHours > 0) {
-      newCodeLines.push({ code: getCodeLineForType('functionality'), type: 'functionality' });
+      newCodeLines.push({ 
+        code: getCodeLineForType('functionality', getRandomFunctionalityAction()),
+        type: 'functionality' 
+      });
     }
 
     setCodeLines(newCodeLines);
-  }, [layoutHours, maintenanceHours, meetingHours, campaignHours, functionalityHours, totalHours]);
+  }, [layoutHours, maintenanceHours, meetingHours, campaignHours, functionalityHours, totalHours, selectedPlanName]);
 
   return (
     <div className="relative">
@@ -76,11 +157,11 @@ const DeveloperAnimation = ({
             <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
           </div>
         </div>
-        <div className="p-6 space-y-2 min-h-[200px]">
+        <div className="p-6 space-y-2 min-h-[200px] font-mono">
           {codeLines.map((line, index) => (
             <div 
               key={index}
-              className="text-primary-light font-mono text-sm animate-slide-in"
+              className="text-primary-light text-sm animate-slide-in"
               style={{
                 animationDelay: `${index * 0.2}s`,
                 opacity: 0,
@@ -91,7 +172,7 @@ const DeveloperAnimation = ({
             </div>
           ))}
           <div 
-            className="animate-pulse text-primary-light font-mono"
+            className="animate-pulse text-primary-light"
             style={{ 
               animationDuration: `${animationSpeed}ms`,
             }}
@@ -100,14 +181,6 @@ const DeveloperAnimation = ({
           </div>
         </div>
       </div>
-      
-      {totalHours >= 50 && (
-        <div className="absolute top-full mt-4 w-full">
-          <div className="bg-gradient-to-r from-primary to-accent text-white p-4 rounded-lg animate-bounce shadow-lg">
-            <p className="text-sm font-medium">Funcionalidade desbloqueada! 🎉</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
