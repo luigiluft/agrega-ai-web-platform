@@ -32,7 +32,7 @@ const CalculatorResults = ({ prices, onContactClick }: CalculatorResultsProps) =
         
         <div>
           <div className="text-sm text-muted-foreground">
-            Taxa sobre Receita ({prices.revenueSharePercent}%)
+            Comissão sobre faturamento ({prices.revenueSharePercent}%)
           </div>
           <div className="text-2xl font-bold">R$ {prices.revenueShare}/mês</div>
         </div>

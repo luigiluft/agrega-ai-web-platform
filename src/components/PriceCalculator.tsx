@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calculator } from "lucide-react";
 import { useToast } from "./ui/use-toast";
+import { Button } from "./ui/button";
 import {
   Sheet,
   SheetContent,
@@ -25,7 +26,7 @@ type Plan = {
 const defaultPlans: Plan[] = [
   {
     name: "Starter",
-    layoutHours: 40,
+    layoutHours: 5,
     maintenanceHours: 10,
     meetingHours: 5,
     campaignHours: 10,
@@ -92,13 +93,25 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
 
+    // Calculate discount based on total hours
+    const totalHours = totalImplementationHours + totalMaintenanceHours;
+    const discountAmount = Math.floor(totalHours / 50) * 50;
+    
+    if (discountAmount > 0) {
+      toast({
+        title: "Desconto Aplicado!",
+        description: `Você ganhou R$${discountAmount} de desconto na implementação por contratar ${totalHours} horas!`,
+      });
+    }
+
     return {
-      implementationPrice: implementationPrice.toFixed(2),
+      implementationPrice: (implementationPrice - discountAmount).toFixed(2),
       maintenancePrice: maintenancePrice.toFixed(2),
       revenueShare: revenueShare.toFixed(2),
       baseImplementationCost: baseImplementationCost.toFixed(2),
       baseMaintenanceCost: baseMaintenanceCost.toFixed(2),
       revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
+      totalHours,
     };
   };
 
@@ -122,26 +135,66 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const calculatorContent = (
     <div className="mt-8 space-y-6">
-      <CalculatorInputs
-        hourlyRate={hourlyRate}
-        setHourlyRate={setHourlyRate}
-        customLayoutHours={customLayoutHours}
-        setCustomLayoutHours={setCustomLayoutHours}
-        customMaintenanceHours={customMaintenanceHours}
-        setCustomMaintenanceHours={setCustomMaintenanceHours}
-        customMeetingHours={customMeetingHours}
-        setCustomMeetingHours={setCustomMeetingHours}
-        customCampaignHours={customCampaignHours}
-        setCustomCampaignHours={setCustomCampaignHours}
-        customFunctionalityHours={customFunctionalityHours}
-        setCustomFunctionalityHours={setCustomFunctionalityHours}
-        monthlyRevenue={monthlyRevenue}
-        setMonthlyRevenue={setMonthlyRevenue}
-        selectedPlan={selectedPlan}
-        defaultPlans={defaultPlans}
-        onPlanChange={handlePlanChange}
-      />
-      <CalculatorResults prices={prices} onContactClick={handleContactClick} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <CalculatorInputs
+            hourlyRate={hourlyRate}
+            setHourlyRate={setHourlyRate}
+            customLayoutHours={customLayoutHours}
+            setCustomLayoutHours={setCustomLayoutHours}
+            customMaintenanceHours={customMaintenanceHours}
+            setCustomMaintenanceHours={setCustomMaintenanceHours}
+            customMeetingHours={customMeetingHours}
+            setCustomMeetingHours={setCustomMeetingHours}
+            customCampaignHours={customCampaignHours}
+            setCustomCampaignHours={setCustomCampaignHours}
+            customFunctionalityHours={customFunctionalityHours}
+            setCustomFunctionalityHours={setCustomFunctionalityHours}
+            monthlyRevenue={monthlyRevenue}
+            setMonthlyRevenue={setMonthlyRevenue}
+            selectedPlan={selectedPlan}
+            defaultPlans={defaultPlans}
+            onPlanChange={handlePlanChange}
+          />
+        </div>
+        <div className="relative">
+          <div className="sticky top-4">
+            <div className="rounded-lg overflow-hidden shadow-xl bg-white">
+              <div className="p-4 border-b border-gray-200">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+              </div>
+              <div className="p-4">
+                <img
+                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+                  alt="Developer coding"
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+                <div className="space-y-4">
+                  {prices.totalHours >= 50 && (
+                    <div className="relative">
+                      <img
+                        src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
+                        alt="New features"
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-4">
+                        <span className="text-white font-medium">
+                          + Novas funcionalidades desbloqueadas
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <CalculatorResults prices={prices} onContactClick={handleContactClick} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 
