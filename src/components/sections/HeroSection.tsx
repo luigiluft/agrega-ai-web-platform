@@ -1,10 +1,12 @@
 import { Link } from "react-scroll";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight, Rocket, Building2 } from "lucide-react";
 import { ThemeCard } from "../theme/ThemeCard";
 import { themes } from "../theme/themeData";
 import { useState, useEffect, useRef, TouchEvent } from "react";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [selectedThemeId, setSelectedThemeId] = useState<number>(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -109,7 +111,7 @@ const HeroSection = () => {
                     to="pricing-section"
                     smooth={true}
                     duration={500}
-                    className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 cursor-pointer group"
+                    className="inline-flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent/90 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-accent/25"
                   >
                     Escolha seu plano
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -124,7 +126,7 @@ const HeroSection = () => {
                   <p className="text-sm text-white/90 mb-4 leading-relaxed">
                     Solução completa de e-commerce com integrações avançadas e personalização total.
                   </p>
-                  <button className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 group">
+                  <button className="inline-flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent/90 transition-all duration-300 group shadow-lg hover:shadow-accent/25">
                     Fale com Especialista
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
@@ -152,7 +154,7 @@ const HeroSection = () => {
                   />
                 ))}
               </div>
-              <div className="absolute -bottom-24 md:-bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+              <div className="absolute -bottom-8 md:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
                 <div className="flex gap-2">
                   {themes.map((theme) => (
                     <button
@@ -165,13 +167,13 @@ const HeroSection = () => {
                     />
                   ))}
                 </div>
-                <Link 
-                  to="/temas"
-                  className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 group"
+                <button 
+                  onClick={() => navigate('/temas')}
+                  className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 group shadow-lg hover:shadow-white/25"
                 >
                   Ver todos os temas disponíveis
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>

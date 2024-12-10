@@ -1,20 +1,28 @@
 import { Check } from "lucide-react";
+import { useState } from "react";
 
 interface PricingCardProps {
   title: string;
   price: string;
   features: string[];
+  expandedFeatures: string[];
   isPopular?: boolean;
 }
 
-const PricingCard = ({ title, price, features, isPopular }: PricingCardProps) => {
+const PricingCard = ({ title, price, features, expandedFeatures, isPopular }: PricingCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const allFeatures = isHovered ? [...features, ...expandedFeatures] : features;
+
   return (
     <div 
       className={`
         p-8 rounded-xl shadow-lg bg-white 
-        transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl
+        transform transition-all duration-500
+        ${isHovered ? 'scale-105 shadow-xl' : ''}
         ${isPopular ? 'ring-2 ring-primary relative' : ''}
       `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {isPopular && (
         <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-medium">
@@ -27,8 +35,10 @@ const PricingCard = ({ title, price, features, isPopular }: PricingCardProps) =>
         {price !== "Grátis" && <span className="text-gray-500 ml-2">/mês</span>}
       </div>
       <ul className="space-y-4 mb-8">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-3">
+        {allFeatures.map((feature, index) => (
+          <li key={index} className={`flex items-center gap-3 transition-all duration-300 ${
+            index >= features.length ? 'animate-fade-up' : ''
+          }`}>
             <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
               <Check className="h-3 w-3 text-primary" />
             </div>

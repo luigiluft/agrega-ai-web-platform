@@ -6,7 +6,7 @@ export const themes = [
     description: "Design clean e moderno para lojas virtuais",
     features: ["Layout Responsivo", "Menu Simplificado", "Carrossel de Produtos", "Checkout Otimizado"],
     fullDescription: "Um tema elegante e minimalista que coloca seus produtos em destaque. Ideal para marcas que valorizam simplicidade e sofisticação.",
-    market: "fashion",
+    market: "fashion" as const,
     demoUrl: "https://demo-minimalista.agrega.ai"
   },
   {
@@ -16,7 +16,7 @@ export const themes = [
     description: "Layout exclusivo para moda e acessórios",
     features: ["Zoom em Produtos", "Variações de Cores", "Guia de Tamanhos", "Instagram Feed"],
     fullDescription: "Desenvolvido especialmente para o mercado fashion, com recursos visuais que destacam lookbooks e coleções de moda.",
-    market: "fashion",
+    market: "fashion" as const,
     demoUrl: "https://demo-fashion.agrega.ai"
   },
   {
@@ -26,7 +26,7 @@ export const themes = [
     description: "Ideal para múltiplos vendedores",
     features: ["Multi-vendedor", "Sistema de Avaliações", "Filtros Avançados", "Chat Integrado"],
     fullDescription: "Perfeito para marketplaces, com recursos completos para gestão de múltiplos vendedores e grande variedade de produtos.",
-    market: "pets",
+    market: "pets" as const,
     demoUrl: "https://demo-marketplace.agrega.ai"
   }
 ];
