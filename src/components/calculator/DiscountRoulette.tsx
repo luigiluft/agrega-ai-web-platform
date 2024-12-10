@@ -10,7 +10,17 @@ interface DiscountRouletteProps {
   currentDiscountLevel: number;
 }
 
-const DISCOUNT_OPTIONS = [0, 50, 100, 150, 200, 250];
+// Adjusted prize options with better distribution
+const DISCOUNT_OPTIONS = [
+  { value: 0, label: 'Tente Novamente', type: 'retry' },
+  { value: 50, label: 'R$50', type: 'win' },
+  { value: 0, label: 'Não Ganhou', type: 'lose' },
+  { value: 100, label: 'R$100', type: 'win' },
+  { value: 0, label: 'Tente Novamente', type: 'retry' },
+  { value: 200, label: 'R$200', type: 'win' },
+  { value: 0, label: 'Não Ganhou', type: 'lose' },
+  { value: 300, label: 'R$300', type: 'win' },
+];
 
 const DiscountRoulette = ({ 
   isOpen, 
@@ -23,23 +33,30 @@ const DiscountRoulette = ({
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState<number | null>(null);
   const [hasSpun, setHasSpun] = useState(false);
+  const [canRetry, setCanRetry] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setResult(null);
       setRotation(0);
       setHasSpun(false);
+      setCanRetry(false);
     }
   }, [isOpen]);
 
   const spinWheel = () => {
-    if (isSpinning || hasSpun) return;
+    if (isSpinning || (hasSpun && !canRetry)) return;
     
     setIsSpinning(true);
     setResult(null);
     
-    const randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
-    const baseRotations = (Math.floor(Math.random() * 3) + 3) * 360;
+    // Ensure we don't land on "Não Ganhou"
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
+    } while (DISCOUNT_OPTIONS[randomIndex].type === 'lose');
+
+    const baseRotations = (Math.floor(Math.random() * 3) + 5) * 360; // More rotations for better effect
     const resultRotation = (360 / DISCOUNT_OPTIONS.length) * randomIndex;
     const totalRotation = baseRotations + resultRotation;
     
@@ -47,19 +64,20 @@ const DiscountRoulette = ({
 
     setTimeout(() => {
       setIsSpinning(false);
-      const winAmount = DISCOUNT_OPTIONS[randomIndex];
-      setResult(winAmount);
+      const result = DISCOUNT_OPTIONS[randomIndex];
+      setResult(result.value);
       setHasSpun(true);
-      if (winAmount > 0) {
-        onWin(winAmount);
+      setCanRetry(result.type === 'retry');
+      if (result.value > 0) {
+        onWin(result.value);
       }
-    }, 3000);
+    }, 4000); // Longer spin time for better effect
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fade-in">
       <Card className="relative w-[90vw] max-w-md p-8 bg-gradient-to-br from-[#1A1F2C] to-[#2C3E50] rounded-xl shadow-2xl border-2 border-[#C5A656]">
         <div className="text-center mb-8">
           <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] bg-clip-text text-transparent">
@@ -71,34 +89,36 @@ const DiscountRoulette = ({
         </div>
 
         <div className="relative w-72 h-72 mx-auto mb-8">
-          {/* Pointer triangle */}
-          <div 
-            className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10"
-            style={{
-              background: '#C5A656',
-              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-            }}
-          />
+          {/* Pointer */}
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+            <div className="w-4 h-4 bg-[#C5A656] rotate-45 mb-1" />
+            <div className="text-[#C5A656] text-sm font-bold">PRÊMIO</div>
+          </div>
           
           {/* Roulette wheel */}
           <div 
-            className="absolute inset-0 rounded-full border-4 border-[#C5A656] shadow-lg overflow-hidden"
+            className="absolute inset-0 rounded-full border-8 border-[#C5A656] shadow-2xl overflow-hidden"
             style={{
               transform: `rotate(${rotation}deg)`,
-              transition: 'transform 3s cubic-bezier(0.4, 0, 0.2, 1)',
+              transition: 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)',
               backgroundImage: 'radial-gradient(circle at center, #2C3E50 0%, #1A1F2C 100%)',
             }}
           >
-            {DISCOUNT_OPTIONS.map((discount, index) => {
+            {DISCOUNT_OPTIONS.map((option, index) => {
               const angle = (360 / DISCOUNT_OPTIONS.length) * index;
-              const isWinningSegment = discount > 0;
+              const bgColor = option.type === 'win' 
+                ? '#4CAF50' 
+                : option.type === 'retry' 
+                  ? '#FFA726'
+                  : '#D32F2F';
+              
               return (
                 <div
                   key={index}
                   className="absolute w-full h-full"
                   style={{
                     transform: `rotate(${angle}deg)`,
-                    background: isWinningSegment ? '#4CAF50' : '#D32F2F',
+                    background: bgColor,
                     clipPath: 'polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)',
                   }}
                 >
@@ -110,10 +130,10 @@ const DiscountRoulette = ({
                   >
                     <div className="flex flex-col items-center justify-center">
                       <span className="text-2xl font-bold text-white drop-shadow-lg mb-1">
-                        {discount === 0 ? '0' : `R$${discount}`}
+                        {option.type === 'win' ? option.label : ''}
                       </span>
-                      <span className="text-sm text-white/90 font-medium">
-                        {discount === 0 ? 'Tente Novamente' : 'Desconto'}
+                      <span className="text-sm text-white/90 font-medium px-2 text-center">
+                        {option.type !== 'win' ? option.label : 'Desconto'}
                       </span>
                     </div>
                   </div>
@@ -132,22 +152,32 @@ const DiscountRoulette = ({
 
         {result !== null ? (
           <div className="text-center mb-6 animate-fade-in">
-            <h4 className="text-2xl font-bold mb-2 text-[#E6D5A7]">
+            <h4 className="text-2xl font-bold mb-4 text-[#E6D5A7]">
               {result === 0 
-                ? 'Tente novamente!' 
+                ? (canRetry ? 'Tente mais uma vez!' : 'Não foi dessa vez!') 
                 : `Parabéns! Você ganhou R$${result} de desconto!`}
             </h4>
-            <Button 
-              onClick={onClose}
-              className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg"
-            >
-              Aplicar desconto no projeto
-            </Button>
+            {(result > 0 || (!canRetry && result === 0)) && (
+              <Button 
+                onClick={onClose}
+                className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg"
+              >
+                Aplicar desconto no projeto
+              </Button>
+            )}
+            {canRetry && (
+              <Button 
+                onClick={spinWheel}
+                className="w-full bg-gradient-to-r from-[#FFA726] to-[#FFB74D] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg"
+              >
+                Tentar Novamente
+              </Button>
+            )}
           </div>
         ) : (
           <Button 
             onClick={spinWheel} 
-            disabled={isSpinning || hasSpun}
+            disabled={isSpinning || (hasSpun && !canRetry)}
             className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg disabled:opacity-50"
           >
             {isSpinning ? 'Girando...' : hasSpun ? 'Roleta já utilizada' : 'Girar Roleta'}
