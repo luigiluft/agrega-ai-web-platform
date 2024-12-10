@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface DiscountRouletteProps {
   isOpen: boolean;
@@ -10,16 +11,7 @@ interface DiscountRouletteProps {
   currentDiscountLevel: number;
 }
 
-const DISCOUNT_OPTIONS = [
-  { value: 50, label: 'R$50', color: '#FF4D8D' },
-  { value: 100, label: 'R$100', color: '#4A90E2' },
-  { value: 150, label: 'R$150', color: '#FF4D8D' },
-  { value: 200, label: 'R$200', color: '#4A90E2' },
-  { value: 250, label: 'R$250', color: '#FF4D8D' },
-  { value: 300, label: 'R$300', color: '#4A90E2' },
-  { value: 350, label: 'R$350', color: '#FF4D8D' },
-  { value: 400, label: 'R$400', color: '#4A90E2' }
-];
+const DISCOUNT_VALUES = [50, 100, 150, 200, 250, 300, 350, 400];
 
 const DiscountRoulette = ({ 
   isOpen, 
@@ -29,124 +21,122 @@ const DiscountRoulette = ({
   currentDiscountLevel,
 }: DiscountRouletteProps) => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [ballPosition, setBallPosition] = useState(0);
-  const [result, setResult] = useState<number | null>(null);
-  const [hasSpun, setHasSpun] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [hasWon, setHasWon] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
-      setResult(null);
-      setBallPosition(0);
-      setHasSpun(false);
+      setSelectedValue(null);
+      setHighlightedIndex(0);
+      setHasWon(false);
     }
   }, [isOpen]);
 
-  const spinBall = () => {
-    if (isSpinning || hasSpun) return;
+  useEffect(() => {
+    if (isSpinning) {
+      const interval = setInterval(() => {
+        setHighlightedIndex(prev => (prev + 1) % DISCOUNT_VALUES.length);
+      }, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [isSpinning]);
+
+  const spin = () => {
+    if (isSpinning || hasWon) return;
     
     setIsSpinning(true);
-    setResult(null);
-    
-    // Choose a random segment
-    const randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
-    
-    // Calculate final position (3-4 complete rotations + position of chosen segment)
-    const spins = 3 + Math.random(); // Random number between 3 and 4
-    const finalPosition = (spins * 360) + (360 / DISCOUNT_OPTIONS.length) * randomIndex;
-    
-    setBallPosition(finalPosition);
+    setSelectedValue(null);
 
-    // Wait for animation to complete before showing result
-    setTimeout(() => {
-      setIsSpinning(false);
-      setResult(DISCOUNT_OPTIONS[randomIndex].value);
-      setHasSpun(true);
-      onWin(DISCOUNT_OPTIONS[randomIndex].value);
-    }, 4000);
+    // Random spins between 20-30 times
+    const spins = 20 + Math.floor(Math.random() * 10);
+    let currentSpin = 0;
+
+    const spinInterval = setInterval(() => {
+      currentSpin++;
+      
+      if (currentSpin >= spins) {
+        clearInterval(spinInterval);
+        const winningIndex = Math.floor(Math.random() * DISCOUNT_VALUES.length);
+        setHighlightedIndex(winningIndex);
+        setSelectedValue(DISCOUNT_VALUES[winningIndex]);
+        setIsSpinning(false);
+        setHasWon(true);
+        onWin(DISCOUNT_VALUES[winningIndex]);
+      }
+    }, 100);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <Card className="relative w-[90vw] max-w-md p-8 bg-white rounded-xl shadow-2xl">
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold mb-2">
-            Roda da Sorte!
-          </h3>
-          <p className="text-gray-600">
-            Você desbloqueou {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s)!
-          </p>
-        </div>
+      <AnimatePresence>
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ type: "spring", duration: 0.5 }}
+        >
+          <Card className="w-[90vw] max-w-md p-8 bg-white rounded-xl shadow-2xl">
+            <div className="text-center space-y-4">
+              <h2 className="text-3xl font-bold text-primary">
+                🎉 Roda da Sorte 🎉
+              </h2>
+              <p className="text-gray-600">
+                Você desbloqueou {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s) de desconto!
+              </p>
+            </div>
 
-        <div className="relative w-64 h-64 mx-auto mb-8">
-          {/* Static Wheel */}
-          <div className="absolute inset-0 rounded-full border-4 border-gray-200 overflow-hidden">
-            {DISCOUNT_OPTIONS.map((option, index) => {
-              const angle = (360 / DISCOUNT_OPTIONS.length) * index;
-              return (
+            <div className="mt-8 grid grid-cols-4 gap-2">
+              {DISCOUNT_VALUES.map((value, index) => (
                 <div
-                  key={index}
-                  className="absolute w-full h-full origin-center"
-                  style={{
-                    transform: `rotate(${angle}deg)`,
-                    background: option.color,
-                    clipPath: 'polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%)',
-                  }}
+                  key={value}
+                  className={`
+                    relative p-4 rounded-lg border-2 transition-all duration-200
+                    ${highlightedIndex === index 
+                      ? 'border-primary bg-primary/10 scale-105' 
+                      : 'border-gray-200 bg-white'
+                    }
+                  `}
                 >
-                  <div 
-                    className="absolute top-0 left-1/2 -translate-x-1/2 text-center pt-4 text-white font-bold text-sm w-full"
-                    style={{ transform: `rotate(-${angle}deg)` }}
-                  >
-                    {option.label}
+                  <div className="text-center font-bold">
+                    R${value}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Spinning Ball */}
-          <div 
-            className="absolute w-4 h-4 bg-white rounded-full shadow-lg"
-            style={{
-              left: '50%',
-              top: '0',
-              transform: `translateX(-50%) rotate(${ballPosition}deg) translateY(120px)`,
-              transition: isSpinning ? 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)' : 'none',
-            }}
-          />
-
-          {/* Center decoration */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gray-800" />
-          </div>
-        </div>
-
-        {/* Results and buttons */}
-        <div className="text-center space-y-4">
-          {result !== null ? (
-            <div className="animate-fade-in">
-              <h4 className="text-xl font-bold mb-4">
-                Parabéns! Você ganhou R${result} de desconto!
-              </h4>
-              <Button 
-                onClick={onClose}
-                className="w-full bg-green-500 hover:bg-green-600 text-white"
-              >
-                Aplicar desconto
-              </Button>
+              ))}
             </div>
-          ) : (
-            <Button 
-              onClick={spinBall}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-              disabled={isSpinning}
-            >
-              {isSpinning ? "Girando..." : "Girar Roleta"}
-            </Button>
-          )}
-        </div>
-      </Card>
+
+            <div className="mt-8 space-y-4">
+              {selectedValue ? (
+                <div className="text-center animate-fade-in space-y-4">
+                  <h3 className="text-2xl font-bold text-primary">
+                    Parabéns! 🎊
+                  </h3>
+                  <p className="text-lg">
+                    Você ganhou R${selectedValue} de desconto!
+                  </p>
+                  <Button 
+                    onClick={onClose}
+                    className="w-full bg-primary hover:bg-primary/90"
+                  >
+                    Aplicar Desconto
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={spin}
+                  disabled={isSpinning}
+                  className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {isSpinning ? "Sorteando..." : "Girar"}
+                </Button>
+              )}
+            </div>
+          </Card>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
