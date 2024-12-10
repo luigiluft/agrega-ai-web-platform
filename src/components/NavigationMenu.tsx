@@ -92,13 +92,17 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <Link 
-              to="/calculadora"
-              className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              <Calculator className="h-4 w-4" />
-              <span>Calculadora</span>
-            </Link>
+            <NavigationMenuTrigger className="text-base font-medium h-10">Calculadoras</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid gap-3 p-6 w-[400px]">
+                <ListItem href="/calculadora" title="Calculadora por Horas">
+                  Calcule o valor do projeto baseado em horas de trabalho
+                </ListItem>
+                <ListItem href="/calculadora-dinamica" title="Calculadora Dinâmica">
+                  Selecione funcionalidades específicas para seu projeto
+                </ListItem>
+              </ul>
+            </NavigationMenuContent>
           </NavigationMenuItem>
         </div>
       </NavigationMenuList>
@@ -120,8 +124,8 @@ const ListItem = ({
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
-          href={href}
+        <Link
+          to={href}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
@@ -131,7 +135,7 @@ const ListItem = ({
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   );
