@@ -75,7 +75,7 @@ const DiscountRoulette = ({
     }, 4000);
   };
 
-  const bind = useDrag(({ movement: [x, y], velocity: [vx, vy], last }) => {
+  const bindDrag = useDrag(({ movement: [x, y], velocity: [vx, vy], last }) => {
     if (isSpinning) return;
     
     const angle = Math.atan2(y, x);
@@ -114,7 +114,7 @@ const DiscountRoulette = ({
           
           {/* Roulette wheel */}
           <div 
-            {...bind()}
+            {...bindDrag()}
             className="absolute inset-0 rounded-full border-8 border-[#C5A656] shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing touch-none"
             style={{
               transform: `rotate(${rotation + dragRotation}deg)`,
