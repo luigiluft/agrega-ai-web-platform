@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
+import { useDrag } from '@use-gesture/react';
 
 interface DiscountRouletteProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ const DiscountRoulette = ({
   const [result, setResult] = useState<number | null>(null);
   const [hasSpun, setHasSpun] = useState(false);
   const [canRetry, setCanRetry] = useState(false);
+  const [dragRotation, setDragRotation] = useState(0);
 
   useEffect(() => {
     if (!isOpen) {
@@ -40,10 +42,11 @@ const DiscountRoulette = ({
       setRotation(0);
       setHasSpun(false);
       setCanRetry(false);
+      setDragRotation(0);
     }
   }, [isOpen]);
 
-  const spinWheel = () => {
+  const spinWheel = (initialVelocity = 2) => {
     if (isSpinning || (hasSpun && !canRetry)) return;
     
     setIsSpinning(true);
@@ -56,9 +59,9 @@ const DiscountRoulette = ({
 
     const baseRotations = (Math.floor(Math.random() * 3) + 5) * 360;
     const resultRotation = (360 / DISCOUNT_OPTIONS.length) * randomIndex;
-    const totalRotation = baseRotations + resultRotation;
+    const totalRotation = baseRotations + resultRotation + (initialVelocity * 360);
     
-    setRotation(totalRotation);
+    setRotation(prevRotation => prevRotation + totalRotation);
 
     setTimeout(() => {
       setIsSpinning(false);
@@ -72,6 +75,20 @@ const DiscountRoulette = ({
     }, 4000);
   };
 
+  const bind = useDrag(({ movement: [x, y], velocity: [vx, vy], last }) => {
+    if (isSpinning) return;
+    
+    const angle = Math.atan2(y, x);
+    const degrees = (angle * 180) / Math.PI;
+    
+    if (!last) {
+      setDragRotation(degrees);
+    } else if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1) {
+      const velocity = Math.sqrt(vx * vx + vy * vy);
+      spinWheel(velocity);
+    }
+  });
+
   if (!isOpen) return null;
 
   return (
@@ -84,6 +101,9 @@ const DiscountRoulette = ({
           <p className="text-[#E6D5A7]">
             Você desbloqueou {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s) de girar!
           </p>
+          <p className="text-sm text-[#E6D5A7] mt-2">
+            Arraste para girar!
+          </p>
         </div>
 
         <div className="relative w-80 h-80 mx-auto mb-8">
@@ -94,10 +114,11 @@ const DiscountRoulette = ({
           
           {/* Roulette wheel */}
           <div 
-            className="absolute inset-0 rounded-full border-8 border-[#C5A656] shadow-2xl overflow-hidden"
+            {...bind()}
+            className="absolute inset-0 rounded-full border-8 border-[#C5A656] shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing touch-none"
             style={{
-              transform: `rotate(${rotation}deg)`,
-              transition: 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)',
+              transform: `rotate(${rotation + dragRotation}deg)`,
+              transition: isSpinning ? 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)' : 'none',
               backgroundImage: 'radial-gradient(circle at center, #2C3E50 0%, #1A1F2C 100%)',
             }}
           >
@@ -155,7 +176,7 @@ const DiscountRoulette = ({
           </div>
         </div>
 
-        {result !== null ? (
+        {result !== null && (
           <div className="text-center mb-6 animate-fade-in">
             <h4 className="text-2xl font-bold mb-4 text-[#E6D5A7]">
               {result === 0 
@@ -172,21 +193,13 @@ const DiscountRoulette = ({
             )}
             {canRetry && (
               <Button 
-                onClick={spinWheel}
+                onClick={() => spinWheel()}
                 className="w-full bg-gradient-to-r from-[#FFA726] to-[#FFB74D] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg"
               >
                 Tentar Novamente
               </Button>
             )}
           </div>
-        ) : (
-          <Button 
-            onClick={spinWheel} 
-            disabled={isSpinning || (hasSpun && !canRetry)}
-            className="w-full bg-gradient-to-r from-[#C5A656] to-[#E6D5A7] hover:opacity-90 transition-opacity text-[#1A1F2C] font-semibold py-3 text-lg disabled:opacity-50"
-          >
-            {isSpinning ? 'Girando...' : hasSpun ? 'Roleta já utilizada' : 'Girar Roleta'}
-          </Button>
         )}
       </Card>
     </div>
