@@ -114,29 +114,36 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       baseMaintenanceCost: baseMaintenanceCost.toFixed(2),
       revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
       totalHours,
-      rouletteDiscount
+      rouletteDiscount,
+      totalImplementationHours
     };
   };
 
   const prices = calculatePrices();
 
   useEffect(() => {
-    const currentTotalHours = prices.totalHours;
-    const implementationHours = parseFloat(customLayoutHours) + parseFloat(customMeetingHours) + parseFloat(customFunctionalityHours);
+    console.log('Current implementation hours:', prices.totalImplementationHours);
+    console.log('Last total hours:', lastTotalHours);
+    console.log('Previous discount level:', previousDiscountLevel);
+    console.log('Current discount level:', currentDiscountLevel);
     
-    if (implementationHours >= 50 && !showRoulette) {
+    if (prices.totalImplementationHours >= 50 && !showRoulette) {
       const prevLevel = Math.floor(lastTotalHours / 50);
-      const currentLevel = Math.floor(implementationHours / 50);
+      const currentLevel = Math.floor(prices.totalImplementationHours / 50);
+      
+      console.log('Previous level:', prevLevel);
+      console.log('Current level:', currentLevel);
       
       if (currentLevel > prevLevel) {
+        console.log('Showing roulette!');
         setPreviousDiscountLevel(prevLevel);
         setCurrentDiscountLevel(currentLevel);
         setShowRoulette(true);
       }
     }
     
-    setLastTotalHours(currentTotalHours);
-  }, [prices.totalHours, lastTotalHours, customLayoutHours, customMeetingHours, customFunctionalityHours]);
+    setLastTotalHours(prices.totalImplementationHours);
+  }, [prices.totalImplementationHours]);
 
   const handleRouletteWin = (amount: number) => {
     setRouletteDiscount(prev => prev + amount);
