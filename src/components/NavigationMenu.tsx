@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import PriceCalculator from "./PriceCalculator";
 
 const NavigationMenuDemo = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,6 +89,10 @@ const NavigationMenuDemo = () => {
             <Link to="/contato" className="text-base font-medium hover:text-primary transition-colors block">
               Contato
             </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
+            <PriceCalculator />
           </NavigationMenuItem>
         </div>
       </NavigationMenuList>
