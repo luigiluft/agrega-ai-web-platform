@@ -109,6 +109,7 @@ const PricingSection = () => {
             <PricingCard 
               key={index} 
               {...plan} 
+              buttonText="Precificar minha plataforma"
               onClick={() => handlePlanClick(plan.title, plan.defaultHours)}
             />
           ))}
