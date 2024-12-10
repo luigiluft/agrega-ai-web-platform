@@ -122,17 +122,21 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   useEffect(() => {
     const currentTotalHours = prices.totalHours;
-    const prevLevel = Math.floor(lastTotalHours / 50);
-    const currentLevel = Math.floor(currentTotalHours / 50);
+    const implementationHours = parseFloat(customLayoutHours) + parseFloat(customMeetingHours) + parseFloat(customFunctionalityHours);
     
-    if (currentLevel > prevLevel) {
-      setPreviousDiscountLevel(prevLevel);
-      setCurrentDiscountLevel(currentLevel);
-      setShowRoulette(true);
+    if (implementationHours >= 50) {
+      const prevLevel = Math.floor(lastTotalHours / 50);
+      const currentLevel = Math.floor(currentTotalHours / 50);
+      
+      if (currentLevel > prevLevel) {
+        setPreviousDiscountLevel(prevLevel);
+        setCurrentDiscountLevel(currentLevel);
+        setShowRoulette(true);
+      }
     }
     
     setLastTotalHours(currentTotalHours);
-  }, [prices.totalHours, lastTotalHours]);
+  }, [prices.totalHours, lastTotalHours, customLayoutHours, customMeetingHours, customFunctionalityHours]);
 
   const handleRouletteWin = (amount: number) => {
     setRouletteDiscount(prev => prev + amount);
