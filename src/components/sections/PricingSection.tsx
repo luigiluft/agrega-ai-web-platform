@@ -24,6 +24,13 @@ const PricingSection = () => {
         "SSL gratuito",
         "Backup diário",
       ],
+      defaultHours: {
+        layout: "40",
+        maintenance: "10",
+        meeting: "5",
+        campaign: "10",
+        functionality: "20"
+      }
     },
     {
       title: "Pro",
@@ -46,6 +53,13 @@ const PricingSection = () => {
         "Integração com ERP",
       ],
       isPopular: true,
+      defaultHours: {
+        layout: "80",
+        maintenance: "15",
+        meeting: "10",
+        campaign: "20",
+        functionality: "40"
+      }
     },
     {
       title: "Custom",
@@ -67,12 +81,21 @@ const PricingSection = () => {
         "Ambiente de staging",
         "Consultoria especializada",
       ],
+      defaultHours: {
+        layout: "120",
+        maintenance: "30",
+        meeting: "15",
+        campaign: "30",
+        functionality: "60"
+      }
     },
   ];
 
-  const handlePlanClick = (planTitle: string) => {
-    // Navigate to calculator with the selected plan as a parameter
-    navigate(`/calculadora?plano=${encodeURIComponent(planTitle.toLowerCase())}`);
+  const handlePlanClick = (planTitle: string, defaultHours: Record<string, string>) => {
+    const queryString = Object.entries(defaultHours)
+      .map(([key, value]) => `${key}Hours=${value}`)
+      .join('&');
+    navigate(`/calculadora-dinamica?${queryString}`);
   };
 
   return (
@@ -86,7 +109,7 @@ const PricingSection = () => {
             <PricingCard 
               key={index} 
               {...plan} 
-              onClick={() => handlePlanClick(plan.title)}
+              onClick={() => handlePlanClick(plan.title, plan.defaultHours)}
             />
           ))}
         </div>

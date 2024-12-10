@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import NavigationMenuDemo from "@/components/NavigationMenu";
 import { calculatorFeatures } from "@/utils/calculatorFeatures";
 import { Card } from "@/components/ui/card";
@@ -6,11 +7,59 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import DeveloperAnimation from "@/components/calculator/DeveloperAnimation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const DynamicCalculator = () => {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+
+  useEffect(() => {
+    // Get hours from URL parameters and select corresponding features
+    const layoutHours = parseInt(searchParams.get("layoutHours") || "0");
+    const maintenanceHours = parseInt(searchParams.get("maintenanceHours") || "0");
+    const meetingHours = parseInt(searchParams.get("meetingHours") || "0");
+    const campaignHours = parseInt(searchParams.get("campaignHours") || "0");
+    const functionalityHours = parseInt(searchParams.get("functionalityHours") || "0");
+
+    const autoSelectFeatures = () => {
+      const newSelectedFeatures: string[] = [];
+
+      calculatorFeatures.forEach(category => {
+        let remainingHours = 0;
+        switch (category.id) {
+          case "layout":
+            remainingHours = layoutHours;
+            break;
+          case "maintenance":
+            remainingHours = maintenanceHours;
+            break;
+          case "meetings":
+            remainingHours = meetingHours;
+            break;
+          case "campaigns":
+            remainingHours = campaignHours;
+            break;
+          case "functionality":
+            remainingHours = functionalityHours;
+            break;
+        }
+
+        category.features.forEach(feature => {
+          if (remainingHours >= feature.hours) {
+            newSelectedFeatures.push(feature.id);
+            remainingHours -= feature.hours;
+          }
+        });
+      });
+
+      setSelectedFeatures(newSelectedFeatures);
+    };
+
+    autoSelectFeatures();
+  }, [searchParams]);
 
   const calculateTotalHours = () => {
     return calculatorFeatures.reduce((total, category) => {
@@ -49,6 +98,10 @@ const DynamicCalculator = () => {
 
   const prices = calculatePrices();
 
+  const filteredFeatures = activeCategory === "all" 
+    ? calculatorFeatures 
+    : calculatorFeatures.filter(category => category.id === activeCategory);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <NavigationMenuDemo />
@@ -63,9 +116,26 @@ const DynamicCalculator = () => {
           </p>
         </div>
 
+        <Tabs defaultValue="all" className="w-full mb-8">
+          <TabsList className="w-full justify-start overflow-x-auto">
+            <TabsTrigger value="all" onClick={() => setActiveCategory("all")}>
+              Todos
+            </TabsTrigger>
+            {calculatorFeatures.map((category) => (
+              <TabsTrigger 
+                key={category.id} 
+                value={category.id}
+                onClick={() => setActiveCategory(category.id)}
+              >
+                {category.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="space-y-6">
-            {calculatorFeatures.map((category) => (
+            {filteredFeatures.map((category) => (
               <Card key={category.id} className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
                   {category.name}
