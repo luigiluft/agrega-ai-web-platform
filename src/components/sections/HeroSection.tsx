@@ -152,17 +152,26 @@ const HeroSection = () => {
                   />
                 ))}
               </div>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                {themes.map((theme) => (
-                  <button
-                    key={theme.id}
-                    onClick={() => handleThemeSelect(theme.id)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      theme.id === selectedThemeId ? 'bg-white w-4' : 'bg-white/50'
-                    }`}
-                    aria-label={`Select theme ${theme.id}`}
-                  />
-                ))}
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+                <div className="flex gap-2">
+                  {themes.map((theme) => (
+                    <button
+                      key={theme.id}
+                      onClick={() => handleThemeSelect(theme.id)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        theme.id === selectedThemeId ? 'bg-white w-4' : 'bg-white/50'
+                      }`}
+                      aria-label={`Select theme ${theme.id}`}
+                    />
+                  ))}
+                </div>
+                <Link 
+                  to="/temas"
+                  className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-white/30 transition-all duration-300 group"
+                >
+                  Ver todos os temas disponíveis
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </div>
             </div>
           </div>

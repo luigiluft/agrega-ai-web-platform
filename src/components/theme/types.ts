@@ -5,4 +5,5 @@ export interface Theme {
   description: string;
   features: string[];
   fullDescription: string;
+  market?: "fashion" | "cosmetics" | "pets";
 }

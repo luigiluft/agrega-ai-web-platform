@@ -73,6 +73,12 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
+            <Link to="/temas" className="text-base font-medium hover:text-primary transition-colors block">
+              Temas
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
             <Link to="/planos" className="text-base font-medium hover:text-primary transition-colors block">
               Planos
             </Link>
