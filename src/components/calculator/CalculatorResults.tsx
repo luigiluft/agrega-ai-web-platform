@@ -10,6 +10,7 @@ type CalculatorResultsProps = {
     baseMaintenanceCost: string;
     revenueSharePercent: string;
     totalHours: number;
+    rouletteDiscount: number;
   };
   onContactClick: () => void;
   layoutHours: number;
@@ -57,6 +58,11 @@ const CalculatorResults = ({
                 pagamento único
               </div>
             </div>
+            {prices.rouletteDiscount > 0 && (
+              <div className="text-sm text-green-600 mt-1">
+                Desconto aplicado: R$ {prices.rouletteDiscount}
+              </div>
+            )}
           </div>
           
           <div className="pb-4 border-b">

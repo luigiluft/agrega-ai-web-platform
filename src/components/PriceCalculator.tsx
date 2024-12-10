@@ -13,6 +13,7 @@ import {
 import CalculatorInputs from "./calculator/CalculatorInputs";
 import CalculatorResults from "./calculator/CalculatorResults";
 import DeveloperAnimation from "./calculator/DeveloperAnimation";
+import DiscountRoulette from "./calculator/DiscountRoulette";
 
 type Plan = {
   name: string;
@@ -54,13 +55,6 @@ const defaultPlans: Plan[] = [
   },
 ];
 
-const calculateRevenueShare = (revenue: number) => {
-  if (revenue <= 50000) return 0.15;
-  if (revenue <= 100000) return 0.12;
-  if (revenue <= 200000) return 0.10;
-  return 0.08;
-};
-
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<Plan>(defaultPlans[0]);
@@ -71,10 +65,14 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const [customCampaignHours, setCustomCampaignHours] = useState<string>(defaultPlans[0].campaignHours.toString());
   const [customFunctionalityHours, setCustomFunctionalityHours] = useState<string>(defaultPlans[0].functionalityHours.toString());
   const [lastTotalHours, setLastTotalHours] = useState<number>(0);
+  const [showRoulette, setShowRoulette] = useState(false);
+  const [rouletteDiscount, setRouletteDiscount] = useState(0);
+  const [previousDiscountLevel, setPreviousDiscountLevel] = useState(0);
+  const [currentDiscountLevel, setCurrentDiscountLevel] = useState(0);
 
   const calculatePrices = () => {
     const revenue = parseFloat(monthlyRevenue) || 0;
-    const rate = 100; // Fixed rate
+    const rate = 100;
     
     const layoutHours = parseFloat(customLayoutHours) || selectedPlan.layoutHours;
     const maintenanceHours = parseFloat(customMaintenanceHours) || selectedPlan.maintenanceHours;
@@ -86,7 +84,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const totalMaintenanceHours = maintenanceHours + campaignHours;
     
     const baseImplementationCost = totalImplementationHours * rate;
-    const implementationPrice = baseImplementationCost * 1.1;
+    const implementationPrice = (baseImplementationCost * 1.1) - rouletteDiscount;
     
     const baseMaintenanceCost = totalMaintenanceHours * rate;
     const maintenancePrice = baseMaintenanceCost * 1.3;
@@ -95,17 +93,16 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const revenueShare = revenue * revenueSharePercent;
 
     const totalHours = totalImplementationHours + totalMaintenanceHours;
-    const discountAmount = Math.floor(totalHours / 50) * 50;
 
     return {
-      implementationPrice: (implementationPrice - discountAmount).toFixed(2),
+      implementationPrice: implementationPrice.toFixed(2),
       maintenancePrice: maintenancePrice.toFixed(2),
       revenueShare: revenueShare.toFixed(2),
       baseImplementationCost: baseImplementationCost.toFixed(2),
       baseMaintenanceCost: baseMaintenanceCost.toFixed(2),
       revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
       totalHours,
-      discountAmount
+      rouletteDiscount
     };
   };
 
@@ -113,18 +110,21 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   useEffect(() => {
     const currentTotalHours = prices.totalHours;
-    const previousDiscountLevel = Math.floor(lastTotalHours / 50);
-    const currentDiscountLevel = Math.floor(currentTotalHours / 50);
+    const prevLevel = Math.floor(lastTotalHours / 50);
+    const currentLevel = Math.floor(currentTotalHours / 50);
     
-    if (currentDiscountLevel > previousDiscountLevel && prices.discountAmount > 0) {
-      toast({
-        title: "Desconto Aplicado!",
-        description: `Você ganhou R$${prices.discountAmount} de desconto na implementação por contratar ${prices.totalHours} horas!`,
-      });
+    if (currentLevel > prevLevel) {
+      setPreviousDiscountLevel(prevLevel);
+      setCurrentDiscountLevel(currentLevel);
+      setShowRoulette(true);
     }
     
     setLastTotalHours(currentTotalHours);
-  }, [prices.totalHours, prices.discountAmount, lastTotalHours, toast]);
+  }, [prices.totalHours, lastTotalHours]);
+
+  const handleRouletteWin = (amount: number) => {
+    setRouletteDiscount(prev => prev + amount);
+  };
 
   const handlePlanChange = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -187,6 +187,14 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
           </div>
         </div>
       </div>
+
+      <DiscountRoulette 
+        isOpen={showRoulette}
+        onClose={() => setShowRoulette(false)}
+        onWin={handleRouletteWin}
+        previousDiscountLevel={previousDiscountLevel}
+        currentDiscountLevel={currentDiscountLevel}
+      />
     </div>
   );
 
