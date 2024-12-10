@@ -6,29 +6,55 @@ type DeveloperAnimationProps = {
 
 const DeveloperAnimation = ({ totalHours }: DeveloperAnimationProps) => {
   const [codeLines, setCodeLines] = useState<string[]>([]);
+  const [animationSpeed, setAnimationSpeed] = useState(1000);
   
   useEffect(() => {
+    // Adjust animation speed based on total hours
+    setAnimationSpeed(Math.max(300, 1000 - (totalHours * 5)));
+
     const lines = [
-      "function createFeature() {",
-      "  const newFeature = {",
+      "function buildFeature() {",
+      "  const feature = {",
       "    title: 'Amazing Feature',",
+      "    complexity: 'high',",
       "    status: 'in-progress'",
       "  };",
-      "  return newFeature;",
+      "  return feature;",
+      "}",
+      "// Adding new functionality...",
+      "class WebsiteBuilder {",
+      "  constructor() {",
+      "    this.features = [];",
+      "  }",
+      "  deploy() {",
+      "    console.log('🚀');",
+      "  }",
       "}"
     ];
     
+    // Show more code lines based on total hours
+    const visibleLines = Math.min(Math.floor(totalHours / 10) + 3, lines.length);
+    
     const interval = setInterval(() => {
       setCodeLines(prev => {
-        if (prev.length >= lines.length) {
-          return [lines[0]];
+        if (prev.length >= visibleLines) {
+          return lines.slice(0, visibleLines);
         }
         return [...prev, lines[prev.length]];
       });
-    }, 1000);
+    }, animationSpeed);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [totalHours, animationSpeed]);
+
+  const getTypingAnimation = (index: number) => {
+    const delay = index * 0.1;
+    const translateX = Math.sin((Date.now() / 1000 + index) * (totalHours / 50)) * 2;
+    return {
+      animationDelay: `${delay}s`,
+      transform: `translateX(${translateX}px)`,
+    };
+  };
 
   return (
     <div className="relative">
@@ -45,15 +71,20 @@ const DeveloperAnimation = ({ totalHours }: DeveloperAnimationProps) => {
             <div 
               key={index}
               className="text-green-400 font-mono text-sm animate-fade-in"
-              style={{ 
-                animationDelay: `${index * 0.2}s`,
-                transform: `translateX(${Math.sin(Date.now() / 1000 + index) * 2}px)`
-              }}
+              style={getTypingAnimation(index)}
             >
               {line}
             </div>
           ))}
-          <div className="animate-pulse text-green-400 font-mono">_</div>
+          <div 
+            className="animate-pulse text-green-400 font-mono"
+            style={{ 
+              animationDuration: `${animationSpeed}ms`,
+              transform: `translateX(${Math.sin(Date.now() / 1000) * 2}px)`
+            }}
+          >
+            _
+          </div>
         </div>
       </div>
       

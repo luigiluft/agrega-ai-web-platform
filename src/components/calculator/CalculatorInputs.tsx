@@ -1,6 +1,7 @@
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
+import HoursSlider from "./HoursSlider";
 
 type CalculatorInputsProps = {
   customLayoutHours: string;
@@ -38,7 +39,7 @@ const CalculatorInputs = ({
   onPlanChange,
 }: CalculatorInputsProps) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="space-y-2">
         <Label>Plano Base</Label>
         <div className="grid grid-cols-3 gap-2">
@@ -54,60 +55,37 @@ const CalculatorInputs = ({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label>Horas para Personalização de Layout</Label>
-        <Input
-          type="number"
-          value={customLayoutHours}
-          onChange={(e) => setCustomLayoutHours(e.target.value)}
-          min="0"
-          step="1"
-        />
-      </div>
+      <HoursSlider
+        label="Horas para Personalização de Layout"
+        value={parseInt(customLayoutHours) || 0}
+        onChange={(value) => setCustomLayoutHours(value.toString())}
+      />
 
-      <div className="space-y-2">
-        <Label>Horas para Implementação de Funcionalidades</Label>
-        <Input
-          type="number"
-          value={customFunctionalityHours}
-          onChange={(e) => setCustomFunctionalityHours(e.target.value)}
-          min="0"
-          step="1"
-        />
-      </div>
+      <HoursSlider
+        label="Horas para Implementação de Funcionalidades"
+        value={parseInt(customFunctionalityHours) || 0}
+        onChange={(value) => setCustomFunctionalityHours(value.toString())}
+        max={200}
+      />
 
-      <div className="space-y-2">
-        <Label>Horas para Manutenção Mensal</Label>
-        <Input
-          type="number"
-          value={customMaintenanceHours}
-          onChange={(e) => setCustomMaintenanceHours(e.target.value)}
-          min="0"
-          step="1"
-        />
-      </div>
+      <HoursSlider
+        label="Horas para Manutenção Mensal"
+        value={parseInt(customMaintenanceHours) || 0}
+        onChange={(value) => setCustomMaintenanceHours(value.toString())}
+      />
 
-      <div className="space-y-2">
-        <Label>Horas para Reuniões de Alinhamento</Label>
-        <Input
-          type="number"
-          value={customMeetingHours}
-          onChange={(e) => setCustomMeetingHours(e.target.value)}
-          min="0"
-          step="1"
-        />
-      </div>
+      <HoursSlider
+        label="Horas para Reuniões de Alinhamento"
+        value={parseInt(customMeetingHours) || 0}
+        onChange={(value) => setCustomMeetingHours(value.toString())}
+        max={50}
+      />
 
-      <div className="space-y-2">
-        <Label>Horas para Implementação de Campanhas</Label>
-        <Input
-          type="number"
-          value={customCampaignHours}
-          onChange={(e) => setCustomCampaignHours(e.target.value)}
-          min="0"
-          step="1"
-        />
-      </div>
+      <HoursSlider
+        label="Horas para Implementação de Campanhas"
+        value={parseInt(customCampaignHours) || 0}
+        onChange={(value) => setCustomCampaignHours(value.toString())}
+      />
 
       <div className="space-y-2">
         <Label>Faturamento Mensal Estimado (R$)</Label>
