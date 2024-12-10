@@ -16,6 +16,15 @@ export default {
           to: { transform: "rotate(360deg)" },
         },
       },
+      borderColor: {
+        border: "hsl(var(--border))",
+      },
+      backgroundColor: {
+        background: "hsl(var(--background))",
+      },
+      textColor: {
+        foreground: "hsl(var(--foreground))",
+      },
     },
   },
   plugins: [],
