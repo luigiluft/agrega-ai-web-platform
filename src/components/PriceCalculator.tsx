@@ -175,7 +175,15 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
               functionalityHours={parseInt(customFunctionalityHours) || 0}
               selectedPlanName={selectedPlan.name}
             />
-            <CalculatorResults prices={prices} onContactClick={handleContactClick} />
+            <CalculatorResults 
+              prices={prices} 
+              onContactClick={handleContactClick}
+              layoutHours={parseInt(customLayoutHours) || 0}
+              maintenanceHours={parseInt(customMaintenanceHours) || 0}
+              meetingHours={parseInt(customMeetingHours) || 0}
+              campaignHours={parseInt(customCampaignHours) || 0}
+              functionalityHours={parseInt(customFunctionalityHours) || 0}
+            />
           </div>
         </div>
       </div>

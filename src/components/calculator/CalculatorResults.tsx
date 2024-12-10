@@ -9,11 +9,40 @@ type CalculatorResultsProps = {
     baseImplementationCost: string;
     baseMaintenanceCost: string;
     revenueSharePercent: string;
+    totalHours: number;
   };
   onContactClick: () => void;
+  layoutHours: number;
+  maintenanceHours: number;
+  meetingHours: number;
+  campaignHours: number;
+  functionalityHours: number;
 };
 
-const CalculatorResults = ({ prices, onContactClick }: CalculatorResultsProps) => {
+const MAX_HOURS = {
+  layout: 100,
+  maintenance: 30,
+  meeting: 50,
+  campaign: 30,
+  functionality: 200
+};
+
+const CalculatorResults = ({ 
+  prices, 
+  onContactClick,
+  layoutHours,
+  maintenanceHours,
+  meetingHours,
+  campaignHours,
+  functionalityHours
+}: CalculatorResultsProps) => {
+  const isExceedingLimits = 
+    layoutHours > MAX_HOURS.layout ||
+    maintenanceHours > MAX_HOURS.maintenance ||
+    meetingHours > MAX_HOURS.meeting ||
+    campaignHours > MAX_HOURS.campaign ||
+    functionalityHours > MAX_HOURS.functionality;
+
   return (
     <div className="space-y-4 mt-8">
       <Card className="p-6 space-y-6 bg-gradient-to-br from-background to-secondary/5">
@@ -66,7 +95,7 @@ const CalculatorResults = ({ prices, onContactClick }: CalculatorResultsProps) =
         size="lg"
         onClick={onContactClick}
       >
-        Solicitar Orçamento
+        {isExceedingLimits ? "Solicitar Orçamento" : "Contratar"}
       </Button>
     </div>
   );

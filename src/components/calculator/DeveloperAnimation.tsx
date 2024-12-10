@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { 
+  layoutSnippets,
+  functionalitySnippets,
+  maintenanceSnippets,
+  meetingSnippets,
+  campaignSnippets
+} from "@/utils/codeSnippets";
 
 type CodeLine = {
   code: string;
@@ -15,64 +22,11 @@ type DeveloperAnimationProps = {
   selectedPlanName: string;
 };
 
-const getRandomLayoutAction = () => {
-  const actions = [
-    "Criando Banner Promocional",
-    "Melhorando Imagens",
-    "Adicionando Menu Responsivo",
-    "Otimizando Layout Mobile",
-    "Personalizando Cores da Marca",
-    "Implementando Carrossel",
-  ];
-  return actions[Math.floor(Math.random() * actions.length)];
-};
-
-const getRandomMaintenanceAction = () => {
-  const actions = [
-    "Corrigindo Bugs",
-    "Adicionando Produtos",
-    "Otimizando Performance",
-    "Atualizando Sistema",
-    "Backup de Dados",
-  ];
-  return actions[Math.floor(Math.random() * actions.length)];
-};
-
-const getRandomMeetingAction = () => {
-  const actions = [
-    "Planejando Sprint",
-    "Alinhando Requisitos",
-    "Review de Features",
-    "Definindo Prioridades",
-    "Workshop de UX",
-  ];
-  return actions[Math.floor(Math.random() * actions.length)];
-};
-
-const getRandomCampaignAction = () => {
-  const actions = [
-    "Configurando SEO",
-    "Integrando Analytics",
-    "Setup de Remarketing",
-    "Criando Landing Page",
-    "Otimizando Conversão",
-  ];
-  return actions[Math.floor(Math.random() * actions.length)];
-};
-
-const getRandomFunctionalityAction = () => {
-  const actions = [
-    "Implementando Checkout",
-    "Integrando Gateway",
-    "Sistema de Busca",
-    "Área do Cliente",
-    "Gestão de Pedidos",
-  ];
-  return actions[Math.floor(Math.random() * actions.length)];
+const getRandomSnippet = (snippets: string[]) => {
+  return snippets[Math.floor(Math.random() * snippets.length)];
 };
 
 const DeveloperAnimation = ({ 
-  totalHours,
   layoutHours,
   maintenanceHours,
   meetingHours,
@@ -84,18 +38,18 @@ const DeveloperAnimation = ({
   const [typedText, setTypedText] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   
-  const getCodeLineForType = (type: CodeLine['type'], action: string): string => {
+  const getCodeLineForType = (type: CodeLine['type']): string => {
     switch(type) {
       case 'layout':
-        return `const layout = createLayout({ action: "${action}", hours: ${layoutHours} });`;
+        return getRandomSnippet(layoutSnippets);
       case 'maintenance':
-        return `await performMaintenance({ task: "${action}", duration: ${maintenanceHours}h });`;
+        return getRandomSnippet(maintenanceSnippets);
       case 'meeting':
-        return `schedule.addMeetings({ topic: "${action}", hours: ${meetingHours} });`;
+        return getRandomSnippet(meetingSnippets);
       case 'campaign':
-        return `marketing.createCampaign({ type: "${action}", duration: ${campaignHours}h });`;
+        return getRandomSnippet(campaignSnippets);
       case 'functionality':
-        return `features.implement({ task: "${action}", hours: ${functionalityHours} });`;
+        return getRandomSnippet(functionalitySnippets);
       default:
         return '';
     }
@@ -114,31 +68,31 @@ const DeveloperAnimation = ({
     
     if (layoutHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('layout', getRandomLayoutAction()),
+        code: getCodeLineForType('layout'),
         type: 'layout' 
       });
     }
     if (maintenanceHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('maintenance', getRandomMaintenanceAction()),
+        code: getCodeLineForType('maintenance'),
         type: 'maintenance' 
       });
     }
     if (meetingHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('meeting', getRandomMeetingAction()),
+        code: getCodeLineForType('meeting'),
         type: 'meeting' 
       });
     }
     if (campaignHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('campaign', getRandomCampaignAction()),
+        code: getCodeLineForType('campaign'),
         type: 'campaign' 
       });
     }
     if (functionalityHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('functionality', getRandomFunctionalityAction()),
+        code: getCodeLineForType('functionality'),
         type: 'functionality' 
       });
     }
