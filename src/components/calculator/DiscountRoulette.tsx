@@ -13,13 +13,13 @@ interface DiscountRouletteProps {
 
 const DISCOUNT_OPTIONS = [
   { value: 50, label: 'R$50', type: 'win', color: '#FF4D8D' },
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FFD700' },
-  { value: 150, label: 'R$150', type: 'win', color: '#FF69B4' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#FFA500' },
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#4A90E2' },
+  { value: 150, label: 'R$150', type: 'win', color: '#FF4D8D' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#4A90E2' },
   { value: 200, label: 'R$200', type: 'win', color: '#FF4D8D' },
-  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#FFD700' },
-  { value: 100, label: 'R$100', type: 'win', color: '#FF69B4' },
-  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#FFA500' }
+  { value: 0, label: 'Tente Novamente', type: 'retry', color: '#4A90E2' },
+  { value: 100, label: 'R$100', type: 'win', color: '#FF4D8D' },
+  { value: 0, label: 'Não Ganhou', type: 'lose', color: '#4A90E2' }
 ];
 
 const DiscountRoulette = ({ 
