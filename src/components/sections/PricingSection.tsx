@@ -1,6 +1,9 @@
 import PricingCard from "../PricingCard";
+import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
+  const navigate = useNavigate();
+
   const pricingPlans = [
     {
       title: "Starter",
@@ -67,6 +70,11 @@ const PricingSection = () => {
     },
   ];
 
+  const handlePlanClick = (planTitle: string) => {
+    // Navigate to calculator with the selected plan as a parameter
+    navigate(`/calculadora?plano=${encodeURIComponent(planTitle.toLowerCase())}`);
+  };
+
   return (
     <section id="pricing-section" className="py-24 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -75,7 +83,11 @@ const PricingSection = () => {
         </h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {pricingPlans.map((plan, index) => (
-            <PricingCard key={index} {...plan} />
+            <PricingCard 
+              key={index} 
+              {...plan} 
+              onClick={() => handlePlanClick(plan.title)}
+            />
           ))}
         </div>
       </div>

@@ -7,9 +7,10 @@ interface PricingCardProps {
   features: string[];
   expandedFeatures: string[];
   isPopular?: boolean;
+  onClick?: () => void;
 }
 
-const PricingCard = ({ title, price, features, expandedFeatures, isPopular }: PricingCardProps) => {
+const PricingCard = ({ title, price, features, expandedFeatures, isPopular, onClick }: PricingCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const allFeatures = isHovered ? [...features, ...expandedFeatures] : features;
 
@@ -47,6 +48,7 @@ const PricingCard = ({ title, price, features, expandedFeatures, isPopular }: Pr
         ))}
       </ul>
       <button 
+        onClick={onClick}
         className={`
           w-full py-3 px-4 rounded-lg font-medium transition-all duration-300
           ${isPopular 
@@ -54,7 +56,7 @@ const PricingCard = ({ title, price, features, expandedFeatures, isPopular }: Pr
             : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}
         `}
       >
-        Começar agora
+        Calculadora de preço
       </button>
     </div>
   );
