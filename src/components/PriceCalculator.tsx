@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Calculator } from "lucide-react";
+import { useToast } from "./ui/use-toast";
 import {
   Sheet,
   SheetContent,
@@ -10,9 +9,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Calculator } from "lucide-react";
-import { useToast } from "./ui/use-toast";
-import { Slider } from "./ui/slider";
+import CalculatorInputs from "./calculator/CalculatorInputs";
+import CalculatorResults from "./calculator/CalculatorResults";
 
 type Plan = {
   name: string;
@@ -20,6 +18,7 @@ type Plan = {
   maintenanceHours: number;
   meetingHours: number;
   campaignHours: number;
+  functionalityHours: number;
   revenueSharePercentage: number;
 };
 
@@ -30,6 +29,7 @@ const defaultPlans: Plan[] = [
     maintenanceHours: 10,
     meetingHours: 5,
     campaignHours: 10,
+    functionalityHours: 20,
     revenueSharePercentage: 0.15,
   },
   {
@@ -38,6 +38,7 @@ const defaultPlans: Plan[] = [
     maintenanceHours: 15,
     meetingHours: 10,
     campaignHours: 20,
+    functionalityHours: 40,
     revenueSharePercentage: 0.12,
   },
   {
@@ -46,6 +47,7 @@ const defaultPlans: Plan[] = [
     maintenanceHours: 30,
     meetingHours: 15,
     campaignHours: 30,
+    functionalityHours: 60,
     revenueSharePercentage: 0.08,
   },
 ];
@@ -62,12 +64,11 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const [selectedPlan, setSelectedPlan] = useState<Plan>(defaultPlans[0]);
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
   const [hourlyRate, setHourlyRate] = useState<string>("100");
-  const [implementationMargin, setImplementationMargin] = useState<number>(10);
-  const [maintenanceMargin, setMaintenanceMargin] = useState<number>(30);
   const [customLayoutHours, setCustomLayoutHours] = useState<string>(defaultPlans[0].layoutHours.toString());
   const [customMaintenanceHours, setCustomMaintenanceHours] = useState<string>(defaultPlans[0].maintenanceHours.toString());
   const [customMeetingHours, setCustomMeetingHours] = useState<string>(defaultPlans[0].meetingHours.toString());
   const [customCampaignHours, setCustomCampaignHours] = useState<string>(defaultPlans[0].campaignHours.toString());
+  const [customFunctionalityHours, setCustomFunctionalityHours] = useState<string>(defaultPlans[0].functionalityHours.toString());
 
   const calculatePrices = () => {
     const revenue = parseFloat(monthlyRevenue) || 0;
@@ -77,15 +78,16 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const maintenanceHours = parseFloat(customMaintenanceHours) || selectedPlan.maintenanceHours;
     const meetingHours = parseFloat(customMeetingHours) || selectedPlan.meetingHours;
     const campaignHours = parseFloat(customCampaignHours) || selectedPlan.campaignHours;
+    const functionalityHours = parseFloat(customFunctionalityHours) || selectedPlan.functionalityHours;
     
-    const totalImplementationHours = layoutHours + meetingHours;
+    const totalImplementationHours = layoutHours + meetingHours + functionalityHours;
     const totalMaintenanceHours = maintenanceHours + campaignHours;
     
     const baseImplementationCost = totalImplementationHours * rate;
-    const implementationPrice = baseImplementationCost * (1 + implementationMargin / 100);
+    const implementationPrice = baseImplementationCost * 1.1; // Fixed 10% margin
     
     const baseMaintenanceCost = totalMaintenanceHours * rate;
-    const maintenancePrice = baseMaintenanceCost * (1 + maintenanceMargin / 100);
+    const maintenancePrice = baseMaintenanceCost * 1.3; // Fixed 30% margin
     
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
@@ -108,6 +110,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     setCustomMaintenanceHours(plan.maintenanceHours.toString());
     setCustomMeetingHours(plan.meetingHours.toString());
     setCustomCampaignHours(plan.campaignHours.toString());
+    setCustomFunctionalityHours(plan.functionalityHours.toString());
   };
 
   const handleContactClick = () => {
@@ -119,137 +122,26 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const calculatorContent = (
     <div className="mt-8 space-y-6">
-      <div className="space-y-2">
-        <Label>Plano Base</Label>
-        <div className="grid grid-cols-3 gap-2">
-          {defaultPlans.map((plan) => (
-            <Button
-              key={plan.name}
-              variant={selectedPlan.name === plan.name ? "default" : "outline"}
-              onClick={() => handlePlanChange(plan)}
-            >
-              {plan.name}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label>Valor Hora (R$)</Label>
-          <Input
-            type="number"
-            value={hourlyRate}
-            onChange={(e) => setHourlyRate(e.target.value)}
-            min="0"
-            step="10"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Horas para Personalização de Layout</Label>
-          <Input
-            type="number"
-            value={customLayoutHours}
-            onChange={(e) => setCustomLayoutHours(e.target.value)}
-            min="0"
-            step="1"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Horas para Manutenção Mensal</Label>
-          <Input
-            type="number"
-            value={customMaintenanceHours}
-            onChange={(e) => setCustomMaintenanceHours(e.target.value)}
-            min="0"
-            step="1"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Horas para Reuniões de Alinhamento</Label>
-          <Input
-            type="number"
-            value={customMeetingHours}
-            onChange={(e) => setCustomMeetingHours(e.target.value)}
-            min="0"
-            step="1"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Horas para Implementação de Campanhas</Label>
-          <Input
-            type="number"
-            value={customCampaignHours}
-            onChange={(e) => setCustomCampaignHours(e.target.value)}
-            min="0"
-            step="1"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Margem de Implementação ({implementationMargin}%)</Label>
-          <Slider
-            value={[implementationMargin]}
-            onValueChange={(value) => setImplementationMargin(value[0])}
-            min={0}
-            max={100}
-            step={1}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Margem de Manutenção ({maintenanceMargin}%)</Label>
-          <Slider
-            value={[maintenanceMargin]}
-            onValueChange={(value) => setMaintenanceMargin(value[0])}
-            min={0}
-            max={100}
-            step={1}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Faturamento Mensal Estimado (R$)</Label>
-          <Input
-            type="number"
-            value={monthlyRevenue}
-            onChange={(e) => setMonthlyRevenue(e.target.value)}
-            min="0"
-            step="1000"
-          />
-        </div>
-      </div>
-
-      <div className="rounded-lg border p-4 space-y-4">
-        <div>
-          <div className="text-sm text-muted-foreground">Custo Base de Implementação</div>
-          <div className="text-lg font-medium">R$ {prices.baseImplementationCost}</div>
-          <div className="text-sm text-muted-foreground mt-2">Preço Final de Implementação (único)</div>
-          <div className="text-2xl font-bold">R$ {prices.implementationPrice}</div>
-        </div>
-        
-        <div>
-          <div className="text-sm text-muted-foreground">Custo Base de Manutenção</div>
-          <div className="text-lg font-medium">R$ {prices.baseMaintenanceCost}</div>
-          <div className="text-sm text-muted-foreground mt-2">Preço Final de Manutenção Mensal</div>
-          <div className="text-2xl font-bold">R$ {prices.maintenancePrice}</div>
-        </div>
-        
-        <div>
-          <div className="text-sm text-muted-foreground">
-            Taxa sobre Receita ({prices.revenueSharePercent}%)
-          </div>
-          <div className="text-2xl font-bold">R$ {prices.revenueShare}/mês</div>
-        </div>
-      </div>
-
-      <Button className="w-full" onClick={handleContactClick}>
-        Solicitar Orçamento
-      </Button>
+      <CalculatorInputs
+        hourlyRate={hourlyRate}
+        setHourlyRate={setHourlyRate}
+        customLayoutHours={customLayoutHours}
+        setCustomLayoutHours={setCustomLayoutHours}
+        customMaintenanceHours={customMaintenanceHours}
+        setCustomMaintenanceHours={setCustomMaintenanceHours}
+        customMeetingHours={customMeetingHours}
+        setCustomMeetingHours={setCustomMeetingHours}
+        customCampaignHours={customCampaignHours}
+        setCustomCampaignHours={setCustomCampaignHours}
+        customFunctionalityHours={customFunctionalityHours}
+        setCustomFunctionalityHours={setCustomFunctionalityHours}
+        monthlyRevenue={monthlyRevenue}
+        setMonthlyRevenue={setMonthlyRevenue}
+        selectedPlan={selectedPlan}
+        defaultPlans={defaultPlans}
+        onPlanChange={handlePlanChange}
+      />
+      <CalculatorResults prices={prices} onContactClick={handleContactClick} />
     </div>
   );
 
