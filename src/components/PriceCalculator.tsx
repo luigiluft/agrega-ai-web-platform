@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calculator } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
@@ -70,6 +70,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const [customMeetingHours, setCustomMeetingHours] = useState<string>(defaultPlans[0].meetingHours.toString());
   const [customCampaignHours, setCustomCampaignHours] = useState<string>(defaultPlans[0].campaignHours.toString());
   const [customFunctionalityHours, setCustomFunctionalityHours] = useState<string>(defaultPlans[0].functionalityHours.toString());
+  const [lastTotalHours, setLastTotalHours] = useState<number>(0);
 
   const calculatePrices = () => {
     const revenue = parseFloat(monthlyRevenue) || 0;
@@ -96,13 +97,6 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     // Calculate discount based on total hours
     const totalHours = totalImplementationHours + totalMaintenanceHours;
     const discountAmount = Math.floor(totalHours / 50) * 50;
-    
-    if (discountAmount > 0) {
-      toast({
-        title: "Desconto Aplicado!",
-        description: `Você ganhou R$${discountAmount} de desconto na implementação por contratar ${totalHours} horas!`,
-      });
-    }
 
     return {
       implementationPrice: (implementationPrice - discountAmount).toFixed(2),
@@ -112,10 +106,27 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       baseMaintenanceCost: baseMaintenanceCost.toFixed(2),
       revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
       totalHours,
+      discountAmount
     };
   };
 
   const prices = calculatePrices();
+
+  // Effect to handle discount notifications
+  useEffect(() => {
+    const currentTotalHours = prices.totalHours;
+    const previousDiscountLevel = Math.floor(lastTotalHours / 50);
+    const currentDiscountLevel = Math.floor(currentTotalHours / 50);
+    
+    if (currentDiscountLevel > previousDiscountLevel && prices.discountAmount > 0) {
+      toast({
+        title: "Desconto Aplicado!",
+        description: `Você ganhou R$${prices.discountAmount} de desconto na implementação por contratar ${prices.totalHours} horas!`,
+      });
+    }
+    
+    setLastTotalHours(currentTotalHours);
+  }, [prices.totalHours, prices.discountAmount, lastTotalHours, toast]);
 
   const handlePlanChange = (plan: Plan) => {
     setSelectedPlan(plan);
