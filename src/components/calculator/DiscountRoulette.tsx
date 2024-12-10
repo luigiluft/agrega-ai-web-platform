@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { useDrag } from '@use-gesture/react';
 
 interface DiscountRouletteProps {
   isOpen: boolean;
@@ -30,23 +29,21 @@ const DiscountRoulette = ({
   currentDiscountLevel,
 }: DiscountRouletteProps) => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [rotation, setRotation] = useState(0);
+  const [ballPosition, setBallPosition] = useState(0);
   const [result, setResult] = useState<number | null>(null);
   const [hasSpun, setHasSpun] = useState(false);
   const [canRetry, setCanRetry] = useState(false);
-  const [dragRotation, setDragRotation] = useState(0);
 
   useEffect(() => {
     if (!isOpen) {
       setResult(null);
-      setRotation(0);
+      setBallPosition(0);
       setHasSpun(false);
       setCanRetry(false);
-      setDragRotation(0);
     }
   }, [isOpen]);
 
-  const spinWheel = (initialVelocity = 2) => {
+  const spinBall = () => {
     if (isSpinning || (hasSpun && !canRetry)) return;
     
     setIsSpinning(true);
@@ -57,11 +54,10 @@ const DiscountRoulette = ({
       randomIndex = Math.floor(Math.random() * DISCOUNT_OPTIONS.length);
     } while (DISCOUNT_OPTIONS[randomIndex].type === 'lose');
 
-    const baseRotations = (Math.floor(Math.random() * 3) + 5) * 360;
-    const resultRotation = (360 / DISCOUNT_OPTIONS.length) * randomIndex;
-    const totalRotation = baseRotations + resultRotation + (initialVelocity * 360);
+    const spins = 3 + Math.random(); // Random number between 3 and 4 spins
+    const finalPosition = (spins * 360) + (360 / DISCOUNT_OPTIONS.length) * randomIndex;
     
-    setRotation(prevRotation => prevRotation + totalRotation);
+    setBallPosition(finalPosition);
 
     setTimeout(() => {
       setIsSpinning(false);
@@ -75,20 +71,6 @@ const DiscountRoulette = ({
     }, 4000);
   };
 
-  const bindDrag = useDrag(({ movement: [x, y], velocity: [vx, vy], last }) => {
-    if (isSpinning) return;
-    
-    const angle = Math.atan2(y, x);
-    const degrees = (angle * 180) / Math.PI;
-    
-    if (!last) {
-      setDragRotation(degrees);
-    } else if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1) {
-      const velocity = Math.sqrt(vx * vx + vy * vy);
-      spinWheel(velocity);
-    }
-  });
-
   if (!isOpen) return null;
 
   return (
@@ -101,26 +83,11 @@ const DiscountRoulette = ({
           <p className="text-gray-600">
             Você desbloqueou {currentDiscountLevel - previousDiscountLevel} nova(s) chance(s)!
           </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Arraste para girar
-          </p>
         </div>
 
         <div className="relative w-64 h-64 mx-auto mb-8">
-          {/* Pointer */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-            <div className="w-4 h-4 bg-black rotate-45" />
-          </div>
-          
-          {/* Roulette wheel */}
-          <div 
-            {...bindDrag()}
-            className="absolute inset-0 rounded-full border-4 border-gray-200 overflow-hidden cursor-grab active:cursor-grabbing"
-            style={{
-              transform: `rotate(${rotation + dragRotation}deg)`,
-              transition: isSpinning ? 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)' : 'none',
-            }}
-          >
+          {/* Static Wheel */}
+          <div className="absolute inset-0 rounded-full border-4 border-gray-200 overflow-hidden">
             {DISCOUNT_OPTIONS.map((option, index) => {
               const angle = (360 / DISCOUNT_OPTIONS.length) * index;
               return (
@@ -143,6 +110,17 @@ const DiscountRoulette = ({
               );
             })}
           </div>
+
+          {/* Spinning Ball */}
+          <div 
+            className="absolute w-4 h-4 bg-white rounded-full shadow-lg"
+            style={{
+              left: '50%',
+              top: '0',
+              transform: `translateX(-50%) rotate(${ballPosition}deg) translateY(120px)`,
+              transition: isSpinning ? 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)' : 'none',
+            }}
+          />
 
           {/* Center decoration */}
           <div className="absolute inset-0 pointer-events-none">
@@ -169,13 +147,22 @@ const DiscountRoulette = ({
               )}
               {canRetry && (
                 <Button 
-                  onClick={() => spinWheel()}
+                  onClick={() => spinBall()}
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white"
                 >
                   Tentar Novamente
                 </Button>
               )}
             </div>
+          )}
+          {result === null && (
+            <Button 
+              onClick={() => spinBall()}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              disabled={isSpinning}
+            >
+              {isSpinning ? "Girando..." : "Girar Roleta"}
+            </Button>
           )}
         </div>
       </Card>
