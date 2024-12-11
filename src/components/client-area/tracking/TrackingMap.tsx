@@ -3,12 +3,12 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { Search, Truck, Clock, AlertTriangle, CheckCircle, Package } from 'lucide-react';
 import type { LatLngExpression } from 'leaflet';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import DeliveryFilters from './DeliveryFilters';
+import DeliveryPopup from './DeliveryPopup';
+import { Delivery, DeliveryStatus, StatusConfig } from './types';
 
 // Fix for default marker icon
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -17,19 +17,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
-
-type DeliveryStatus = 'em_rota' | 'atrasado' | 'entregue' | 'pendente' | 'risco_atraso';
-
-interface Delivery {
-  id: string;
-  trackingNumber: string;
-  status: DeliveryStatus;
-  estimatedDelivery: string;
-  currentLocation: { lat: number; lng: number };
-  destination: string;
-  lastUpdate: string;
-  customer: string;
-}
 
 const deliveries: Delivery[] = [
   {
@@ -40,7 +27,11 @@ const deliveries: Delivery[] = [
     currentLocation: { lat: -23.5505, lng: -46.6333 },
     destination: "Rua Augusta, 1500 - São Paulo, SP",
     lastUpdate: "2024-04-13 14:30",
-    customer: "João Silva"
+    customer: "João Silva",
+    contact: "(11) 98765-4321",
+    value: 1250.90,
+    priority: "alta",
+    items: 3
   },
   {
     id: "DEL002",
@@ -50,7 +41,12 @@ const deliveries: Delivery[] = [
     currentLocation: { lat: -22.9068, lng: -43.1729 },
     destination: "Av. Atlântica, 2000 - Rio de Janeiro, RJ",
     lastUpdate: "2024-04-13 10:15",
-    customer: "Maria Santos"
+    customer: "Maria Santos",
+    contact: "(21) 98765-4321",
+    value: 789.50,
+    notes: "Cliente solicitou entrega no período da manhã",
+    priority: "media",
+    items: 1
   },
   {
     id: "DEL003",
@@ -60,11 +56,44 @@ const deliveries: Delivery[] = [
     currentLocation: { lat: -25.4284, lng: -49.2733 },
     destination: "Rua XV de Novembro, 1000 - Curitiba, PR",
     lastUpdate: "2024-04-13 16:45",
-    customer: "Pedro Oliveira"
+    customer: "Pedro Oliveira",
+    contact: "(41) 98765-4321",
+    value: 2340.00,
+    priority: "baixa",
+    items: 5
   },
+  {
+    id: "DEL004",
+    trackingNumber: "BR789123456",
+    status: "entregue",
+    estimatedDelivery: "2024-04-13",
+    currentLocation: { lat: -30.0277, lng: -51.2287 },
+    destination: "Av. Ipiranga, 500 - Porto Alegre, RS",
+    lastUpdate: "2024-04-13 09:30",
+    customer: "Ana Souza",
+    contact: "(51) 98765-4321",
+    value: 567.80,
+    priority: "media",
+    items: 2
+  },
+  {
+    id: "DEL005",
+    trackingNumber: "BR321654987",
+    status: "pendente",
+    estimatedDelivery: "2024-04-17",
+    currentLocation: { lat: -19.9167, lng: -43.9345 },
+    destination: "Av. do Contorno, 1500 - Belo Horizonte, MG",
+    lastUpdate: "2024-04-13 11:20",
+    customer: "Carlos Lima",
+    contact: "(31) 98765-4321",
+    value: 1890.30,
+    notes: "Necessário agendamento prévio",
+    priority: "alta",
+    items: 4
+  }
 ];
 
-const statusConfig = {
+const statusConfig: StatusConfig = {
   em_rota: {
     label: "Em Rota",
     color: "bg-blue-500",
@@ -117,7 +146,8 @@ const TrackingMap = () => {
       const matchesSearch = 
         delivery.trackingNumber.toLowerCase().includes(query.toLowerCase()) ||
         delivery.destination.toLowerCase().includes(query.toLowerCase()) ||
-        delivery.customer.toLowerCase().includes(query.toLowerCase());
+        delivery.customer.toLowerCase().includes(query.toLowerCase()) ||
+        delivery.contact.toLowerCase().includes(query.toLowerCase());
       
       const matchesStatus = status === "all" || delivery.status === status;
       
@@ -139,94 +169,35 @@ const TrackingMap = () => {
     });
   };
 
-  const renderStatusIcon = (status: DeliveryStatus) => {
-    const IconComponent = statusConfig[status].icon;
-    return <IconComponent className="h-4 w-4" />;
-  };
-
   return (
     <Card className="p-6">
-      <div className="mb-6 space-y-4">
-        <div className="relative">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar por número de rastreio, endereço ou cliente..."
-            value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="pl-8"
-          />
-        </div>
-        
-        <div className="flex flex-wrap gap-2">
-          <Select value={statusFilter} onValueChange={(value) => handleStatusFilter(value as DeliveryStatus | "all")}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrar por status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os Status</SelectItem>
-              {Object.entries(statusConfig).map(([key, config]) => (
-                <SelectItem key={key} value={key}>
-                  <div className="flex items-center gap-2">
-                    {React.createElement(config.icon, { className: "h-4 w-4" })}
-                    {config.label}
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(statusConfig).map(([key, config]) => (
-              <Badge
-                key={key}
-                variant="secondary"
-                className={`flex items-center gap-1 ${
-                  statusFilter === key ? config.color + " text-white" : ""
-                }`}
-              >
-                {React.createElement(config.icon, { className: "h-3 w-3" })}
-                <span>{config.label}</span>
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </div>
+      <DeliveryFilters
+        searchQuery={searchQuery}
+        statusFilter={statusFilter}
+        statusConfig={statusConfig}
+        onSearch={handleSearch}
+        onStatusFilter={handleStatusFilter}
+      />
 
       <div className="h-[600px] relative">
         <MapContainer
-          className="h-full w-full"
+          className="h-full w-full rounded-lg border"
           center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attributionControl={true}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           {filteredDeliveries.map((delivery) => (
             <Marker
               key={delivery.id}
-              position={[delivery.currentLocation.lat, delivery.currentLocation.lng] as LatLngExpression}
-              icon={createMarkerIcon(delivery.status) as L.Icon}
+              position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
+              icon={createMarkerIcon(delivery.status)}
             >
               <Popup>
-                <div className="p-2 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {renderStatusIcon(delivery.status)}
-                      <h3 className="font-semibold">{delivery.trackingNumber}</h3>
-                    </div>
-                    <Badge className={statusConfig[delivery.status].color + " text-white"}>
-                      {statusConfig[delivery.status].label}
-                    </Badge>
-                  </div>
-                  <div className="text-sm space-y-1">
-                    <p><span className="font-medium">Cliente:</span> {delivery.customer}</p>
-                    <p><span className="font-medium">Destino:</span> {delivery.destination}</p>
-                    <p><span className="font-medium">Previsão:</span> {new Date(delivery.estimatedDelivery).toLocaleDateString('pt-BR')}</p>
-                    <p><span className="font-medium">Última Atualização:</span> {delivery.lastUpdate}</p>
-                  </div>
-                </div>
+                <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
               </Popup>
             </Marker>
           ))}
