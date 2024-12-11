@@ -189,13 +189,23 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
               selectedPlanName={selectedPlan.name}
             />
             <CalculatorResults 
-              prices={prices} 
+              implementationPrice={prices.implementationPrice}
+              maintenancePrice={prices.maintenancePrice}
+              revenueShare={prices.revenueShare}
+              revenueSharePercent={prices.revenueSharePercent}
+              monthlyRevenue={monthlyRevenue}
+              setMonthlyRevenue={setMonthlyRevenue}
               onContactClick={handleContactClick}
               layoutHours={parseInt(customLayoutHours) || 0}
               maintenanceHours={parseInt(customMaintenanceHours) || 0}
               meetingHours={parseInt(customMeetingHours) || 0}
               campaignHours={parseInt(customCampaignHours) || 0}
               functionalityHours={parseInt(customFunctionalityHours) || 0}
+              baseImplementationCost={prices.baseImplementationCost}
+              baseMaintenanceCost={prices.baseMaintenanceCost}
+              totalHours={prices.totalHours}
+              rouletteDiscount={prices.rouletteDiscount}
+              totalImplementationHours={prices.totalImplementationHours}
             />
           </div>
         </div>

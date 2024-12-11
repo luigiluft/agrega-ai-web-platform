@@ -18,8 +18,8 @@ const DynamicCalculator = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const getFeatureHours = (feature: Feature): number => {
-    if (feature.hours !== undefined) return feature.hours;
-    if (feature.monthlyHours !== undefined) return feature.monthlyHours;
+    if ('hours' in feature && feature.hours !== undefined) return feature.hours;
+    if ('monthlyHours' in feature && feature.monthlyHours !== undefined) return feature.monthlyHours;
     return 0;
   };
 
@@ -76,8 +76,6 @@ const DynamicCalculator = () => {
   const filteredCategories = activeCategory === "all" 
     ? calculatorCategories 
     : calculatorCategories.filter(category => category.id === activeCategory);
-
-  // ... keep existing code (JSX for the calculator layout)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

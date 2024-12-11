@@ -31,15 +31,4 @@ export interface CalculatorResultsProps {
   totalHours?: number;
   rouletteDiscount?: number;
   totalImplementationHours?: number;
-  prices?: {
-    implementationPrice: string;
-    maintenancePrice: string;
-    revenueShare: string;
-    baseImplementationCost: string;
-    baseMaintenanceCost: string;
-    revenueSharePercent: string;
-    totalHours: number;
-    rouletteDiscount: number;
-    totalImplementationHours: number;
-  };
 }
