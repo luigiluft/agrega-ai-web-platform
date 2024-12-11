@@ -1,75 +1,44 @@
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
+import React from 'react';
+import { Button } from '../ui/button';
+import { Card } from '../ui/card';
+import { Mail, Calculator, Phone } from 'lucide-react';
 
-type CalculatorResultsProps = {
-  prices: {
-    implementationPrice: string;
-    maintenancePrice: string;
-    revenueShare: string;
-    baseImplementationCost: string;
-    baseMaintenanceCost: string;
-    revenueSharePercent: string;
-    totalHours: number;
-    rouletteDiscount: number;
-  };
+interface CalculatorResultsProps {
+  implementationPrice: string;
+  maintenancePrice: string;
+  revenueShare: string;
+  revenueSharePercent: string;
   onContactClick: () => void;
-  layoutHours: number;
-  maintenanceHours: number;
-  meetingHours: number;
-  campaignHours: number;
-  functionalityHours: number;
-};
+}
 
-const MAX_HOURS = {
-  layout: 100,
-  maintenance: 30,
-  meeting: 50,
-  campaign: 30,
-  functionality: 200
-};
-
-const CalculatorResults = ({ 
-  prices, 
-  onContactClick,
-  layoutHours,
-  maintenanceHours,
-  meetingHours,
-  campaignHours,
-  functionalityHours
+const CalculatorResults = ({
+  implementationPrice,
+  maintenancePrice,
+  revenueShare,
+  revenueSharePercent,
+  onContactClick
 }: CalculatorResultsProps) => {
-  const isExceedingLimits = 
-    layoutHours > MAX_HOURS.layout ||
-    maintenanceHours > MAX_HOURS.maintenance ||
-    meetingHours > MAX_HOURS.meeting ||
-    campaignHours > MAX_HOURS.campaign ||
-    functionalityHours > MAX_HOURS.functionality;
-
   return (
-    <div className="space-y-4 mt-8">
-      <Card className="p-6 space-y-6 bg-gradient-to-br from-background to-secondary/5">
+    <div className="space-y-6">
+      <Card className="p-6 space-y-6 bg-gradient-to-br from-background to-orange-50">
         <div className="space-y-4">
           <div className="pb-4 border-b">
             <div className="text-sm text-muted-foreground">Implementação</div>
             <div className="flex items-baseline justify-between mt-1">
               <div className="text-2xl font-bold">
-                R$ {prices.implementationPrice}
+                R$ {implementationPrice}
               </div>
               <div className="text-sm text-muted-foreground">
                 pagamento único
               </div>
             </div>
-            {prices.rouletteDiscount > 0 && (
-              <div className="text-sm text-green-600 mt-1">
-                Desconto aplicado: R$ {prices.rouletteDiscount}
-              </div>
-            )}
           </div>
           
           <div className="pb-4 border-b">
-            <div className="text-sm text-muted-foreground">Manutenção Mensal</div>
+            <div className="text-sm text-muted-foreground">Sustentação Mensal</div>
             <div className="flex items-baseline justify-between mt-1">
               <div className="text-2xl font-bold">
-                R$ {prices.maintenancePrice}
+                R$ {maintenancePrice}
               </div>
               <div className="text-sm text-muted-foreground">
                 por mês
@@ -79,30 +48,51 @@ const CalculatorResults = ({
           
           <div>
             <div className="text-sm text-muted-foreground">
-              Comissão sobre Vendas
+              Fee sobre Faturamento
             </div>
             <div className="flex items-baseline justify-between mt-1">
               <div className="text-2xl font-bold">
-                {prices.revenueSharePercent}%
+                {revenueSharePercent}%
               </div>
               <div className="text-sm text-muted-foreground">
                 do faturamento
               </div>
             </div>
             <div className="text-sm text-muted-foreground mt-2">
-              Aproximadamente R$ {prices.revenueShare}/mês
+              Aproximadamente R$ {revenueShare}/mês
             </div>
           </div>
         </div>
       </Card>
 
-      <Button 
-        className="w-full bg-primary hover:bg-primary/90 text-white"
-        size="lg"
-        onClick={onContactClick}
-      >
-        {isExceedingLimits ? "Solicitar Orçamento" : "Contratar"}
-      </Button>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Button 
+          variant="outline"
+          className="w-full space-x-2"
+          onClick={onContactClick}
+        >
+          <Phone className="w-4 h-4" />
+          <span>Falar com Consultor</span>
+        </Button>
+        
+        <Button 
+          variant="outline"
+          className="w-full space-x-2"
+          onClick={onContactClick}
+        >
+          <Mail className="w-4 h-4" />
+          <span>Receber por Email</span>
+        </Button>
+        
+        <Button 
+          variant="default"
+          className="w-full space-x-2 bg-orange-500 hover:bg-orange-600"
+          onClick={onContactClick}
+        >
+          <Calculator className="w-4 h-4" />
+          <span>Ver Preço Detalhado</span>
+        </Button>
+      </div>
     </div>
   );
 };
