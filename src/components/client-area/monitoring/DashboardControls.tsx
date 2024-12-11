@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { DateRange } from "react-day-picker";
 
 interface DashboardControlsProps {
   onDateChange: (dates: { from: Date; to: Date }) => void;
@@ -23,14 +24,23 @@ interface DashboardControlsProps {
 }
 
 const DashboardControls = ({ onDateChange, onViewChange }: DashboardControlsProps) => {
-  const [date, setDate] = useState<{ from: Date; to: Date }>({
+  const [date, setDate] = useState<DateRange>({
     from: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     to: new Date(),
   });
 
-  const handleDateSelect = (dates: { from: Date; to: Date }) => {
+  const handleDateSelect = (dates: DateRange | undefined) => {
+    if (!dates) return;
+    
     setDate(dates);
-    onDateChange(dates);
+    
+    // Only trigger onDateChange if both dates are selected
+    if (dates.from && dates.to) {
+      onDateChange({
+        from: dates.from,
+        to: dates.to
+      });
+    }
   };
 
   return (
@@ -58,8 +68,8 @@ const DashboardControls = ({ onDateChange, onViewChange }: DashboardControlsProp
             initialFocus
             mode="range"
             defaultMonth={date.from}
-            selected={{ from: date.from, to: date.to }}
-            onSelect={(dates) => dates && handleDateSelect(dates)}
+            selected={date}
+            onSelect={handleDateSelect}
             locale={ptBR}
           />
         </PopoverContent>
