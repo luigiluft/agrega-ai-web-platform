@@ -18,8 +18,12 @@ const DynamicCalculator = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const getFeatureHours = (feature: Feature): number => {
-    if ('hours' in feature && feature.hours !== undefined) return feature.hours;
-    if ('monthlyHours' in feature && feature.monthlyHours !== undefined) return feature.monthlyHours;
+    if ('hours' in feature && typeof feature.hours === 'number') {
+      return feature.hours;
+    }
+    if ('monthlyHours' in feature && typeof feature.monthlyHours === 'number') {
+      return feature.monthlyHours;
+    }
     return 0;
   };
 
