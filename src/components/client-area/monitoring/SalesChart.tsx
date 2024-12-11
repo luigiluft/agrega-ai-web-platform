@@ -4,7 +4,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Line, LineChart, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { Line, LineChart, XAxis, YAxis, Tooltip } from "recharts";
 
 const data = [
   { month: "Jan", sales: 4000 },
@@ -36,9 +36,7 @@ const SalesChart = () => {
               stroke="hsl(var(--primary))"
               strokeWidth={2}
             />
-            <ChartTooltip>
-              <ChartTooltipContent />
-            </ChartTooltip>
+            <Tooltip content={<ChartTooltipContent />} />
           </LineChart>
         </ChartContainer>
       </div>

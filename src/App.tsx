@@ -14,7 +14,15 @@ import Marketplace from "./pages/solutions/Marketplace";
 import ClientArea from "./pages/ClientArea";
 import ChatWidget from "./components/chat/ChatWidget";
 
-const queryClient = new QueryClient();
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
