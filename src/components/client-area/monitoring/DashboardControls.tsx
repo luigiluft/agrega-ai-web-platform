@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Select,
   SelectContent,
@@ -13,6 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -34,7 +33,6 @@ const DashboardControls = ({ onDateChange, onViewChange }: DashboardControlsProp
     
     setDate(dates);
     
-    // Only trigger onDateChange if both dates are selected
     if (dates.from && dates.to) {
       onDateChange({
         from: dates.from,
@@ -83,6 +81,7 @@ const DashboardControls = ({ onDateChange, onViewChange }: DashboardControlsProp
           <SelectItem value="sales">Vendas por Período</SelectItem>
           <SelectItem value="products">Produtos Mais Vendidos</SelectItem>
           <SelectItem value="customers">Clientes Mais Ativos</SelectItem>
+          <SelectItem value="tracking">Rastreamento de Pedidos</SelectItem>
         </SelectContent>
       </Select>
     </div>

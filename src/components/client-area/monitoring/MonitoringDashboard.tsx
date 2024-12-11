@@ -5,6 +5,7 @@ import SalesChart from "./SalesChart";
 import ProductsChart from "./ProductsChart";
 import CustomersChart from "./CustomersChart";
 import DashboardControls from "./DashboardControls";
+import TrackingMap from "../tracking/TrackingMap";
 
 const MonitoringDashboard = () => {
   const [currentView, setCurrentView] = useState("sales");
@@ -15,7 +16,6 @@ const MonitoringDashboard = () => {
 
   const handleDateChange = (dates: { from: Date; to: Date }) => {
     setDateRange(dates);
-    // Aqui você pode implementar a lógica para atualizar os dados com base nas datas
   };
 
   const renderChart = () => {
@@ -24,6 +24,8 @@ const MonitoringDashboard = () => {
         return <ProductsChart />;
       case "customers":
         return <CustomersChart />;
+      case "tracking":
+        return <TrackingMap />;
       default:
         return <SalesChart />;
     }
@@ -37,8 +39,16 @@ const MonitoringDashboard = () => {
       />
       <OrderStats />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {renderChart()}
-        <RecentOrders />
+        {currentView !== "tracking" ? (
+          <>
+            {renderChart()}
+            <RecentOrders />
+          </>
+        ) : (
+          <div className="col-span-2">
+            {renderChart()}
+          </div>
+        )}
       </div>
     </div>
   );
