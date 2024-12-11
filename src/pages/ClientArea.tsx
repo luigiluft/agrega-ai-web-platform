@@ -11,14 +11,6 @@ import { Button } from "@/components/ui/button";
 import StepCard from "@/components/client-area/StepCard";
 import ScopePreview from "@/components/client-area/ScopePreview";
 
-interface Step {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ElementType;
-  completed?: boolean;
-}
-
 const ClientArea = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
@@ -28,7 +20,7 @@ const ClientArea = () => {
   const [averageTicket, setAverageTicket] = useState("");
   const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
 
-  const steps: Step[] = [
+  const steps = [
     {
       id: "theme",
       title: "Escolha do Tema",
@@ -76,7 +68,17 @@ const ClientArea = () => {
       toast.error("Por favor, preencha todos os campos");
       return;
     }
-    navigate("/calculadora");
+    
+    const monthlyRevenue = Number(monthlyVolume) * Number(averageTicket);
+    toast.success(`Faturamento mensal estimado: R$ ${monthlyRevenue.toLocaleString()}`);
+    navigate("/calculadora", { 
+      state: { 
+        monthlyVolume, 
+        averageTicket, 
+        selectedTheme, 
+        selectedType 
+      } 
+    });
   };
 
   const handleNextTheme = () => {

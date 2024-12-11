@@ -15,13 +15,15 @@ interface ThemeCardProps {
 
 export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect, onNext, onPrevious }: ThemeCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const handleSelect = () => {
     onSelect(theme.id);
+    setIsSheetOpen(false);
   };
 
   return (
-    <Sheet>
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
       <SheetTrigger asChild>
         <div
           className={`absolute inset-0 transition-all duration-500 ${
@@ -140,7 +142,10 @@ export const ThemeCard = ({ theme, index, totalThemes, isSelected, onSelect, onN
             </ul>
           </div>
           <div className="pt-6">
-            <button className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+            <button 
+              onClick={handleSelect}
+              className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            >
               Escolher este tema
             </button>
           </div>
