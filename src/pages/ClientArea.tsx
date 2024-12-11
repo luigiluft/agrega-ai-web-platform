@@ -3,6 +3,8 @@ import { Store, Settings, DollarSign } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 import SolutionLayout from "@/components/solutions/SolutionLayout";
 import { themes } from "@/components/theme/themeData";
 import { ThemeCard } from "@/components/theme/ThemeCard";
@@ -11,8 +13,7 @@ import StepCard from "@/components/client-area/StepCard";
 import ScopePreview from "@/components/client-area/ScopePreview";
 import ProjectTimeline from "@/components/client-area/ProjectTimeline";
 import ProjectDashboard from "@/components/client-area/ProjectDashboard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
+import MonitoringDashboard from "@/components/client-area/monitoring/MonitoringDashboard";
 
 const ClientArea = () => {
   const navigate = useNavigate();
@@ -102,6 +103,7 @@ const ClientArea = () => {
         <TabsList className="w-full justify-start mb-8">
           <TabsTrigger value="project">Visão Geral</TabsTrigger>
           <TabsTrigger value="setup">Configuração</TabsTrigger>
+          <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
         </TabsList>
 
         <TabsContent value="project">
@@ -129,80 +131,84 @@ const ClientArea = () => {
                   step={step}
                   isActive={index === currentStep}
                 >
-              {index === 0 && (
-                <div className="relative h-[600px] w-full">
-                  {themes.map((theme, idx) => (
-                    <ThemeCard
-                      key={theme.id}
-                      theme={theme}
-                      index={idx}
-                      totalThemes={themes.length}
-                      isSelected={idx === currentThemeIndex}
-                      onSelect={handleThemeSelect}
-                      onNext={handleNextTheme}
-                      onPrevious={handlePreviousTheme}
-                    />
-                  ))}
-                </div>
-              )}
+                  {index === 0 && (
+                    <div className="relative h-[600px] w-full">
+                      {themes.map((theme, idx) => (
+                        <ThemeCard
+                          key={theme.id}
+                          theme={theme}
+                          index={idx}
+                          totalThemes={themes.length}
+                          isSelected={idx === currentThemeIndex}
+                          onSelect={handleThemeSelect}
+                          onNext={handleNextTheme}
+                          onPrevious={handlePreviousTheme}
+                        />
+                      ))}
+                    </div>
+                  )}
 
-              {index === 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {businessTypes.map((type) => (
-                    <Card
-                      key={type.id}
-                      className={`p-6 cursor-pointer transition-all hover:shadow-lg ${
-                        selectedType === type.id ? "border-primary" : ""
-                      }`}
-                      onClick={() => handleTypeSelect(type.id)}
-                    >
-                      <h3 className="text-xl font-semibold mb-2">{type.title}</h3>
-                      <p className="text-gray-600">{type.description}</p>
+                  {index === 1 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {businessTypes.map((type) => (
+                        <Card
+                          key={type.id}
+                          className={`p-6 cursor-pointer transition-all hover:shadow-lg ${
+                            selectedType === type.id ? "border-primary" : ""
+                          }`}
+                          onClick={() => handleTypeSelect(type.id)}
+                        >
+                          <h3 className="text-xl font-semibold mb-2">{type.title}</h3>
+                          <p className="text-gray-600">{type.description}</p>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+
+                  {index === 2 && (
+                    <Card className="p-6">
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">
+                            Volume Mensal de Pedidos
+                          </label>
+                          <input
+                            type="number"
+                            value={monthlyVolume}
+                            onChange={(e) => setMonthlyVolume(e.target.value)}
+                            className="w-full p-2 border rounded-md"
+                            placeholder="Ex: 1000"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">
+                            Ticket Médio (R$)
+                          </label>
+                          <input
+                            type="number"
+                            value={averageTicket}
+                            onChange={(e) => setAverageTicket(e.target.value)}
+                            className="w-full p-2 border rounded-md"
+                            placeholder="Ex: 150"
+                          />
+                        </div>
+                        <Button 
+                          className="w-full" 
+                          onClick={handleVolumeSubmit}
+                        >
+                          Calcular Investimento
+                        </Button>
+                      </div>
                     </Card>
-                  ))}
-                </div>
-              )}
-
-              {index === 2 && (
-                <Card className="p-6">
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Volume Mensal de Pedidos
-                      </label>
-                      <input
-                        type="number"
-                        value={monthlyVolume}
-                        onChange={(e) => setMonthlyVolume(e.target.value)}
-                        className="w-full p-2 border rounded-md"
-                        placeholder="Ex: 1000"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Ticket Médio (R$)
-                      </label>
-                      <input
-                        type="number"
-                        value={averageTicket}
-                        onChange={(e) => setAverageTicket(e.target.value)}
-                        className="w-full p-2 border rounded-md"
-                        placeholder="Ex: 150"
-                      />
-                    </div>
-                    <Button 
-                      className="w-full" 
-                      onClick={handleVolumeSubmit}
-                    >
-                      Calcular Investimento
-                    </Button>
-                  </div>
-                </Card>
-              )}
+                  )}
                 </StepCard>
               ))}
             </div>
           </div>
+        </TabsContent>
+
+        <TabsContent value="monitoring">
+          <MonitoringDashboard />
         </TabsContent>
       </Tabs>
 
