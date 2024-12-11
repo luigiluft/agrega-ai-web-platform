@@ -30,7 +30,6 @@ interface Delivery {
   customer: string;
 }
 
-// Mock data for deliveries
 const deliveries: Delivery[] = [
   {
     id: "DEL001",
@@ -126,7 +125,7 @@ const TrackingMap = () => {
     setFilteredDeliveries(filtered);
   };
 
-  const center: LatLngExpression = [-23.5505, -46.6333];
+  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
 
   const createMarkerIcon = (status: DeliveryStatus) => {
     return new L.Icon({
@@ -137,6 +136,11 @@ const TrackingMap = () => {
       popupAnchor: [1, -34],
       shadowSize: [41, 41]
     });
+  };
+
+  const renderStatusIcon = (status: DeliveryStatus) => {
+    const IconComponent = statusConfig[status].icon;
+    return <IconComponent className="h-4 w-4" />;
   };
 
   return (
@@ -162,7 +166,7 @@ const TrackingMap = () => {
               {Object.entries(statusConfig).map(([key, config]) => (
                 <SelectItem key={key} value={key}>
                   <div className="flex items-center gap-2">
-                    <config.icon className="h-4 w-4" />
+                    {React.createElement(config.icon, { className: "h-4 w-4" })}
                     {config.label}
                   </div>
                 </SelectItem>
@@ -179,7 +183,7 @@ const TrackingMap = () => {
                   statusFilter === key ? config.color + " text-white" : ""
                 }`}
               >
-                <config.icon className="h-3 w-3" />
+                {React.createElement(config.icon, { className: "h-3 w-3" })}
                 <span>{config.label}</span>
               </Badge>
             ))}
@@ -190,7 +194,7 @@ const TrackingMap = () => {
       <div className="h-[600px] relative">
         <MapContainer
           className="h-full w-full"
-          center={center}
+          defaultCenter={defaultCenter}
           zoom={4}
           scrollWheelZoom={true}
         >
@@ -201,16 +205,14 @@ const TrackingMap = () => {
           {filteredDeliveries.map((delivery) => (
             <Marker
               key={delivery.id}
-              position={[delivery.currentLocation.lat, delivery.currentLocation.lng] as LatLngExpression}
+              position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
               icon={createMarkerIcon(delivery.status)}
             >
               <Popup>
                 <div className="p-2 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {statusConfig[delivery.status].icon && (
-                        <statusConfig[delivery.status].icon className="h-4 w-4" />
-                      )}
+                      {renderStatusIcon(delivery.status)}
                       <h3 className="font-semibold">{delivery.trackingNumber}</h3>
                     </div>
                     <Badge className={statusConfig[delivery.status].color + " text-white"}>
