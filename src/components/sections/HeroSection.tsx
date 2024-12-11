@@ -75,7 +75,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-gradient-to-br from-primary/90 via-accent/80 to-primary-dark/90">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-gradient-to-br from-orange-500/90 via-orange-400/80 to-orange-600/90">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10" />
       
       <div className="container mx-auto px-4 py-8 md:py-16 relative z-10">
@@ -108,12 +108,10 @@ const HeroSection = () => {
                     Lojas online com desenvolvimento ágil, layouts padronizados e custo acessível.
                   </p>
                   <Link
-                    to="pricing-section"
-                    smooth={true}
-                    duration={500}
-                    className="inline-flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent/90 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-accent/25"
+                    to="/calculadora"
+                    className="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-orange-500/25"
                   >
-                    Escolha seu plano
+                    Calcular investimento
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
@@ -126,10 +124,13 @@ const HeroSection = () => {
                   <p className="text-sm text-white/90 mb-4 leading-relaxed">
                     Solução completa de e-commerce com integrações avançadas e personalização total.
                   </p>
-                  <button className="inline-flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent/90 transition-all duration-300 group shadow-lg hover:shadow-accent/25">
-                    Fale com Especialista
+                  <Link
+                    to="/calculadora"
+                    className="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-all duration-300 group shadow-lg hover:shadow-orange-500/25"
+                  >
+                    Calcular investimento
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
