@@ -85,19 +85,19 @@ const TrackingMap = () => {
       <div className="h-[600px] relative">
         <MapContainer
           className="h-full w-full"
-          center={defaultCenter}
+          defaultCenter={defaultCenter}
           zoom={4}
           scrollWheelZoom={true}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attributionControl={true}
           />
           {filteredDeliveries.map((delivery) => (
             <Marker
               key={delivery.id}
-              position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-              icon={truckIcon}
+              position={[delivery.currentLocation.lat, delivery.currentLocation.lng] as LatLngExpression}
+              icon={truckIcon as L.Icon}
             >
               <Popup>
                 <div className="p-2">
