@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, UserCircle2 } from "lucide-react";
 
 const NavigationMenuDemo = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,13 +84,19 @@ const NavigationMenuDemo = () => {
             </Link>
           </NavigationMenuItem>
 
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
+            <Link to="/calculadora" className="text-base font-medium hover:text-primary transition-colors block h-10 flex items-center">
+              Calculadora de Preços
+            </Link>
+          </NavigationMenuItem>
+
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0 ml-auto">
             <Link 
-              to="/calculadora" 
-              className="text-base font-medium h-10 bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 px-4 rounded-lg flex items-center"
+              to="/area-cliente" 
+              className="text-base font-medium h-10 bg-secondary text-white hover:bg-secondary/90 px-4 rounded-lg flex items-center gap-2"
             >
-              <Sparkles className="w-4 h-4 mr-2" />
-              Calculadora de Preços
+              <UserCircle2 className="w-4 h-4" />
+              Área do Cliente
             </Link>
           </NavigationMenuItem>
         </div>
