@@ -1,15 +1,14 @@
 import { useState } from "react";
 import SolutionLayout from "@/components/solutions/SolutionLayout";
-import { Progress } from "@/components/ui/progress";
-import { toast } from "sonner";
-import { Store, Settings, DollarSign } from "lucide-react";
 import { themes } from "@/components/theme/themeData";
 import { ThemeCard } from "@/components/theme/ThemeCard";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import StepCard from "@/components/client-area/StepCard";
 import ScopePreview from "@/components/client-area/ScopePreview";
+import ProjectTimeline from "@/components/client-area/ProjectTimeline";
+import ProjectDashboard from "@/components/client-area/ProjectDashboard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 
 const ClientArea = () => {
   const navigate = useNavigate();
@@ -92,26 +91,40 @@ const ClientArea = () => {
   return (
     <SolutionLayout
       title="Área do Cliente"
-      subtitle="Configure seu site em poucos passos"
-      className="max-w-4xl"
+      subtitle="Acompanhe o progresso do seu projeto"
+      className="max-w-7xl"
     >
-      <div className="space-y-8">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex-1 mr-4">
-            <Progress value={((currentStep + 1) / steps.length) * 100} className="h-2" />
-          </div>
-          <span className="text-sm text-gray-500">
-            Etapa {currentStep + 1} de {steps.length}
-          </span>
-        </div>
+      <Tabs defaultValue="project" className="w-full">
+        <TabsList className="w-full justify-start mb-8">
+          <TabsTrigger value="project">Visão Geral</TabsTrigger>
+          <TabsTrigger value="setup">Configuração</TabsTrigger>
+        </TabsList>
 
-        <div className="grid gap-6">
-          {steps.map((step, index) => (
-            <StepCard
-              key={step.id}
-              step={step}
-              isActive={index === currentStep}
-            >
+        <TabsContent value="project">
+          <div className="space-y-8">
+            <ProjectDashboard />
+            <ProjectTimeline />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="setup">
+          <div className="space-y-8">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex-1 mr-4">
+                <Progress value={((currentStep + 1) / steps.length) * 100} className="h-2" />
+              </div>
+              <span className="text-sm text-gray-500">
+                Etapa {currentStep + 1} de {steps.length}
+              </span>
+            </div>
+
+            <div className="grid gap-6">
+              {steps.map((step, index) => (
+                <StepCard
+                  key={step.id}
+                  step={step}
+                  isActive={index === currentStep}
+                >
               {index === 0 && (
                 <div className="relative h-[600px] w-full">
                   {themes.map((theme, idx) => (
@@ -182,10 +195,12 @@ const ClientArea = () => {
                   </div>
                 </Card>
               )}
-            </StepCard>
-          ))}
-        </div>
-      </div>
+                </StepCard>
+              ))}
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <ScopePreview
         selectedTheme={selectedTheme}
