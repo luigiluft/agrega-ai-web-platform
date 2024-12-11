@@ -18,27 +18,6 @@ const CalculatorResults = ({
 }: CalculatorResultsProps) => {
   return (
     <div className="space-y-6">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="space-y-4 p-6 rounded-xl bg-gradient-to-br from-white to-orange-50 border border-orange-100 shadow-lg backdrop-blur-sm"
-      >
-        <Label className="text-lg font-semibold text-gray-800">Faturamento Mensal Estimado</Label>
-        <div className="relative">
-          <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 h-4 w-4" />
-          <Input
-            type="number"
-            value={monthlyRevenue}
-            onChange={(e) => setMonthlyRevenue(e.target.value)}
-            min="0"
-            step="1000"
-            className="pl-10 bg-white/50 border-orange-200 focus:border-orange-500 focus:ring-orange-500 transition-all duration-300"
-            placeholder="Digite o faturamento mensal estimado"
-          />
-        </div>
-      </motion.div>
-
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -107,6 +86,27 @@ const CalculatorResults = ({
           </Card>
         </motion.div>
       </AnimatePresence>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-4 p-6 rounded-xl bg-gradient-to-br from-white to-orange-50 border border-orange-100 shadow-lg backdrop-blur-sm"
+      >
+        <Label className="text-lg font-semibold text-gray-800">Faturamento Mensal Estimado</Label>
+        <div className="relative">
+          <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 h-4 w-4" />
+          <Input
+            type="number"
+            value={monthlyRevenue}
+            onChange={(e) => setMonthlyRevenue(e.target.value)}
+            min="0"
+            step="1000"
+            className="pl-10 bg-white/50 border-orange-200 focus:border-orange-500 focus:ring-orange-500 transition-all duration-300"
+            placeholder="Digite o faturamento mensal estimado"
+          />
+        </div>
+      </motion.div>
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
