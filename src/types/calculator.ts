@@ -26,4 +26,9 @@ export interface CalculatorResultsProps {
   meetingHours: number;
   campaignHours: number;
   functionalityHours: number;
+  baseImplementationCost?: string;
+  baseMaintenanceCost?: string;
+  totalHours?: number;
+  rouletteDiscount?: number;
+  totalImplementationHours?: number;
 }

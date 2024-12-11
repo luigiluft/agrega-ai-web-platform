@@ -17,6 +17,10 @@ const DynamicCalculator = () => {
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
+  const getFeatureHours = (feature: Feature): number => {
+    return feature.hours || feature.monthlyHours || 0;
+  };
+
   const calculatePrices = () => {
     const implementationHours = calculatorCategories
       .filter(cat => !['maintenance', 'meetings', 'campaigns'].includes(cat.id))
@@ -52,6 +56,10 @@ const DynamicCalculator = () => {
       maintenancePrice: maintenancePrice.toFixed(2),
       revenueShare: revenueShare.toFixed(2),
       revenueSharePercent: revenueSharePercent.toString(),
+      baseImplementationCost: (implementationHours * rate).toFixed(2),
+      baseMaintenanceCost: (monthlyHours * monthlyRate).toFixed(2),
+      totalHours: implementationHours + monthlyHours,
+      totalImplementationHours: implementationHours,
     };
   };
 
@@ -66,8 +74,6 @@ const DynamicCalculator = () => {
   const filteredCategories = activeCategory === "all" 
     ? calculatorCategories 
     : calculatorCategories.filter(category => category.id === activeCategory);
-
-  const getFeatureHours = (feature: Feature) => feature.hours || feature.monthlyHours || 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -158,7 +164,7 @@ const DynamicCalculator = () => {
           <div className="space-y-6">
             <div className="sticky top-24">
               <DeveloperAnimation 
-                totalHours={parseInt(prices.implementationPrice) / 150}
+                totalHours={prices.totalHours || 0}
                 layoutHours={calculatorCategories[0].features
                   .filter(f => selectedFeatures.includes(f.id))
                   .reduce((sum, f) => sum + (f.hours || 0), 0)}
