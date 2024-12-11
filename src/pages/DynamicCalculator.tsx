@@ -33,7 +33,7 @@ const DynamicCalculator = () => {
       .reduce((total, category) => {
         return total + category.features
           .filter(feature => selectedFeatures.includes(feature.id))
-          .reduce((sum, feature) => sum + (getFeatureHours(feature) || 0), 0);
+          .reduce((sum, feature) => sum + getFeatureHours(feature), 0);
       }, 0);
 
     const monthlyHours = calculatorCategories
@@ -41,7 +41,7 @@ const DynamicCalculator = () => {
       .reduce((total, category) => {
         return total + category.features
           .filter(feature => selectedFeatures.includes(feature.id))
-          .reduce((sum, feature) => sum + (getFeatureHours(feature) || 0), 0);
+          .reduce((sum, feature) => sum + getFeatureHours(feature), 0);
       }, 0);
 
     const rate = 150;
