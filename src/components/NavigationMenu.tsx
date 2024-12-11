@@ -94,7 +94,7 @@ const NavigationMenuDemo = () => {
                 <ListItem href="/calculadora" title="Calculadora por Horas">
                   Calcule o valor do projeto baseado em horas de trabalho
                 </ListItem>
-                <ListItem href="/calculadora-dinamica" title="Calculadora Dinâmica">
+                <ListItem href="/calculadora" title="Calculadora Dinâmica">
                   Selecione funcionalidades específicas para seu projeto
                 </ListItem>
               </ul>
