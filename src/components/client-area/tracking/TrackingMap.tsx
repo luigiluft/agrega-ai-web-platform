@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
+import type { LatLngExpression } from 'leaflet';
 
 // Fix for default marker icon
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -47,6 +48,8 @@ const TrackingMap = () => {
     setFilteredDeliveries(filtered);
   };
 
+  const defaultCenter: LatLngExpression = [-23.5505, -46.6333]; // São Paulo as default center
+
   return (
     <Card className="p-6">
       <div className="mb-6">
@@ -63,13 +66,14 @@ const TrackingMap = () => {
 
       <div className="h-[600px] relative">
         <MapContainer
-          center={[-23.5505, -46.6333]} // São Paulo as default center
+          center={defaultCenter}
           zoom={4}
           style={{ height: '100%', width: '100%' }}
+          scrollWheelZoom={false}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attributionUrl='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           {filteredDeliveries.map((delivery) => (
             <Marker
