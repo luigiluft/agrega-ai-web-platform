@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CalculatorHeader from "@/components/calculator/CalculatorHeader";
 import CalculatorResults from "@/components/calculator/CalculatorResults";
 import DeveloperAnimation from "@/components/calculator/DeveloperAnimation";
-import { Feature, Category } from "@/types/calculator";
+import { Feature } from "@/types/calculator";
 import { motion } from "framer-motion";
 
 const DynamicCalculator = () => {
@@ -18,7 +18,9 @@ const DynamicCalculator = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const getFeatureHours = (feature: Feature): number => {
-    return feature.hours || feature.monthlyHours || 0;
+    if (feature.hours !== undefined) return feature.hours;
+    if (feature.monthlyHours !== undefined) return feature.monthlyHours;
+    return 0;
   };
 
   const calculatePrices = () => {
@@ -75,6 +77,8 @@ const DynamicCalculator = () => {
     ? calculatorCategories 
     : calculatorCategories.filter(category => category.id === activeCategory);
 
+  // ... keep existing code (JSX for the calculator layout)
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <NavigationMenuDemo />
@@ -124,7 +128,7 @@ const DynamicCalculator = () => {
                     </span>
                   </h3>
                   <div className="space-y-4">
-                    {category.features.map((feature: Feature) => (
+                    {category.features.map((feature) => (
                       <motion.div 
                         key={feature.id} 
                         className="flex items-start space-x-3 p-3 rounded-lg hover:bg-orange-50/50 transition-colors duration-300"
@@ -167,19 +171,19 @@ const DynamicCalculator = () => {
                 totalHours={prices.totalHours || 0}
                 layoutHours={calculatorCategories[0].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.hours || 0), 0)}
+                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
                 maintenanceHours={calculatorCategories[2].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.monthlyHours || 0), 0)}
+                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
                 meetingHours={calculatorCategories[3].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.monthlyHours || 0), 0)}
+                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
                 campaignHours={calculatorCategories[4].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.monthlyHours || 0), 0)}
+                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
                 functionalityHours={calculatorCategories[1].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.hours || 0), 0)}
+                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
                 selectedPlanName="Plano Personalizado"
               />
 

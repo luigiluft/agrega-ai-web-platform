@@ -18,8 +18,8 @@ export interface CalculatorResultsProps {
   maintenancePrice: string;
   revenueShare: string;
   revenueSharePercent: string;
-  monthlyRevenue: string;
-  setMonthlyRevenue: (value: string) => void;
+  monthlyRevenue?: string;
+  setMonthlyRevenue?: (value: string) => void;
   onContactClick: () => void;
   layoutHours: number;
   maintenanceHours: number;
@@ -31,4 +31,15 @@ export interface CalculatorResultsProps {
   totalHours?: number;
   rouletteDiscount?: number;
   totalImplementationHours?: number;
+  prices?: {
+    implementationPrice: string;
+    maintenancePrice: string;
+    revenueShare: string;
+    baseImplementationCost: string;
+    baseMaintenanceCost: string;
+    revenueSharePercent: string;
+    totalHours: number;
+    rouletteDiscount: number;
+    totalImplementationHours: number;
+  };
 }
