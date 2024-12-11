@@ -84,6 +84,12 @@ const NavigationMenuDemo = () => {
             </Link>
           </NavigationMenuItem>
 
+          <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
+            <Link to="/contato" className="text-base font-medium hover:text-primary transition-colors block h-10 flex items-center">
+              Contato
+            </Link>
+          </NavigationMenuItem>
+
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0 ml-auto">
             <NavigationMenuTrigger className="text-base font-medium h-10 bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90">
               <Sparkles className="w-4 h-4 mr-2" />

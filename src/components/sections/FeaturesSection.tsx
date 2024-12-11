@@ -1,59 +1,78 @@
-import { Settings, Zap, Network, Scale } from "lucide-react";
+import { Settings, Zap, BarChart3, Scale, Network, HeadsetIcon } from "lucide-react";
 
 const FeaturesSection = () => {
-  const features = [
-    {
-      icon: Settings,
-      title: "Escalabilidade com Economia",
-      description: "Cresça seu negócio de forma sustentável com nossa plataforma que se adapta às suas necessidades.",
-      animation: "group-hover:animate-[spin_3s_linear_infinite]"
-    },
-    {
-      icon: Zap,
-      title: "Suporte Especializado",
-      description: "Conte com nossa equipe de especialistas para suporte técnico e estratégico.",
-      animation: "group-hover:animate-pulse group-hover:scale-110 transition-transform"
-    },
-    {
-      icon: Network,
-      title: "Integrações Nativas",
-      description: "Conecte-se facilmente com as principais plataformas e serviços do mercado.",
-      animation: "group-hover:scale-125 transition-transform duration-300"
-    },
-    {
-      icon: Scale,
-      title: "Custos Transparentes",
-      description: "Preços claros e sem surpresas, pague apenas pelo que usar.",
-      animation: "group-hover:[animation:balance_1s_ease-in-out_infinite]"
-    },
-  ];
-
-  // Add this CSS animation to your global styles or index.css
-  const style = document.createElement('style');
-  style.textContent = `
-  @keyframes balance {
-    0%, 100% { transform: rotate(-12deg); }
-    50% { transform: rotate(12deg); }
-  }
-  `;
-  document.head.appendChild(style);
-
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-          Nossas Funcionalidades
+          Saiba como a gente <span className="text-primary">agregaí</span> na sua empresa
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
-              <div className={`p-6 rounded-lg shadow-lg transition-transform duration-300 ${feature.animation}`}>
-                <feature.icon className="h-12 w-12 text-primary mb-4" />
-              </div>
-              <h3 className="text-lg font-semibold mt-4">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground">{feature.description}</p>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <Settings className="w-7 h-7 text-primary transition-transform duration-700 group-hover:rotate-180" />
             </div>
-          ))}
+            <h3 className="text-xl font-bold mb-4 text-secondary">Personalização Total</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Mais de 3.500 extensões disponíveis e 30 temas prontos para uso. 
+              Adapte sua loja virtual exatamente como você precisa, com flexibilidade total.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <Zap className="w-7 h-7 text-primary transition-all duration-500 group-hover:scale-125 group-hover:opacity-0 group-hover:animate-pulse" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Agilidade na Implementação</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Comece a vender online em semanas, não meses. 
+              Processos otimizados e equipe especializada para uma implementação rápida e eficiente.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <BarChart3 className="w-7 h-7 text-primary transition-transform duration-500 group-hover:translate-y-[-4px]" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Escalabilidade com Economia</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Infraestrutura que cresce com seu negócio, com custos variáveis que diminuem conforme seu volume aumenta. 
+              De 100 a 100.000 pedidos por mês, sua operação sempre otimizada.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <Scale className="w-7 h-7 text-primary transition-transform duration-500 group-hover:rotate-12" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Custos Transparentes</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Sem surpresas nas faturas. Planos flexíveis que se adaptam ao seu momento, 
+              com previsibilidade de custos para crescer com segurança.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <Network className="w-7 h-7 text-primary transition-all duration-500 group-hover:scale-110" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Integrações Nativas</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Conecte-se facilmente com ERPs, marketplaces e sistemas de gestão. 
+              Automatize processos e centralize suas operações em um só lugar.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <HeadsetIcon className="w-7 h-7 text-primary transition-transform duration-500 group-hover:scale-x-[-1]" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Suporte Especializado</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Time dedicado ao seu sucesso, com experiência em seu segmento. 
+              Suporte técnico e consultoria de negócios sempre disponíveis.
+            </p>
+          </div>
         </div>
       </div>
     </section>
