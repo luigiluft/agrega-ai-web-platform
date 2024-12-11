@@ -1,3 +1,4 @@
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -125,7 +126,7 @@ const TrackingMap = () => {
     setFilteredDeliveries(filtered);
   };
 
-  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
+  const mapCenter: LatLngExpression = [-23.5505, -46.6333];
 
   const createMarkerIcon = (status: DeliveryStatus) => {
     return new L.Icon({
@@ -194,19 +195,19 @@ const TrackingMap = () => {
       <div className="h-[600px] relative">
         <MapContainer
           className="h-full w-full"
-          defaultCenter={defaultCenter}
+          center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attributionControl={true}
           />
           {filteredDeliveries.map((delivery) => (
             <Marker
               key={delivery.id}
-              position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-              icon={createMarkerIcon(delivery.status)}
+              position={[delivery.currentLocation.lat, delivery.currentLocation.lng] as LatLngExpression}
+              icon={createMarkerIcon(delivery.status) as L.Icon}
             >
               <Popup>
                 <div className="p-2 space-y-2">
