@@ -18,10 +18,10 @@ const DynamicCalculator = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const getFeatureHours = (feature: Feature): number => {
-    if ('hours' in feature && typeof feature.hours === 'number') {
+    if (feature.hours !== undefined) {
       return feature.hours;
     }
-    if ('monthlyHours' in feature && typeof feature.monthlyHours === 'number') {
+    if (feature.monthlyHours !== undefined) {
       return feature.monthlyHours;
     }
     return 0;
@@ -33,7 +33,7 @@ const DynamicCalculator = () => {
       .reduce((total, category) => {
         return total + category.features
           .filter(feature => selectedFeatures.includes(feature.id))
-          .reduce((sum, feature) => sum + (feature.hours || 0), 0);
+          .reduce((sum, feature) => sum + (getFeatureHours(feature) || 0), 0);
       }, 0);
 
     const monthlyHours = calculatorCategories
@@ -41,7 +41,7 @@ const DynamicCalculator = () => {
       .reduce((total, category) => {
         return total + category.features
           .filter(feature => selectedFeatures.includes(feature.id))
-          .reduce((sum, feature) => sum + (feature.monthlyHours || 0), 0);
+          .reduce((sum, feature) => sum + (getFeatureHours(feature) || 0), 0);
       }, 0);
 
     const rate = 150;
