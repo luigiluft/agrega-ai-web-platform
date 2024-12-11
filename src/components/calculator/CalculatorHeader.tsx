@@ -1,15 +1,13 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const CalculatorHeader = () => {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="text-center max-w-3xl mx-auto mb-24 pt-16"
+      className="text-center mb-12 mt-8"
     >
-      <h1 className="text-5xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+      <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
         Calculadora de Preços
       </h1>
       <p className="text-lg text-gray-600 max-w-2xl mx-auto">

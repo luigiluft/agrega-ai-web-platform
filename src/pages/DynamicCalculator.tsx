@@ -85,7 +85,7 @@ const DynamicCalculator = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <NavigationMenuDemo />
       
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-8 lg:py-12">
         <CalculatorHeader />
 
         <Tabs defaultValue="all" className="w-full mb-8">
@@ -110,8 +110,8 @@ const DynamicCalculator = () => {
           </TabsList>
         </Tabs>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          <div className="space-y-6 order-2 lg:order-1">
             {filteredCategories.map((category) => (
               <motion.div
                 key={category.id}
@@ -167,8 +167,8 @@ const DynamicCalculator = () => {
             ))}
           </div>
 
-          <div className="space-y-6">
-            <div className="sticky top-24">
+          <div className="lg:sticky lg:top-4 h-fit order-1 lg:order-2">
+            <div className="space-y-6">
               <DeveloperAnimation 
                 totalHours={prices.totalHours || 0}
                 layoutHours={calculatorCategories[0].features
