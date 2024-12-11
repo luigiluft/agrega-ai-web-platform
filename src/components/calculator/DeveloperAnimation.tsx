@@ -58,42 +58,42 @@ const DeveloperAnimation = ({
   useEffect(() => {
     const newCodeLines: CodeLine[] = [];
     
-    // Always show Hello Client line
+    // Always show welcome message with selected plan
     if (selectedPlanName) {
       newCodeLines.push({ 
-        code: `console.log("Hello Client! Welcome to ${selectedPlanName} Plan");`,
+        code: `console.log("🚀 Iniciando projeto: ${selectedPlanName}");`,
         type: 'layout' 
       });
     }
     
     if (layoutHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('layout'),
+        code: `// Personalizando layout - ${layoutHours}h\n${getCodeLineForType('layout')}`,
         type: 'layout' 
+      });
+    }
+    if (functionalityHours > 0) {
+      newCodeLines.push({ 
+        code: `// Implementando funcionalidades - ${functionalityHours}h\n${getCodeLineForType('functionality')}`,
+        type: 'functionality' 
       });
     }
     if (maintenanceHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('maintenance'),
+        code: `// Configurando manutenção - ${maintenanceHours}h\n${getCodeLineForType('maintenance')}`,
         type: 'maintenance' 
       });
     }
     if (meetingHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('meeting'),
+        code: `// Agendando reuniões - ${meetingHours}h\n${getCodeLineForType('meeting')}`,
         type: 'meeting' 
       });
     }
     if (campaignHours > 0) {
       newCodeLines.push({ 
-        code: getCodeLineForType('campaign'),
+        code: `// Planejando campanhas - ${campaignHours}h\n${getCodeLineForType('campaign')}`,
         type: 'campaign' 
-      });
-    }
-    if (functionalityHours > 0) {
-      newCodeLines.push({ 
-        code: getCodeLineForType('functionality'),
-        type: 'functionality' 
       });
     }
 
@@ -106,7 +106,7 @@ const DeveloperAnimation = ({
     if (!isTyping) return;
 
     const typeCharacters = async () => {
-      const duration = 4000; // 4 seconds total
+      const duration = 4000;
       const totalChars = codeLines.reduce((sum, line) => sum + line.code.length, 0);
       const delayPerChar = duration / totalChars;
 
@@ -129,15 +129,15 @@ const DeveloperAnimation = ({
 
   return (
     <div className="relative">
-      <div className="rounded-lg overflow-hidden shadow-xl bg-secondary border border-secondary/20">
-        <div className="p-4 border-b border-secondary/20 bg-secondary/50">
+      <div className="rounded-lg overflow-hidden shadow-xl bg-gradient-to-br from-secondary/80 to-secondary border border-secondary/20">
+        <div className="p-4 border-b border-secondary/20 bg-secondary/50 backdrop-blur-sm">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
           </div>
         </div>
-        <div className="p-6 space-y-2 min-h-[200px] font-mono">
+        <div className="p-6 space-y-2 min-h-[200px] font-mono bg-gradient-to-br from-secondary/5 to-secondary/10 backdrop-blur-sm">
           {typedText.map((text, index) => (
             <div 
               key={index}

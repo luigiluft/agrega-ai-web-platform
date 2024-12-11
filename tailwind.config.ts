@@ -84,6 +84,10 @@ export default {
           "100%": { transform: "scale(1)", opacity: "1" },
         },
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-calculator': 'linear-gradient(to right, #8B5CF6, #D946EF)',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
