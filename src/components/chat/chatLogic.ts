@@ -27,36 +27,37 @@ export const determinePlan = (profile: UserProfile): PlanType => {
 
 export const chatFlow = {
   initial: {
-    content: "Olá, bem-vindo(a) à Agrega ai! Vou te ajudar a encontrar a melhor solução digital para o seu negócio. Posso começar entendendo qual é o seu modelo de atuação online?",
+    content: "Oi! 👋 Que bom te ver por aqui! Sou a Ana, vou te ajudar a encontrar a solução perfeita pra você decolar no digital. Me conta, como você planeja vender online?",
     options: [
-      { label: "B2C - Vendo direto para consumidores", value: "B2C", nextQuestion: "products" },
-      { label: "B2B - Vendo para empresas", value: "B2B", nextQuestion: "products" },
-      { label: "D2C - Vendo sem intermediários", value: "D2C", nextQuestion: "products" },
-      { label: "Marketplace - Múltiplos vendedores", value: "Marketplace", nextQuestion: "products" },
-      { label: "Fullcommerce - Operação complexa", value: "Fullcommerce", nextQuestion: "products" }
+      { label: "Vendo direto pro consumidor final", value: "B2C", nextQuestion: "products" },
+      { label: "Vendo pra outras empresas", value: "B2B", nextQuestion: "products" },
+      { label: "Quero vender sem intermediários", value: "D2C", nextQuestion: "products" },
+      { label: "Preciso de um marketplace com vários vendedores", value: "Marketplace", nextQuestion: "products" },
+      { label: "Busco uma operação completa e personalizada", value: "Fullcommerce", nextQuestion: "products" }
     ]
   },
   products: {
-    content: "Quantos produtos você planeja ter na sua loja online?",
+    content: "Legal! E quantos produtos você pretende ter na sua loja?",
     options: [
-      { label: "Até 1.000 produtos", value: "1000", nextQuestion: "integrations" },
-      { label: "Até 10.000 produtos", value: "10000", nextQuestion: "integrations" },
-      { label: "Quantidade ilimitada", value: "unlimited", nextQuestion: "integrations" }
+      { label: "Até mil produtos tá ótimo", value: "1000", nextQuestion: "integrations" },
+      { label: "Uns 10 mil produtos", value: "10000", nextQuestion: "integrations" },
+      { label: "Quero sem limites!", value: "unlimited", nextQuestion: "integrations" }
     ]
   },
   integrations: {
-    content: "Você precisa de integrações avançadas, customizações específicas ou deseja gerenciar múltiplos canais?",
+    content: "Entendi! Agora me diz: você precisa de integrações especiais ou quer vender em vários canais diferentes?",
     options: [
-      { label: "Requisitos básicos", value: "basic", nextQuestion: "final" },
-      { label: "Integrações intermediárias", value: "intermediate", nextQuestion: "final" },
-      { label: "Requisitos altamente customizados", value: "advanced", nextQuestion: "final" }
+      { label: "Nada muito complexo", value: "basic", nextQuestion: "final" },
+      { label: "Preciso de algumas integrações", value: "intermediate", nextQuestion: "final" },
+      { label: "Quero tudo personalizado", value: "advanced", nextQuestion: "final" }
     ]
   },
   final: {
-    content: "Ótimo! Com base nas suas respostas, já sei qual é a melhor solução para você. Gostaria de falar com um de nossos consultores para uma proposta detalhada?",
+    content: "Perfeito! Já sei qual é a melhor solução pra você. Como quer prosseguir?",
     options: [
-      { label: "Sim, quero falar com um consultor", value: "consultant" },
-      { label: "Não, apenas mais informações por email", value: "email" }
+      { label: "💬 Falar com um consultor", value: "consultant" },
+      { label: "📧 Receber mais informações por email", value: "email" },
+      { label: "🧮 Calcular o custo exato do meu site", value: "calculator" }
     ]
   }
 };

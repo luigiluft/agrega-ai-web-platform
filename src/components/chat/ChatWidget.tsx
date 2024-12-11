@@ -4,6 +4,7 @@ import { Message, UserProfile } from "./types";
 import { chatFlow, determinePlan } from "./chatLogic";
 import ChatMessage from "./ChatMessage";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +12,7 @@ const ChatWidget = () => {
   const [userProfile, setUserProfile] = useState<UserProfile>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -55,18 +57,23 @@ const ChatWidget = () => {
     }
 
     // Handle final actions
-    if (value === "consultant" || value === "email") {
+    if (value === "consultant") {
       const plan = determinePlan(userProfile);
       toast({
         title: "Atendimento iniciado",
-        description: `Em breve nossa equipe entrará em contato para apresentar o plano ${plan}.`,
+        description: "Em breve nossa equipe entrará em contato! 😊",
       });
       setIsOpen(false);
-      return;
-    }
-
-    // Add next question if available
-    if (nextQuestion && chatFlow[nextQuestion as keyof typeof chatFlow]) {
+    } else if (value === "email") {
+      toast({
+        title: "Email registrado",
+        description: "Você receberá mais informações em breve! 📧",
+      });
+      setIsOpen(false);
+    } else if (value === "calculator") {
+      navigate("/calculadora-dinamica");
+      setIsOpen(false);
+    } else if (nextQuestion && chatFlow[nextQuestion as keyof typeof chatFlow]) {
       const next = chatFlow[nextQuestion as keyof typeof chatFlow];
       setTimeout(() => {
         setMessages((prev) => [
@@ -92,7 +99,7 @@ const ChatWidget = () => {
       </button>
 
       {isOpen && (
-        <div className="fixed bottom-20 right-4 w-96 h-[600px] bg-white rounded-lg shadow-xl flex flex-col">
+        <div className="fixed bottom-20 right-4 w-96 h-[600px] bg-white rounded-lg shadow-xl flex flex-col animate-fade-up">
           <div className="p-4 bg-primary text-white rounded-t-lg flex justify-between items-center">
             <h3 className="font-medium">Chat com Ana</h3>
             <button

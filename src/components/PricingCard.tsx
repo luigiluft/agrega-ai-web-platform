@@ -27,8 +27,8 @@ const PricingCard = ({
     <div 
       className={`
         p-8 rounded-xl shadow-lg bg-white 
-        transform transition-all duration-500
-        ${isHovered ? 'scale-105 shadow-xl' : ''}
+        transform transition-all duration-300 ease-in-out
+        ${isHovered ? 'scale-[1.02] shadow-xl' : ''}
         ${isPopular ? 'ring-2 ring-primary relative' : ''}
       `}
       onMouseEnter={() => setIsHovered(true)}
