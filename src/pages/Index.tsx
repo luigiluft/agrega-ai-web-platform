@@ -9,7 +9,7 @@ import ImplementationTimeline from "../components/sections/ImplementationTimelin
 import CTASection from "../components/sections/CTASection";
 import FAQSection from "../components/sections/FAQSection";
 import { Link } from "react-router-dom";
-import { Calculator, Sparkles } from "lucide-react";
+import { Calculator } from "lucide-react";
 
 const Index = () => {
   return (
@@ -25,28 +25,17 @@ const Index = () => {
                 Descubra o Valor Ideal para Sua Plataforma
               </h2>
               <p className="text-lg text-gray-600">
-                Use nossas calculadoras inteligentes para simular o investimento perfeito para seu e-commerce
+                Use nossa calculadora inteligente para simular o investimento perfeito para seu e-commerce
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex justify-center">
               <Link
                 to="/calculadora"
-                className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl shadow-lg hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-1"
+                className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-1"
               >
                 <Calculator className="w-5 h-5" />
-                <span className="font-semibold">Calculadora Express</span>
-                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs px-2 py-1 rounded-full">
-                  Rápida
-                </span>
-              </Link>
-              
-              <Link
-                to="/calculadora-dinamica"
-                className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-accent to-accent-dark text-white rounded-xl shadow-lg hover:shadow-accent/25 transition-all duration-300 hover:-translate-y-1"
-              >
-                <Sparkles className="w-5 h-5" />
-                <span className="font-semibold">Calculadora Detalhada</span>
+                <span className="font-semibold">Calcular Investimento</span>
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs px-2 py-1 rounded-full">
                   Completa
                 </span>

@@ -1,198 +1,211 @@
 export const calculatorCategories = [
   {
-    id: "layout",
-    name: "Personalização de Layout",
-    totalHours: 120,
+    id: "briefing",
+    name: "Briefing e Planejamento",
+    totalHours: 20,
     features: [
       {
-        id: "layout-1",
-        name: "Design System Personalizado",
-        description: "Criação de um sistema de design exclusivo com componentes, cores e tipografia.",
-        hours: 40
+        id: "brief-1",
+        name: "Reunião e Documentação do Briefing",
+        description: "Reuniões iniciais e documentação completa do projeto",
+        hours: 4
       },
       {
-        id: "layout-2",
-        name: "Landing Pages",
-        description: "Desenvolvimento de páginas de destino otimizadas para conversão.",
-        hours: 20
+        id: "brief-2",
+        name: "Definição de Catálogo e Estrutura",
+        description: "Definição do catálogo, categorias e atributos dos produtos",
+        hours: 2
       },
       {
-        id: "layout-3",
-        name: "Design Responsivo Avançado",
-        description: "Layout adaptativo para todos os dispositivos com animações e interações.",
-        hours: 30
-      },
-      {
-        id: "layout-4",
-        name: "Microsites e Páginas Especiais",
-        description: "Páginas temáticas para campanhas e datas comemorativas.",
-        hours: 15
-      },
-      {
-        id: "layout-5",
-        name: "Otimização de UX/UI",
-        description: "Melhorias na experiência do usuário e interface baseadas em pesquisas.",
-        hours: 15
+        id: "brief-3",
+        name: "Gestão de Conteúdo",
+        description: "Criação e importação de planilhas, gestão de fotos e indexação",
+        hours: 14
       }
     ]
   },
   {
-    id: "functionality",
-    name: "Implementação de Funcionalidades",
-    totalHours: 200,
+    id: "layout",
+    name: "Design e Layout",
+    totalHours: 60,
     features: [
       {
-        id: "func-1",
-        name: "Sistema de Vendas Multicanal",
-        description: "Integração com marketplaces, redes sociais e plataformas de vendas.",
-        hours: 40
+        id: "layout-1",
+        name: "Design da Homepage",
+        description: "Criação e implementação do layout da página inicial",
+        hours: 10
       },
       {
-        id: "func-2",
-        name: "Gestão de Estoque Avançada",
-        description: "Controle de estoque multicanalidade com previsão de demanda.",
+        id: "layout-2",
+        name: "Design das Páginas Institucionais",
+        description: "Layout de páginas como Sobre, FAQ, Políticas",
+        hours: 15
+      },
+      {
+        id: "layout-3",
+        name: "Design do Catálogo",
+        description: "Layout das páginas de categoria e produtos",
+        hours: 15
+      },
+      {
+        id: "layout-4",
+        name: "Design do Checkout",
+        description: "Layout do carrinho, checkout e páginas de conta",
+        hours: 20
+      }
+    ]
+  },
+  {
+    id: "implementation",
+    name: "Implementação",
+    totalHours: 80,
+    features: [
+      {
+        id: "impl-1",
+        name: "Ambiente e Homepage",
+        description: "Configuração do ambiente e implementação da página inicial",
+        hours: 8
+      },
+      {
+        id: "impl-2",
+        name: "Páginas Institucionais",
+        description: "Implementação das páginas institucionais e políticas",
+        hours: 12
+      },
+      {
+        id: "impl-3",
+        name: "Sistema de Produtos",
+        description: "Implementação do catálogo e páginas de produtos",
         hours: 30
       },
       {
-        id: "func-3",
-        name: "Automação de Marketing",
-        description: "Campanhas automatizadas, remarketing e jornada do cliente.",
-        hours: 25
+        id: "impl-4",
+        name: "Sistema de Vendas",
+        description: "Implementação do carrinho, checkout e área do cliente",
+        hours: 30
+      }
+    ]
+  },
+  {
+    id: "configuration",
+    name: "Configurações",
+    totalHours: 40,
+    features: [
+      {
+        id: "config-1",
+        name: "SEO e Analytics",
+        description: "Configuração de SEO, GTM e regras de rastreamento",
+        hours: 12
       },
       {
-        id: "func-4",
-        name: "Sistema de Fidelidade",
-        description: "Programa de pontos, cashback e benefícios para clientes.",
-        hours: 20
+        id: "config-2",
+        name: "Integrações de Pagamento",
+        description: "Configuração de meios de pagamento e processamento",
+        hours: 8
       },
       {
-        id: "func-5",
-        name: "Checkout Personalizado",
-        description: "Processo de compra otimizado com múltiplas formas de pagamento.",
-        hours: 35
+        id: "config-3",
+        name: "Integrações Logísticas",
+        description: "Configuração de fretes, entregas e integrações",
+        hours: 10
       },
       {
-        id: "func-6",
-        name: "Área do Cliente",
-        description: "Portal personalizado para gestão de pedidos e preferências.",
-        hours: 25
+        id: "config-4",
+        name: "Configurações Avançadas",
+        description: "LGPD, emails, RMA e outras configurações",
+        hours: 10
+      }
+    ]
+  },
+  {
+    id: "testing",
+    name: "Testes e Qualidade",
+    totalHours: 30,
+    features: [
+      {
+        id: "test-1",
+        name: "Testes Funcionais",
+        description: "Testes de usabilidade, links e formulários",
+        hours: 10
       },
       {
-        id: "func-7",
-        name: "Inteligência Artificial",
-        description: "Recomendações personalizadas e atendimento automatizado.",
-        hours: 25
+        id: "test-2",
+        name: "Testes de E-commerce",
+        description: "Testes de checkout, pagamentos e entregas",
+        hours: 12
+      },
+      {
+        id: "test-3",
+        name: "Testes de Integração",
+        description: "Testes de APIs, emails e integrações",
+        hours: 8
+      }
+    ]
+  },
+  {
+    id: "golive",
+    name: "Go Live",
+    totalHours: 21,
+    features: [
+      {
+        id: "golive-1",
+        name: "Checklists",
+        description: "Execução dos checklists de pré, durante e pós go-live",
+        hours: 15
+      },
+      {
+        id: "golive-2",
+        name: "Documentação",
+        description: "Atualização de status e documentação final",
+        hours: 6
       }
     ]
   },
   {
     id: "maintenance",
     name: "Sustentação Mensal",
-    totalHours: 40,
     features: [
       {
         id: "maint-1",
-        name: "Monitoramento 24/7",
-        description: "Acompanhamento contínuo de performance e disponibilidade.",
+        name: "Suporte Técnico",
+        description: "Suporte técnico e monitoramento de bugs",
         monthlyHours: 10
       },
       {
         id: "maint-2",
-        name: "Suporte Técnico Premium",
-        description: "Atendimento prioritário com SLA garantido.",
-        monthlyHours: 8
+        name: "Atualizações",
+        description: "Melhorias de usabilidade e correções",
+        monthlyHours: 11
       },
       {
         id: "maint-3",
-        name: "Atualizações de Segurança",
-        description: "Proteção contra vulnerabilidades e conformidade com LGPD.",
-        monthlyHours: 6
-      },
-      {
-        id: "maint-4",
-        name: "Otimização de Performance",
-        description: "Melhorias contínuas em velocidade e experiência.",
-        monthlyHours: 8
-      },
-      {
-        id: "maint-5",
-        name: "Backup e Recuperação",
-        description: "Sistema de backup automatizado e plano de contingência.",
-        monthlyHours: 8
-      }
-    ]
-  },
-  {
-    id: "meetings",
-    name: "Gestão e Alinhamento",
-    totalHours: 30,
-    features: [
-      {
-        id: "meet-1",
-        name: "Consultoria Estratégica",
-        description: "Reuniões mensais para análise de resultados e planejamento.",
-        monthlyHours: 6
-      },
-      {
-        id: "meet-2",
-        name: "Gestão de Projetos",
-        description: "Acompanhamento dedicado com gestor de sucesso.",
-        monthlyHours: 8
-      },
-      {
-        id: "meet-3",
-        name: "Treinamentos",
-        description: "Capacitação contínua da equipe e workshops.",
-        monthlyHours: 6
-      },
-      {
-        id: "meet-4",
-        name: "Análise de Dados",
-        description: "Relatórios personalizados e insights estratégicos.",
-        monthlyHours: 5
-      },
-      {
-        id: "meet-5",
-        name: "Planejamento de Growth",
-        description: "Estratégias de crescimento e otimização de conversão.",
+        name: "Configurações",
+        description: "Ajustes em regras de negócio e promoções",
         monthlyHours: 5
       }
     ]
   },
   {
-    id: "campaigns",
-    name: "Marketing e Campanhas",
-    totalHours: 40,
+    id: "operations",
+    name: "Operações Mensais",
     features: [
       {
-        id: "camp-1",
-        name: "SEO Avançado",
-        description: "Otimização contínua para mecanismos de busca.",
-        monthlyHours: 10
+        id: "ops-1",
+        name: "Faturamento",
+        description: "Processamento de NFs, cancelamentos e devoluções",
+        monthlyHours: 45
       },
       {
-        id: "camp-2",
-        name: "Gestão de Mídias Sociais",
-        description: "Criação e gestão de conteúdo para redes sociais.",
-        monthlyHours: 8
+        id: "ops-2",
+        name: "Logística",
+        description: "Gestão de entregas e resolução de problemas",
+        monthlyHours: 25
       },
       {
-        id: "camp-3",
-        name: "Email Marketing",
-        description: "Criação e automação de campanhas de email.",
-        monthlyHours: 6
-      },
-      {
-        id: "camp-4",
-        name: "Google Ads",
-        description: "Gestão de campanhas pagas no Google.",
-        monthlyHours: 8
-      },
-      {
-        id: "camp-5",
-        name: "Analytics e Relatórios",
-        description: "Acompanhamento de métricas e ROI.",
-        monthlyHours: 8
+        id: "ops-3",
+        name: "Atendimento",
+        description: "Suporte ao cliente e gestão de canais",
+        monthlyHours: 20
       }
     ]
   }
