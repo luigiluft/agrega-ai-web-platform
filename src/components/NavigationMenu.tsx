@@ -85,20 +85,13 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0 ml-auto">
-            <NavigationMenuTrigger className="text-base font-medium h-10 bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90">
+            <Link 
+              to="/calculadora" 
+              className="text-base font-medium h-10 bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 px-4 rounded-lg flex items-center"
+            >
               <Sparkles className="w-4 h-4 mr-2" />
               Calculadora de Preços
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-6 w-[400px] relative -right-6">
-                <ListItem href="/calculadora" title="Calculadora por Horas">
-                  Calcule o valor do projeto baseado em horas de trabalho
-                </ListItem>
-                <ListItem href="/calculadora" title="Calculadora Dinâmica">
-                  Selecione funcionalidades específicas para seu projeto
-                </ListItem>
-              </ul>
-            </NavigationMenuContent>
+            </Link>
           </NavigationMenuItem>
         </div>
       </NavigationMenuList>
