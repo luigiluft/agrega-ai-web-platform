@@ -8,6 +8,7 @@ import TestimonialsSection from "../components/sections/TestimonialsSection";
 import ImplementationTimeline from "../components/sections/ImplementationTimeline";
 import CTASection from "../components/sections/CTASection";
 import FAQSection from "../components/sections/FAQSection";
+import { Link } from "react-router-dom";
 import { Calculator } from "lucide-react";
 
 const Index = () => {
@@ -29,8 +30,8 @@ const Index = () => {
             </div>
             
             <div className="flex justify-center">
-              <a
-                href="https://lovable.dev/projects/0e704d78-d7c1-4f7e-b3b6-d152c01df142"
+              <Link
+                to="/calculadora"
                 className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-1"
               >
                 <Calculator className="w-5 h-5" />
@@ -38,7 +39,7 @@ const Index = () => {
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs px-2 py-1 rounded-full">
                   Completa
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
