@@ -4,7 +4,7 @@ import L from 'leaflet';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Truck } from 'lucide-react';
 import type { LatLngExpression } from 'leaflet';
 
 // Fix for default marker icon
@@ -33,6 +33,14 @@ const deliveries = [
     currentLocation: { lat: -22.9068, lng: -43.1729 }, // Rio de Janeiro
     destination: "Av. Atlântica, 2000 - Rio de Janeiro, RJ",
   },
+  {
+    id: "DEL003",
+    trackingNumber: "BR456789123",
+    status: "Em separação",
+    estimatedDelivery: "2024-04-16",
+    currentLocation: { lat: -25.4284, lng: -49.2733 }, // Curitiba
+    destination: "Rua XV de Novembro, 1000 - Curitiba, PR",
+  },
 ];
 
 const TrackingMap = () => {
@@ -50,6 +58,16 @@ const TrackingMap = () => {
 
   const defaultCenter: LatLngExpression = [-23.5505, -46.6333]; // São Paulo as default center
 
+  // Custom truck icon
+  const truckIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
   return (
     <Card className="p-6">
       <div className="mb-6">
@@ -66,23 +84,27 @@ const TrackingMap = () => {
 
       <div className="h-[600px] relative">
         <MapContainer
+          className="h-full w-full"
           center={defaultCenter}
           zoom={4}
-          style={{ height: '100%', width: '100%' }}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attributionUrl='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           {filteredDeliveries.map((delivery) => (
             <Marker
               key={delivery.id}
               position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
+              icon={truckIcon}
             >
               <Popup>
                 <div className="p-2">
-                  <h3 className="font-semibold">Pedido {delivery.trackingNumber}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Truck className="h-4 w-4" />
+                    <h3 className="font-semibold">Pedido {delivery.trackingNumber}</h3>
+                  </div>
                   <p className="text-sm text-gray-600">Status: {delivery.status}</p>
                   <p className="text-sm text-gray-600">
                     Previsão: {new Date(delivery.estimatedDelivery).toLocaleDateString('pt-BR')}
