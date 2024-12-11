@@ -9,6 +9,14 @@ import CalculatorHeader from "@/components/calculator/CalculatorHeader";
 import CalculatorResults from "@/components/calculator/CalculatorResults";
 import DeveloperAnimation from "@/components/calculator/DeveloperAnimation";
 
+interface Feature {
+  id: string;
+  name: string;
+  description: string;
+  hours?: number;
+  monthlyHours?: number;
+}
+
 const DynamicCalculator = () => {
   const { toast } = useToast();
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
@@ -32,8 +40,8 @@ const DynamicCalculator = () => {
           .reduce((sum, feature) => sum + (feature.monthlyHours || 0), 0);
       }, 0);
 
-    const rate = 150; // Taxa por hora para implementação
-    const monthlyRate = 200; // Taxa por hora para manutenção
+    const rate = 150;
+    const monthlyRate = 200;
 
     const implementationPrice = implementationHours * rate;
     const maintenancePrice = monthlyHours * monthlyRate;
@@ -98,12 +106,12 @@ const DynamicCalculator = () => {
                   <span className="text-sm text-muted-foreground">
                     {category.features
                       .filter(f => selectedFeatures.includes(f.id))
-                      .reduce((sum, f) => sum + (f.hours || f.monthlyHours || 0), 0)}h
+                      .reduce((sum, f) => sum + ((f.hours || f.monthlyHours) || 0), 0)}h
                     {category.totalHours && ` / ${category.totalHours}h`}
                   </span>
                 </h3>
                 <div className="space-y-4">
-                  {category.features.map((feature) => (
+                  {category.features.map((feature: Feature) => (
                     <div key={feature.id} className="flex items-start space-x-3">
                       <Checkbox
                         id={feature.id}
@@ -140,19 +148,19 @@ const DynamicCalculator = () => {
                 totalHours={parseInt(prices.implementationPrice) / 150}
                 layoutHours={calculatorCategories[0].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.hours || 0), 0)}
+                  .reduce((sum, f) => sum + ((f.hours || 0)), 0)}
                 maintenanceHours={calculatorCategories[2].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.monthlyHours || 0), 0)}
+                  .reduce((sum, f) => sum + ((f.monthlyHours || 0)), 0)}
                 meetingHours={calculatorCategories[3].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.monthlyHours || 0), 0)}
+                  .reduce((sum, f) => sum + ((f.monthlyHours || 0)), 0)}
                 campaignHours={calculatorCategories[4].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.monthlyHours || 0), 0)}
+                  .reduce((sum, f) => sum + ((f.monthlyHours || 0)), 0)}
                 functionalityHours={calculatorCategories[1].features
                   .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + (f.hours || 0), 0)}
+                  .reduce((sum, f) => sum + ((f.hours || 0)), 0)}
                 selectedPlanName="Plano Personalizado"
               />
 
@@ -161,6 +169,8 @@ const DynamicCalculator = () => {
                 maintenancePrice={prices.maintenancePrice}
                 revenueShare={prices.revenueShare}
                 revenueSharePercent={prices.revenueSharePercent}
+                monthlyRevenue={monthlyRevenue}
+                setMonthlyRevenue={setMonthlyRevenue}
                 onContactClick={handleContactClick}
               />
             </div>

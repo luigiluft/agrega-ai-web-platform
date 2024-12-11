@@ -1,13 +1,17 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { Mail, Calculator, Phone } from 'lucide-react';
+import { Mail, PhoneCall } from 'lucide-react';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
 
 interface CalculatorResultsProps {
   implementationPrice: string;
   maintenancePrice: string;
   revenueShare: string;
   revenueSharePercent: string;
+  monthlyRevenue: string;
+  setMonthlyRevenue: (value: string) => void;
   onContactClick: () => void;
 }
 
@@ -16,10 +20,25 @@ const CalculatorResults = ({
   maintenancePrice,
   revenueShare,
   revenueSharePercent,
+  monthlyRevenue,
+  setMonthlyRevenue,
   onContactClick
 }: CalculatorResultsProps) => {
   return (
     <div className="space-y-6">
+      <div className="space-y-4 p-4 rounded-lg bg-secondary/5 border border-secondary/10">
+        <Label className="font-medium">Faturamento Mensal Estimado (R$)</Label>
+        <Input
+          type="number"
+          value={monthlyRevenue}
+          onChange={(e) => setMonthlyRevenue(e.target.value)}
+          min="0"
+          step="1000"
+          className="bg-background"
+          placeholder="Digite o faturamento mensal estimado"
+        />
+      </div>
+
       <Card className="p-6 space-y-6 bg-gradient-to-br from-background to-orange-50">
         <div className="space-y-4">
           <div className="pb-4 border-b">
@@ -65,23 +84,14 @@ const CalculatorResults = ({
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Button 
           variant="outline"
           className="w-full space-x-2"
           onClick={onContactClick}
         >
-          <Phone className="w-4 h-4" />
+          <PhoneCall className="w-4 h-4" />
           <span>Falar com Consultor</span>
-        </Button>
-        
-        <Button 
-          variant="outline"
-          className="w-full space-x-2"
-          onClick={onContactClick}
-        >
-          <Mail className="w-4 h-4" />
-          <span>Receber por Email</span>
         </Button>
         
         <Button 
@@ -89,8 +99,8 @@ const CalculatorResults = ({
           className="w-full space-x-2 bg-orange-500 hover:bg-orange-600"
           onClick={onContactClick}
         >
-          <Calculator className="w-4 h-4" />
-          <span>Ver Preço Detalhado</span>
+          <Mail className="w-4 h-4" />
+          <span>Receber por Email</span>
         </Button>
       </div>
     </div>
