@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { Mail, PhoneCall } from 'lucide-react';
+import { Mail, PhoneCall, DollarSign, Clock, Percent } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { motion } from 'framer-motion';
 
 interface CalculatorResultsProps {
   implementationPrice: string;
@@ -25,69 +26,88 @@ const CalculatorResults = ({
   onContactClick
 }: CalculatorResultsProps) => {
   return (
-    <div className="space-y-6">
-      <div className="space-y-4 p-4 rounded-lg bg-secondary/5 border border-secondary/10">
-        <Label className="font-medium">Faturamento Mensal Estimado (R$)</Label>
-        <Input
-          type="number"
-          value={monthlyRevenue}
-          onChange={(e) => setMonthlyRevenue(e.target.value)}
-          min="0"
-          step="1000"
-          className="bg-background"
-          placeholder="Digite o faturamento mensal estimado"
-        />
-      </div>
-
-      <Card className="p-6 space-y-6 bg-gradient-to-br from-background to-orange-50">
-        <div className="space-y-4">
-          <div className="pb-4 border-b">
-            <div className="text-sm text-muted-foreground">Implementação</div>
-            <div className="flex items-baseline justify-between mt-1">
-              <div className="text-2xl font-bold">
-                R$ {implementationPrice}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                pagamento único
-              </div>
-            </div>
-          </div>
-          
-          <div className="pb-4 border-b">
-            <div className="text-sm text-muted-foreground">Sustentação Mensal</div>
-            <div className="flex items-baseline justify-between mt-1">
-              <div className="text-2xl font-bold">
-                R$ {maintenancePrice}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                por mês
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <div className="text-sm text-muted-foreground">
-              Fee sobre Faturamento
-            </div>
-            <div className="flex items-baseline justify-between mt-1">
-              <div className="text-2xl font-bold">
-                {revenueSharePercent}%
-              </div>
-              <div className="text-sm text-muted-foreground">
-                do faturamento
-              </div>
-            </div>
-            <div className="text-sm text-muted-foreground mt-2">
-              Aproximadamente R$ {revenueShare}/mês
-            </div>
-          </div>
+    <div className="space-y-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-4 p-6 rounded-xl bg-white/50 border border-orange-100 shadow-sm backdrop-blur-sm"
+      >
+        <Label className="text-lg font-semibold text-gray-800">Faturamento Mensal Estimado</Label>
+        <div className="relative">
+          <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            type="number"
+            value={monthlyRevenue}
+            onChange={(e) => setMonthlyRevenue(e.target.value)}
+            min="0"
+            step="1000"
+            className="pl-10 bg-white border-orange-200 focus:border-orange-500 focus:ring-orange-500"
+            placeholder="Digite o faturamento mensal estimado"
+          />
         </div>
-      </Card>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Card className="overflow-hidden">
+          <div className="p-6 space-y-6 bg-gradient-to-br from-white to-orange-50">
+            <div className="space-y-6">
+              <div className="pb-6 border-b border-orange-100">
+                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                  <Clock className="h-4 w-4 text-orange-500" />
+                  <span>Implementação (pagamento único)</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <div className="text-3xl font-bold text-gray-900">
+                    R$ {implementationPrice}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pb-6 border-b border-orange-100">
+                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                  <DollarSign className="h-4 w-4 text-orange-500" />
+                  <span>Sustentação Mensal</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <div className="text-3xl font-bold text-gray-900">
+                    R$ {maintenancePrice}
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                  <Percent className="h-4 w-4 text-orange-500" />
+                  <span>Fee sobre Faturamento</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <div className="text-3xl font-bold text-gray-900">
+                    {revenueSharePercent}%
+                  </div>
+                </div>
+                <div className="mt-2 text-sm text-gray-600">
+                  Aproximadamente R$ {revenueShare}/mês
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <Button 
           variant="outline"
-          className="w-full space-x-2"
+          className="w-full space-x-2 border-orange-200 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300"
           onClick={onContactClick}
         >
           <PhoneCall className="w-4 h-4" />
@@ -96,13 +116,13 @@ const CalculatorResults = ({
         
         <Button 
           variant="default"
-          className="w-full space-x-2 bg-orange-500 hover:bg-orange-600"
+          className="w-full space-x-2 bg-orange-500 hover:bg-orange-600 transition-all duration-300"
           onClick={onContactClick}
         >
           <Mail className="w-4 h-4" />
           <span>Receber por Email</span>
         </Button>
-      </div>
+      </motion.div>
     </div>
   );
 };
