@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { Store, Settings, DollarSign } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import SolutionLayout from "@/components/solutions/SolutionLayout";
 import { themes } from "@/components/theme/themeData";
 import { ThemeCard } from "@/components/theme/ThemeCard";
