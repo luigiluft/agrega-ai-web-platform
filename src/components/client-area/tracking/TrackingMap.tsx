@@ -7,11 +7,13 @@ import DeliveryFilters from './DeliveryFilters';
 import DeliveryMarker from './components/DeliveryMarker';
 import { mapCenter, statusConfig } from './config/mapConfig';
 import { deliveries } from './config/mockData';
+import type { Map as LeafletMap } from 'leaflet';
 
 const TrackingMap = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<DeliveryStatus | "all">("all");
   const [filteredDeliveries, setFilteredDeliveries] = useState(deliveries);
+  const [map, setMap] = useState<LeafletMap | null>(null);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -54,6 +56,7 @@ const TrackingMap = () => {
           center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
+          whenCreated={setMap}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

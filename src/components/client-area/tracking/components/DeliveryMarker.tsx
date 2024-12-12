@@ -8,7 +8,7 @@ interface DeliveryMarkerProps {
   delivery: Delivery;
 }
 
-const createMarkerIcon = (status: DeliveryStatus) => {
+const createMarkerIcon = (status: DeliveryStatus): L.Icon => {
   return new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${statusConfig[status].markerColor}.png`,
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
@@ -19,15 +19,19 @@ const createMarkerIcon = (status: DeliveryStatus) => {
   });
 };
 
-const DeliveryMarker = ({ delivery }: DeliveryMarkerProps) => (
-  <Marker
-    position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-    icon={createMarkerIcon(delivery.status)}
-  >
-    <Popup>
-      <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
-    </Popup>
-  </Marker>
-);
+const DeliveryMarker = ({ delivery }: DeliveryMarkerProps) => {
+  const position: [number, number] = [delivery.currentLocation.lat, delivery.currentLocation.lng];
+  
+  return (
+    <Marker
+      position={position}
+      icon={createMarkerIcon(delivery.status)}
+    >
+      <Popup>
+        <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
+      </Popup>
+    </Marker>
+  );
+};
 
 export default DeliveryMarker;
