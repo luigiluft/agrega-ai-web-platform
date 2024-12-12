@@ -1,21 +1,27 @@
 import { Delivery } from '../types';
 
+const generateRandomLocation = (baseLocation: [number, number], radius: number) => {
+  const lat = baseLocation[0] + (Math.random() - 0.5) * radius;
+  const lng = baseLocation[1] + (Math.random() - 0.5) * radius;
+  return { lat, lng };
+};
+
 export const deliveries: Delivery[] = [
   {
     id: "DEL001",
     trackingNumber: "BR123456789",
     status: "em_rota",
     estimatedDelivery: "2024-12-20",
-    currentLocation: { lat: -23.5505, lng: -46.6333 },
+    currentLocation: generateRandomLocation([-23.5505, -46.6333], 0.1),
     destination: "Rua Augusta, 1500 - São Paulo, SP",
     lastUpdate: "2024-12-12 14:30",
     customer: "João Silva",
     contact: "(11) 98765-4321",
     value: 1250.90,
     priority: "alta",
-    items: 3,
-    commission: 125.09
+    items: 3
   },
+  // Add 9 more similar entries with different locations, statuses, and details
   {
     id: "DEL002",
     trackingNumber: "BR987654321",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { LatLngExpression } from "leaflet";
 import DeliveryMarker from "./components/DeliveryMarker";
@@ -38,8 +38,6 @@ const TrackingMap = ({
     return matchesSearch && matchesStatus;
   });
 
-  const mapCenter: LatLngExpression = [-23.5505, -46.6333];
-
   return (
     <div className="space-y-6">
       <DeliveryFilters
@@ -64,7 +62,7 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                center={mapCenter}
+                defaultCenter={[-23.5505, -46.6333] as [number, number]}
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
