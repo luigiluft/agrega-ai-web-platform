@@ -19,7 +19,7 @@ const TrackingMap = ({
   setSelectedDelivery,
 }: TrackingMapProps) => {
   const navigate = useNavigate();
-  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
+  const mapCenter: LatLngExpression = [-23.5505, -46.6333];
 
   return (
     <div className="relative">
@@ -34,7 +34,7 @@ const TrackingMap = ({
       
       <div className="h-[600px] w-full rounded-lg border">
         <MapContainer
-          defaultCenter={defaultCenter}
+          center={mapCenter}
           zoom={13}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%" }}
@@ -42,6 +42,7 @@ const TrackingMap = ({
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           {deliveries.map((delivery) => (
             <DeliveryMarker

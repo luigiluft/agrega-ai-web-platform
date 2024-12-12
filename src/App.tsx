@@ -16,6 +16,8 @@ import ClientArea from "./pages/ClientArea";
 import Login from "./pages/Login";
 import Checkout from "./pages/Checkout";
 import ChatWidget from "./components/chat/ChatWidget";
+import BusinessIntelligence from "./components/client-area/analytics/BusinessIntelligence";
+import LogisticsReverse from "./components/client-area/logistics/LogisticsReverse";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +46,8 @@ const App = () => (
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/area-cliente" element={<ClientArea />} />
             <Route path="/area-cliente/checkout" element={<Checkout />} />
+            <Route path="/area-cliente/analytics" element={<BusinessIntelligence />} />
+            <Route path="/area-cliente/logistics/reverse" element={<LogisticsReverse />} />
             <Route path="/login" element={<Login />} />
           </Routes>
           <ChatWidget />
