@@ -93,23 +93,25 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0 ml-auto">
-            {isAuthenticated ? (
-              <button
-                onClick={logout}
-                className="text-base font-medium h-10 bg-red-500 text-white hover:bg-red-600 px-4 rounded-lg flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Sair
-              </button>
-            ) : (
+            <div className="flex items-center gap-2">
               <Link 
-                to="/login" 
-                className="text-base font-medium h-10 bg-secondary text-white hover:bg-secondary/90 px-4 rounded-lg flex items-center gap-2"
+                to="/area-cliente" 
+                className="text-base font-medium h-10 bg-primary text-white hover:bg-primary/90 px-4 rounded-lg flex items-center gap-2"
               >
                 <UserCircle2 className="w-4 h-4" />
                 Área do Cliente
               </Link>
-            )}
+              
+              {isAuthenticated && (
+                <button
+                  onClick={logout}
+                  className="text-base font-medium h-10 bg-red-500 text-white hover:bg-red-600 px-4 rounded-lg flex items-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sair
+                </button>
+              )}
+            </div>
           </NavigationMenuItem>
         </div>
       </NavigationMenuList>
