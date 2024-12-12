@@ -32,7 +32,7 @@ const OrderStats = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat) => (
-        <Card key={stat.title} className="p-6">
+        <Card key={stat.title} className="p-6 hover:shadow-lg transition-all duration-200">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-primary/10 rounded-lg">
               <stat.icon className="w-6 h-6 text-primary" />

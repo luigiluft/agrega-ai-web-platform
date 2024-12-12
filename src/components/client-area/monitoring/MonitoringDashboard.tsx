@@ -16,23 +16,43 @@ const MonitoringDashboard = () => {
     to: new Date(),
   });
 
-  // Sample products data
+  // Sample products data with realistic quantities
   const products: Product[] = [
     {
       id: "1",
-      name: "Product A",
-      price: 99.90,
-      sku: "SKU001",
-      stock: 50
+      name: "Smartphone XYZ Pro",
+      price: 2499.90,
+      sku: "PHONE001",
+      stock: 982
     },
     {
       id: "2",
-      name: "Product B",
-      price: 149.90,
-      sku: "SKU002",
-      stock: 30
+      name: "Tablet ABC Plus",
+      price: 1899.90,
+      sku: "TAB002",
+      stock: 7
     },
-    // Add more sample products as needed
+    {
+      id: "3",
+      name: "Notebook Ultra",
+      price: 4599.90,
+      sku: "NOTE003",
+      stock: 68
+    },
+    {
+      id: "4",
+      name: "Smart TV 55\"",
+      price: 3299.90,
+      sku: "TV004",
+      stock: 50
+    },
+    {
+      id: "5",
+      name: "Fone Bluetooth",
+      price: 299.90,
+      sku: "AUDIO005",
+      stock: 117
+    }
   ];
 
   const handleDateChange = (dates: { from: Date; to: Date }) => {
