@@ -16,12 +16,13 @@ const generateRandomLocation = (state: keyof typeof stateCoordinates) => {
 
 const states = ['SP', 'RJ', 'MG'] as const;
 
-// Generate 1000 deliveries with realistic data
-export const deliveries: Delivery[] = Array.from({ length: 1000 }, (_, index) => {
+// Generate 50 deliveries with multiple orders
+export const deliveries: Delivery[] = Array.from({ length: 50 }, (_, index) => {
   const status = ['em_rota', 'atrasado', 'entregue', 'pendente', 'risco_atraso'][Math.floor(Math.random() * 5)] as Delivery['status'];
   const baseDate = new Date();
   const randomDays = Math.floor(Math.random() * 30);
   const state = states[Math.floor(Math.random() * states.length)];
+  const itemsCount = Math.floor(Math.random() * 4) + 1; // 1 to 4 items per delivery
   
   return {
     id: `DEL${(index + 1).toString().padStart(6, '0')}`,
@@ -35,7 +36,7 @@ export const deliveries: Delivery[] = Array.from({ length: 1000 }, (_, index) =>
     contact: `(11) 9${Math.floor(Math.random() * 9000 + 1000)}-${Math.floor(Math.random() * 9000 + 1000)}`,
     value: Math.floor(Math.random() * 5000) + 100,
     priority: ['baixa', 'media', 'alta'][Math.floor(Math.random() * 3)] as 'baixa' | 'media' | 'alta',
-    items: Math.floor(Math.random() * 5) + 1,
+    items: itemsCount,
     commission: Math.floor(Math.random() * 500) + 50
   };
 });
