@@ -48,9 +48,8 @@ const TrackingMap = ({
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
                 key={mapCenter.toString()}
-                bounds={[mapCenter]}
+                bounds={[[mapCenter]]}
                 boundsOptions={{ padding: [50, 50] }}
-                scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
                 className="rounded-lg"
               >
