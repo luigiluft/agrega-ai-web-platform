@@ -3,10 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Box, BoxMinus, Package, Truck, CheckSquare } from "lucide-react";
-import { addDays, format, subDays } from "date-fns";
-import { ProductOperation } from "../tracking/types";
-import { DateRange } from "react-day-picker";
+import { Box, BookMinus, Package, Truck, CheckSquare } from "lucide-react";
 
 const mockOperations = Array.from({ length: 1224 }, (_, index) => {
   // Distribute status based on provided numbers
@@ -42,7 +39,7 @@ const OperationsDashboard = () => {
 
   const statusIcons = {
     em_estoque: Box,
-    backlog: BoxMinus,
+    backlog: BookMinus,
     separacao: Package,
     expedicao: Truck,
     expedido: CheckSquare,

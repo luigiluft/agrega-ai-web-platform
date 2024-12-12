@@ -13,17 +13,21 @@ import { statusConfig } from "./config/mapConfig";
 
 interface TrackingMapProps {
   deliveries?: Delivery[];
-  selectedDelivery: Delivery | null;
-  setSelectedDelivery: (delivery: Delivery | null) => void;
+  selectedDelivery?: Delivery | null;
+  setSelectedDelivery?: (delivery: Delivery | null) => void;
 }
 
 const TrackingMap = ({
   deliveries: propDeliveries,
-  selectedDelivery,
-  setSelectedDelivery,
+  selectedDelivery: propSelectedDelivery,
+  setSelectedDelivery: propSetSelectedDelivery,
 }: TrackingMapProps) => {
   const navigate = useNavigate();
+  const [localSelectedDelivery, setLocalSelectedDelivery] = useState<Delivery | null>(null);
+  
   const activeDeliveries = propDeliveries || deliveries;
+  const selectedDelivery = propSelectedDelivery ?? localSelectedDelivery;
+  const setSelectedDelivery = propSetSelectedDelivery ?? setLocalSelectedDelivery;
 
   const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
 
@@ -43,8 +47,8 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                center={defaultCenter}
-                zoom={13}
+                defaultCenter={defaultCenter}
+                defaultZoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
                 className="rounded-lg"
