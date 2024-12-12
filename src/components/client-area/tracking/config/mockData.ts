@@ -47,7 +47,7 @@ export const sharedProducts = [
     name: "Smartphone XYZ Pro",
     price: 2499.90,
     sku: "PHONE001",
-    stock: 150,
+    stock: 982,
     description: "Smartphone premium com câmera de última geração",
     category: "Eletrônicos",
     sales: 450
@@ -57,7 +57,7 @@ export const sharedProducts = [
     name: "Tablet ABC Plus",
     price: 1899.90,
     sku: "TAB002",
-    stock: 75,
+    stock: 7,
     description: "Tablet ideal para produtividade",
     category: "Eletrônicos",
     sales: 280
@@ -67,7 +67,7 @@ export const sharedProducts = [
     name: "Notebook Ultra",
     price: 4599.90,
     sku: "NOTE003",
-    stock: 45,
+    stock: 68,
     description: "Notebook de alta performance",
     category: "Computadores",
     sales: 180
@@ -77,7 +77,7 @@ export const sharedProducts = [
     name: "Smart TV 55\"",
     price: 3299.90,
     sku: "TV004",
-    stock: 30,
+    stock: 50,
     description: "Smart TV 4K com HDR",
     category: "Eletrônicos",
     sales: 120
@@ -87,59 +87,9 @@ export const sharedProducts = [
     name: "Fone Bluetooth",
     price: 299.90,
     sku: "AUDIO005",
-    stock: 200,
+    stock: 117,
     description: "Fone sem fio com cancelamento de ruído",
     category: "Acessórios",
     sales: 850
-  },
-  {
-    id: "6",
-    name: "Console Game X",
-    price: 3999.90,
-    sku: "GAME006",
-    stock: 60,
-    description: "Console de última geração",
-    category: "Games",
-    sales: 220
-  },
-  {
-    id: "7",
-    name: "Câmera DSLR",
-    price: 5999.90,
-    sku: "CAM007",
-    stock: 25,
-    description: "Câmera profissional para fotografia",
-    category: "Fotografia",
-    sales: 90
-  },
-  {
-    id: "8",
-    name: "Smartwatch Pro",
-    price: 1299.90,
-    sku: "WATCH008",
-    stock: 100,
-    description: "Relógio inteligente com GPS",
-    category: "Acessórios",
-    sales: 340
-  },
-  {
-    id: "9",
-    name: "Monitor 27\"",
-    price: 1799.90,
-    sku: "MON009",
-    stock: 50,
-    description: "Monitor QHD para profissionais",
-    category: "Computadores",
-    sales: 150
-  },
-  {
-    id: "10",
-    name: "Impressora Laser",
-    price: 999.90,
-    sku: "PRINT010",
-    stock: 40,
-    description: "Impressora profissional colorida",
-    category: "Impressoras",
-    sales: 110
   }
 ];
