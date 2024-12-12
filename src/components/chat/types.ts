@@ -19,12 +19,14 @@ export interface ChatState {
 }
 
 export type BusinessModel = 'B2C' | 'B2B' | 'D2C' | 'Marketplace' | 'Fullcommerce';
+export type BusinessSize = 'small' | 'medium' | 'large';
 export type ProductQuantity = '1000' | '10000' | 'unlimited';
 export type IntegrationType = 'basic' | 'intermediate' | 'advanced';
 export type PlanType = 'Starter' | 'Business' | 'Enterprise';
 
 export interface UserProfile {
   businessModel?: BusinessModel;
+  businessSize?: BusinessSize;
   productQuantity?: ProductQuantity;
   integrationType?: IntegrationType;
 }

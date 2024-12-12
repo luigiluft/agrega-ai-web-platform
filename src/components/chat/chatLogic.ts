@@ -27,37 +27,95 @@ export const determinePlan = (profile: UserProfile): PlanType => {
 
 export const chatFlow = {
   initial: {
-    content: "Oi! 👋 Que bom te ver por aqui! Sou a Ana, vou te ajudar a encontrar a solução perfeita pra você decolar no digital. Me conta, como você planeja vender online?",
+    content: "Olá! 👋 Sou a Ana, sua assistente virtual. Como posso ajudar você hoje?",
     options: [
-      { label: "Vendo direto pro consumidor final", value: "B2C", nextQuestion: "products" },
-      { label: "Vendo pra outras empresas", value: "B2B", nextQuestion: "products" },
-      { label: "Quero vender sem intermediários", value: "D2C", nextQuestion: "products" },
-      { label: "Preciso de um marketplace com vários vendedores", value: "Marketplace", nextQuestion: "products" },
-      { label: "Busco uma operação completa e personalizada", value: "Fullcommerce", nextQuestion: "products" }
+      { label: "Quero conhecer soluções para meu negócio", value: "solutions", nextQuestion: "business_type" },
+      { label: "Preciso de suporte técnico", value: "support", nextQuestion: "support_type" },
+      { label: "Tenho dúvidas sobre preços", value: "pricing", nextQuestion: "pricing_info" },
+      { label: "Quero saber sobre integrações", value: "integrations", nextQuestion: "integration_type" }
     ]
   },
-  products: {
-    content: "Legal! E quantos produtos você pretende ter na sua loja?",
+  business_type: {
+    content: "Que tipo de negócio você possui ou pretende iniciar?",
     options: [
-      { label: "Até mil produtos tá ótimo", value: "1000", nextQuestion: "integrations" },
-      { label: "Uns 10 mil produtos", value: "10000", nextQuestion: "integrations" },
-      { label: "Quero sem limites!", value: "unlimited", nextQuestion: "integrations" }
+      { label: "Venda direta ao consumidor (B2C)", value: "B2C", nextQuestion: "business_size" },
+      { label: "Vendas para empresas (B2B)", value: "B2B", nextQuestion: "business_size" },
+      { label: "Marca própria (D2C)", value: "D2C", nextQuestion: "business_size" },
+      { label: "Marketplace com múltiplos vendedores", value: "Marketplace", nextQuestion: "business_size" }
     ]
   },
-  integrations: {
-    content: "Entendi! Agora me diz: você precisa de integrações especiais ou quer vender em vários canais diferentes?",
+  business_size: {
+    content: "Qual o tamanho atual ou esperado do seu negócio?",
     options: [
-      { label: "Nada muito complexo", value: "basic", nextQuestion: "final" },
-      { label: "Preciso de algumas integrações", value: "intermediate", nextQuestion: "final" },
-      { label: "Quero tudo personalizado", value: "advanced", nextQuestion: "final" }
+      { label: "Iniciando agora (até 100 produtos)", value: "small", nextQuestion: "redirect_solution" },
+      { label: "Em crescimento (100-1000 produtos)", value: "medium", nextQuestion: "redirect_solution" },
+      { label: "Estabelecido (1000+ produtos)", value: "large", nextQuestion: "redirect_solution" }
     ]
   },
-  final: {
-    content: "Perfeito! Já sei qual é a melhor solução pra você. Como quer prosseguir?",
+  support_type: {
+    content: "Qual tipo de suporte você precisa?",
     options: [
-      { label: "💬 Falar com um consultor", value: "consultant" },
-      { label: "📧 Receber mais informações por email", value: "email" },
-      { label: "🧮 Calcular o custo exato do meu site", value: "calculator" }
+      { label: "Problemas técnicos na plataforma", value: "technical", nextQuestion: "redirect_support" },
+      { label: "Dúvidas sobre configurações", value: "settings", nextQuestion: "redirect_support" },
+      { label: "Integrações e APIs", value: "api", nextQuestion: "redirect_support" },
+      { label: "Outros assuntos", value: "other", nextQuestion: "contact_support" }
+    ]
+  },
+  pricing_info: {
+    content: "O que você gostaria de saber sobre nossos preços?",
+    options: [
+      { label: "Ver tabela de preços", value: "price_table", nextQuestion: "redirect_pricing" },
+      { label: "Calcular custo personalizado", value: "calculator", nextQuestion: "redirect_calculator" },
+      { label: "Falar com consultor", value: "sales", nextQuestion: "contact_sales" }
+    ]
+  },
+  integration_type: {
+    content: "Que tipo de integração você procura?",
+    options: [
+      { label: "ERPs e Sistemas de Gestão", value: "erp", nextQuestion: "redirect_integration" },
+      { label: "Marketplaces", value: "marketplace", nextQuestion: "redirect_integration" },
+      { label: "Meios de Pagamento", value: "payment", nextQuestion: "redirect_integration" },
+      { label: "Logística e Entregas", value: "logistics", nextQuestion: "redirect_integration" }
+    ]
+  },
+  redirect_solution: {
+    content: "Baseado no seu perfil, vou te direcionar para a melhor solução. Como prefere prosseguir?",
+    options: [
+      { label: "Ver solução recomendada", value: "view_solution" },
+      { label: "Falar com especialista", value: "talk_specialist" },
+      { label: "Agendar demonstração", value: "schedule_demo" }
+    ]
+  },
+  redirect_support: {
+    content: "Entendi sua necessidade. Posso te ajudar das seguintes formas:",
+    options: [
+      { label: "Acessar central de ajuda", value: "help_center" },
+      { label: "Abrir ticket de suporte", value: "open_ticket" },
+      { label: "Chat com suporte técnico", value: "tech_support" }
+    ]
+  },
+  redirect_pricing: {
+    content: "Vou te mostrar nossas opções de preços. Você pode:",
+    options: [
+      { label: "Ver comparativo de planos", value: "compare_plans" },
+      { label: "Simular preços", value: "price_simulator" },
+      { label: "Consultar especialista", value: "pricing_specialist" }
+    ]
+  },
+  contact_support: {
+    content: "Como prefere receber nosso suporte?",
+    options: [
+      { label: "Chat ao vivo", value: "live_chat" },
+      { label: "Email", value: "email_support" },
+      { label: "Ligação telefônica", value: "phone_call" }
+    ]
+  },
+  contact_sales: {
+    content: "Ótimo! Como prefere que nosso time comercial entre em contato?",
+    options: [
+      { label: "WhatsApp", value: "whatsapp" },
+      { label: "Email", value: "email" },
+      { label: "Telefone", value: "phone" }
     ]
   }
 };

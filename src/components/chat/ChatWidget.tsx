@@ -35,6 +35,56 @@ const ChatWidget = () => {
     scrollToBottom();
   }, [messages]);
 
+  const handleRedirect = (value: string) => {
+    switch (value) {
+      case "view_solution":
+        const businessModel = userProfile.businessModel?.toLowerCase();
+        if (businessModel) {
+          navigate(`/${businessModel}`);
+          setIsOpen(false);
+        }
+        break;
+      case "help_center":
+        navigate("/area-cliente");
+        setIsOpen(false);
+        break;
+      case "compare_plans":
+        navigate("/planos");
+        setIsOpen(false);
+        break;
+      case "price_simulator":
+        navigate("/calculadora");
+        setIsOpen(false);
+        break;
+      case "live_chat":
+      case "whatsapp":
+        toast({
+          title: "Iniciando chat",
+          description: "Um de nossos atendentes entrará em contato em instantes.",
+        });
+        setIsOpen(false);
+        break;
+      case "email":
+      case "email_support":
+        toast({
+          title: "Solicitação recebida",
+          description: "Você receberá um email em breve com mais informações.",
+        });
+        setIsOpen(false);
+        break;
+      case "phone":
+      case "phone_call":
+        toast({
+          title: "Agendamento de ligação",
+          description: "Nossa equipe entrará em contato no próximo horário comercial.",
+        });
+        setIsOpen(false);
+        break;
+      default:
+        console.log("Ação não mapeada:", value);
+    }
+  };
+
   const handleOptionSelect = (value: string, nextQuestion?: string) => {
     // Add user's response
     setMessages((prev) => [
@@ -46,33 +96,16 @@ const ChatWidget = () => {
       },
     ]);
 
-    // Update user profile based on the current question
-    const currentQuestion = messages[messages.length - 1];
-    if (currentQuestion.options?.some((o) => o.value === "B2C")) {
-      setUserProfile((prev) => ({ ...prev, businessModel: value as any }));
-    } else if (currentQuestion.options?.some((o) => o.value === "1000")) {
-      setUserProfile((prev) => ({ ...prev, productQuantity: value as any }));
-    } else if (currentQuestion.options?.some((o) => o.value === "basic")) {
-      setUserProfile((prev) => ({ ...prev, integrationType: value as any }));
+    // Update user profile
+    if (["B2C", "B2B", "D2C", "Marketplace"].includes(value)) {
+      setUserProfile((prev) => ({ ...prev, businessModel: value }));
+    } else if (["small", "medium", "large"].includes(value)) {
+      setUserProfile((prev) => ({ ...prev, businessSize: value }));
     }
 
-    // Handle final actions
-    if (value === "consultant") {
-      const plan = determinePlan(userProfile);
-      toast({
-        title: "Atendimento iniciado",
-        description: "Em breve nossa equipe entrará em contato! 😊",
-      });
-      setIsOpen(false);
-    } else if (value === "email") {
-      toast({
-        title: "Email registrado",
-        description: "Você receberá mais informações em breve! 📧",
-      });
-      setIsOpen(false);
-    } else if (value === "calculator") {
-      navigate("/calculadora-dinamica");
-      setIsOpen(false);
+    // Handle redirects or continue chat flow
+    if (["view_solution", "help_center", "compare_plans", "price_simulator", "live_chat", "whatsapp", "email", "email_support", "phone", "phone_call"].includes(value)) {
+      handleRedirect(value);
     } else if (nextQuestion && chatFlow[nextQuestion as keyof typeof chatFlow]) {
       const next = chatFlow[nextQuestion as keyof typeof chatFlow];
       setTimeout(() => {
