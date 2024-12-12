@@ -24,7 +24,14 @@ const DeliveryMarker = ({
 
   const VehicleIcon = getVehicleIcon();
 
-  // Create SVG string for the icon
+  // Create SVG string for the icon using createElement
+  const iconComponent = createElement(VehicleIcon, {
+    size: 16,
+    color: 'white',
+    strokeWidth: 2
+  });
+
+  // Convert the icon component to a string representation
   const svgString = `
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
@@ -37,7 +44,7 @@ const DeliveryMarker = ({
       stroke-linecap="round" 
       stroke-linejoin="round"
     >
-      ${VehicleIcon({}).props.children}
+      ${iconComponent.type.render().props.children}
     </svg>
   `;
 
@@ -59,7 +66,7 @@ const DeliveryMarker = ({
       <Popup>
         <div className="p-2">
           <div className="flex items-center gap-2">
-            <VehicleIcon className="h-4 w-4" />
+            {createElement(VehicleIcon, { className: "h-4 w-4" })}
             <span className="font-medium">Entrega #{delivery.trackingNumber}</span>
           </div>
           <p className="text-sm text-gray-600 mt-1">
