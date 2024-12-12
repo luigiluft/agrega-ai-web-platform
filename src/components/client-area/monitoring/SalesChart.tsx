@@ -7,12 +7,18 @@ import {
 import { Line, LineChart, XAxis, YAxis, Tooltip } from "recharts";
 
 const data = [
-  { month: "Jan", sales: 4000 },
-  { month: "Fev", sales: 3000 },
-  { month: "Mar", sales: 5000 },
-  { month: "Abr", sales: 4500 },
-  { month: "Mai", sales: 6000 },
-  { month: "Jun", sales: 5500 },
+  { month: "Jan", sales: 840000 },
+  { month: "Fev", sales: 930000 },
+  { month: "Mar", sales: 1050000 },
+  { month: "Abr", sales: 945000 },
+  { month: "Mai", sales: 1260000 },
+  { month: "Jun", sales: 1155000 },
+  { month: "Jul", sales: 1380000 },
+  { month: "Ago", sales: 1265000 },
+  { month: "Set", sales: 1490000 },
+  { month: "Out", sales: 1575000 },
+  { month: "Nov", sales: 2100000 },
+  { month: "Dez", sales: 1850000 },
 ];
 
 const config = {

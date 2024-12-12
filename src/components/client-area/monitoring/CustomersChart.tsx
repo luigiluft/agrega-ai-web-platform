@@ -7,11 +7,26 @@ import {
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 const data = [
-  { name: "Cliente A", value: 45 },
-  { name: "Cliente B", value: 35 },
-  { name: "Cliente C", value: 30 },
-  { name: "Cliente D", value: 25 },
-  { name: "Cliente E", value: 20 },
+  { name: "Cliente Premium A", value: 145 },
+  { name: "Cliente Premium B", value: 135 },
+  { name: "Cliente Gold A", value: 130 },
+  { name: "Cliente Gold B", value: 125 },
+  { name: "Cliente Gold C", value: 120 },
+  { name: "Cliente Silver A", value: 115 },
+  { name: "Cliente Silver B", value: 110 },
+  { name: "Cliente Silver C", value: 105 },
+  { name: "Cliente Bronze A", value: 100 },
+  { name: "Cliente Bronze B", value: 95 },
+  { name: "Cliente Bronze C", value: 90 },
+  { name: "Cliente Regular A", value: 85 },
+  { name: "Cliente Regular B", value: 80 },
+  { name: "Cliente Regular C", value: 75 },
+  { name: "Cliente Regular D", value: 70 },
+  { name: "Cliente Regular E", value: 65 },
+  { name: "Cliente Regular F", value: 60 },
+  { name: "Cliente Regular G", value: 55 },
+  { name: "Cliente Regular H", value: 50 },
+  { name: "Cliente Regular I", value: 45 },
 ];
 
 const COLORS = ["hsl(var(--primary))", "hsl(var(--primary) / 0.8)", "hsl(var(--primary) / 0.6)", "hsl(var(--primary) / 0.4)", "hsl(var(--primary) / 0.2)"];

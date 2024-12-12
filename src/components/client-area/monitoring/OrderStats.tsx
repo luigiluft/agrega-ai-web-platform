@@ -4,26 +4,26 @@ import { ShoppingCart, TrendingUp, Package, RefreshCcw } from "lucide-react";
 const stats = [
   {
     title: "Total de Pedidos",
-    value: "1,234",
-    change: "+12.3%",
+    value: "12,345",
+    change: "+15.3%",
     icon: ShoppingCart,
   },
   {
     title: "Ticket Médio",
-    value: "R$ 350,00",
-    change: "+5.7%",
+    value: "R$ 450,00",
+    change: "+8.7%",
     icon: TrendingUp,
   },
   {
     title: "Taxa de Entrega",
-    value: "98.5%",
-    change: "+0.8%",
+    value: "99.2%",
+    change: "+1.2%",
     icon: Package,
   },
   {
     title: "Taxa de Recompra",
-    value: "45%",
-    change: "+2.1%",
+    value: "65%",
+    change: "+5.1%",
     icon: RefreshCcw,
   },
 ];

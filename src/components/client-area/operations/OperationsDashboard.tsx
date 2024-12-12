@@ -4,28 +4,26 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Warehouse, Box, Package, Truck, Check } from "lucide-react";
-import { addDays, format } from "date-fns";
+import { addDays, format, subDays } from "date-fns";
 import { ProductOperation } from "../tracking/types";
 import { DateRange } from "react-day-picker";
 
-const mockOperations: ProductOperation[] = [
-  {
-    id: "1",
-    name: "Smartphone XYZ Pro",
-    status: "em_estoque",
-    quantity: 150,
-    lastUpdate: format(new Date(), "dd/MM/yyyy HH:mm"),
-  },
-  {
-    id: "2",
-    name: "Tablet ABC Plus",
-    status: "backlog",
-    quantity: 75,
-    lastUpdate: format(new Date(), "dd/MM/yyyy HH:mm"),
-    expectedDate: format(addDays(new Date(), 5), "dd/MM/yyyy"),
-  },
-  // ... Add 8 more products with similar structure
-];
+const mockOperations = Array.from({ length: 1000 }, (_, index) => ({
+  id: (index + 1).toString(),
+  name: `Produto ${index + 1}`,
+  status: ["em_estoque", "backlog", "separacao", "expedicao", "expedido"][
+    Math.floor(Math.random() * 5)
+  ],
+  quantity: Math.floor(Math.random() * 1000) + 50,
+  lastUpdate: format(
+    subDays(new Date(), Math.floor(Math.random() * 30)),
+    "dd/MM/yyyy HH:mm"
+  ),
+  expectedDate: format(
+    addDays(new Date(), Math.floor(Math.random() * 14)),
+    "dd/MM/yyyy"
+  ),
+}));
 
 const OperationsDashboard = () => {
   const [dateRange, setDateRange] = useState<DateRange>({
