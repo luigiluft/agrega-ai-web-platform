@@ -8,6 +8,7 @@ import ProjectTimeline from "@/components/client-area/ProjectTimeline";
 import MonitoringDashboard from "@/components/client-area/monitoring/MonitoringDashboard";
 import ProductManagement from "@/components/client-area/products/ProductManagement";
 import DevelopmentRequests from "@/components/client-area/development/DevelopmentRequests";
+import BillingDashboard from "@/components/client-area/billing/BillingDashboard";
 
 const ClientArea = () => {
   const { isAuthenticated } = useAuth();
@@ -35,6 +36,7 @@ const ClientArea = () => {
           <TabsTrigger value="products">Produtos</TabsTrigger>
           <TabsTrigger value="development">Desenvolvimento</TabsTrigger>
           <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
+          <TabsTrigger value="billing">Faturamento</TabsTrigger>
         </TabsList>
 
         <TabsContent value="project">
@@ -54,6 +56,10 @@ const ClientArea = () => {
 
         <TabsContent value="monitoring">
           <MonitoringDashboard />
+        </TabsContent>
+
+        <TabsContent value="billing">
+          <BillingDashboard />
         </TabsContent>
       </Tabs>
     </SolutionLayout>
