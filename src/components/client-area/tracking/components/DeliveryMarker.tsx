@@ -1,6 +1,5 @@
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { Truck } from "lucide-react";
 
 interface DeliveryMarkerProps {
   delivery: any;
@@ -13,28 +12,27 @@ const DeliveryMarker = ({
   isSelected,
   onClick,
 }: DeliveryMarkerProps) => {
-  const customIcon = new L.DivIcon({
-    className: "custom-div-icon",
-    html: `<div class="marker-pin ${
-      isSelected ? "bg-primary" : "bg-gray-500"
-    }"></div>`,
-    iconSize: [30, 42],
-    iconAnchor: [15, 42],
+  const markerIcon = L.icon({
+    iconUrl: "/marker-icon.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
   });
 
   return (
     <Marker
-      position={[delivery.latitude, delivery.longitude]}
+      position={[delivery.lat, delivery.lng]}
       eventHandlers={{ click: onClick }}
-      icon={customIcon}
+      icon={markerIcon}
     >
       <Popup>
         <div className="p-2">
-          <div className="flex items-center gap-2">
-            <Truck className="h-4 w-4" />
-            <span className="font-medium">Entrega #{delivery.id}</span>
-          </div>
-          <p className="text-sm text-gray-600">{delivery.status}</p>
+          <h3 className="font-semibold">Entrega #{delivery.id}</h3>
+          <p className="text-sm">Status: {delivery.status}</p>
+          <p className="text-sm">
+            Previsão: {delivery.estimatedDelivery}
+          </p>
         </div>
       </Popup>
     </Marker>

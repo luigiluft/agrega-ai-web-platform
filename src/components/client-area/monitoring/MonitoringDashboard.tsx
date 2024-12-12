@@ -9,6 +9,7 @@ import TrackingMap from "../tracking/TrackingMap";
 
 const MonitoringDashboard = () => {
   const [currentView, setCurrentView] = useState("sales");
+  const [selectedDelivery, setSelectedDelivery] = useState(null);
   const [dateRange, setDateRange] = useState({
     from: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     to: new Date(),
@@ -25,7 +26,13 @@ const MonitoringDashboard = () => {
       case "customers":
         return <CustomersChart />;
       case "tracking":
-        return <TrackingMap />;
+        return (
+          <TrackingMap
+            deliveries={[]}
+            selectedDelivery={selectedDelivery}
+            setSelectedDelivery={setSelectedDelivery}
+          />
+        );
       default:
         return <SalesChart />;
     }
@@ -45,9 +52,7 @@ const MonitoringDashboard = () => {
             <RecentOrders />
           </>
         ) : (
-          <div className="col-span-2">
-            {renderChart()}
-          </div>
+          <div className="col-span-2">{renderChart()}</div>
         )}
       </div>
     </div>

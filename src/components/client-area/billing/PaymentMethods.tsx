@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Plus, Trash2, QrCode, Bank } from "lucide-react";
-import Image from "next/image";
+import { CreditCard, Plus, Trash2, QrCode, Building2 } from "lucide-react";
 
 const PaymentMethods = () => {
   const cards = [
@@ -77,7 +76,7 @@ const PaymentMethods = () => {
         <Card className="p-4">
           <div className="flex justify-between items-start">
             <div className="flex items-center gap-3">
-              <Bank className="w-8 h-8 text-primary" />
+              <Building2 className="w-8 h-8 text-primary" />
               <div>
                 <p className="font-medium">Boleto Bancário</p>
                 <p className="text-sm text-gray-500">
