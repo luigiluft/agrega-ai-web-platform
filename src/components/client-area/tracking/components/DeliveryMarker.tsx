@@ -1,6 +1,6 @@
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { Truck, Car, Van } from "lucide-react";
+import { Truck, Car, PackagePlus } from "lucide-react";
 import { Delivery } from "../types";
 
 interface DeliveryMarkerProps {
@@ -17,7 +17,7 @@ const DeliveryMarker = ({
   // Choose vehicle icon based on items quantity
   const getVehicleIcon = () => {
     if (delivery.items > 3) return Truck;
-    if (delivery.items > 1) return Van;
+    if (delivery.items > 1) return PackagePlus;
     return Car;
   };
 
