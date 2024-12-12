@@ -5,7 +5,7 @@ import DeliveryMarker from "./components/DeliveryMarker";
 
 interface TrackingMapProps {
   deliveries: any[];
-  selectedDelivery: any | null;
+  selectedDelivery: any;
   setSelectedDelivery: (delivery: any) => void;
 }
 
@@ -14,22 +14,17 @@ const TrackingMap = ({
   selectedDelivery,
   setSelectedDelivery,
 }: TrackingMapProps) => {
-  const handleMapCreated = (map: LeafletMap) => {
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 100);
-  };
-
   return (
     <div className="h-[600px] w-full rounded-lg border">
       <MapContainer
+        center={[-23.5505, -46.6333]}
+        zoom={13}
+        scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
         className="rounded-lg"
-        whenCreated={handleMapCreated}
-        defaultCenter={[-23.5505, -46.6333]}
-        defaultZoom={13}
       >
         <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {deliveries.map((delivery) => (

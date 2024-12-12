@@ -1,5 +1,6 @@
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import { Truck } from "lucide-react";
 
 interface DeliveryMarkerProps {
   delivery: any;
@@ -12,27 +13,36 @@ const DeliveryMarker = ({
   isSelected,
   onClick,
 }: DeliveryMarkerProps) => {
-  const markerIcon = L.icon({
-    iconUrl: "/marker-icon.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
+  const markerHtml = `
+    <div class="flex items-center justify-center w-8 h-8 rounded-full ${
+      isSelected ? 'bg-primary' : 'bg-gray-500'
+    } text-white">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 3h18v13H3z"/>
+        <path d="M21 16V7l-9 9"/>
+      </svg>
+    </div>
+  `;
+
+  const customIcon = L.divIcon({
+    className: 'custom-marker',
+    html: markerHtml,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
   });
 
   return (
     <Marker
-      position={[delivery.lat, delivery.lng]}
+      position={[delivery.latitude, delivery.longitude]}
       eventHandlers={{ click: onClick }}
-      icon={markerIcon}
     >
       <Popup>
         <div className="p-2">
-          <h3 className="font-semibold">Entrega #{delivery.id}</h3>
-          <p className="text-sm">Status: {delivery.status}</p>
-          <p className="text-sm">
-            Previsão: {delivery.estimatedDelivery}
-          </p>
+          <div className="flex items-center gap-2">
+            <Truck className="h-4 w-4" />
+            <span className="font-medium">Entrega #{delivery.id}</span>
+          </div>
+          <p className="text-sm text-gray-600">{delivery.status}</p>
         </div>
       </Popup>
     </Marker>
