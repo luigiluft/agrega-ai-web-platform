@@ -38,7 +38,7 @@ const TrackingMap = ({
     return matchesSearch && matchesStatus;
   });
 
-  const center: LatLngExpression = [-23.5505, -46.6333];
+  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
 
   return (
     <div className="space-y-6">
@@ -64,7 +64,7 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                center={center}
+                defaultCenter={defaultCenter}
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
