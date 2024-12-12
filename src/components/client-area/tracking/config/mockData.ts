@@ -5,15 +5,16 @@ export const deliveries: Delivery[] = [
     id: "DEL001",
     trackingNumber: "BR123456789",
     status: "em_rota",
-    estimatedDelivery: "2024-04-15",
+    estimatedDelivery: "2024-12-20",
     currentLocation: { lat: -23.5505, lng: -46.6333 },
     destination: "Rua Augusta, 1500 - São Paulo, SP",
-    lastUpdate: "2024-04-13 14:30",
+    lastUpdate: "2024-12-12 14:30",
     customer: "João Silva",
     contact: "(11) 98765-4321",
     value: 1250.90,
     priority: "alta",
-    items: 3
+    items: 3,
+    commission: 125.09
   },
   {
     id: "DEL002",
@@ -145,4 +146,13 @@ export const deliveries: Delivery[] = [
     priority: "alta",
     items: 2
   }
+];
+
+export const salesData = [
+  { month: "Jul", sales: 180000, commission: 18000 },
+  { month: "Ago", sales: 165000, commission: 16500 },
+  { month: "Set", sales: 190000, commission: 19000 },
+  { month: "Out", sales: 175000, commission: 17500 },
+  { month: "Nov", sales: 320000, commission: 32000 }, // Black Friday boost
+  { month: "Dez", sales: 210000, commission: 21000 },
 ];
