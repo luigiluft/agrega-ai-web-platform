@@ -1,25 +1,35 @@
 import { Delivery } from '../types';
 import { addDays } from 'date-fns';
 
-const generateRandomLocation = (baseLocation: [number, number], radius: number) => {
-  const lat = baseLocation[0] + (Math.random() - 0.5) * radius;
-  const lng = baseLocation[1] + (Math.random() - 0.5) * radius;
+const stateCoordinates = {
+  SP: { center: [-23.5505, -46.6333], radius: 2 },
+  RJ: { center: [-22.9068, -43.1729], radius: 1.5 },
+  MG: { center: [-19.9167, -43.9345], radius: 2 }
+};
+
+const generateRandomLocation = (state: keyof typeof stateCoordinates) => {
+  const { center, radius } = stateCoordinates[state];
+  const lat = center[0] + (Math.random() - 0.5) * radius;
+  const lng = center[1] + (Math.random() - 0.5) * radius;
   return { lat, lng };
 };
+
+const states = ['SP', 'RJ', 'MG'] as const;
 
 // Generate 1000 deliveries with realistic data
 export const deliveries: Delivery[] = Array.from({ length: 1000 }, (_, index) => {
   const status = ['em_rota', 'atrasado', 'entregue', 'pendente', 'risco_atraso'][Math.floor(Math.random() * 5)] as Delivery['status'];
   const baseDate = new Date();
   const randomDays = Math.floor(Math.random() * 30);
+  const state = states[Math.floor(Math.random() * states.length)];
   
   return {
     id: `DEL${(index + 1).toString().padStart(6, '0')}`,
     trackingNumber: `BR${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
     status,
     estimatedDelivery: addDays(baseDate, randomDays).toISOString(),
-    currentLocation: generateRandomLocation([-23.5505, -46.6333], 0.2),
-    destination: `Rua ${Math.floor(Math.random() * 1000)}, São Paulo, SP`,
+    currentLocation: generateRandomLocation(state),
+    destination: `Rua ${Math.floor(Math.random() * 1000)}, ${state === 'SP' ? 'São Paulo' : state === 'RJ' ? 'Rio de Janeiro' : 'Belo Horizonte'}`,
     lastUpdate: new Date().toISOString(),
     customer: `Cliente ${index + 1}`,
     contact: `(11) 9${Math.floor(Math.random() * 9000 + 1000)}-${Math.floor(Math.random() * 9000 + 1000)}`,
