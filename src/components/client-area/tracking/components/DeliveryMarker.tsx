@@ -21,9 +21,9 @@ const createCustomIcon = (status: string) => {
   return L.divIcon({
     html: markerHtml,
     className: 'custom-marker',
-    iconSize: [24, 24],
-    iconAnchor: [12, 24],
-    popupAnchor: [0, -24],
+    iconSize: L.point(24, 24),
+    iconAnchor: L.point(12, 24),
+    popupAnchor: L.point(0, -24),
   });
 };
 

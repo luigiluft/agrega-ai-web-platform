@@ -52,14 +52,13 @@ const TrackingMap = () => {
 
       <div className="h-[600px] relative rounded-lg overflow-hidden border border-gray-200">
         <MapContainer
-          center={mapCenter as [number, number]}
+          center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
           className="h-full w-full"
           whenCreated={setMap}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {filteredDeliveries.map((delivery) => (
