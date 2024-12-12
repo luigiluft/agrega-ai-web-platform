@@ -1,6 +1,6 @@
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { Truck } from "lucide-react";
+import { Truck, Car, Van } from "lucide-react";
 import { Delivery } from "../types";
 
 interface DeliveryMarkerProps {
@@ -14,14 +14,24 @@ const DeliveryMarker = ({
   isSelected,
   onClick,
 }: DeliveryMarkerProps) => {
+  // Choose vehicle icon based on items quantity
+  const getVehicleIcon = () => {
+    if (delivery.items > 3) return Truck;
+    if (delivery.items > 1) return Van;
+    return Car;
+  };
+
+  const VehicleIcon = getVehicleIcon();
+
   const markerHtml = `
     <div class="flex items-center justify-center w-8 h-8 rounded-full ${
       isSelected ? 'bg-primary' : 'bg-gray-500'
     } text-white">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 3h18v13H3z"/>
-        <path d="M21 16V7l-9 9"/>
-      </svg>
+      ${VehicleIcon({
+        width: 16,
+        height: 16,
+        color: 'white',
+      }).outerHTML}
     </div>
   `;
 
@@ -35,15 +45,18 @@ const DeliveryMarker = ({
   return (
     <Marker
       position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
+      icon={icon}
       eventHandlers={{ click: onClick }}
     >
       <Popup>
         <div className="p-2">
           <div className="flex items-center gap-2">
-            <Truck className="h-4 w-4" />
+            <VehicleIcon className="h-4 w-4" />
             <span className="font-medium">Entrega #{delivery.trackingNumber}</span>
           </div>
-          <p className="text-sm text-gray-600">{delivery.status}</p>
+          <p className="text-sm text-gray-600 mt-1">
+            {delivery.items} {delivery.items > 1 ? 'itens' : 'item'}
+          </p>
         </div>
       </Popup>
     </Marker>
