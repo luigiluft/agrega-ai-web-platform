@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  Plus, Box, Download, BarChart2, ListFilter,
-  TrendingUp, AlertTriangle, Clock 
-} from "lucide-react";
+import { Plus, Box, Download, BarChart2, ListFilter } from "lucide-react";
 import { toast } from "sonner";
 import { Product } from "./types";
 import ProductList from "./ProductList";
 import AddProductForm from "./AddProductForm";
 import ProductsChart from "../monitoring/ProductsChart";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProductStats from "./ProductStats";
+import ProductTemplate from "./ProductTemplate";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ProductManagement = () => {
@@ -187,66 +185,8 @@ const ProductManagement = () => {
           )}
         </div>
         <div className="space-y-6">
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold mb-4">Modelo de Referência</h3>
-            <div className="space-y-4">
-              <div className="p-4 border rounded-lg">
-                <h4 className="font-medium">Campos Importantes:</h4>
-                <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
-                  <li>• Nome do produto (obrigatório)</li>
-                  <li>• SKU único (obrigatório)</li>
-                  <li>• Preço de venda (obrigatório)</li>
-                  <li>• Quantidade em estoque</li>
-                  <li>• Descrição detalhada</li>
-                  <li>• Fotos do produto</li>
-                  <li>• Marketplaces integrados</li>
-                  <li>• Categoria do produto</li>
-                  <li>• Tags para busca</li>
-                </ul>
-              </div>
-              <div className="p-4 border rounded-lg">
-                <h4 className="font-medium">Dicas:</h4>
-                <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
-                  <li>• Use fotos de alta qualidade</li>
-                  <li>• Mantenha descrições claras</li>
-                  <li>• Atualize o estoque regularmente</li>
-                  <li>• Monitore as vendas por marketplace</li>
-                </ul>
-              </div>
-            </div>
-          </Card>
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold mb-4">Estatísticas Rápidas</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium">Mais Vendido</span>
-                </div>
-                <span className="text-sm font-semibold">{filteredProducts()[0]?.name}</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-orange-500/10 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-orange-500" />
-                  <span className="text-sm font-medium">Baixo Estoque</span>
-                </div>
-                <span className="text-sm font-semibold">{products.filter(p => p.stock < 10).length} produtos</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm font-medium">Adicionados Hoje</span>
-                </div>
-                <span className="text-sm font-semibold">
-                  {products.filter(p => {
-                    const today = new Date();
-                    const productDate = new Date(Number(p.id));
-                    return productDate.toDateString() === today.toDateString();
-                  }).length} produtos
-                </span>
-              </div>
-            </div>
-          </Card>
+          <ProductTemplate />
+          <ProductStats products={filteredProducts()} />
         </div>
       </div>
     </Card>

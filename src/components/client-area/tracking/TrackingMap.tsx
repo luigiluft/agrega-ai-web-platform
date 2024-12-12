@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Map as LeafletMap } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import DeliveryMarker from "./components/DeliveryMarker";
 
 interface TrackingMapProps {
@@ -14,18 +14,20 @@ const TrackingMap = ({
   selectedDelivery,
   setSelectedDelivery,
 }: TrackingMapProps) => {
+  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
+
   return (
     <div className="h-[600px] w-full rounded-lg border">
       <MapContainer
-        center={[-23.5505, -46.6333]}
+        defaultCenter={defaultCenter}
         zoom={13}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
         className="rounded-lg"
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {deliveries.map((delivery) => (
           <DeliveryMarker
