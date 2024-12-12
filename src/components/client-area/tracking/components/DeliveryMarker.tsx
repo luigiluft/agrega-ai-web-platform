@@ -25,7 +25,7 @@ const DeliveryMarker = ({
     </div>
   `;
 
-  const customIcon = L.divIcon({
+  const customIcon = new L.DivIcon({
     className: 'custom-marker',
     html: markerHtml,
     iconSize: [32, 32],

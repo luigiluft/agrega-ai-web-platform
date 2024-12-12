@@ -1,38 +1,31 @@
+import { Product } from "../products/types";
 import { Card } from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-const data = [
-  { name: "Produto A", sales: 120 },
-  { name: "Produto B", sales: 98 },
-  { name: "Produto C", sales: 86 },
-  { name: "Produto D", sales: 75 },
-  { name: "Produto E", sales: 64 },
-];
+interface ProductsChartProps {
+  products: Product[];
+}
 
-const config = {
-  sales: {
-    color: "hsl(var(--primary))",
-  },
-};
+const ProductsChart = ({ products }: ProductsChartProps) => {
+  const data = products.map(product => ({
+    name: product.name,
+    stock: product.stock,
+    value: product.price
+  }));
 
-const ProductsChart = () => {
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-semibold mb-4">Produtos Mais Vendidos</h3>
-      <div className="h-[300px]">
-        <ChartContainer config={config}>
-          <BarChart data={data}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Bar dataKey="sales" fill="hsl(var(--primary))" />
-            <Tooltip content={<ChartTooltipContent />} />
-          </BarChart>
-        </ChartContainer>
+      <h3 className="text-lg font-semibold mb-4">Visão Geral dos Produtos</h3>
+      <div className="w-full overflow-x-auto">
+        <BarChart width={600} height={300} data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="stock" fill="#8884d8" />
+          <Bar dataKey="value" fill="#82ca9d" />
+        </BarChart>
       </div>
     </Card>
   );
