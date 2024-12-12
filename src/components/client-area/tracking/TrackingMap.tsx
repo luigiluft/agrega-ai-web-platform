@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { LatLngExpression } from "leaflet";
 import DeliveryMarker from "./components/DeliveryMarker";
 import DeliveryPopup from "./DeliveryPopup";
 import DeliveryFilters from "./DeliveryFilters";
@@ -62,7 +61,7 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                defaultCenter={[-23.5505, -46.6333] as [number, number]}
+                center={[-23.5505, -46.6333]}
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}

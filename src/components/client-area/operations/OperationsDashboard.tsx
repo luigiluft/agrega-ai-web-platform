@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Warehouse, Box, Package, Truck, Check, X } from "lucide-react";
+import { Warehouse, Box, Package, Truck, Check } from "lucide-react";
 import { addDays, format } from "date-fns";
 import { ProductOperation } from "../tracking/types";
 
