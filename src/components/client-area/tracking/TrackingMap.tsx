@@ -47,8 +47,8 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                defaultCenter={defaultCenter}
-                defaultZoom={13}
+                center={defaultCenter}
+                zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
                 className="rounded-lg"
