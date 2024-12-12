@@ -2,6 +2,7 @@ import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { Truck, Car, PackagePlus } from "lucide-react";
 import { Delivery } from "../types";
+import { createElement } from "react";
 
 interface DeliveryMarkerProps {
   delivery: Delivery;
@@ -23,21 +24,19 @@ const DeliveryMarker = ({
 
   const VehicleIcon = getVehicleIcon();
 
-  const markerHtml = `
-    <div class="flex items-center justify-center w-8 h-8 rounded-full ${
-      isSelected ? 'bg-primary' : 'bg-gray-500'
-    } text-white">
-      ${VehicleIcon({
-        width: 16,
-        height: 16,
-        color: 'white',
-      }).outerHTML}
-    </div>
-  `;
+  // Create a temporary div to render the icon
+  const div = document.createElement('div');
+  div.innerHTML = createElement(VehicleIcon, {
+    width: 16,
+    height: 16,
+    color: 'white',
+  }).type.render();
 
-  const icon = new L.DivIcon({
-    className: 'custom-marker',
-    html: markerHtml,
+  const icon = L.divIcon({
+    className: `custom-marker flex items-center justify-center w-8 h-8 rounded-full ${
+      isSelected ? 'bg-primary' : 'bg-gray-500'
+    } text-white`,
+    html: div.innerHTML,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
