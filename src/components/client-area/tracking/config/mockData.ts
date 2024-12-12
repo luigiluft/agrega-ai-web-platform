@@ -1,5 +1,5 @@
 import { Delivery } from '../types';
-import { addDays, subDays } from 'date-fns';
+import { addDays } from 'date-fns';
 
 const generateRandomLocation = (baseLocation: [number, number], radius: number) => {
   const lat = baseLocation[0] + (Math.random() - 0.5) * radius;
@@ -9,7 +9,7 @@ const generateRandomLocation = (baseLocation: [number, number], radius: number) 
 
 // Generate 1000 deliveries with realistic data
 export const deliveries: Delivery[] = Array.from({ length: 1000 }, (_, index) => {
-  const status = ['em_rota', 'atrasado', 'entregue', 'pendente', 'risco_atraso'][Math.floor(Math.random() * 5)];
+  const status = ['em_rota', 'atrasado', 'entregue', 'pendente', 'risco_atraso'][Math.floor(Math.random() * 5)] as Delivery['status'];
   const baseDate = new Date();
   const randomDays = Math.floor(Math.random() * 30);
   

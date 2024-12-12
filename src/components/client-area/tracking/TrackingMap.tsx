@@ -61,7 +61,7 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                center={[-23.5505, -46.6333] as [number, number]}
+                center={[-23.5505, -46.6333]}
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
