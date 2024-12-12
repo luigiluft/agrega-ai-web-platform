@@ -1,72 +1,49 @@
-import { useState } from "react";
-import { MapContainer, TileLayer } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import { Card } from '@/components/ui/card';
-import { DeliveryStatus } from './types';
-import DeliveryFilters from './DeliveryFilters';
-import DeliveryMarker from './components/DeliveryMarker';
-import { mapCenter, statusConfig } from './config/mapConfig';
-import { deliveries } from './config/mockData';
-import type { Map as LeafletMap } from 'leaflet';
+import { MapContainer, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { Dispatch } from "react";
+import { Map as LeafletMap } from "leaflet";
+import DeliveryMarker from "./components/DeliveryMarker";
 
-const TrackingMap = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<DeliveryStatus | "all">("all");
-  const [filteredDeliveries, setFilteredDeliveries] = useState(deliveries);
-  const [map, setMap] = useState<LeafletMap | null>(null);
+interface TrackingMapProps {
+  deliveries: any[];
+  selectedDelivery: any | null;
+  setSelectedDelivery: (delivery: any) => void;
+}
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    filterDeliveries(query, statusFilter);
-  };
-
-  const handleStatusFilter = (status: DeliveryStatus | "all") => {
-    setStatusFilter(status);
-    filterDeliveries(searchQuery, status);
-  };
-
-  const filterDeliveries = (query: string, status: DeliveryStatus | "all") => {
-    const filtered = deliveries.filter(delivery => {
-      const matchesSearch = 
-        delivery.trackingNumber.toLowerCase().includes(query.toLowerCase()) ||
-        delivery.destination.toLowerCase().includes(query.toLowerCase()) ||
-        delivery.customer.toLowerCase().includes(query.toLowerCase()) ||
-        delivery.contact.toLowerCase().includes(query.toLowerCase());
-      
-      const matchesStatus = status === "all" || delivery.status === status;
-      
-      return matchesSearch && matchesStatus;
-    });
-    setFilteredDeliveries(filtered);
+const TrackingMap = ({
+  deliveries,
+  selectedDelivery,
+  setSelectedDelivery,
+}: TrackingMapProps) => {
+  const handleMapCreated = (map: LeafletMap) => {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
   };
 
   return (
-    <Card className="p-6 bg-white shadow-lg">
-      <DeliveryFilters
-        searchQuery={searchQuery}
-        statusFilter={statusFilter}
-        statusConfig={statusConfig}
-        onSearch={handleSearch}
-        onStatusFilter={handleStatusFilter}
-      />
-
-      <div className="h-[600px] relative rounded-lg overflow-hidden border border-gray-200">
-        <MapContainer
-          defaultCenter={mapCenter}
-          defaultZoom={4}
-          scrollWheelZoom={true}
-          className="h-full w-full"
-          ref={(mapRef) => setMap(mapRef)}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    <div className="h-[600px] w-full rounded-lg border">
+      <MapContainer
+        center={[-23.5505, -46.6333]}
+        zoom={13}
+        scrollWheelZoom={false}
+        className="h-full w-full rounded-lg"
+        whenCreated={handleMapCreated}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {deliveries.map((delivery) => (
+          <DeliveryMarker
+            key={delivery.id}
+            delivery={delivery}
+            isSelected={selectedDelivery?.id === delivery.id}
+            onClick={() => setSelectedDelivery(delivery)}
           />
-          {filteredDeliveries.map((delivery) => (
-            <DeliveryMarker key={delivery.id} delivery={delivery} />
-          ))}
-        </MapContainer>
-      </div>
-    </Card>
+        ))}
+      </MapContainer>
+    </div>
   );
 };
 
