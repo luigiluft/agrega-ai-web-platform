@@ -21,20 +21,23 @@ const DeliveryFilters = ({
   onStatusFilter
 }: DeliveryFiltersProps) => {
   return (
-    <div className="mb-6 space-y-4">
+    <div className="mb-6 space-y-4 animate-fade-down">
       <div className="relative">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
         <Input
           placeholder="Buscar por número de rastreio, endereço ou cliente..."
           value={searchQuery}
           onChange={(e) => onSearch(e.target.value)}
-          className="pl-8"
+          className="pl-10 bg-gray-50 border-gray-200 focus:border-primary focus:ring-primary"
         />
       </div>
       
       <div className="flex flex-wrap gap-2">
-        <Select value={statusFilter} onValueChange={(value) => onStatusFilter(value as DeliveryStatus | "all")}>
-          <SelectTrigger className="w-[180px]">
+        <Select 
+          value={statusFilter} 
+          onValueChange={(value) => onStatusFilter(value as DeliveryStatus | "all")}
+        >
+          <SelectTrigger className="w-[180px] bg-white border-gray-200">
             <SelectValue placeholder="Filtrar por status" />
           </SelectTrigger>
           <SelectContent>
@@ -55,9 +58,10 @@ const DeliveryFilters = ({
             <Badge
               key={key}
               variant="secondary"
-              className={`flex items-center gap-1 ${
+              className={`flex items-center gap-1 transition-colors cursor-pointer hover:opacity-80 ${
                 statusFilter === key ? config.color + " text-white" : ""
               }`}
+              onClick={() => onStatusFilter(key as DeliveryStatus)}
             >
               {React.createElement(config.icon, { className: "h-3 w-3" })}
               <span>{config.label}</span>

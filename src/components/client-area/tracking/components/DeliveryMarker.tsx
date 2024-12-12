@@ -1,6 +1,6 @@
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { Delivery, DeliveryStatus } from '../types';
+import { Delivery } from '../types';
 import DeliveryPopup from '../DeliveryPopup';
 import { statusConfig } from '../config/mapConfig';
 
@@ -8,24 +8,33 @@ interface DeliveryMarkerProps {
   delivery: Delivery;
 }
 
-const createMarkerIcon = (status: DeliveryStatus): L.DivIcon => {
+const createCustomIcon = (status: string) => {
+  const markerHtml = `
+    <div class="relative">
+      <div class="w-6 h-6 rounded-full ${statusConfig[status].markerColor} shadow-lg flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2">
+        <div class="w-4 h-4 rounded-full bg-white"></div>
+      </div>
+      <div class="w-2 h-2 ${statusConfig[status].markerColor} rotate-45 absolute -bottom-1 left-1/2 transform -translate-x-1/2"></div>
+    </div>
+  `;
+
   return L.divIcon({
-    className: `delivery-marker-${status}`,
-    html: `<div class="marker-icon ${statusConfig[status].markerColor}"></div>`,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
+    html: markerHtml,
+    className: 'custom-marker',
+    iconSize: [24, 24],
+    iconAnchor: [12, 24],
+    popupAnchor: [0, -24],
   });
 };
 
 const DeliveryMarker = ({ delivery }: DeliveryMarkerProps) => {
   const position: [number, number] = [delivery.currentLocation.lat, delivery.currentLocation.lng];
-  const markerIcon = createMarkerIcon(delivery.status);
+  const customIcon = createCustomIcon(delivery.status);
   
   return (
     <Marker
       position={position}
-      icon={markerIcon}
+      icon={customIcon}
     >
       <Popup>
         <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
