@@ -5,11 +5,12 @@ import DeliveryMarker from "./components/DeliveryMarker";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Delivery } from "./types";
 
 interface TrackingMapProps {
-  deliveries: any[];
-  selectedDelivery: any;
-  setSelectedDelivery: (delivery: any) => void;
+  deliveries: Delivery[];
+  selectedDelivery: Delivery | null;
+  setSelectedDelivery: (delivery: Delivery | null) => void;
 }
 
 const TrackingMap = ({
@@ -18,7 +19,7 @@ const TrackingMap = ({
   setSelectedDelivery,
 }: TrackingMapProps) => {
   const navigate = useNavigate();
-  const center: LatLngExpression = [-23.5505, -46.6333];
+  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
 
   return (
     <div className="relative">
@@ -33,14 +34,13 @@ const TrackingMap = ({
       
       <div className="h-[600px] w-full rounded-lg border">
         <MapContainer
-          center={center}
+          defaultCenter={defaultCenter}
           zoom={13}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%" }}
           className="rounded-lg"
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {deliveries.map((delivery) => (

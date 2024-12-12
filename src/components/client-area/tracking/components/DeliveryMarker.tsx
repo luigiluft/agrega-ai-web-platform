@@ -25,7 +25,7 @@ const DeliveryMarker = ({
     </div>
   `;
 
-  const customIcon = new L.DivIcon({
+  const icon = new L.DivIcon({
     className: 'custom-marker',
     html: markerHtml,
     iconSize: [32, 32],
@@ -35,7 +35,6 @@ const DeliveryMarker = ({
   return (
     <Marker
       position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-      icon={customIcon}
       eventHandlers={{ click: onClick }}
     >
       <Popup>

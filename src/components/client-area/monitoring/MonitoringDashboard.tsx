@@ -6,6 +6,7 @@ import ProductsChart from "./ProductsChart";
 import CustomersChart from "./CustomersChart";
 import DashboardControls from "./DashboardControls";
 import TrackingMap from "../tracking/TrackingMap";
+import { Product } from "../products/types";
 
 const MonitoringDashboard = () => {
   const [currentView, setCurrentView] = useState("sales");
@@ -15,6 +16,25 @@ const MonitoringDashboard = () => {
     to: new Date(),
   });
 
+  // Sample products data
+  const products: Product[] = [
+    {
+      id: "1",
+      name: "Product A",
+      price: 99.90,
+      sku: "SKU001",
+      stock: 50
+    },
+    {
+      id: "2",
+      name: "Product B",
+      price: 149.90,
+      sku: "SKU002",
+      stock: 30
+    },
+    // Add more sample products as needed
+  ];
+
   const handleDateChange = (dates: { from: Date; to: Date }) => {
     setDateRange(dates);
   };
@@ -22,7 +42,7 @@ const MonitoringDashboard = () => {
   const renderChart = () => {
     switch (currentView) {
       case "products":
-        return <ProductsChart />;
+        return <ProductsChart products={products} />;
       case "customers":
         return <CustomersChart />;
       case "tracking":
