@@ -24,22 +24,28 @@ const DeliveryMarker = ({
 
   const VehicleIcon = getVehicleIcon();
 
-  // Create a temporary div to render the icon
-  const div = document.createElement('div');
-  const iconElement = createElement(VehicleIcon, {
-    width: 16,
-    height: 16,
-    color: 'white',
-  });
-  
-  // Convert the React element to HTML string
-  div.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${VehicleIcon({}).toString()}</svg>`;
+  // Create SVG string for the icon
+  const svgString = `
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="16" 
+      height="16" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="white" 
+      stroke-width="2" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    >
+      ${VehicleIcon({}).props.children}
+    </svg>
+  `;
 
   const icon = L.divIcon({
     className: `custom-marker flex items-center justify-center w-8 h-8 rounded-full ${
       isSelected ? 'bg-primary' : 'bg-gray-500'
     } text-white`,
-    html: div.innerHTML,
+    html: svgString,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
