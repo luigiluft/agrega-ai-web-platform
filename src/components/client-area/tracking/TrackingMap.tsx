@@ -56,11 +56,11 @@ const TrackingMap = () => {
           center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
-          ref={setMap}
+          whenCreated={setMap}
         >
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {filteredDeliveries.map((delivery) => (
             <DeliveryMarker key={delivery.id} delivery={delivery} />
