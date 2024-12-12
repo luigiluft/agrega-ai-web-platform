@@ -29,7 +29,7 @@ const TrackingMap = ({
   const selectedDelivery = propSelectedDelivery ?? localSelectedDelivery;
   const setSelectedDelivery = propSetSelectedDelivery ?? setLocalSelectedDelivery;
 
-  const center: LatLngExpression = [-23.5505, -46.6333];
+  const mapCenter: LatLngExpression = [-23.5505, -46.6333];
 
   return (
     <div className="space-y-6">
@@ -47,8 +47,9 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                center={center}
-                zoom={13}
+                key={mapCenter.toString()}
+                bounds={[mapCenter]}
+                boundsOptions={{ padding: [50, 50] }}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
                 className="rounded-lg"
