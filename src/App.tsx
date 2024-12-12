@@ -19,6 +19,7 @@ import ChatWidget from "./components/chat/ChatWidget";
 import BusinessIntelligence from "./components/client-area/analytics/BusinessIntelligence";
 import LogisticsReverse from "./components/client-area/logistics/LogisticsReverse";
 import PromotionsManager from "./components/client-area/promotions/PromotionsManager";
+import TrackingMap from "./components/client-area/tracking/TrackingMap";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/area-cliente/analytics" element={<BusinessIntelligence />} />
             <Route path="/area-cliente/logistics/reverse" element={<LogisticsReverse />} />
             <Route path="/area-cliente/promotions" element={<PromotionsManager />} />
+            <Route path="/area-cliente/tracking" element={<TrackingMap />} />
             <Route path="/login" element={<Login />} />
           </Routes>
           <ChatWidget />
