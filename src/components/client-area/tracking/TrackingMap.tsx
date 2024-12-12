@@ -56,7 +56,7 @@ const TrackingMap = () => {
           center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
-          whenCreated={setMap}
+          ref={setMap}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -21,11 +21,12 @@ const createMarkerIcon = (status: DeliveryStatus): L.Icon => {
 
 const DeliveryMarker = ({ delivery }: DeliveryMarkerProps) => {
   const position: [number, number] = [delivery.currentLocation.lat, delivery.currentLocation.lng];
+  const markerIcon = createMarkerIcon(delivery.status);
   
   return (
     <Marker
       position={position}
-      icon={createMarkerIcon(delivery.status)}
+      icon={markerIcon}
     >
       <Popup>
         <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
