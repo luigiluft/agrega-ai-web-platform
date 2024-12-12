@@ -36,11 +36,11 @@ const ClientArea = () => {
       <Tabs defaultValue="project" className="w-full">
         <TabsList className="w-full justify-start mb-8 flex-wrap">
           <TabsTrigger value="project">Visão Geral</TabsTrigger>
+          <TabsTrigger value="tracking">Rastreamento</TabsTrigger>
+          <TabsTrigger value="operations">Operações</TabsTrigger>
           <TabsTrigger value="products">Produtos</TabsTrigger>
           <TabsTrigger value="development">Desenvolvimento</TabsTrigger>
           <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
-          <TabsTrigger value="operations">Operações</TabsTrigger>
-          <TabsTrigger value="tracking">Rastreamento</TabsTrigger>
           <TabsTrigger value="billing">Faturamento</TabsTrigger>
           <TabsTrigger value="promotions">Promoções</TabsTrigger>
         </TabsList>
@@ -50,6 +50,14 @@ const ClientArea = () => {
             <ProjectDashboard />
             <ProjectTimeline />
           </div>
+        </TabsContent>
+
+        <TabsContent value="tracking">
+          <TrackingMap />
+        </TabsContent>
+
+        <TabsContent value="operations">
+          <OperationsDashboard />
         </TabsContent>
 
         <TabsContent value="products">
@@ -62,14 +70,6 @@ const ClientArea = () => {
 
         <TabsContent value="monitoring">
           <MonitoringDashboard />
-        </TabsContent>
-
-        <TabsContent value="operations">
-          <OperationsDashboard />
-        </TabsContent>
-
-        <TabsContent value="tracking">
-          <TrackingMap />
         </TabsContent>
 
         <TabsContent value="billing">
