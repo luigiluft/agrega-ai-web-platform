@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import SolutionLayout from "@/components/solutions/SolutionLayout";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectDashboard from "@/components/client-area/ProjectDashboard";
 import ProjectTimeline from "@/components/client-area/ProjectTimeline";
 import MonitoringDashboard from "@/components/client-area/monitoring/MonitoringDashboard";
@@ -8,6 +10,19 @@ import ProductManagement from "@/components/client-area/products/ProductManageme
 import DevelopmentRequests from "@/components/client-area/development/DevelopmentRequests";
 
 const ClientArea = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <SolutionLayout
       title="Área do Cliente"

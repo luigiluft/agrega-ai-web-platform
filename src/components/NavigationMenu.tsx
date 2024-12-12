@@ -9,10 +9,12 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { Menu, X, Sparkles, UserCircle2 } from "lucide-react";
+import { Menu, X, UserCircle2, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NavigationMenuDemo = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <NavigationMenu className="max-w-full w-full bg-white/95 backdrop-blur-sm shadow-sm fixed top-0 z-50">
@@ -91,13 +93,23 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0 ml-auto">
-            <Link 
-              to="/area-cliente" 
-              className="text-base font-medium h-10 bg-secondary text-white hover:bg-secondary/90 px-4 rounded-lg flex items-center gap-2"
-            >
-              <UserCircle2 className="w-4 h-4" />
-              Área do Cliente
-            </Link>
+            {isAuthenticated ? (
+              <button
+                onClick={logout}
+                className="text-base font-medium h-10 bg-red-500 text-white hover:bg-red-600 px-4 rounded-lg flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Sair
+              </button>
+            ) : (
+              <Link 
+                to="/login" 
+                className="text-base font-medium h-10 bg-secondary text-white hover:bg-secondary/90 px-4 rounded-lg flex items-center gap-2"
+              >
+                <UserCircle2 className="w-4 h-4" />
+                Área do Cliente
+              </Link>
+            )}
           </NavigationMenuItem>
         </div>
       </NavigationMenuList>
