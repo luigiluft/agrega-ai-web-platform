@@ -2,7 +2,7 @@ import { LatLngExpression } from 'leaflet';
 import { StatusConfig } from '../types';
 import { Truck, Clock, AlertTriangle, CheckCircle, Package } from 'lucide-react';
 
-export const mapCenter: LatLngExpression = [-23.5505, -46.6333];
+export const mapCenter: [number, number] = [-23.5505, -46.6333];
 
 export const statusConfig: StatusConfig = {
   em_rota: {

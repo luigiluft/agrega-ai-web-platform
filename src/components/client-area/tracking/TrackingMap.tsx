@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Card } from '@/components/ui/card';
-import { useState } from 'react';
 import { DeliveryStatus } from './types';
 import DeliveryFilters from './DeliveryFilters';
 import DeliveryMarker from './components/DeliveryMarker';
@@ -52,15 +52,15 @@ const TrackingMap = () => {
 
       <div className="h-[600px] relative rounded-lg overflow-hidden border border-gray-200">
         <MapContainer
-          center={[mapCenter[0], mapCenter[1]]}
+          center={mapCenter as [number, number]}
           zoom={4}
           scrollWheelZoom={true}
           className="h-full w-full"
           whenCreated={setMap}
         >
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {filteredDeliveries.map((delivery) => (
             <DeliveryMarker key={delivery.id} delivery={delivery} />
