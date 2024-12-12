@@ -14,6 +14,7 @@ import D2C from "./pages/solutions/D2C";
 import Marketplace from "./pages/solutions/Marketplace";
 import ClientArea from "./pages/ClientArea";
 import Login from "./pages/Login";
+import Checkout from "./pages/Checkout";
 import ChatWidget from "./components/chat/ChatWidget";
 
 const queryClient = new QueryClient({
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/d2c" element={<D2C />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/area-cliente" element={<ClientArea />} />
+            <Route path="/area-cliente/checkout" element={<Checkout />} />
             <Route path="/login" element={<Login />} />
           </Routes>
           <ChatWidget />

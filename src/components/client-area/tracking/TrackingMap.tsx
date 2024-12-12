@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { LatLngExpression } from "leaflet";
 import DeliveryMarker from "./components/DeliveryMarker";
@@ -14,12 +14,12 @@ const TrackingMap = ({
   selectedDelivery,
   setSelectedDelivery,
 }: TrackingMapProps) => {
-  const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
+  const center: LatLngExpression = [-23.5505, -46.6333];
 
   return (
     <div className="h-[600px] w-full rounded-lg border">
       <MapContainer
-        defaultCenter={defaultCenter}
+        center={center}
         zoom={13}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
