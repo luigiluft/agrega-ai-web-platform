@@ -3,40 +3,49 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Warehouse, Box, Package, Truck, Check } from "lucide-react";
+import { Box, BoxMinus, Package, Truck, CheckSquare } from "lucide-react";
 import { addDays, format, subDays } from "date-fns";
 import { ProductOperation } from "../tracking/types";
 import { DateRange } from "react-day-picker";
 
-const mockOperations = Array.from({ length: 1000 }, (_, index) => ({
-  id: (index + 1).toString(),
-  name: `Produto ${index + 1}`,
-  status: ["em_estoque", "backlog", "separacao", "expedicao", "expedido"][
-    Math.floor(Math.random() * 5)
-  ],
-  quantity: Math.floor(Math.random() * 1000) + 50,
-  lastUpdate: format(
-    subDays(new Date(), Math.floor(Math.random() * 30)),
-    "dd/MM/yyyy HH:mm"
-  ),
-  expectedDate: format(
-    addDays(new Date(), Math.floor(Math.random() * 14)),
-    "dd/MM/yyyy"
-  ),
-}));
+const mockOperations = Array.from({ length: 1224 }, (_, index) => {
+  // Distribute status based on provided numbers
+  let status;
+  if (index < 982) status = "em_estoque";
+  else if (index < 989) status = "backlog";
+  else if (index < 1057) status = "separacao";
+  else if (index < 1107) status = "expedicao";
+  else status = "expedido";
+
+  return {
+    id: (index + 1).toString().padStart(6, '0'),
+    name: `Produto ${index + 1}`,
+    status,
+    quantity: Math.floor(Math.random() * 1000) + 50,
+    lastUpdate: format(
+      subDays(new Date(), Math.floor(Math.random() * 7)),
+      "dd/MM/yyyy HH:mm"
+    ),
+    expectedDate: format(
+      addDays(new Date(), Math.floor(Math.random() * 14)),
+      "dd/MM/yyyy"
+    ),
+  };
+});
 
 const OperationsDashboard = () => {
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(),
     to: addDays(new Date(), 7),
   });
+  const [searchTerm, setSearchTerm] = useState("");
 
   const statusIcons = {
-    em_estoque: Warehouse,
-    backlog: Box,
+    em_estoque: Box,
+    backlog: BoxMinus,
     separacao: Package,
     expedicao: Truck,
-    expedido: Check,
+    expedido: CheckSquare,
   };
 
   const statusColors = {
@@ -47,26 +56,41 @@ const OperationsDashboard = () => {
     expedido: "bg-green-500",
   };
 
+  const statusText = {
+    em_estoque: "Em Estoque",
+    backlog: "Backlog",
+    separacao: "Separação",
+    expedicao: "Expedição",
+    expedido: "Expedido",
+  };
+
+  const filteredOperations = mockOperations.filter(op => 
+    op.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getStatusCount = (status: string) => 
+    mockOperations.filter(op => op.status === status).length;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Operações</h2>
+        <h2 className="text-3xl font-bold">Operações</h2>
         <DatePickerWithRange date={dateRange} setDate={setDateRange} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {Object.entries(statusIcons).map(([status, Icon]) => (
-          <Card key={status} className="p-4">
-            <div className="flex items-center gap-2">
-              <div className={`p-2 rounded-full ${statusColors[status]} bg-opacity-10`}>
-                <Icon className={`h-5 w-5 ${statusColors[status]} text-opacity-100`} />
+          <Card key={status} className="p-6 hover:shadow-lg transition-all duration-200">
+            <div className="flex items-center gap-4">
+              <div className={`p-3 rounded-lg ${statusColors[status]} bg-opacity-10`}>
+                <Icon className={`h-6 w-6 ${statusColors[status]} text-opacity-100`} />
               </div>
               <div>
                 <p className="text-sm text-gray-500">
-                  {status.replace("_", " ").charAt(0).toUpperCase() + status.slice(1)}
+                  {statusText[status]}
                 </p>
                 <p className="text-2xl font-bold">
-                  {mockOperations.filter(op => op.status === status).length}
+                  {getStatusCount(status)}
                 </p>
               </div>
             </div>
@@ -75,43 +99,48 @@ const OperationsDashboard = () => {
       </div>
 
       <Card className="p-6">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between">
             <Input
               placeholder="Buscar por nome do produto..."
               className="max-w-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button>Exportar Relatório</Button>
+            <Button className="bg-primary hover:bg-primary-dark">
+              Exportar Relatório
+            </Button>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-lg border">
             <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4">Produto</th>
-                  <th className="text-left py-3 px-4">Status</th>
-                  <th className="text-left py-3 px-4">Quantidade</th>
-                  <th className="text-left py-3 px-4">Última Atualização</th>
-                  <th className="text-left py-3 px-4">Previsão</th>
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="text-left py-4 px-6 font-medium text-gray-600">Produto</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-600">Status</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-600">Quantidade</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-600">Última Atualização</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-600">Previsão</th>
                 </tr>
               </thead>
-              <tbody>
-                {mockOperations.map((op) => (
-                  <tr key={op.id} className="border-b">
-                    <td className="py-3 px-4">{op.name}</td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        {React.createElement(statusIcons[op.status], {
-                          className: `h-4 w-4 ${statusColors[op.status]}`,
-                        })}
-                        {op.status.replace("_", " ")}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">{op.quantity}</td>
-                    <td className="py-3 px-4">{op.lastUpdate}</td>
-                    <td className="py-3 px-4">{op.expectedDate || "-"}</td>
-                  </tr>
-                ))}
+              <tbody className="divide-y">
+                {filteredOperations.slice(0, 10).map((op) => {
+                  const Icon = statusIcons[op.status];
+                  return (
+                    <tr key={op.id} className="hover:bg-gray-50">
+                      <td className="py-4 px-6">{op.name}</td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center gap-2">
+                          <Icon className={`h-4 w-4 ${statusColors[op.status]}`} />
+                          <span>{statusText[op.status]}</span>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6">{op.quantity}</td>
+                      <td className="py-4 px-6">{op.lastUpdate}</td>
+                      <td className="py-4 px-6">{op.expectedDate || "-"}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
