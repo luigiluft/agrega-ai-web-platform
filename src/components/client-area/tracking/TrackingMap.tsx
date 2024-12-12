@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { LatLngExpression } from "leaflet";
+import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import DeliveryMarker from "./components/DeliveryMarker";
 import DeliveryPopup from "./DeliveryPopup";
@@ -30,6 +30,10 @@ const TrackingMap = ({
   const setSelectedDelivery = propSetSelectedDelivery ?? setLocalSelectedDelivery;
 
   const mapCenter: LatLngExpression = [-23.5505, -46.6333];
+  const bounds: LatLngBoundsExpression = [
+    [mapCenter[0] - 0.1, mapCenter[1] - 0.1],
+    [mapCenter[0] + 0.1, mapCenter[1] + 0.1]
+  ];
 
   return (
     <div className="space-y-6">
@@ -48,8 +52,7 @@ const TrackingMap = ({
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
                 key={mapCenter.toString()}
-                bounds={[[mapCenter]]}
-                boundsOptions={{ padding: [50, 50] }}
+                bounds={bounds}
                 style={{ height: "100%", width: "100%" }}
                 className="rounded-lg"
               >
