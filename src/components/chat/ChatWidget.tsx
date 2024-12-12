@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageSquare, X } from "lucide-react";
-import { Message, UserProfile } from "./types";
+import { Message, UserProfile, BusinessModel, BusinessSize } from "./types";
 import { chatFlow, determinePlan } from "./chatLogic";
 import ChatMessage from "./ChatMessage";
 import { useToast } from "@/hooks/use-toast";
@@ -86,7 +86,6 @@ const ChatWidget = () => {
   };
 
   const handleOptionSelect = (value: string, nextQuestion?: string) => {
-    // Add user's response
     setMessages((prev) => [
       ...prev,
       {
@@ -96,14 +95,18 @@ const ChatWidget = () => {
       },
     ]);
 
-    // Update user profile
     if (["B2C", "B2B", "D2C", "Marketplace"].includes(value)) {
-      setUserProfile((prev) => ({ ...prev, businessModel: value }));
+      setUserProfile((prev) => ({ 
+        ...prev, 
+        businessModel: value as BusinessModel 
+      }));
     } else if (["small", "medium", "large"].includes(value)) {
-      setUserProfile((prev) => ({ ...prev, businessSize: value }));
+      setUserProfile((prev) => ({ 
+        ...prev, 
+        businessSize: value as BusinessSize 
+      }));
     }
 
-    // Handle redirects or continue chat flow
     if (["view_solution", "help_center", "compare_plans", "price_simulator", "live_chat", "whatsapp", "email", "email_support", "phone", "phone_call"].includes(value)) {
       handleRedirect(value);
     } else if (nextQuestion && chatFlow[nextQuestion as keyof typeof chatFlow]) {

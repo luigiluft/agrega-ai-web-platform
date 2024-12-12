@@ -18,7 +18,7 @@ const createCustomIcon = (status: string) => {
     </div>
   `;
 
-  return L.divIcon({
+  return new L.DivIcon({
     html: markerHtml,
     className: 'custom-marker',
     iconSize: L.point(24, 24),

@@ -52,11 +52,11 @@ const TrackingMap = () => {
 
       <div className="h-[600px] relative rounded-lg overflow-hidden border border-gray-200">
         <MapContainer
-          center={mapCenter}
-          zoom={4}
+          defaultCenter={mapCenter}
+          defaultZoom={4}
           scrollWheelZoom={true}
           className="h-full w-full"
-          whenCreated={setMap}
+          ref={(mapRef) => setMap(mapRef)}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
