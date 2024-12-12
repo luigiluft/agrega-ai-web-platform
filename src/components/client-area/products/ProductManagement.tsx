@@ -1,24 +1,17 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Box, Download, BarChart2, ListFilter, ArrowLeft } from "lucide-react";
+import { Box, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Product } from "./types";
-import ProductList from "./ProductList";
 import AddProductForm from "./AddProductForm";
-import ProductsChart from "../monitoring/ProductsChart";
-import ProductStats from "./ProductStats";
-import ProductTemplate from "./ProductTemplate";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
+import ProductHeader from "./ProductHeader";
+import ProductContent from "./ProductContent";
 
-interface ProductManagementProps {
-  products?: Product[];
-}
-
-const ProductManagement: React.FC<ProductManagementProps> = ({ products: initialProducts }) => {
+const ProductManagement = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>(initialProducts || [
+  const [products, setProducts] = useState<Product[]>([
     {
       id: "1",
       name: "Camiseta Premium",
@@ -112,7 +105,6 @@ const ProductManagement: React.FC<ProductManagementProps> = ({ products: initial
   };
 
   const handleExportToExcel = () => {
-    // Implementation for Excel export would go here
     toast.success("Lista de produtos exportada com sucesso!");
   };
 
@@ -146,40 +138,14 @@ const ProductManagement: React.FC<ProductManagementProps> = ({ products: initial
             <h2 className="text-2xl font-bold">Gerenciamento de Produtos</h2>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Select value={filter} onValueChange={(value: any) => setFilter(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrar por" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os Produtos</SelectItem>
-              <SelectItem value="bestsellers">Mais Vendidos</SelectItem>
-              <SelectItem value="lowstock">Baixo Estoque</SelectItem>
-              <SelectItem value="recent">Mais Recentes</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={handleExportToExcel} variant="outline" className="gap-2">
-            <Download className="w-4 h-4" />
-            Exportar
-          </Button>
-          <Button onClick={() => setViewMode(viewMode === "list" ? "chart" : "list")} variant="outline" className="gap-2">
-            {viewMode === "list" ? (
-              <>
-                <BarChart2 className="w-4 h-4" />
-                Ver Gráfico
-              </>
-            ) : (
-              <>
-                <ListFilter className="w-4 h-4" />
-                Ver Lista
-              </>
-            )}
-          </Button>
-          <Button onClick={() => setIsAdding(true)} className="gap-2">
-            <Plus className="w-4 h-4" />
-            Adicionar Produto
-          </Button>
-        </div>
+        <ProductHeader 
+          onAddProduct={() => setIsAdding(true)}
+          onExport={handleExportToExcel}
+          onViewChange={() => setViewMode(viewMode === "list" ? "chart" : "list")}
+          viewMode={viewMode}
+          filter={filter}
+          onFilterChange={(value: any) => setFilter(value)}
+        />
       </div>
 
       {isAdding && (
@@ -189,22 +155,11 @@ const ProductManagement: React.FC<ProductManagementProps> = ({ products: initial
         />
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          {viewMode === "list" ? (
-            <ProductList
-              products={filteredProducts()}
-              onDelete={handleDeleteProduct}
-            />
-          ) : (
-            <ProductsChart products={filteredProducts()} />
-          )}
-        </div>
-        <div className="space-y-6">
-          <ProductTemplate />
-          <ProductStats products={filteredProducts()} />
-        </div>
-      </div>
+      <ProductContent 
+        viewMode={viewMode}
+        products={filteredProducts()}
+        onDelete={handleDeleteProduct}
+      />
     </Card>
   );
 };
