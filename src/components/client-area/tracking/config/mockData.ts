@@ -1,4 +1,5 @@
 import { Delivery } from '../types';
+import { addDays, subDays } from 'date-fns';
 
 const generateRandomLocation = (baseLocation: [number, number], radius: number) => {
   const lat = baseLocation[0] + (Math.random() - 0.5) * radius;
@@ -6,159 +7,139 @@ const generateRandomLocation = (baseLocation: [number, number], radius: number) 
   return { lat, lng };
 };
 
-export const deliveries: Delivery[] = [
-  {
-    id: "DEL001",
-    trackingNumber: "BR123456789",
-    status: "em_rota",
-    estimatedDelivery: "2024-12-20",
-    currentLocation: generateRandomLocation([-23.5505, -46.6333], 0.1),
-    destination: "Rua Augusta, 1500 - São Paulo, SP",
-    lastUpdate: "2024-12-12 14:30",
-    customer: "João Silva",
-    contact: "(11) 98765-4321",
-    value: 1250.90,
-    priority: "alta",
-    items: 3
-  },
-  // Add 9 more similar entries with different locations, statuses, and details
-  {
-    id: "DEL002",
-    trackingNumber: "BR987654321",
-    status: "atrasado",
-    estimatedDelivery: "2024-04-14",
-    currentLocation: { lat: -22.9068, lng: -43.1729 },
-    destination: "Av. Atlântica, 2000 - Rio de Janeiro, RJ",
-    lastUpdate: "2024-04-13 10:15",
-    customer: "Maria Santos",
-    contact: "(21) 98765-4321",
-    value: 789.50,
-    notes: "Cliente solicitou entrega no período da manhã",
-    priority: "media",
-    items: 1
-  },
-  {
-    id: "DEL003",
-    trackingNumber: "BR456789123",
-    status: "risco_atraso",
-    estimatedDelivery: "2024-04-16",
-    currentLocation: { lat: -25.4284, lng: -49.2733 },
-    destination: "Rua XV de Novembro, 1000 - Curitiba, PR",
-    lastUpdate: "2024-04-13 16:45",
-    customer: "Pedro Oliveira",
-    contact: "(41) 98765-4321",
-    value: 2340.00,
-    priority: "baixa",
-    items: 5
-  },
-  {
-    id: "DEL004",
-    trackingNumber: "BR789123456",
-    status: "entregue",
-    estimatedDelivery: "2024-04-13",
-    currentLocation: { lat: -30.0277, lng: -51.2287 },
-    destination: "Av. Ipiranga, 500 - Porto Alegre, RS",
-    lastUpdate: "2024-04-13 09:30",
-    customer: "Ana Souza",
-    contact: "(51) 98765-4321",
-    value: 567.80,
-    priority: "media",
-    items: 2
-  },
-  {
-    id: "DEL005",
-    trackingNumber: "BR321654987",
-    status: "pendente",
-    estimatedDelivery: "2024-04-17",
-    currentLocation: { lat: -19.9167, lng: -43.9345 },
-    destination: "Av. do Contorno, 1500 - Belo Horizonte, MG",
-    lastUpdate: "2024-04-13 11:20",
-    customer: "Carlos Lima",
-    contact: "(31) 98765-4321",
-    value: 1890.30,
-    notes: "Necessário agendamento prévio",
-    priority: "alta",
-    items: 4
-  },
-  {
-    id: "DEL006",
-    trackingNumber: "BR789456123",
-    status: "em_rota",
-    estimatedDelivery: "2024-04-18",
-    currentLocation: { lat: -3.7319, lng: -38.5267 },
-    destination: "Av. Beira Mar, 300 - Fortaleza, CE",
-    lastUpdate: "2024-04-13 15:40",
-    customer: "Roberto Santos",
-    contact: "(85) 98765-4321",
-    value: 945.60,
-    priority: "media",
-    items: 2
-  },
-  {
-    id: "DEL007",
-    trackingNumber: "BR456789012",
-    status: "risco_atraso",
-    estimatedDelivery: "2024-04-16",
-    currentLocation: { lat: -8.0476, lng: -34.8770 },
-    destination: "Av. Boa Viagem, 1000 - Recife, PE",
-    lastUpdate: "2024-04-13 13:20",
-    customer: "Fernanda Lima",
-    contact: "(81) 98765-4321",
-    value: 1567.80,
-    notes: "Área com restrição de horário",
-    priority: "alta",
-    items: 3
-  },
-  {
-    id: "DEL008",
-    trackingNumber: "BR012345678",
-    status: "pendente",
-    estimatedDelivery: "2024-04-19",
-    currentLocation: { lat: -12.9714, lng: -38.5014 },
-    destination: "Av. Oceânica, 500 - Salvador, BA",
-    lastUpdate: "2024-04-13 16:15",
-    customer: "Marcelo Costa",
-    contact: "(71) 98765-4321",
-    value: 2890.30,
-    priority: "baixa",
-    items: 4
-  },
-  {
-    id: "DEL009",
-    trackingNumber: "BR345678901",
-    status: "entregue",
-    estimatedDelivery: "2024-04-13",
-    currentLocation: { lat: -16.6799, lng: -49.2550 },
-    destination: "Av. 85, 1000 - Goiânia, GO",
-    lastUpdate: "2024-04-13 11:45",
-    customer: "Patricia Oliveira",
-    contact: "(62) 98765-4321",
-    value: 678.90,
-    priority: "media",
-    items: 1
-  },
-  {
-    id: "DEL010",
-    trackingNumber: "BR567890123",
-    status: "atrasado",
-    estimatedDelivery: "2024-04-14",
-    currentLocation: { lat: -20.2976, lng: -40.2958 },
-    destination: "Av. Nossa Senhora da Penha, 800 - Vitória, ES",
-    lastUpdate: "2024-04-13 14:50",
-    customer: "Ricardo Silva",
-    contact: "(27) 98765-4321",
-    value: 1234.50,
-    notes: "Cliente não estava no local",
-    priority: "alta",
-    items: 2
-  }
-];
+// Generate 1000 deliveries with realistic data
+export const deliveries: Delivery[] = Array.from({ length: 1000 }, (_, index) => {
+  const status = ['em_rota', 'atrasado', 'entregue', 'pendente', 'risco_atraso'][Math.floor(Math.random() * 5)];
+  const baseDate = new Date();
+  const randomDays = Math.floor(Math.random() * 30);
+  
+  return {
+    id: `DEL${(index + 1).toString().padStart(6, '0')}`,
+    trackingNumber: `BR${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+    status,
+    estimatedDelivery: addDays(baseDate, randomDays).toISOString(),
+    currentLocation: generateRandomLocation([-23.5505, -46.6333], 0.2),
+    destination: `Rua ${Math.floor(Math.random() * 1000)}, São Paulo, SP`,
+    lastUpdate: new Date().toISOString(),
+    customer: `Cliente ${index + 1}`,
+    contact: `(11) 9${Math.floor(Math.random() * 9000 + 1000)}-${Math.floor(Math.random() * 9000 + 1000)}`,
+    value: Math.floor(Math.random() * 5000) + 100,
+    priority: ['baixa', 'media', 'alta'][Math.floor(Math.random() * 3)] as 'baixa' | 'media' | 'alta',
+    items: Math.floor(Math.random() * 5) + 1,
+    commission: Math.floor(Math.random() * 500) + 50
+  };
+});
 
+// Sales data with Black Friday spike in November
 export const salesData = [
   { month: "Jul", sales: 180000, commission: 18000 },
   { month: "Ago", sales: 165000, commission: 16500 },
   { month: "Set", sales: 190000, commission: 19000 },
   { month: "Out", sales: 175000, commission: 17500 },
-  { month: "Nov", sales: 320000, commission: 32000 }, // Black Friday boost
+  { month: "Nov", sales: 520000, commission: 52000 }, // Black Friday spike
   { month: "Dez", sales: 210000, commission: 21000 },
+];
+
+// Shared products data across all areas
+export const sharedProducts = [
+  {
+    id: "1",
+    name: "Smartphone XYZ Pro",
+    price: 2499.90,
+    sku: "PHONE001",
+    stock: 150,
+    description: "Smartphone premium com câmera de última geração",
+    category: "Eletrônicos",
+    sales: 450
+  },
+  {
+    id: "2",
+    name: "Tablet ABC Plus",
+    price: 1899.90,
+    sku: "TAB002",
+    stock: 75,
+    description: "Tablet ideal para produtividade",
+    category: "Eletrônicos",
+    sales: 280
+  },
+  {
+    id: "3",
+    name: "Notebook Ultra",
+    price: 4599.90,
+    sku: "NOTE003",
+    stock: 45,
+    description: "Notebook de alta performance",
+    category: "Computadores",
+    sales: 180
+  },
+  {
+    id: "4",
+    name: "Smart TV 55\"",
+    price: 3299.90,
+    sku: "TV004",
+    stock: 30,
+    description: "Smart TV 4K com HDR",
+    category: "Eletrônicos",
+    sales: 120
+  },
+  {
+    id: "5",
+    name: "Fone Bluetooth",
+    price: 299.90,
+    sku: "AUDIO005",
+    stock: 200,
+    description: "Fone sem fio com cancelamento de ruído",
+    category: "Acessórios",
+    sales: 850
+  },
+  {
+    id: "6",
+    name: "Console Game X",
+    price: 3999.90,
+    sku: "GAME006",
+    stock: 60,
+    description: "Console de última geração",
+    category: "Games",
+    sales: 220
+  },
+  {
+    id: "7",
+    name: "Câmera DSLR",
+    price: 5999.90,
+    sku: "CAM007",
+    stock: 25,
+    description: "Câmera profissional para fotografia",
+    category: "Fotografia",
+    sales: 90
+  },
+  {
+    id: "8",
+    name: "Smartwatch Pro",
+    price: 1299.90,
+    sku: "WATCH008",
+    stock: 100,
+    description: "Relógio inteligente com GPS",
+    category: "Acessórios",
+    sales: 340
+  },
+  {
+    id: "9",
+    name: "Monitor 27\"",
+    price: 1799.90,
+    sku: "MON009",
+    stock: 50,
+    description: "Monitor QHD para profissionais",
+    category: "Computadores",
+    sales: 150
+  },
+  {
+    id: "10",
+    name: "Impressora Laser",
+    price: 999.90,
+    sku: "PRINT010",
+    stock: 40,
+    description: "Impressora profissional colorida",
+    category: "Impressoras",
+    sales: 110
+  }
 ];

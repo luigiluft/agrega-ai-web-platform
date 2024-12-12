@@ -6,28 +6,29 @@ import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Warehouse, Box, Package, Truck, Check } from "lucide-react";
 import { addDays, format } from "date-fns";
 import { ProductOperation } from "../tracking/types";
+import { DateRange } from "react-day-picker";
 
 const mockOperations: ProductOperation[] = [
   {
     id: "1",
-    name: "Smartphone XYZ",
+    name: "Smartphone XYZ Pro",
     status: "em_estoque",
     quantity: 150,
     lastUpdate: format(new Date(), "dd/MM/yyyy HH:mm"),
   },
   {
     id: "2",
-    name: "Tablet ABC",
+    name: "Tablet ABC Plus",
     status: "backlog",
     quantity: 75,
     lastUpdate: format(new Date(), "dd/MM/yyyy HH:mm"),
     expectedDate: format(addDays(new Date(), 5), "dd/MM/yyyy"),
   },
-  // Add more mock data as needed
+  // ... Add 8 more products with similar structure
 ];
 
 const OperationsDashboard = () => {
-  const [dateRange, setDateRange] = useState({
+  const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(),
     to: addDays(new Date(), 7),
   });

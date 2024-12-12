@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Delivery } from "./types";
-import { deliveries, salesData } from "./config/mockData";
+import { deliveries } from "./config/mockData";
 import { statusConfig } from "./config/mapConfig";
 
 interface TrackingMapProps {
@@ -61,7 +61,7 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                center={[-23.5505, -46.6333]}
+                center={[-23.5505, -46.6333] as [number, number]}
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
