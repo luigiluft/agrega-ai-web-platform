@@ -4,7 +4,6 @@ import { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import DeliveryMarker from "./components/DeliveryMarker";
 import DeliveryPopup from "./DeliveryPopup";
-import DeliveryFilters from "./DeliveryFilters";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -24,32 +23,12 @@ const TrackingMap = ({
   setSelectedDelivery,
 }: TrackingMapProps) => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | Delivery["status"]>("all");
-  
   const activeDeliveries = propDeliveries || deliveries;
-  const filteredDeliveries = activeDeliveries.filter(delivery => {
-    const matchesSearch = delivery.trackingNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         delivery.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         delivery.destination.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = statusFilter === "all" || delivery.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
 
   const defaultCenter: LatLngExpression = [-23.5505, -46.6333];
 
   return (
     <div className="space-y-6">
-      <DeliveryFilters
-        searchQuery={searchQuery}
-        statusFilter={statusFilter}
-        statusConfig={statusConfig}
-        onSearch={setSearchQuery}
-        onStatusFilter={setStatusFilter}
-      />
-
       <div className="relative">
         <Button 
           variant="ghost" 
@@ -64,7 +43,7 @@ const TrackingMap = ({
           <div className="lg:col-span-2">
             <div className="h-[600px] w-full rounded-lg border overflow-hidden">
               <MapContainer
-                defaultCenter={defaultCenter}
+                center={defaultCenter}
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
@@ -73,7 +52,7 @@ const TrackingMap = ({
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {filteredDeliveries.map((delivery) => (
+                {activeDeliveries.map((delivery) => (
                   <DeliveryMarker
                     key={delivery.id}
                     delivery={delivery}
@@ -105,25 +84,25 @@ const TrackingMap = ({
                 <div className="p-3 bg-blue-50 rounded-lg">
                   <p className="text-sm text-blue-600">Em Rota</p>
                   <p className="text-2xl font-bold text-blue-700">
-                    {filteredDeliveries.filter(d => d.status === "em_rota").length}
+                    {activeDeliveries.filter(d => d.status === "em_rota").length}
                   </p>
                 </div>
                 <div className="p-3 bg-yellow-50 rounded-lg">
                   <p className="text-sm text-yellow-600">Pendentes</p>
                   <p className="text-2xl font-bold text-yellow-700">
-                    {filteredDeliveries.filter(d => d.status === "pendente").length}
+                    {activeDeliveries.filter(d => d.status === "pendente").length}
                   </p>
                 </div>
                 <div className="p-3 bg-green-50 rounded-lg">
                   <p className="text-sm text-green-600">Entregues</p>
                   <p className="text-2xl font-bold text-green-700">
-                    {filteredDeliveries.filter(d => d.status === "entregue").length}
+                    {activeDeliveries.filter(d => d.status === "entregue").length}
                   </p>
                 </div>
                 <div className="p-3 bg-red-50 rounded-lg">
                   <p className="text-sm text-red-600">Atrasados</p>
                   <p className="text-2xl font-bold text-red-700">
-                    {filteredDeliveries.filter(d => d.status === "atrasado").length}
+                    {activeDeliveries.filter(d => d.status === "atrasado").length}
                   </p>
                 </div>
               </div>

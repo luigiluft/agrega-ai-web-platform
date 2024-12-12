@@ -34,7 +34,7 @@ const ClientArea = () => {
       className="max-w-7xl"
     >
       <Tabs defaultValue="project" className="w-full">
-        <TabsList className="w-full justify-start mb-8">
+        <TabsList className="w-full justify-start mb-8 flex-wrap">
           <TabsTrigger value="project">Visão Geral</TabsTrigger>
           <TabsTrigger value="products">Produtos</TabsTrigger>
           <TabsTrigger value="development">Desenvolvimento</TabsTrigger>
