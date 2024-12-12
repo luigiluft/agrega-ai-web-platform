@@ -5,7 +5,7 @@ import L from 'leaflet';
 import { Card } from '@/components/ui/card';
 import { useState } from 'react';
 import { Search, Truck, Clock, AlertTriangle, CheckCircle, Package } from 'lucide-react';
-import type { LatLngExpression } from 'leaflet';
+import type { LatLngExpression, Icon, Map as LeafletMap } from 'leaflet';
 import DeliveryFilters from './DeliveryFilters';
 import DeliveryPopup from './DeliveryPopup';
 import { Delivery, DeliveryStatus, StatusConfig } from './types';
@@ -130,6 +130,7 @@ const TrackingMap = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<DeliveryStatus | "all">("all");
   const [filteredDeliveries, setFilteredDeliveries] = useState(deliveries);
+  const [map, setMap] = useState<LeafletMap | null>(null);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -158,7 +159,7 @@ const TrackingMap = () => {
 
   const mapCenter: LatLngExpression = [-23.5505, -46.6333];
 
-  const createMarkerIcon = (status: DeliveryStatus) => {
+  const createMarkerIcon = (status: DeliveryStatus): Icon => {
     return new L.Icon({
       iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${statusConfig[status].markerColor}.png`,
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
@@ -185,6 +186,7 @@ const TrackingMap = () => {
           center={mapCenter}
           zoom={4}
           scrollWheelZoom={true}
+          ref={setMap}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
