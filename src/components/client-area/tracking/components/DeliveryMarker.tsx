@@ -1,9 +1,10 @@
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { Truck } from "lucide-react";
+import { Delivery } from "../types";
 
 interface DeliveryMarkerProps {
-  delivery: any;
+  delivery: Delivery;
   isSelected: boolean;
   onClick: () => void;
 }
@@ -33,14 +34,15 @@ const DeliveryMarker = ({
 
   return (
     <Marker
-      position={[delivery.latitude, delivery.longitude]}
+      position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
+      icon={customIcon}
       eventHandlers={{ click: onClick }}
     >
       <Popup>
         <div className="p-2">
           <div className="flex items-center gap-2">
             <Truck className="h-4 w-4" />
-            <span className="font-medium">Entrega #{delivery.id}</span>
+            <span className="font-medium">Entrega #{delivery.trackingNumber}</span>
           </div>
           <p className="text-sm text-gray-600">{delivery.status}</p>
         </div>

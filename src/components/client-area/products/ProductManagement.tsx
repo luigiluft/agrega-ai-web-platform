@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Box, Download, BarChart2, ListFilter } from "lucide-react";
+import { Plus, Box, Download, BarChart2, ListFilter, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Product } from "./types";
 import ProductList from "./ProductList";
@@ -10,9 +10,15 @@ import ProductsChart from "../monitoring/ProductsChart";
 import ProductStats from "./ProductStats";
 import ProductTemplate from "./ProductTemplate";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useNavigate } from "react-router-dom";
 
-const ProductManagement = () => {
-  const [products, setProducts] = useState<Product[]>([
+interface ProductManagementProps {
+  products?: Product[];
+}
+
+const ProductManagement: React.FC<ProductManagementProps> = ({ products: initialProducts }) => {
+  const navigate = useNavigate();
+  const [products, setProducts] = useState<Product[]>(initialProducts || [
     {
       id: "1",
       name: "Camiseta Premium",
@@ -126,9 +132,19 @@ const ProductManagement = () => {
   return (
     <Card className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2">
-          <Box className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-bold">Gerenciamento de Produtos</h2>
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="hover:bg-gray-100"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex items-center gap-2">
+            <Box className="w-6 h-6 text-primary" />
+            <h2 className="text-2xl font-bold">Gerenciamento de Produtos</h2>
+          </div>
         </div>
         <div className="flex gap-2">
           <Select value={filter} onValueChange={(value: any) => setFilter(value)}>
