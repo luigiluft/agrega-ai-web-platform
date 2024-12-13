@@ -54,7 +54,7 @@ const DeliveryMarker = ({
   return (
     <Marker
       position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-      icon={divIcon}
+      icon={divIcon as L.DivIcon}
       eventHandlers={{ click: onClick }}
     >
       <Popup>
