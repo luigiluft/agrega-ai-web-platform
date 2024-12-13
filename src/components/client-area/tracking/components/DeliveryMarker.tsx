@@ -24,14 +24,7 @@ const DeliveryMarker = ({
 
   const VehicleIcon = getVehicleIcon();
 
-  // Create SVG string for the icon using createElement
-  const iconComponent = createElement(VehicleIcon, {
-    size: 16,
-    color: 'white',
-    strokeWidth: 2
-  });
-
-  // Convert the icon component to a string representation
+  // Create a simple SVG string for the marker icon
   const svgString = `
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
@@ -44,11 +37,12 @@ const DeliveryMarker = ({
       stroke-linecap="round" 
       stroke-linejoin="round"
     >
-      ${iconComponent.type.render().props.children}
+      <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+      <path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"></path>
     </svg>
   `;
 
-  const icon = L.divIcon({
+  const divIcon = L.divIcon({
     className: `custom-marker flex items-center justify-center w-8 h-8 rounded-full ${
       isSelected ? 'bg-primary' : 'bg-gray-500'
     } text-white`,
@@ -60,13 +54,13 @@ const DeliveryMarker = ({
   return (
     <Marker
       position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-      icon={icon}
+      icon={divIcon}
       eventHandlers={{ click: onClick }}
     >
       <Popup>
         <div className="p-2">
           <div className="flex items-center gap-2">
-            {createElement(VehicleIcon, { className: "h-4 w-4" })}
+            <VehicleIcon className="h-4 w-4" />
             <span className="font-medium">Entrega #{delivery.trackingNumber}</span>
           </div>
           <p className="text-sm text-gray-600 mt-1">
