@@ -1,75 +1,41 @@
-import { Marker, Popup } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import L from "leaflet";
-import { Truck, Car, PackagePlus } from "lucide-react";
+import { Truck } from "lucide-react";
+import { DeliveryPopup } from "../DeliveryPopup";
 import { Delivery } from "../types";
-import { createElement } from "react";
 
 interface DeliveryMarkerProps {
   delivery: Delivery;
-  isSelected: boolean;
-  onClick: () => void;
+  onSelect: (delivery: Delivery) => void;
 }
 
-const DeliveryMarker = ({
-  delivery,
-  isSelected,
-  onClick,
-}: DeliveryMarkerProps) => {
-  // Choose vehicle icon based on items quantity
+export const DeliveryMarker = ({ delivery, onSelect }: DeliveryMarkerProps) => {
   const getVehicleIcon = () => {
-    if (delivery.items > 3) return Truck;
-    if (delivery.items > 1) return PackagePlus;
-    return Car;
+    const iconHtml = `
+      <div class="bg-primary text-white p-2 rounded-full shadow-lg">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          ${Truck({}).props.children}
+        </svg>
+      </div>
+    `;
+
+    return L.divIcon({
+      html: iconHtml,
+      className: 'custom-div-icon',
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    });
   };
 
-  const VehicleIcon = getVehicleIcon();
-
-  // Create a simple SVG string for the marker icon
-  const svgString = `
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="16" 
-      height="16" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="white" 
-      stroke-width="2" 
-      stroke-linecap="round" 
-      stroke-linejoin="round"
-    >
-      <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
-      <path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"></path>
-    </svg>
-  `;
-
-  const divIcon = L.divIcon({
-    className: `custom-marker flex items-center justify-center w-8 h-8 rounded-full ${
-      isSelected ? 'bg-primary' : 'bg-gray-500'
-    } text-white`,
-    html: svgString,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-  });
-
   return (
-    <Marker
-      position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-      icon={divIcon as L.DivIcon}
-      eventHandlers={{ click: onClick }}
+    <Marker 
+      position={[delivery.latitude, delivery.longitude]} 
+      eventHandlers={{
+        click: () => onSelect(delivery)
+      }}
+      icon={getVehicleIcon()}
     >
-      <Popup>
-        <div className="p-2">
-          <div className="flex items-center gap-2">
-            <VehicleIcon className="h-4 w-4" />
-            <span className="font-medium">Entrega #{delivery.trackingNumber}</span>
-          </div>
-          <p className="text-sm text-gray-600 mt-1">
-            {delivery.items} {delivery.items > 1 ? 'itens' : 'item'}
-          </p>
-        </div>
-      </Popup>
+      <DeliveryPopup delivery={delivery} />
     </Marker>
   );
 };
-
-export default DeliveryMarker;

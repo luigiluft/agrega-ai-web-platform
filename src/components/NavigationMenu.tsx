@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { Menu, X, UserCircle2, LogOut } from "lucide-react";
+import { Menu, X, UserCircle2, LogOut, Calculator } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const NavigationMenuDemo = () => {
@@ -87,7 +87,11 @@ const NavigationMenuDemo = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
-            <Link to="/calculadora" className="text-base font-medium hover:text-primary transition-colors block h-10 flex items-center">
+            <Link 
+              to="/calculadora" 
+              className="text-base font-medium hover:bg-primary/10 transition-colors block h-10 flex items-center gap-2 px-4 rounded-lg bg-primary/5"
+            >
+              <Calculator className="w-4 h-4 text-primary" />
               Calculadora de Preços
             </Link>
           </NavigationMenuItem>

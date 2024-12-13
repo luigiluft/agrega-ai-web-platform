@@ -27,10 +27,7 @@ const CalculatorResults = ({
   totalImplementationHours,
 }: CalculatorResultsProps) => {
   // Calculate implementation costs (one-time payment)
-  const totalImplementationCost = parseFloat(implementationPrice) + 
-    (layoutHours * 150) + 
-    (functionalityHours * 150) + 
-    (meetingHours * 150);
+  const totalImplementationCost = parseFloat(implementationPrice);
 
   // Calculate maintenance costs (monthly)
   const totalMaintenanceCost = parseFloat(maintenancePrice) + 
