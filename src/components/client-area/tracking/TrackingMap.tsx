@@ -86,6 +86,7 @@ const TrackingMap = ({
                     delivery={delivery}
                     isSelected={selectedDelivery?.id === delivery.id}
                     onClick={() => setSelectedDelivery(delivery)}
+                    statusConfig={statusConfig}
                   />
                 ))}
               </MapContainer>

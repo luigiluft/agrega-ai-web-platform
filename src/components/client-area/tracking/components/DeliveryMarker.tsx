@@ -2,15 +2,16 @@ import { Marker } from "react-leaflet";
 import L from "leaflet";
 import { Truck } from "lucide-react";
 import DeliveryPopup from "../DeliveryPopup";
-import { Delivery } from "../types";
+import { Delivery, StatusConfig } from "../types";
 
 interface DeliveryMarkerProps {
   delivery: Delivery;
   isSelected: boolean;
   onClick: (delivery: Delivery) => void;
+  statusConfig: StatusConfig;
 }
 
-export const DeliveryMarker = ({ delivery, isSelected, onClick }: DeliveryMarkerProps) => {
+export const DeliveryMarker = ({ delivery, isSelected, onClick, statusConfig }: DeliveryMarkerProps) => {
   const getVehicleIcon = () => {
     const iconHtml = `
       <div class="${isSelected ? 'bg-primary' : 'bg-gray-500'} text-white p-2 rounded-full shadow-lg">
