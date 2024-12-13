@@ -15,7 +15,28 @@ const CalculatorResults = ({
   monthlyRevenue,
   setMonthlyRevenue,
   onContactClick,
+  layoutHours,
+  maintenanceHours,
+  meetingHours,
+  campaignHours,
+  functionalityHours,
+  baseImplementationCost,
+  baseMaintenanceCost,
+  totalHours,
+  rouletteDiscount,
+  totalImplementationHours,
 }: CalculatorResultsProps) => {
+  // Calculate implementation costs (one-time payment)
+  const totalImplementationCost = parseFloat(implementationPrice) + 
+    (layoutHours * 150) + 
+    (functionalityHours * 150) + 
+    (meetingHours * 150);
+
+  // Calculate maintenance costs (monthly)
+  const totalMaintenanceCost = parseFloat(maintenancePrice) + 
+    (maintenanceHours * 150) + 
+    (campaignHours * 150);
+
   return (
     <div className="space-y-6">
       <AnimatePresence>
@@ -31,7 +52,7 @@ const CalculatorResults = ({
               <div className="space-y-6">
                 <motion.div 
                   className="pb-6 border-b border-orange-100"
-                  key={implementationPrice}
+                  key={totalImplementationCost}
                   animate={{ scale: [1, 1.02, 1] }}
                   transition={{ duration: 0.3 }}
                 >
@@ -41,14 +62,19 @@ const CalculatorResults = ({
                   </div>
                   <div className="flex items-baseline justify-between">
                     <div className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                      R$ {implementationPrice}
+                      R$ {totalImplementationCost.toFixed(2)}
                     </div>
                   </div>
+                  {rouletteDiscount && rouletteDiscount > 0 && (
+                    <div className="mt-2 text-sm text-green-600">
+                      Desconto aplicado: R$ {rouletteDiscount.toFixed(2)}
+                    </div>
+                  )}
                 </motion.div>
                 
                 <motion.div 
                   className="pb-6 border-b border-orange-100"
-                  key={maintenancePrice}
+                  key={totalMaintenanceCost}
                   animate={{ scale: [1, 1.02, 1] }}
                   transition={{ duration: 0.3 }}
                 >
@@ -58,7 +84,7 @@ const CalculatorResults = ({
                   </div>
                   <div className="flex items-baseline justify-between">
                     <div className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                      R$ {maintenancePrice}
+                      R$ {totalMaintenanceCost.toFixed(2)}
                     </div>
                   </div>
                 </motion.div>

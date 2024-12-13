@@ -4,13 +4,51 @@ import { Button } from "@/components/ui/button";
 import { Package, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Product } from "./types";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 interface ProductListProps {
   products: Product[];
   onDelete: (id: string) => void;
+  onEdit: (id: string, updatedProduct: Partial<Product>) => void;
 }
 
-const ProductList = ({ products, onDelete }: ProductListProps) => {
+const ProductList = ({ products, onDelete, onEdit }: ProductListProps) => {
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    price: "",
+    sku: "",
+    stock: "",
+  });
+
+  const handleEditClick = (product: Product) => {
+    setEditingProduct(product);
+    setEditForm({
+      name: product.name,
+      price: product.price.toString(),
+      sku: product.sku,
+      stock: product.stock.toString(),
+    });
+  };
+
+  const handleEditSubmit = () => {
+    if (!editingProduct) return;
+
+    const updatedProduct = {
+      name: editForm.name,
+      price: parseFloat(editForm.price),
+      sku: editForm.sku,
+      stock: parseInt(editForm.stock),
+    };
+
+    onEdit(editingProduct.id, updatedProduct);
+    setEditingProduct(null);
+    toast.success("Produto atualizado com sucesso!");
+  };
+
   const handleDeleteProduct = (id: string) => {
     onDelete(id);
     toast.success("Produto removido com sucesso!");
@@ -49,9 +87,62 @@ const ProductList = ({ products, onDelete }: ProductListProps) => {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="icon" className="hover:text-primary">
-                    <Pencil className="w-4 h-4" />
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="hover:text-primary"
+                        onClick={() => handleEditClick(product)}
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Editar Produto</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label>Nome do Produto</Label>
+                          <Input
+                            value={editForm.name}
+                            onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Preço</Label>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={editForm.price}
+                            onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>SKU</Label>
+                          <Input
+                            value={editForm.sku}
+                            onChange={(e) => setEditForm({ ...editForm, sku: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Estoque</Label>
+                          <Input
+                            type="number"
+                            value={editForm.stock}
+                            onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
+                          />
+                        </div>
+                        <Button 
+                          className="w-full mt-4"
+                          onClick={handleEditSubmit}
+                        >
+                          Salvar Alterações
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                   <Button 
                     variant="ghost" 
                     size="icon"

@@ -8,14 +8,15 @@ interface ProductContentProps {
   viewMode: "list" | "chart";
   products: Product[];
   onDelete: (id: string) => void;
+  onEdit: (id: string, updatedProduct: Partial<Product>) => void;
 }
 
-const ProductContent = ({ viewMode, products, onDelete }: ProductContentProps) => {
+const ProductContent = ({ viewMode, products, onDelete, onEdit }: ProductContentProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
         {viewMode === "list" ? (
-          <ProductList products={products} onDelete={onDelete} />
+          <ProductList products={products} onDelete={onDelete} onEdit={onEdit} />
         ) : (
           <ProductsChart products={products} />
         )}

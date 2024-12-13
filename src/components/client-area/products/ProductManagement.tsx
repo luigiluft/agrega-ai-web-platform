@@ -99,6 +99,12 @@ const ProductManagement = () => {
     toast.success("Produto adicionado com sucesso!");
   };
 
+  const handleEditProduct = (id: string, updatedProduct: Partial<Product>) => {
+    setProducts(products.map(p => 
+      p.id === id ? { ...p, ...updatedProduct } : p
+    ));
+  };
+
   const handleDeleteProduct = (id: string) => {
     setProducts(products.filter(p => p.id !== id));
     toast.success("Produto removido com sucesso!");
@@ -159,6 +165,7 @@ const ProductManagement = () => {
         viewMode={viewMode}
         products={filteredProducts()}
         onDelete={handleDeleteProduct}
+        onEdit={handleEditProduct}
       />
     </Card>
   );
