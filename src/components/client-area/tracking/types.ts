@@ -19,6 +19,7 @@ export interface Delivery {
   priority: 'baixa' | 'media' | 'alta';
   items: number;
   commission: number;
+  notes?: string;
 }
 
 export interface StatusConfig {
