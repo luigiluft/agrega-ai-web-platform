@@ -8,6 +8,8 @@ import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
 import TaskDependencyView from "./TaskDependencyView";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import ExtensionSelector from "./ExtensionSelector";
+import { ecommerceExtensions, getExtensionsByCategory } from "@/data/ecommerceExtensions";
 
 interface TaskSelectorProps {
   onTasksChange: (selectedTasks: Task[]) => void;
@@ -15,6 +17,7 @@ interface TaskSelectorProps {
 
 const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
+  const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   
   const allTasks = [
     ...calculatorTasks
@@ -23,59 +26,57 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
     ...ecommerceTasks.flatMap(category => category.tasks)
   ];
   
+  const extensionsByCategory = getExtensionsByCategory();
+  
   const getTaskById = (id: string) => allTasks.find(task => task.id === id);
   
-  const getDependentTasks = (taskId: string): {
-    essential: Task[];
-    recurring: Task[];
-  } => {
-    const task = getTaskById(taskId);
-    if (!task?.dependencies) return { essential: [], recurring: [] };
-    
-    return {
-      essential: task.dependencies.essential.map(id => getTaskById(id)).filter(Boolean) as Task[],
-      recurring: task.dependencies.recurring.map(id => getTaskById(id)).filter(Boolean) as Task[]
-    };
-  };
-
-  const calculatePoints = (task: Task): number => {
-    const basePoints = Math.floor(task.hours / 4);
-    const deps = getDependentTasks(task.id);
-    const depPoints = [...deps.essential, ...deps.recurring]
-      .reduce((sum, dep) => sum + Math.floor(dep.hours / 8), 0);
-    return basePoints + depPoints;
-  };
-
   const handleTaskSelection = (taskId: string, checked: boolean) => {
     const newSelectedIds = new Set(selectedTaskIds);
     
     if (checked) {
       newSelectedIds.add(taskId);
-      const deps = getDependentTasks(taskId);
-      deps.essential.forEach(task => newSelectedIds.add(task.id));
-      deps.recurring.forEach(task => newSelectedIds.add(task.id));
+      const task = getTaskById(taskId);
+      if (task?.dependencies) {
+        task.dependencies.essential.forEach(id => newSelectedIds.add(id));
+        task.dependencies.recurring.forEach(id => newSelectedIds.add(id));
+      }
     } else {
       newSelectedIds.delete(taskId);
-      const deps = getDependentTasks(taskId);
-      [...deps.essential, ...deps.recurring].forEach(depTask => {
-        const isRequiredByOther = Array.from(newSelectedIds).some(selectedId => {
-          if (selectedId === taskId) return false;
-          const otherDeps = getDependentTasks(selectedId);
-          return [...otherDeps.essential, ...otherDeps.recurring].some(d => d.id === depTask.id);
+      // Remove dependencies if not required by other tasks
+      const task = getTaskById(taskId);
+      if (task?.dependencies) {
+        [...task.dependencies.essential, ...task.dependencies.recurring].forEach(depId => {
+          const isRequiredByOther = Array.from(newSelectedIds).some(selectedId => {
+            if (selectedId === taskId) return false;
+            const otherTask = getTaskById(selectedId);
+            if (!otherTask?.dependencies) return false;
+            return [...otherTask.dependencies.essential, ...otherTask.dependencies.recurring]
+              .includes(depId);
+          });
+          if (!isRequiredByOther) {
+            newSelectedIds.delete(depId);
+          }
         });
-        if (!isRequiredByOther) {
-          newSelectedIds.delete(depTask.id);
-        }
-      });
+      }
     }
     
     setSelectedTaskIds(newSelectedIds);
   };
 
+  const handleExtensionToggle = (extensionId: string, checked: boolean) => {
+    const newSelectedExtensions = new Set(selectedExtensions);
+    if (checked) {
+      newSelectedExtensions.add(extensionId);
+    } else {
+      newSelectedExtensions.delete(extensionId);
+    }
+    setSelectedExtensions(newSelectedExtensions);
+  };
+
   useEffect(() => {
     const selectedTasks = allTasks.filter(task => selectedTaskIds.has(task.id));
     onTasksChange(selectedTasks);
-  }, [selectedTaskIds]);
+  }, [selectedTaskIds, selectedExtensions]);
 
   const renderTaskCategory = (category: typeof calculatorTasks[0] | typeof ecommerceTasks[0]) => (
     <Card key={category.id} className="p-6">
@@ -111,7 +112,6 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
                 task={task}
                 dependencies={getDependentTasks(task.id)}
                 isSelected={selectedTaskIds.has(task.id)}
-                points={calculatePoints(task)}
               />
             </div>
           </div>
@@ -126,6 +126,20 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
         .filter(category => category.id !== "sustentation")
         .map(renderTaskCategory)}
       {ecommerceTasks.map(renderTaskCategory)}
+      
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4">Extensões Disponíveis</h3>
+        {Array.from(extensionsByCategory.entries()).map(([category, extensions]) => (
+          <div key={category} className="mb-6">
+            <h4 className="text-lg font-medium mb-3">{category}</h4>
+            <ExtensionSelector
+              extensions={extensions}
+              selectedExtensions={selectedExtensions}
+              onExtensionToggle={handleExtensionToggle}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import CalculatorHeader from "@/components/calculator/CalculatorHeader";
 import CalculatorResults from "@/components/calculator/CalculatorResults";
 import DeveloperAnimation from "@/components/calculator/DeveloperAnimation";
 import TaskSelector from "@/components/calculator/TaskSelector";
+import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 
 const DynamicCalculator = () => {
   const { toast } = useToast();
@@ -21,11 +22,31 @@ const DynamicCalculator = () => {
       .filter(task => task.type === 'recurring')
       .reduce((total, task) => total + task.hours, 0);
 
+    // Add hours from selected extensions
+    const selectedExtensions = ecommerceExtensions.filter(ext => 
+      selectedTasks.some(task => task.id === ext.id)
+    );
+
+    const extensionImplementationHours = selectedExtensions.reduce(
+      (total, ext) => total + ext.implementationHours, 
+      0
+    );
+
+    const extensionMaintenanceHours = selectedExtensions.reduce(
+      (total, ext) => total + ext.maintenanceHours, 
+      0
+    );
+
+    const extensionLicenseCosts = selectedExtensions.reduce(
+      (total, ext) => total + ext.price, 
+      0
+    );
+
     const rate = 150;
     const monthlyRate = 200;
 
-    const implementationPrice = implementationHours * rate;
-    const maintenancePrice = monthlyHours * monthlyRate;
+    const implementationPrice = (implementationHours + extensionImplementationHours) * rate;
+    const maintenancePrice = (monthlyHours + extensionMaintenanceHours) * monthlyRate;
     
     const revenue = parseFloat(monthlyRevenue) || 0;
     const revenueSharePercent = revenue <= 50000 ? 15 
@@ -35,14 +56,14 @@ const DynamicCalculator = () => {
     const revenueShare = (revenue * revenueSharePercent) / 100;
 
     return {
-      implementationPrice: implementationPrice.toFixed(2),
+      implementationPrice: (implementationPrice + extensionLicenseCosts).toFixed(2),
       maintenancePrice: maintenancePrice.toFixed(2),
       revenueShare: revenueShare.toFixed(2),
       revenueSharePercent: revenueSharePercent.toString(),
-      baseImplementationCost: (implementationHours * rate).toFixed(2),
-      baseMaintenanceCost: (monthlyHours * monthlyRate).toFixed(2),
-      totalHours: implementationHours + monthlyHours,
-      totalImplementationHours: implementationHours,
+      baseImplementationCost: ((implementationHours + extensionImplementationHours) * rate).toFixed(2),
+      baseMaintenanceCost: ((monthlyHours + extensionMaintenanceHours) * monthlyRate).toFixed(2),
+      totalHours: implementationHours + monthlyHours + extensionImplementationHours + extensionMaintenanceHours,
+      totalImplementationHours: implementationHours + extensionImplementationHours,
     };
   };
 

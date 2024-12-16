@@ -25,3 +25,13 @@ export interface TaskDependency {
   dependencyType: 'essential' | 'recurring';
   hours: number;
 }
+
+export interface Extension {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  implementationHours: number;
+  maintenanceHours: number;
+}
