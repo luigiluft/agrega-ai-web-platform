@@ -3,7 +3,9 @@ import { Task, TaskType } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import { Badge } from "../ui/badge";
+import { Folder } from "lucide-react";
 import { calculatorTasks } from "@/data/calculatorTasks";
+import TaskDependencyView from "./TaskDependencyView";
 
 interface TaskSelectorProps {
   onTasksChange: (selectedTasks: Task[]) => void;
@@ -16,14 +18,17 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
   
   const getTaskById = (id: string) => allTasks.find(task => task.id === id);
   
-  const getDependentTasks = (taskId: string): string[] => {
+  const getDependentTasks = (taskId: string): {
+    essential: Task[];
+    recurring: Task[];
+  } => {
     const task = getTaskById(taskId);
-    if (!task?.dependencies) return [];
+    if (!task?.dependencies) return { essential: [], recurring: [] };
     
-    return [
-      ...task.dependencies.essential,
-      ...task.dependencies.recurring
-    ];
+    return {
+      essential: task.dependencies.essential.map(id => getTaskById(id)).filter(Boolean) as Task[],
+      recurring: task.dependencies.recurring.map(id => getTaskById(id)).filter(Boolean) as Task[]
+    };
   };
 
   const handleTaskSelection = (taskId: string, checked: boolean) => {
@@ -32,17 +37,21 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
     if (checked) {
       newSelectedIds.add(taskId);
       // Add dependencies
-      getDependentTasks(taskId).forEach(depId => newSelectedIds.add(depId));
+      const deps = getDependentTasks(taskId);
+      deps.essential.forEach(task => newSelectedIds.add(task.id));
+      deps.recurring.forEach(task => newSelectedIds.add(task.id));
     } else {
       newSelectedIds.delete(taskId);
       // Remove dependencies if no other task requires them
-      getDependentTasks(taskId).forEach(depId => {
+      const deps = getDependentTasks(taskId);
+      [...deps.essential, ...deps.recurring].forEach(depTask => {
         const isRequiredByOther = Array.from(newSelectedIds).some(selectedId => {
           if (selectedId === taskId) return false;
-          return getDependentTasks(selectedId).includes(depId);
+          const otherDeps = getDependentTasks(selectedId);
+          return [...otherDeps.essential, ...otherDeps.recurring].some(d => d.id === depTask.id);
         });
         if (!isRequiredByOther) {
-          newSelectedIds.delete(depId);
+          newSelectedIds.delete(depTask.id);
         }
       });
     }
@@ -55,29 +64,18 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
     onTasksChange(selectedTasks);
   }, [selectedTaskIds]);
 
-  const getTaskTypeColor = (type: TaskType) => {
-    switch (type) {
-      case 'optional':
-        return 'bg-blue-100 text-blue-800';
-      case 'essential':
-        return 'bg-orange-100 text-orange-800';
-      case 'recurring':
-        return 'bg-green-100 text-green-800';
-    }
-  };
-
   return (
     <div className="space-y-6">
       {calculatorTasks.map((category) => (
         <Card key={category.id} className="p-6">
-          <h3 className="text-lg font-semibold mb-4">{category.name}</h3>
+          <div className="flex items-center gap-2 mb-4">
+            <Folder className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold">{category.name}</h3>
+          </div>
           <div className="space-y-4">
-            {category.tasks.map((task) => (
-              <div 
-                key={task.id}
-                className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                {task.type === 'optional' ? (
+            {category.tasks.filter(task => task.type === 'optional').map((task) => (
+              <div key={task.id}>
+                <div className="flex items-center space-x-3 p-3">
                   <Checkbox
                     id={task.id}
                     checked={selectedTaskIds.has(task.id)}
@@ -85,25 +83,11 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
                       handleTaskSelection(task.id, checked as boolean)
                     }
                   />
-                ) : (
-                  <div className="w-4 h-4 mt-1 rounded-sm border border-gray-300 bg-gray-100" />
-                )}
-                <div className="grid gap-1.5 leading-none flex-1">
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor={task.id}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {task.name}
-                    </label>
-                    <Badge className={getTaskTypeColor(task.type)}>
-                      {task.type === 'optional' ? 'Opcional' : 
-                       task.type === 'essential' ? 'Essencial' : 'Recorrente'}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {task.story} • {task.hours}h
-                  </p>
+                  <TaskDependencyView
+                    task={task}
+                    dependencies={getDependentTasks(task.id)}
+                    isSelected={selectedTaskIds.has(task.id)}
+                  />
                 </div>
               </div>
             ))}

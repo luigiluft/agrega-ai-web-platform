@@ -18,3 +18,9 @@ export interface TaskCategory {
   name: string;
   tasks: Task[];
 }
+
+export interface TaskDependency {
+  taskId: string;
+  dependencyType: 'essential' | 'recurring';
+  hours: number;
+}

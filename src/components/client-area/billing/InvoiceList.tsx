@@ -13,6 +13,20 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 
 const InvoiceList = () => {
+
+const getStatusBadge = (status: string) => {
+  switch (status.toLowerCase()) {
+    case 'paid':
+      return <Badge variant="outline" className="bg-green-50 text-green-700">Pago</Badge>;
+    case 'pending':
+      return <Badge variant="outline" className="bg-yellow-50 text-yellow-700">Pendente</Badge>;
+    case 'overdue':
+      return <Badge variant="destructive">Atrasado</Badge>;
+    default:
+      return <Badge variant="outline">{status}</Badge>;
+  }
+};
+
   const invoices = [
     {
       id: "1",
