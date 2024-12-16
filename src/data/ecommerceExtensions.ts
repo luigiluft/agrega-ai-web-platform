@@ -6,7 +6,7 @@ export const ecommerceExtensions: Extension[] = [
     name: "Serviços de Pagamento",
     category: "Pagamentos e Segurança",
     description: "Integração com múltiplos meios de pagamento",
-    price: 0,
+    price: 500,
     implementationHours: 8,
     maintenanceHours: 2
   },
@@ -15,7 +15,7 @@ export const ecommerceExtensions: Extension[] = [
     name: "Recomendações de Produto",
     category: "Marketing",
     description: "Sistema inteligente de recomendação de produtos",
-    price: 0,
+    price: 500,
     implementationHours: 12,
     maintenanceHours: 2
   },
@@ -24,7 +24,7 @@ export const ecommerceExtensions: Extension[] = [
     name: "Busca ao Vivo",
     category: "Otimização de Site",
     description: "Busca em tempo real com sugestões",
-    price: 0,
+    price: 500,
     implementationHours: 16,
     maintenanceHours: 1
   },
@@ -33,7 +33,7 @@ export const ecommerceExtensions: Extension[] = [
     name: "Conexão de Dados",
     category: "Relatórios e Análises",
     description: "Integração com Adobe Experience Platform",
-    price: 0,
+    price: 500,
     implementationHours: 24,
     maintenanceHours: 4
   },

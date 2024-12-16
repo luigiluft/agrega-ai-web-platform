@@ -6,6 +6,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalculatorResultsProps } from '@/types/calculator';
+import { Separator } from '../ui/separator';
 
 const CalculatorResults = ({
   implementationPrice,
@@ -26,10 +27,23 @@ const CalculatorResults = ({
   rouletteDiscount,
   totalImplementationHours,
 }: CalculatorResultsProps) => {
-  // Calculate maintenance costs (monthly)
-  const totalMaintenanceCost = parseFloat(maintenancePrice) + 
-    (maintenanceHours * 150) + 
-    (campaignHours * 150);
+  const formatPrice = (price: string | number) => {
+    return Number(price).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+  };
+
+  const renderPriceContext = () => {
+    const features = [];
+    if (layoutHours > 0) features.push("Layout personalizado");
+    if (functionalityHours > 0) features.push("Funcionalidades avançadas");
+    if (maintenanceHours > 0) features.push("Suporte técnico");
+    
+    return features.length > 0 
+      ? `Inclui: ${features.join(", ")}`
+      : "Personalize seu projeto selecionando as funcionalidades desejadas";
+  };
 
   return (
     <div className="space-y-6">
@@ -41,66 +55,73 @@ const CalculatorResults = ({
           transition={{ duration: 0.3 }}
           className="sticky top-4 z-10"
         >
-          <Card className="overflow-hidden transform hover:scale-[1.01] transition-all duration-300 bg-gradient-to-br from-white to-orange-50">
+          <Card className="overflow-hidden bg-gradient-calculator text-white">
             <div className="p-6 space-y-6">
-              <div className="space-y-6">
-                <motion.div 
-                  className="pb-6 border-b border-orange-100"
-                  key={implementationPrice}
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <Clock className="h-4 w-4 text-orange-500" />
-                    <span>Implementação (pagamento único)</span>
+              <div className="space-y-4">
+                <div className="pb-4 border-b border-white/20">
+                  <div className="text-sm opacity-90 mb-2">
+                    {renderPriceContext()}
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <div className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                      R$ {implementationPrice}
+                    <div className="text-3xl font-bold">
+                      {formatPrice(implementationPrice)}
+                    </div>
+                    <div className="text-sm opacity-90">
+                      Implementação
                     </div>
                   </div>
-                  {rouletteDiscount && rouletteDiscount > 0 && (
-                    <div className="mt-2 text-sm text-green-600">
-                      Desconto aplicado: R$ {rouletteDiscount.toFixed(2)}
+                  {rouletteDiscount > 0 && (
+                    <div className="mt-2 text-sm text-green-200">
+                      Desconto aplicado: {formatPrice(rouletteDiscount)}
                     </div>
                   )}
-                </motion.div>
+                </div>
                 
-                <motion.div 
-                  className="pb-6 border-b border-orange-100"
-                  key={totalMaintenanceCost}
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <DollarSign className="h-4 w-4 text-orange-500" />
-                    <span>Sustentação Mensal</span>
-                  </div>
+                <div className="pb-4 border-b border-white/20">
                   <div className="flex items-baseline justify-between">
-                    <div className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                      R$ {totalMaintenanceCost.toFixed(2)}
+                    <div className="text-2xl font-bold">
+                      {formatPrice(maintenancePrice)}
+                    </div>
+                    <div className="text-sm opacity-90">
+                      Mensal
                     </div>
                   </div>
-                </motion.div>
+                </div>
                 
-                <motion.div
-                  key={revenueShare}
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <Percent className="h-4 w-4 text-orange-500" />
-                    <span>Fee sobre Faturamento</span>
-                  </div>
+                <div>
                   <div className="flex items-baseline justify-between">
-                    <div className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+                    <div className="text-2xl font-bold">
                       {revenueSharePercent}%
                     </div>
+                    <div className="text-sm opacity-90">
+                      Comissão sobre vendas
+                    </div>
                   </div>
-                  <div className="mt-2 text-sm text-gray-600">
-                    Aproximadamente R$ {revenueShare}/mês
+                  <div className="mt-1 text-sm opacity-90">
+                    Aproximadamente {formatPrice(revenueShare)}/mês
                   </div>
-                </motion.div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="mt-4 p-6 bg-white/5 backdrop-blur-sm">
+            <div className="space-y-4">
+              <Label className="text-lg font-semibold">Resumo do Projeto</Label>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Horas de Implementação:</span>
+                  <span>{totalImplementationHours}h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Horas de Manutenção Mensal:</span>
+                  <span>{maintenanceHours}h</span>
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between font-medium">
+                  <span>Total de Horas:</span>
+                  <span>{totalHours}h</span>
+                </div>
               </div>
             </div>
           </Card>
@@ -119,7 +140,7 @@ const CalculatorResults = ({
           <Input
             type="number"
             value={monthlyRevenue}
-            onChange={(e) => setMonthlyRevenue(e.target.value)}
+            onChange={(e) => setMonthlyRevenue?.(e.target.value)}
             min="0"
             step="1000"
             className="pl-10 bg-white/50 border-orange-200 focus:border-orange-500 focus:ring-orange-500 transition-all duration-300"
@@ -145,7 +166,7 @@ const CalculatorResults = ({
         
         <Button 
           variant="default"
-          className="w-full space-x-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition-all duration-300 group"
+          className="w-full space-x-2 bg-gradient-calculator hover:from-orange-600 hover:to-orange-700 transition-all duration-300 group"
           onClick={onContactClick}
         >
           <PhoneCall className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />

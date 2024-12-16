@@ -23,7 +23,7 @@ const ExtensionSelector = ({
   return (
     <div className="space-y-4">
       {extensions.map((extension) => (
-        <Card key={extension.id} className="p-4">
+        <Card key={extension.id} className="p-4 hover:shadow-md transition-shadow duration-200">
           <div className="flex items-start gap-4">
             <Checkbox
               id={extension.id}
@@ -62,11 +62,6 @@ const ExtensionSelector = ({
               <p className="text-sm text-muted-foreground">
                 {extension.description}
               </p>
-              {extension.price > 0 && (
-                <p className="text-sm font-medium text-primary">
-                  Licença: R$ {extension.price.toFixed(2)}
-                </p>
-              )}
             </div>
           </div>
         </Card>
