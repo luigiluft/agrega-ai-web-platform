@@ -106,6 +106,10 @@ const DynamicCalculator = () => {
                   .filter(t => t.story === "Implementação do layout")
                   .reduce((sum, t) => sum + t.hours, 0)}
                 selectedPlanName="Plano Personalizado"
+                implementationPrice={prices.implementationPrice}
+                maintenancePrice={prices.maintenancePrice}
+                revenueShare={prices.revenueShare}
+                revenueSharePercent={prices.revenueSharePercent}
               />
 
               <CalculatorResults 

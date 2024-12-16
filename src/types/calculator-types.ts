@@ -3,12 +3,20 @@ export interface Task {
   name: string;
   description: string;
   hours: number;
-  type: 'essential' | 'optional' | 'recurring';
+  type: TaskType;
   story: string;
   dependencies?: {
     essential: string[];
     recurring: string[];
   };
+}
+
+export type TaskType = 'essential' | 'optional' | 'recurring';
+
+export interface TaskCategory {
+  id: string;
+  name: string;
+  tasks: Task[];
 }
 
 export interface Extension {

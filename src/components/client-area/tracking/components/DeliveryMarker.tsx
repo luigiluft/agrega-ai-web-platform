@@ -8,12 +8,18 @@ interface DeliveryMarkerProps {
   status: DeliveryStatus;
   onClick: () => void;
   children: React.ReactNode;
+  delivery: any; // Add this to match the parent component's props
+  isSelected: boolean;
+  statusConfig: any;
 }
 
 const DeliveryMarker: React.FC<DeliveryMarkerProps> = ({
   position,
   onClick,
-  children
+  children,
+  delivery,
+  isSelected,
+  statusConfig
 }) => {
   const markerIcon = L.divIcon({
     className: 'custom-marker-icon',
