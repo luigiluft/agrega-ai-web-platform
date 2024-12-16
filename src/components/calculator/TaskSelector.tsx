@@ -1,23 +1,26 @@
-import { useState, useEffect } from "react";
-import { Task, TaskType } from "@/types/calculator-types";
+import { Task } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
+import { 
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
+import { Info } from "lucide-react";
 import { Badge } from "../ui/badge";
-import { Folder, Info } from "lucide-react";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
-import TaskDependencyView from "./TaskDependencyView";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import ExtensionSelector from "./ExtensionSelector";
-import { ecommerceExtensions, getExtensionsByCategory } from "@/data/ecommerceExtensions";
 
 interface TaskSelectorProps {
-  onTasksChange: (selectedTasks: Task[]) => void;
+  onTasksChange: (tasks: Task[]) => void;
+  filter: "implementation" | "maintenance";
 }
 
-const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
+const TaskSelector = ({
+  onTasksChange,
+  filter
+}: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
-  const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   
   const allTasks = [
     ...calculatorTasks
@@ -25,142 +28,91 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
       .flatMap(category => category.tasks),
     ...ecommerceTasks.flatMap(category => category.tasks)
   ];
-  
-  const getTaskById = (id: string) => allTasks.find(task => task.id === id);
 
-  const getDependentTasks = (taskId: string) => {
-    const task = getTaskById(taskId);
-    if (!task?.dependencies) {
-      return {
-        essential: [],
-        recurring: []
-      };
+  const filteredTasks = allTasks.filter(task => {
+    if (filter === "implementation") {
+      return task.type === "essential" || task.type === "optional";
+    } else {
+      return task.type === "recurring";
     }
+  });
 
-    const essentialTasks = task.dependencies.essential
-      .map(id => getTaskById(id))
-      .filter((t): t is Task => t !== undefined);
-
-    const recurringTasks = task.dependencies.recurring
-      .map(id => getTaskById(id))
-      .filter((t): t is Task => t !== undefined);
-
-    return {
-      essential: essentialTasks,
-      recurring: recurringTasks
-    };
-  };
-  
   const handleTaskSelection = (taskId: string, checked: boolean) => {
     const newSelectedIds = new Set(selectedTaskIds);
     
     if (checked) {
       newSelectedIds.add(taskId);
-      const task = getTaskById(taskId);
+      const task = allTasks.find(t => t.id === taskId);
       if (task?.dependencies) {
         task.dependencies.essential.forEach(id => newSelectedIds.add(id));
         task.dependencies.recurring.forEach(id => newSelectedIds.add(id));
       }
     } else {
       newSelectedIds.delete(taskId);
-      // Remove dependencies if not required by other tasks
-      const task = getTaskById(taskId);
-      if (task?.dependencies) {
-        [...task.dependencies.essential, ...task.dependencies.recurring].forEach(depId => {
-          const isRequiredByOther = Array.from(newSelectedIds).some(selectedId => {
-            if (selectedId === taskId) return false;
-            const otherTask = getTaskById(selectedId);
-            if (!otherTask?.dependencies) return false;
-            return [...otherTask.dependencies.essential, ...otherTask.dependencies.recurring]
-              .includes(depId);
-          });
-          if (!isRequiredByOther) {
-            newSelectedIds.delete(depId);
-          }
-        });
-      }
     }
     
     setSelectedTaskIds(newSelectedIds);
-  };
-
-  const handleExtensionToggle = (extensionId: string, checked: boolean) => {
-    const newSelectedExtensions = new Set(selectedExtensions);
-    if (checked) {
-      newSelectedExtensions.add(extensionId);
-    } else {
-      newSelectedExtensions.delete(extensionId);
-    }
-    setSelectedExtensions(newSelectedExtensions);
-  };
-
-  useEffect(() => {
-    const selectedTasks = allTasks.filter(task => selectedTaskIds.has(task.id));
+    const selectedTasks = allTasks.filter(task => newSelectedIds.has(task.id));
     onTasksChange(selectedTasks);
-  }, [selectedTaskIds, selectedExtensions]);
+  };
 
-  const renderTaskCategory = (category: typeof calculatorTasks[0] | typeof ecommerceTasks[0]) => (
-    <Card key={category.id} className="p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Folder className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-semibold">{category.name}</h3>
-        <Tooltip>
-          <TooltipTrigger>
-            <Info className="w-4 h-4 text-muted-foreground" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p className="max-w-xs">
-              Selecione as tarefas desejadas. As dependências essenciais e recorrentes 
-              serão incluídas automaticamente.
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
-      <div className="space-y-4">
-        {category.tasks
-          .filter(task => task.type === 'optional')
-          .map((task) => (
-          <div key={task.id} className="rounded-lg border bg-card text-card-foreground shadow-sm">
-            <div className="flex items-center space-x-3 p-4">
-              <Checkbox
-                id={task.id}
-                checked={selectedTaskIds.has(task.id)}
-                onCheckedChange={(checked) => 
-                  handleTaskSelection(task.id, checked as boolean)
-                }
-              />
-              <TaskDependencyView
-                task={task}
-                dependencies={getDependentTasks(task.id)}
-                isSelected={selectedTaskIds.has(task.id)}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
+  const getBadgeColor = (type: string) => {
+    switch (type) {
+      case "essential":
+        return "bg-purple-100 text-purple-700";
+      case "optional":
+        return "bg-blue-100 text-blue-700";
+      case "recurring":
+        return "bg-green-100 text-green-700";
+      default:
+        return "";
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      {calculatorTasks
-        .filter(category => category.id !== "sustentation")
-        .map(renderTaskCategory)}
-      {ecommerceTasks.map(renderTaskCategory)}
-      
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold mb-4">Extensões Disponíveis</h3>
-        {Array.from(getExtensionsByCategory().entries()).map(([category, extensions]) => (
-          <div key={category} className="mb-6">
-            <h4 className="text-lg font-medium mb-3">{category}</h4>
-            <ExtensionSelector
-              extensions={extensions}
-              selectedExtensions={selectedExtensions}
-              onExtensionToggle={handleExtensionToggle}
+    <div className="space-y-4">
+      {filteredTasks.map((task) => (
+        <Card key={task.id} className="p-4 hover:shadow-md transition-shadow duration-200">
+          <div className="flex items-start gap-4">
+            <Checkbox
+              id={task.id}
+              checked={selectedTaskIds.has(task.id)}
+              onCheckedChange={(checked) => 
+                handleTaskSelection(task.id, checked as boolean)
+              }
             />
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor={task.id}
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {task.name}
+                </label>
+                <Badge variant="secondary" className={getBadgeColor(task.type)}>
+                  {task.hours}h
+                </Badge>
+                <HoverCard>
+                  <HoverCardTrigger>
+                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <div className="space-y-2">
+                      <p className="text-sm">{task.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Categoria: {task.category}
+                      </p>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {task.description}
+              </p>
+            </div>
           </div>
-        ))}
-      </div>
+        </Card>
+      ))}
     </div>
   );
 };

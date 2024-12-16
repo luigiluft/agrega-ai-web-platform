@@ -10,49 +10,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import CalculatorInputs from "./calculator/CalculatorInputs";
-import DeveloperAnimation from "./calculator/DeveloperAnimation";
-import DiscountRoulette from "./calculator/DiscountRoulette";
-
-type Plan = {
-  name: string;
-  layoutHours: number;
-  maintenanceHours: number;
-  meetingHours: number;
-  campaignHours: number;
-  functionalityHours: number;
-  revenueSharePercentage: number;
-};
-
-const defaultPlans: Plan[] = [
-  {
-    name: "Starter",
-    layoutHours: 5,
-    maintenanceHours: 10,
-    meetingHours: 5,
-    campaignHours: 10,
-    functionalityHours: 20,
-    revenueSharePercentage: 0.15,
-  },
-  {
-    name: "Pro",
-    layoutHours: 80,
-    maintenanceHours: 15,
-    meetingHours: 10,
-    campaignHours: 20,
-    functionalityHours: 40,
-    revenueSharePercentage: 0.12,
-  },
-  {
-    name: "Custom",
-    layoutHours: 120,
-    maintenanceHours: 30,
-    meetingHours: 15,
-    campaignHours: 30,
-    functionalityHours: 60,
-    revenueSharePercentage: 0.08,
-  },
-];
+import { Task } from "@/types/calculator-types";
+import TaskCategorySection from "./calculator/TaskCategorySection";
+import ConsoleOutput from "./calculator/ConsoleOutput";
 
 const calculateRevenueShare = (revenue: number): number => {
   if (revenue <= 50000) {
@@ -68,39 +28,46 @@ const calculateRevenueShare = (revenue: number): number => {
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
-  const [selectedPlan, setSelectedPlan] = useState<Plan>(defaultPlans[0]);
+  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
+  const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
-  const [customLayoutHours, setCustomLayoutHours] = useState<string>(defaultPlans[0].layoutHours.toString());
-  const [customMaintenanceHours, setCustomMaintenanceHours] = useState<string>(defaultPlans[0].maintenanceHours.toString());
-  const [customMeetingHours, setCustomMeetingHours] = useState<string>(defaultPlans[0].meetingHours.toString());
-  const [customCampaignHours, setCustomCampaignHours] = useState<string>(defaultPlans[0].campaignHours.toString());
-  const [customFunctionalityHours, setCustomFunctionalityHours] = useState<string>(defaultPlans[0].functionalityHours.toString());
-  const [lastTotalHours, setLastTotalHours] = useState<number>(0);
-  const [showRoulette, setShowRoulette] = useState(false);
-  const [rouletteDiscount, setRouletteDiscount] = useState(0);
-  const [previousDiscountLevel, setPreviousDiscountLevel] = useState(0);
-  const [currentDiscountLevel, setCurrentDiscountLevel] = useState(0);
+
+  const handleExtensionToggle = (extensionId: string, checked: boolean) => {
+    const newSelectedExtensions = new Set(selectedExtensions);
+    if (checked) {
+      newSelectedExtensions.add(extensionId);
+    } else {
+      newSelectedExtensions.delete(extensionId);
+    }
+    setSelectedExtensions(newSelectedExtensions);
+  };
 
   const calculatePrices = () => {
-    const revenue = parseFloat(monthlyRevenue) || 0;
+    const implementationTasks = selectedTasks.filter(task => 
+      task.type === 'essential' || task.type === 'optional'
+    );
+    
+    const maintenanceTasks = selectedTasks.filter(task => 
+      task.type === 'recurring'
+    );
+
+    const implementationHours = implementationTasks.reduce(
+      (total, task) => total + task.hours, 
+      0
+    );
+
+    const maintenanceHours = maintenanceTasks.reduce(
+      (total, task) => total + task.hours, 
+      0
+    );
+
     const rate = 100;
+    const maintenanceRate = 130;
     
-    const layoutHours = parseFloat(customLayoutHours) || selectedPlan.layoutHours;
-    const maintenanceHours = parseFloat(customMaintenanceHours) || selectedPlan.maintenanceHours;
-    const meetingHours = parseFloat(customMeetingHours) || selectedPlan.meetingHours;
-    const campaignHours = parseFloat(customCampaignHours) || selectedPlan.campaignHours;
-    const functionalityHours = parseFloat(customFunctionalityHours) || selectedPlan.functionalityHours;
+    const implementationPrice = implementationHours * rate;
+    const maintenancePrice = maintenanceHours * maintenanceRate;
     
-    const totalImplementationHours = layoutHours + meetingHours + functionalityHours;
-    const totalMaintenanceHours = maintenanceHours + campaignHours;
-    const totalHours = totalImplementationHours + totalMaintenanceHours;
-    
-    const baseImplementationCost = totalImplementationHours * rate;
-    const implementationPrice = (baseImplementationCost * 1.1) - rouletteDiscount;
-    
-    const baseMaintenanceCost = totalMaintenanceHours * rate;
-    const maintenancePrice = baseMaintenanceCost * 1.3;
-    
+    const revenue = parseFloat(monthlyRevenue) || 0;
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
 
@@ -109,43 +76,13 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       maintenancePrice: maintenancePrice.toFixed(2),
       revenueShare: revenueShare.toFixed(2),
       revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
-      baseImplementationCost: baseImplementationCost.toFixed(2),
-      baseMaintenanceCost: baseMaintenanceCost.toFixed(2),
-      totalHours,
-      rouletteDiscount,
-      totalImplementationHours
+      implementationTasks,
+      maintenanceTasks,
+      totalHours: implementationHours + maintenanceHours
     };
   };
 
   const prices = calculatePrices();
-
-  useEffect(() => {
-    if (prices.totalImplementationHours >= 50 && !showRoulette) {
-      const prevLevel = Math.floor(lastTotalHours / 50);
-      const currentLevel = Math.floor(prices.totalImplementationHours / 50);
-      
-      if (currentLevel > prevLevel) {
-        setPreviousDiscountLevel(prevLevel);
-        setCurrentDiscountLevel(currentLevel);
-        setShowRoulette(true);
-      }
-    }
-    
-    setLastTotalHours(prices.totalImplementationHours);
-  }, [prices.totalImplementationHours, lastTotalHours, showRoulette]);
-
-  const handleRouletteWin = (amount: number) => {
-    setRouletteDiscount(prev => prev + amount);
-  };
-
-  const handlePlanChange = (plan: Plan) => {
-    setSelectedPlan(plan);
-    setCustomLayoutHours(plan.layoutHours.toString());
-    setCustomMaintenanceHours(plan.maintenanceHours.toString());
-    setCustomMeetingHours(plan.meetingHours.toString());
-    setCustomCampaignHours(plan.campaignHours.toString());
-    setCustomFunctionalityHours(plan.functionalityHours.toString());
-  };
 
   const handleContactClick = () => {
     toast({
@@ -156,71 +93,45 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const calculatorContent = (
     <div className="mt-8 space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <TaskCategorySection
+          onTasksChange={setSelectedTasks}
+          selectedExtensions={selectedExtensions}
+          onExtensionToggle={handleExtensionToggle}
+        />
+        
         <div className="space-y-6">
-          <CalculatorInputs
-            customLayoutHours={customLayoutHours}
-            setCustomLayoutHours={setCustomLayoutHours}
-            customMaintenanceHours={customMaintenanceHours}
-            setCustomMaintenanceHours={setCustomMaintenanceHours}
-            customMeetingHours={customMeetingHours}
-            setCustomMeetingHours={setCustomMeetingHours}
-            customCampaignHours={customCampaignHours}
-            setCustomCampaignHours={setCustomCampaignHours}
-            customFunctionalityHours={customFunctionalityHours}
-            setCustomFunctionalityHours={setCustomFunctionalityHours}
-            monthlyRevenue={monthlyRevenue}
-            setMonthlyRevenue={setMonthlyRevenue}
-            selectedPlan={selectedPlan}
-            defaultPlans={defaultPlans}
-            onPlanChange={handlePlanChange}
+          <ConsoleOutput
+            implementationTasks={prices.implementationTasks}
+            maintenanceTasks={prices.maintenanceTasks}
+            implementationPrice={prices.implementationPrice}
+            maintenancePrice={prices.maintenancePrice}
+            revenueShare={prices.revenueShare}
+            revenueSharePercent={prices.revenueSharePercent}
+            totalHours={prices.totalHours}
           />
-        </div>
-        <div className="relative">
-          <div className="sticky top-4">
-            <DeveloperAnimation 
-              totalHours={prices.totalHours}
-              layoutHours={parseInt(customLayoutHours) || 0}
-              maintenanceHours={parseInt(customMaintenanceHours) || 0}
-              meetingHours={parseInt(customMeetingHours) || 0}
-              campaignHours={parseInt(customCampaignHours) || 0}
-              functionalityHours={parseInt(customFunctionalityHours) || 0}
-              selectedPlanName={selectedPlan.name}
-              implementationPrice={prices.implementationPrice}
-              maintenancePrice={prices.maintenancePrice}
-              revenueShare={prices.revenueShare}
-              revenueSharePercent={prices.revenueSharePercent}
-            />
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              <Button 
-                variant="outline"
-                className="w-full space-x-2"
-                onClick={handleContactClick}
-              >
-                <Mail className="w-4 h-4" />
-                <span>Receber por Email</span>
-              </Button>
-              
-              <Button 
-                variant="default"
-                className="w-full space-x-2"
-                onClick={handleContactClick}
-              >
-                <PhoneCall className="w-4 h-4" />
-                <span>Falar com Consultor</span>
-              </Button>
-            </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Button 
+              variant="outline"
+              className="w-full space-x-2"
+              onClick={handleContactClick}
+            >
+              <Mail className="w-4 h-4" />
+              <span>Receber por Email</span>
+            </Button>
+            
+            <Button 
+              variant="default"
+              className="w-full space-x-2"
+              onClick={handleContactClick}
+            >
+              <PhoneCall className="w-4 h-4" />
+              <span>Falar com Consultor</span>
+            </Button>
           </div>
         </div>
       </div>
-
-      <DiscountRoulette 
-        isOpen={showRoulette}
-        onClose={() => setShowRoulette(false)}
-        onWin={handleRouletteWin}
-        previousDiscountLevel={previousDiscountLevel}
-        currentDiscountLevel={currentDiscountLevel}
-      />
     </div>
   );
 
@@ -239,7 +150,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
           <Calculator className="h-4 w-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+      <SheetContent className="w-[400px] sm:w-[540px] lg:w-[900px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Calculadora de Preços</SheetTitle>
           <SheetDescription>

@@ -1,3 +1,5 @@
+export type TaskType = 'essential' | 'optional' | 'recurring';
+
 export interface Task {
   id: string;
   name: string;
@@ -11,8 +13,6 @@ export interface Task {
     recurring: string[];
   };
 }
-
-export type TaskType = 'essential' | 'optional' | 'recurring';
 
 export interface TaskCategory {
   id: string;
