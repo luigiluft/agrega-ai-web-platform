@@ -1,33 +1,37 @@
-import { Marker, Popup } from 'react-leaflet';
-import { divIcon } from 'leaflet';
-import DeliveryPopup from '../DeliveryPopup';
-import { Delivery, StatusConfig } from '../types';
+import { Marker } from 'react-leaflet';
+import L from 'leaflet';
+import { Popup } from 'react-leaflet';
+import { DeliveryStatus } from '../types';
 
 interface DeliveryMarkerProps {
-  delivery: Delivery;
-  isSelected: boolean;
-  onClick: (delivery: Delivery) => void;
-  statusConfig: StatusConfig;
+  position: [number, number];
+  status: DeliveryStatus;
+  onClick: () => void;
+  children: React.ReactNode;
 }
 
-const DeliveryMarker = ({ delivery, isSelected, onClick, statusConfig }: DeliveryMarkerProps) => {
-  const config = statusConfig[delivery.status];
-  
-  const customIcon = divIcon({
-    className: `custom-div-icon ${isSelected ? 'selected' : ''}`,
-    html: `<div class="marker-pin" style="background-color: ${config.markerColor}"></div>`,
-    iconSize: [30, 42],
-    iconAnchor: [15, 42]
+const DeliveryMarker: React.FC<DeliveryMarkerProps> = ({
+  position,
+  onClick,
+  children
+}) => {
+  const markerIcon = L.divIcon({
+    className: 'custom-marker-icon',
+    html: `<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+      <span>📍</span>
+    </div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
   });
 
   return (
     <Marker 
-      position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
-      eventHandlers={{ click: () => onClick(delivery) }}
-      icon={customIcon}
+      position={position} 
+      eventHandlers={{ click: onClick }}
+      icon={markerIcon}
     >
       <Popup>
-        <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
+        {children}
       </Popup>
     </Marker>
   );

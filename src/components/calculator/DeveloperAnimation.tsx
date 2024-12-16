@@ -20,6 +20,10 @@ type DeveloperAnimationProps = {
   campaignHours: number;
   functionalityHours: number;
   selectedPlanName: string;
+  implementationPrice: string;
+  maintenancePrice: string;
+  revenueShare: string;
+  selectedExtensions?: Extension[];
 };
 
 const getRandomSnippet = (snippets: string[]) => {
@@ -32,7 +36,11 @@ const DeveloperAnimation = ({
   meetingHours,
   campaignHours,
   functionalityHours,
-  selectedPlanName
+  selectedPlanName,
+  implementationPrice,
+  maintenancePrice,
+  revenueShare,
+  selectedExtensions = []
 }: DeveloperAnimationProps) => {
   const [codeLines, setCodeLines] = useState<CodeLine[]>([]);
   const [typedText, setTypedText] = useState<string[]>([]);
@@ -58,49 +66,63 @@ const DeveloperAnimation = ({
   useEffect(() => {
     const newCodeLines: CodeLine[] = [];
     
-    // Always show welcome message with selected plan
-    if (selectedPlanName) {
+    // Project summary
+    newCodeLines.push({ 
+      code: `console.log("🚀 Resumo do Projeto:")`,
+      type: 'layout' 
+    });
+
+    // Implementation details
+    if (layoutHours > 0 || functionalityHours > 0) {
       newCodeLines.push({ 
-        code: `console.log("🚀 Iniciando projeto: ${selectedPlanName}");`,
+        code: `console.log("💻 Implementação: R$ ${implementationPrice}")`,
         type: 'layout' 
       });
     }
-    
-    if (layoutHours > 0) {
+
+    // Maintenance details
+    if (maintenanceHours > 0 || campaignHours > 0) {
       newCodeLines.push({ 
-        code: `// Personalizando layout - ${layoutHours}h\n${getCodeLineForType('layout')}`,
-        type: 'layout' 
-      });
-    }
-    if (functionalityHours > 0) {
-      newCodeLines.push({ 
-        code: `// Implementando funcionalidades - ${functionalityHours}h\n${getCodeLineForType('functionality')}`,
-        type: 'functionality' 
-      });
-    }
-    if (maintenanceHours > 0) {
-      newCodeLines.push({ 
-        code: `// Configurando manutenção - ${maintenanceHours}h\n${getCodeLineForType('maintenance')}`,
+        code: `console.log("🔧 Manutenção Mensal: R$ ${maintenancePrice}")`,
         type: 'maintenance' 
       });
     }
-    if (meetingHours > 0) {
+
+    // Revenue share
+    newCodeLines.push({ 
+      code: `console.log("💰 Comissão sobre vendas: R$ ${revenueShare}")`,
+      type: 'functionality' 
+    });
+
+    // Extensions summary
+    if (selectedExtensions.length > 0) {
       newCodeLines.push({ 
-        code: `// Agendando reuniões - ${meetingHours}h\n${getCodeLineForType('meeting')}`,
-        type: 'meeting' 
+        code: `console.log("🔌 Extensões incluídas:")`,
+        type: 'functionality' 
       });
-    }
-    if (campaignHours > 0) {
-      newCodeLines.push({ 
-        code: `// Planejando campanhas - ${campaignHours}h\n${getCodeLineForType('campaign')}`,
-        type: 'campaign' 
+      
+      selectedExtensions.forEach(ext => {
+        newCodeLines.push({ 
+          code: `console.log("  - ${ext.name}")`,
+          type: 'functionality' 
+        });
       });
     }
 
     setCodeLines(newCodeLines);
     setIsTyping(true);
     setTypedText(new Array(newCodeLines.length).fill(''));
-  }, [layoutHours, maintenanceHours, meetingHours, campaignHours, functionalityHours, selectedPlanName]);
+  }, [
+    layoutHours,
+    maintenanceHours,
+    meetingHours,
+    campaignHours,
+    functionalityHours,
+    implementationPrice,
+    maintenancePrice,
+    revenueShare,
+    selectedExtensions
+  ]);
 
   useEffect(() => {
     if (!isTyping) return;

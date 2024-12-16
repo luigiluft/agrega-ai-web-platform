@@ -82,7 +82,11 @@ export const ecommerceExtensions: Extension[] = [
     implementationHours: 80,
     maintenanceHours: 8
   }
-];
+].map(extension => ({
+  ...extension,
+  implementationCost: extension.price === 0 ? 1000 : extension.price,
+  maintenanceCost: extension.price === 0 ? 200 : extension.price * 0.2
+}));
 
 export const getExtensionsByCategory = () => {
   const categories = new Map<string, Extension[]>();

@@ -34,4 +34,6 @@ export interface Extension {
   price: number;
   implementationHours: number;
   maintenanceHours: number;
+  implementationCost: number;
+  maintenanceCost: number;
 }
