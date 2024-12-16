@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Extension } from "@/types/calculator-types";
 import { 
   layoutSnippets,
   functionalitySnippets,
@@ -23,14 +24,12 @@ type DeveloperAnimationProps = {
   implementationPrice: string;
   maintenancePrice: string;
   revenueShare: string;
+  revenueSharePercent: string;
   selectedExtensions?: Extension[];
 };
 
-const getRandomSnippet = (snippets: string[]) => {
-  return snippets[Math.floor(Math.random() * snippets.length)];
-};
-
 const DeveloperAnimation = ({ 
+  totalHours,
   layoutHours,
   maintenanceHours,
   meetingHours,
@@ -40,28 +39,12 @@ const DeveloperAnimation = ({
   implementationPrice,
   maintenancePrice,
   revenueShare,
+  revenueSharePercent,
   selectedExtensions = []
 }: DeveloperAnimationProps) => {
   const [codeLines, setCodeLines] = useState<CodeLine[]>([]);
   const [typedText, setTypedText] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  
-  const getCodeLineForType = (type: CodeLine['type']): string => {
-    switch(type) {
-      case 'layout':
-        return getRandomSnippet(layoutSnippets);
-      case 'maintenance':
-        return getRandomSnippet(maintenanceSnippets);
-      case 'meeting':
-        return getRandomSnippet(meetingSnippets);
-      case 'campaign':
-        return getRandomSnippet(campaignSnippets);
-      case 'functionality':
-        return getRandomSnippet(functionalitySnippets);
-      default:
-        return '';
-    }
-  };
 
   useEffect(() => {
     const newCodeLines: CodeLine[] = [];
@@ -73,25 +56,32 @@ const DeveloperAnimation = ({
     });
 
     // Implementation details
-    if (layoutHours > 0 || functionalityHours > 0) {
-      newCodeLines.push({ 
-        code: `console.log("💻 Implementação: R$ ${implementationPrice}")`,
-        type: 'layout' 
-      });
-    }
+    newCodeLines.push({ 
+      code: `console.log("💻 Implementação: R$ ${implementationPrice}")`,
+      type: 'layout' 
+    });
 
     // Maintenance details
-    if (maintenanceHours > 0 || campaignHours > 0) {
-      newCodeLines.push({ 
-        code: `console.log("🔧 Manutenção Mensal: R$ ${maintenancePrice}")`,
-        type: 'maintenance' 
-      });
-    }
+    newCodeLines.push({ 
+      code: `console.log("🔧 Manutenção Mensal: R$ ${maintenancePrice}")`,
+      type: 'maintenance' 
+    });
 
     // Revenue share
     newCodeLines.push({ 
-      code: `console.log("💰 Comissão sobre vendas: R$ ${revenueShare}")`,
+      code: `console.log("💰 Comissão sobre vendas: ${revenueSharePercent}% (aprox. R$ ${revenueShare}/mês)")`,
       type: 'functionality' 
+    });
+
+    // Hours breakdown
+    newCodeLines.push({ 
+      code: `console.log("⏱️ Horas de Implementação: ${layoutHours + functionalityHours}h")`,
+      type: 'layout' 
+    });
+
+    newCodeLines.push({ 
+      code: `console.log("⏱️ Horas de Manutenção Mensal: ${maintenanceHours}h")`,
+      type: 'maintenance' 
     });
 
     // Extensions summary
@@ -121,6 +111,7 @@ const DeveloperAnimation = ({
     implementationPrice,
     maintenancePrice,
     revenueShare,
+    revenueSharePercent,
     selectedExtensions
   ]);
 
@@ -151,24 +142,30 @@ const DeveloperAnimation = ({
 
   return (
     <div className="relative">
-      <div className="rounded-lg overflow-hidden shadow-xl bg-gradient-to-br from-secondary/80 to-secondary border border-secondary/20">
-        <div className="p-4 border-b border-secondary/20 bg-secondary/50 backdrop-blur-sm">
+      <div className="rounded-lg overflow-hidden shadow-xl bg-[#1A1F2C] border border-[#1A1F2C]/20">
+        <div className="p-4 border-b border-[#1A1F2C]/20 bg-[#1A1F2C]/50 backdrop-blur-sm">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
           </div>
         </div>
-        <div className="p-6 space-y-2 min-h-[200px] font-mono bg-gradient-to-br from-secondary/5 to-secondary/10 backdrop-blur-sm">
+        <div className="p-6 space-y-2 min-h-[200px] font-mono bg-gradient-to-br from-[#1A1F2C]/5 to-[#1A1F2C]/10 backdrop-blur-sm">
           {typedText.map((text, index) => (
             <div 
               key={index}
-              className="text-primary-light text-sm"
+              className={`text-sm ${
+                codeLines[index]?.type === 'maintenance' 
+                  ? 'text-blue-400' 
+                  : codeLines[index]?.type === 'functionality'
+                    ? 'text-green-400'
+                    : 'text-purple-400'
+              }`}
             >
               {text}
             </div>
           ))}
-          <div className="animate-pulse text-primary-light">_</div>
+          <div className="animate-pulse text-white">_</div>
         </div>
       </div>
     </div>

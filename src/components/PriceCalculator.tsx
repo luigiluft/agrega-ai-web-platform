@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Calculator } from "lucide-react";
+import { Calculator, Mail, PhoneCall } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import {
@@ -11,7 +11,6 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import CalculatorInputs from "./calculator/CalculatorInputs";
-import CalculatorResults from "./calculator/CalculatorResults";
 import DeveloperAnimation from "./calculator/DeveloperAnimation";
 import DiscountRoulette from "./calculator/DiscountRoulette";
 
@@ -57,13 +56,13 @@ const defaultPlans: Plan[] = [
 
 const calculateRevenueShare = (revenue: number): number => {
   if (revenue <= 50000) {
-    return 0.15; // 15% for revenue up to 50k
+    return 0.15;
   } else if (revenue <= 100000) {
-    return 0.12; // 12% for revenue between 50k and 100k
+    return 0.12;
   } else if (revenue <= 200000) {
-    return 0.10; // 10% for revenue between 100k and 200k
+    return 0.10;
   } else {
-    return 0.08; // 8% for revenue above 200k
+    return 0.08;
   }
 };
 
@@ -109,9 +108,9 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       implementationPrice: implementationPrice.toFixed(2),
       maintenancePrice: maintenancePrice.toFixed(2),
       revenueShare: revenueShare.toFixed(2),
+      revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
       baseImplementationCost: baseImplementationCost.toFixed(2),
       baseMaintenanceCost: baseMaintenanceCost.toFixed(2),
-      revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
       totalHours,
       rouletteDiscount,
       totalImplementationHours
@@ -187,26 +186,30 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
               campaignHours={parseInt(customCampaignHours) || 0}
               functionalityHours={parseInt(customFunctionalityHours) || 0}
               selectedPlanName={selectedPlan.name}
-            />
-            <CalculatorResults 
               implementationPrice={prices.implementationPrice}
               maintenancePrice={prices.maintenancePrice}
               revenueShare={prices.revenueShare}
               revenueSharePercent={prices.revenueSharePercent}
-              monthlyRevenue={monthlyRevenue}
-              setMonthlyRevenue={setMonthlyRevenue}
-              onContactClick={handleContactClick}
-              layoutHours={parseInt(customLayoutHours) || 0}
-              maintenanceHours={parseInt(customMaintenanceHours) || 0}
-              meetingHours={parseInt(customMeetingHours) || 0}
-              campaignHours={parseInt(customCampaignHours) || 0}
-              functionalityHours={parseInt(customFunctionalityHours) || 0}
-              baseImplementationCost={prices.baseImplementationCost}
-              baseMaintenanceCost={prices.baseMaintenanceCost}
-              totalHours={prices.totalHours}
-              rouletteDiscount={prices.rouletteDiscount}
-              totalImplementationHours={prices.totalImplementationHours}
             />
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <Button 
+                variant="outline"
+                className="w-full space-x-2"
+                onClick={handleContactClick}
+              >
+                <Mail className="w-4 h-4" />
+                <span>Receber por Email</span>
+              </Button>
+              
+              <Button 
+                variant="default"
+                className="w-full space-x-2"
+                onClick={handleContactClick}
+              >
+                <PhoneCall className="w-4 h-4" />
+                <span>Falar com Consultor</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

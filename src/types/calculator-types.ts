@@ -1,29 +1,14 @@
-export type TaskType = 'optional' | 'essential' | 'recurring';
-
 export interface Task {
   id: string;
-  category: string;
-  story: string;
   name: string;
   description: string;
-  type: TaskType;
   hours: number;
+  type: 'essential' | 'optional' | 'recurring';
+  story: string;
   dependencies?: {
     essential: string[];
     recurring: string[];
   };
-}
-
-export interface TaskCategory {
-  id: string;
-  name: string;
-  tasks: Task[];
-}
-
-export interface TaskDependency {
-  taskId: string;
-  dependencyType: 'essential' | 'recurring';
-  hours: number;
 }
 
 export interface Extension {
@@ -34,6 +19,26 @@ export interface Extension {
   price: number;
   implementationHours: number;
   maintenanceHours: number;
-  implementationCost: number;
-  maintenanceCost: number;
+  implementationCost?: number;
+  maintenanceCost?: number;
+}
+
+export interface CalculatorResultsProps {
+  implementationPrice: string;
+  maintenancePrice: string;
+  revenueShare: string;
+  revenueSharePercent: string;
+  monthlyRevenue: string;
+  setMonthlyRevenue?: (value: string) => void;
+  onContactClick: () => void;
+  layoutHours: number;
+  maintenanceHours: number;
+  meetingHours: number;
+  campaignHours: number;
+  functionalityHours: number;
+  baseImplementationCost: string;
+  baseMaintenanceCost: string;
+  totalHours: number;
+  rouletteDiscount: number;
+  totalImplementationHours: number;
 }
