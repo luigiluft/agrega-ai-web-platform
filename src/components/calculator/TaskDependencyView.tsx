@@ -1,4 +1,4 @@
-import { Info } from "lucide-react";
+import { Info, Star } from "lucide-react";
 import { Task } from "@/types/calculator-types";
 import {
   HoverCard,
@@ -6,7 +6,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "../ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
   Popover,
   PopoverContent,
@@ -20,9 +19,10 @@ interface TaskDependencyViewProps {
     recurring: Task[];
   };
   isSelected: boolean;
+  points?: number;
 }
 
-const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyViewProps) => {
+const TaskDependencyView = ({ task, dependencies, isSelected, points = 0 }: TaskDependencyViewProps) => {
   const getBadgeVariant = (type: string) => {
     switch (type) {
       case "optional":
@@ -62,6 +62,12 @@ const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyVi
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="font-medium">{task.name}</span>
+            {points > 0 && (
+              <div className="flex items-center gap-1 text-yellow-500">
+                <Star className="h-4 w-4 fill-current" />
+                <span className="text-sm">{points}</span>
+              </div>
+            )}
             <HoverCard>
               <HoverCardTrigger>
                 <Info className="h-4 w-4 text-muted-foreground cursor-help" />
@@ -75,16 +81,9 @@ const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyVi
                 </div>
               </HoverCardContent>
             </HoverCard>
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge variant={getBadgeVariant(task.type)} className="ml-2">
-                  {task.type}
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{getTypeDescription(task.type)}</p>
-              </TooltipContent>
-            </Tooltip>
+            <Badge variant={getBadgeVariant(task.type)} className="ml-2">
+              {task.type}
+            </Badge>
           </div>
           <p className="text-sm text-muted-foreground mt-1">{task.story}</p>
         </div>
