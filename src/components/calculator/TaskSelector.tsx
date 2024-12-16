@@ -3,9 +3,10 @@ import { Task, TaskType } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import { Badge } from "../ui/badge";
-import { Folder } from "lucide-react";
+import { Folder, Info } from "lucide-react";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import TaskDependencyView from "./TaskDependencyView";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface TaskSelectorProps {
   onTasksChange: (selectedTasks: Task[]) => void;
@@ -14,7 +15,9 @@ interface TaskSelectorProps {
 const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
   
-  const allTasks = calculatorTasks.flatMap(category => category.tasks);
+  const allTasks = calculatorTasks
+    .filter(category => category.id !== "sustentation") // Remove sustentation category
+    .flatMap(category => category.tasks);
   
   const getTaskById = (id: string) => allTasks.find(task => task.id === id);
   
@@ -36,13 +39,11 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
     
     if (checked) {
       newSelectedIds.add(taskId);
-      // Add dependencies
       const deps = getDependentTasks(taskId);
       deps.essential.forEach(task => newSelectedIds.add(task.id));
       deps.recurring.forEach(task => newSelectedIds.add(task.id));
     } else {
       newSelectedIds.delete(taskId);
-      // Remove dependencies if no other task requires them
       const deps = getDependentTasks(taskId);
       [...deps.essential, ...deps.recurring].forEach(depTask => {
         const isRequiredByOther = Array.from(newSelectedIds).some(selectedId => {
@@ -66,16 +67,31 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
 
   return (
     <div className="space-y-6">
-      {calculatorTasks.map((category) => (
+      {calculatorTasks
+        .filter(category => category.id !== "sustentation")
+        .map((category) => (
         <Card key={category.id} className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <Folder className="w-5 h-5 text-primary" />
             <h3 className="text-lg font-semibold">{category.name}</h3>
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="w-4 h-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  Selecione as tarefas desejadas. As dependências essenciais e recorrentes 
+                  serão incluídas automaticamente.
+                </p>
+              </TooltipContent>
+            </Tooltip>
           </div>
           <div className="space-y-4">
-            {category.tasks.filter(task => task.type === 'optional').map((task) => (
-              <div key={task.id}>
-                <div className="flex items-center space-x-3 p-3">
+            {category.tasks
+              .filter(task => task.type === 'optional')
+              .map((task) => (
+              <div key={task.id} className="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div className="flex items-center space-x-3 p-4">
                   <Checkbox
                     id={task.id}
                     checked={selectedTaskIds.has(task.id)}
