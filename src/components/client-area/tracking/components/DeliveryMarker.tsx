@@ -1,4 +1,4 @@
-import { Marker } from "react-leaflet";
+import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { Truck } from "lucide-react";
 import DeliveryPopup from "../DeliveryPopup";
@@ -31,13 +31,15 @@ export const DeliveryMarker = ({ delivery, isSelected, onClick, statusConfig }: 
 
   return (
     <Marker 
-      position={[delivery.currentLocation.lat, delivery.currentLocation.lng]} 
+      position={[delivery.currentLocation.lat, delivery.currentLocation.lng]}
       eventHandlers={{
         click: () => onClick(delivery)
       }}
       icon={getVehicleIcon()}
     >
-      <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
+      <Popup>
+        <DeliveryPopup delivery={delivery} statusConfig={statusConfig} />
+      </Popup>
     </Marker>
   );
 };
