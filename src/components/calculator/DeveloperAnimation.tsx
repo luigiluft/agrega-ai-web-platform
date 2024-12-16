@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
 import { Extension } from "@/types/calculator-types";
-import { 
-  layoutSnippets,
-  functionalitySnippets,
-  maintenanceSnippets,
-  meetingSnippets,
-  campaignSnippets
-} from "@/utils/codeSnippets";
 
 type CodeLine = {
   code: string;
@@ -49,55 +42,95 @@ const DeveloperAnimation = ({
   useEffect(() => {
     const newCodeLines: CodeLine[] = [];
     
-    // Project summary
+    // Project header
     newCodeLines.push({ 
-      code: `console.log("🚀 Resumo do Projeto:")`,
+      code: `console.log("🚀 Resumo do Projeto - ${selectedPlanName}")`,
       type: 'layout' 
     });
 
-    // Implementation details
+    // Implementation section
     newCodeLines.push({ 
-      code: `console.log("💻 Implementação: R$ ${implementationPrice}")`,
+      code: `console.log("💻 === IMPLEMENTAÇÃO ===")`,
+      type: 'layout' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("⚙️ Layout e Design: ${layoutHours}h")`,
+      type: 'layout' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("🛠️ Funcionalidades: ${functionalityHours}h")`,
+      type: 'functionality' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("👥 Reuniões: ${meetingHours}h")`,
+      type: 'meeting' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("💰 Total Implementação: R$ ${implementationPrice}")`,
       type: 'layout' 
     });
 
-    // Maintenance details
+    // Maintenance section
     newCodeLines.push({ 
-      code: `console.log("🔧 Manutenção Mensal: R$ ${maintenancePrice}")`,
+      code: `console.log("\n🔧 === SUSTENTAÇÃO MENSAL ===")`,
+      type: 'maintenance' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("🔄 Manutenção: ${maintenanceHours}h")`,
+      type: 'maintenance' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("📢 Campanhas: ${campaignHours}h")`,
+      type: 'campaign' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("💰 Total Mensal: R$ ${maintenancePrice}")`,
       type: 'maintenance' 
     });
 
-    // Revenue share
+    // Revenue share section
     newCodeLines.push({ 
-      code: `console.log("💰 Comissão sobre vendas: ${revenueSharePercent}% (aprox. R$ ${revenueShare}/mês)")`,
+      code: `console.log("\n💼 === COMISSÃO SOBRE VENDAS ===")`,
+      type: 'functionality' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("📊 Percentual: ${revenueSharePercent}%")`,
+      type: 'functionality' 
+    });
+    
+    newCodeLines.push({ 
+      code: `console.log("💰 Valor Estimado: R$ ${revenueShare}/mês")`,
       type: 'functionality' 
     });
 
-    // Hours breakdown
-    newCodeLines.push({ 
-      code: `console.log("⏱️ Horas de Implementação: ${layoutHours + functionalityHours}h")`,
-      type: 'layout' 
-    });
-
-    newCodeLines.push({ 
-      code: `console.log("⏱️ Horas de Manutenção Mensal: ${maintenanceHours}h")`,
-      type: 'maintenance' 
-    });
-
-    // Extensions summary
+    // Extensions summary if any
     if (selectedExtensions.length > 0) {
       newCodeLines.push({ 
-        code: `console.log("🔌 Extensões incluídas:")`,
+        code: `console.log("\n🔌 === EXTENSÕES INCLUÍDAS ===")`,
         type: 'functionality' 
       });
       
       selectedExtensions.forEach(ext => {
         newCodeLines.push({ 
-          code: `console.log("  - ${ext.name}")`,
+          code: `console.log("  - ${ext.name} (${ext.implementationHours}h impl. + ${ext.maintenanceHours}h/mês)")`,
           type: 'functionality' 
         });
       });
     }
+
+    // Total hours
+    newCodeLines.push({ 
+      code: `console.log("\n⏱️ Total de Horas do Projeto: ${totalHours}h")`,
+      type: 'layout' 
+    });
 
     setCodeLines(newCodeLines);
     setIsTyping(true);
@@ -112,7 +145,9 @@ const DeveloperAnimation = ({
     maintenancePrice,
     revenueShare,
     revenueSharePercent,
-    selectedExtensions
+    selectedExtensions,
+    totalHours,
+    selectedPlanName
   ]);
 
   useEffect(() => {
@@ -140,6 +175,21 @@ const DeveloperAnimation = ({
     typeCharacters();
   }, [codeLines, isTyping]);
 
+  const getTextColor = (type: string) => {
+    switch (type) {
+      case 'maintenance':
+        return 'text-blue-400';
+      case 'functionality':
+        return 'text-green-400';
+      case 'campaign':
+        return 'text-yellow-400';
+      case 'meeting':
+        return 'text-orange-400';
+      default:
+        return 'text-purple-400';
+    }
+  };
+
   return (
     <div className="relative">
       <div className="rounded-lg overflow-hidden shadow-xl bg-[#1A1F2C] border border-[#1A1F2C]/20">
@@ -154,13 +204,7 @@ const DeveloperAnimation = ({
           {typedText.map((text, index) => (
             <div 
               key={index}
-              className={`text-sm ${
-                codeLines[index]?.type === 'maintenance' 
-                  ? 'text-blue-400' 
-                  : codeLines[index]?.type === 'functionality'
-                    ? 'text-green-400'
-                    : 'text-purple-400'
-              }`}
+              className={`text-sm ${getTextColor(codeLines[index]?.type)}`}
             >
               {text}
             </div>

@@ -5,6 +5,7 @@ export interface Task {
   hours: number;
   type: TaskType;
   story: string;
+  category: string;
   dependencies?: {
     essential: string[];
     recurring: string[];
