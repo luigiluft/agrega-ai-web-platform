@@ -7,18 +7,18 @@ export interface Delivery {
   trackingNumber: string;
   status: DeliveryStatus;
   estimatedDelivery: string;
-  currentLocation: { lat: number; lng: number };
+  currentLocation: {
+    lat: number;
+    lng: number;
+  };
   destination: string;
   lastUpdate: string;
   customer: string;
   contact: string;
   value: number;
-  notes?: string;
   priority: 'baixa' | 'media' | 'alta';
   items: number;
-  commission?: number;
-  latitude: number;
-  longitude: number;
+  commission: number;
 }
 
 export interface StatusConfig {
@@ -28,13 +28,4 @@ export interface StatusConfig {
     icon: LucideIcon;
     markerColor: string;
   };
-}
-
-export interface ProductOperation {
-  id: string;
-  name: string;
-  status: 'em_estoque' | 'backlog' | 'separacao' | 'expedicao' | 'expedido';
-  quantity: number;
-  lastUpdate: string;
-  expectedDate?: string;
 }
