@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { DeliveryMarker } from "./components/DeliveryMarker";
+import DeliveryMarker from "./components/DeliveryMarker";
 import DeliveryPopup from "./DeliveryPopup";
 import DeliveryFilters from "./DeliveryFilters";
 import { Button } from "@/components/ui/button";

@@ -7,26 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download, Eye, AlertCircle } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
 
 const InvoiceList = () => {
-
-const getStatusBadge = (status: string) => {
-  switch (status.toLowerCase()) {
-    case 'paid':
-      return <Badge variant="outline" className="bg-green-50 text-green-700">Pago</Badge>;
-    case 'pending':
-      return <Badge variant="outline" className="bg-yellow-50 text-yellow-700">Pendente</Badge>;
-    case 'overdue':
-      return <Badge variant="destructive">Atrasado</Badge>;
-    default:
-      return <Badge variant="outline">{status}</Badge>;
-  }
-};
-
   const invoices = [
     {
       id: "1",
@@ -36,20 +21,6 @@ const getStatusBadge = (status: string) => {
       amount: "R$ 299,90",
       status: "Paga",
       statusColor: "text-green-500",
-      items: [
-        {
-          description: "Plano Premium",
-          quantity: 1,
-          unitPrice: "R$ 299,90",
-          total: "R$ 299,90",
-        },
-      ],
-      taxes: {
-        subtotal: "R$ 299,90",
-        iss: "R$ 15,00",
-        total: "R$ 314,90",
-      },
-      paymentMethod: "Cartão de Crédito",
     },
     {
       id: "2",
@@ -99,6 +70,19 @@ const getStatusBadge = (status: string) => {
     },
   ];
 
+  const getStatusBadge = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'paga':
+        return <Badge variant="outline" className="bg-green-50 text-green-700">Pago</Badge>;
+      case 'pendente':
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700">Pendente</Badge>;
+      case 'atrasado':
+        return <Badge variant="destructive">Atrasado</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
   return (
     <div className="space-y-4">
       <ScrollArea className="h-[600px]">
@@ -121,17 +105,7 @@ const getStatusBadge = (status: string) => {
                 <TableCell>{invoice.dueDate}</TableCell>
                 <TableCell>{invoice.amount}</TableCell>
                 <TableCell>
-                  <Badge
-                    variant={
-                      invoice.status === "Paga"
-                        ? "success"
-                        : invoice.status === "Pendente"
-                        ? "warning"
-                        : "destructive"
-                    }
-                  >
-                    {invoice.status}
-                  </Badge>
+                  {getStatusBadge(invoice.status)}
                 </TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button variant="ghost" size="sm">
