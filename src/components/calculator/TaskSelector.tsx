@@ -61,11 +61,11 @@ const TaskSelector = ({
   const getBadgeColor = (type: string) => {
     switch (type) {
       case "essential":
-        return "bg-purple-100 text-purple-700";
+        return "bg-primary/10 text-primary";
       case "optional":
-        return "bg-blue-100 text-blue-700";
+        return "bg-secondary/10 text-secondary";
       case "recurring":
-        return "bg-green-100 text-green-700";
+        return "bg-accent/10 text-accent";
       default:
         return "";
     }
@@ -80,7 +80,7 @@ const TaskSelector = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.1 }}
         >
-          <Card className="p-4 hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200">
+          <Card className="p-4 hover:shadow-md transition-all duration-300">
             <div className="flex items-start gap-4">
               <Checkbox
                 id={task.id}
@@ -102,16 +102,16 @@ const TaskSelector = ({
                   </Badge>
                   <HoverCard>
                     <HoverCardTrigger>
-                      <Info className="h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
                     </HoverCardTrigger>
                     <HoverCardContent className="w-80">
                       <div className="space-y-2">
-                        <p className="text-sm text-gray-600">{task.description}</p>
+                        <p className="text-sm">{task.description}</p>
                         <div className="flex gap-2">
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline">
                             {task.category}
                           </Badge>
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline">
                             {task.story}
                           </Badge>
                         </div>
@@ -119,7 +119,7 @@ const TaskSelector = ({
                     </HoverCardContent>
                   </HoverCard>
                 </div>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   {task.description}
                 </p>
               </div>

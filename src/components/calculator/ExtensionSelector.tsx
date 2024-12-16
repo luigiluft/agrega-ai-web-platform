@@ -62,6 +62,11 @@ const ExtensionSelector = ({
               <p className="text-sm text-muted-foreground">
                 {extension.description}
               </p>
+              <div className="mt-2">
+                <Badge variant="secondary" className="bg-primary/10 text-primary">
+                  R$ {extension.price.toFixed(2)}
+                </Badge>
+              </div>
             </div>
           </div>
         </Card>
