@@ -1,5 +1,10 @@
-import { ArrowRight, Check, Circle, MinusCircle, Folder } from "lucide-react";
+import { Info } from "lucide-react";
 import { Task } from "@/types/calculator-types";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { Badge } from "../ui/badge";
 
 interface TaskDependencyViewProps {
@@ -12,37 +17,79 @@ interface TaskDependencyViewProps {
 }
 
 const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyViewProps) => {
+  const getBadgeVariant = (type: string) => {
+    switch (type) {
+      case "optional":
+        return "default";
+      case "essential":
+        return "secondary";
+      case "recurring":
+        return "outline";
+      default:
+        return "default";
+    }
+  };
+
   return (
-    <div className="space-y-2 p-4 rounded-lg border bg-white/50 backdrop-blur-sm transition-all duration-300 hover:bg-white/80">
-      <div className="flex items-center gap-2">
-        {isSelected ? (
-          <Check className="w-5 h-5 text-green-500" />
-        ) : (
-          <MinusCircle className="w-5 h-5 text-gray-400" />
-        )}
-        <span className="font-medium">{task.name}</span>
-        <Badge variant={task.type === 'optional' ? 'default' : task.type === 'essential' ? 'secondary' : 'outline'}>
-          {task.type}
-        </Badge>
+    <div className="flex-1 space-y-2">
+      <div className="flex items-start gap-2">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{task.name}</span>
+            <HoverCard>
+              <HoverCardTrigger>
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="space-y-2">
+                  <p className="text-sm">{task.description}</p>
+                  <div className="text-sm">
+                    <span className="font-medium">Horas estimadas:</span> {task.hours}h
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+            <Badge variant={getBadgeVariant(task.type)} className="ml-2">
+              {task.type}
+            </Badge>
+          </div>
+          <p className="text-sm text-muted-foreground mt-1">{task.story}</p>
+        </div>
       </div>
-      
-      {isSelected && (dependencies.essential.length > 0 || dependencies.recurring.length > 0) && (
-        <div className="pl-6 mt-2 space-y-2 border-l-2 border-dashed border-gray-200">
-          {dependencies.essential.map((dep) => (
-            <div key={dep.id} className="flex items-center gap-2 text-sm">
-              <ArrowRight className="w-4 h-4 text-orange-500" />
-              <span>{dep.name}</span>
-              <Badge variant="secondary" className="text-xs">essencial</Badge>
+
+      {isSelected && (dependencies.essential.length + dependencies.recurring.length > 0) && (
+        <div className="pl-4 border-l-2 border-muted space-y-3">
+          {dependencies.essential.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">
+                Tarefas essenciais incluídas:
+              </p>
+              {dependencies.essential.map((dep) => (
+                <div key={dep.id} className="flex items-center gap-2">
+                  <span className="text-sm">{dep.name}</span>
+                  <Badge variant={getBadgeVariant(dep.type)} size="sm">
+                    {dep.hours}h
+                  </Badge>
+                </div>
+              ))}
             </div>
-          ))}
-          
-          {dependencies.recurring.map((dep) => (
-            <div key={dep.id} className="flex items-center gap-2 text-sm">
-              <ArrowRight className="w-4 h-4 text-green-500" />
-              <span>{dep.name}</span>
-              <Badge variant="outline" className="text-xs">recorrente</Badge>
+          )}
+
+          {dependencies.recurring.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">
+                Tarefas recorrentes incluídas:
+              </p>
+              {dependencies.recurring.map((dep) => (
+                <div key={dep.id} className="flex items-center gap-2">
+                  <span className="text-sm">{dep.name}</span>
+                  <Badge variant={getBadgeVariant(dep.type)} size="sm">
+                    {dep.hours}h/mês
+                  </Badge>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>

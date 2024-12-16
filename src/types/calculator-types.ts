@@ -5,6 +5,7 @@ export interface Task {
   category: string;
   story: string;
   name: string;
+  description: string;
   type: TaskType;
   hours: number;
   dependencies?: {
