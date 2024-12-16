@@ -1,6 +1,7 @@
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { Delivery, StatusConfig } from '../types';
+import { Icon } from 'leaflet';
 
 interface DeliveryMarkerProps {
   delivery: Delivery;
@@ -15,15 +16,13 @@ const DeliveryMarker = ({
   onClick,
   statusConfig
 }: DeliveryMarkerProps) => {
-  const position: [number, number] = [delivery.latitude, delivery.longitude];
+  const position: [number, number] = [delivery.currentLocation.lat, delivery.currentLocation.lng];
   
-  const markerIcon = L.divIcon({
-    className: 'custom-marker-icon',
-    html: `<div class="w-8 h-8 ${isSelected ? 'bg-primary' : 'bg-secondary'} rounded-full flex items-center justify-center text-white">
-      <span>📍</span>
-    </div>`,
+  const markerIcon = new Icon({
+    iconUrl: '📍',
     iconSize: [32, 32],
-    iconAnchor: [16, 32]
+    iconAnchor: [16, 32],
+    className: `w-8 h-8 ${isSelected ? 'bg-primary' : 'bg-secondary'} rounded-full flex items-center justify-center text-white`
   });
 
   return (

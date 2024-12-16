@@ -17,6 +17,8 @@ export interface Delivery {
   priority: 'baixa' | 'media' | 'alta';
   items: number;
   commission?: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface StatusConfig {
