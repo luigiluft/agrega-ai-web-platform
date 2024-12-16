@@ -26,9 +26,6 @@ const CalculatorResults = ({
   rouletteDiscount,
   totalImplementationHours,
 }: CalculatorResultsProps) => {
-  // Calculate implementation costs (one-time payment)
-  const totalImplementationCost = parseFloat(implementationPrice);
-
   // Calculate maintenance costs (monthly)
   const totalMaintenanceCost = parseFloat(maintenancePrice) + 
     (maintenanceHours * 150) + 
@@ -49,7 +46,7 @@ const CalculatorResults = ({
               <div className="space-y-6">
                 <motion.div 
                   className="pb-6 border-b border-orange-100"
-                  key={totalImplementationCost}
+                  key={implementationPrice}
                   animate={{ scale: [1, 1.02, 1] }}
                   transition={{ duration: 0.3 }}
                 >
@@ -59,7 +56,7 @@ const CalculatorResults = ({
                   </div>
                   <div className="flex items-baseline justify-between">
                     <div className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                      R$ {totalImplementationCost.toFixed(2)}
+                      R$ {implementationPrice}
                     </div>
                   </div>
                   {rouletteDiscount && rouletteDiscount > 0 && (

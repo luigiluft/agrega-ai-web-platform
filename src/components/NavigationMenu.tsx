@@ -89,10 +89,13 @@ const NavigationMenuDemo = () => {
           <NavigationMenuItem className="block lg:inline-block py-3 lg:py-0 px-6 lg:px-0">
             <Link 
               to="/calculadora" 
-              className="text-base font-medium hover:bg-primary/10 transition-colors block h-10 flex items-center gap-2 px-4 rounded-lg bg-primary/5"
+              className="text-base font-medium hover:bg-primary/10 transition-colors block h-10 flex items-center gap-2 px-4 rounded-lg bg-primary/5 relative group"
             >
-              <Calculator className="w-4 h-4 text-primary" />
-              Calculadora de Preços
+              <Calculator className="w-4 h-4 text-primary group-hover:scale-110 transition-transform duration-300" />
+              <span className="group-hover:text-primary transition-colors">Calculadora de Preços</span>
+              <span className="absolute -top-2 -right-2 bg-primary text-white text-xs px-2 py-0.5 rounded-full animate-pulse">
+                Nova
+              </span>
             </Link>
           </NavigationMenuItem>
 
