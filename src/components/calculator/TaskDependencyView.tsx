@@ -7,6 +7,11 @@ import {
 } from "@/components/ui/hover-card";
 import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface TaskDependencyViewProps {
   task: Task;
@@ -42,6 +47,13 @@ const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyVi
       default:
         return "";
     }
+  };
+
+  const getDependencyReason = (mainTask: Task, dependentTask: Task) => {
+    if (dependentTask.type === "essential") {
+      return `Esta tarefa é necessária para garantir o funcionamento correto de ${mainTask.name}. Ela fornece a base técnica necessária para a implementação.`;
+    }
+    return `Esta tarefa de sustentação é necessária para manter ${mainTask.name} funcionando adequadamente ao longo do tempo.`;
   };
 
   return (
@@ -94,14 +106,23 @@ const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyVi
                   <Badge variant={getBadgeVariant(dep.type)}>
                     {dep.hours}h
                   </Badge>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Info className="h-4 w-4 text-muted-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs">{dep.description}</p>
-                    </TooltipContent>
-                  </Tooltip>
+                  <Popover>
+                    <PopoverTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">Por que esta tarefa é necessária?</p>
+                        <p className="text-sm text-muted-foreground">
+                          {getDependencyReason(task, dep)}
+                        </p>
+                        <div className="text-sm">
+                          <p className="font-medium">Descrição da tarefa:</p>
+                          <p className="text-muted-foreground">{dep.description}</p>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               ))}
             </div>
@@ -110,9 +131,9 @@ const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyVi
           {dependencies.recurring.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="h-5">Recorrente</Badge>
+                <Badge variant="outline" className="h-5">Sustentação</Badge>
                 <p className="text-sm text-muted-foreground">
-                  Tarefas mensais incluídas:
+                  Tarefas mensais necessárias:
                 </p>
               </div>
               {dependencies.recurring.map((dep) => (
@@ -121,14 +142,23 @@ const TaskDependencyView = ({ task, dependencies, isSelected }: TaskDependencyVi
                   <Badge variant={getBadgeVariant(dep.type)}>
                     {dep.hours}h/mês
                   </Badge>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Info className="h-4 w-4 text-muted-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs">{dep.description}</p>
-                    </TooltipContent>
-                  </Tooltip>
+                  <Popover>
+                    <PopoverTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">Por que esta sustentação é necessária?</p>
+                        <p className="text-sm text-muted-foreground">
+                          {getDependencyReason(task, dep)}
+                        </p>
+                        <div className="text-sm">
+                          <p className="font-medium">Descrição da tarefa:</p>
+                          <p className="text-muted-foreground">{dep.description}</p>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               ))}
             </div>
