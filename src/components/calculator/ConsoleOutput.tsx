@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Task } from "@/types/calculator-types";
+import { motion } from "framer-motion";
 
 interface ConsoleOutputProps {
   implementationTasks: Task[];
@@ -28,13 +29,13 @@ const ConsoleOutput = ({
       ``,
       `console.log("💻 IMPLEMENTAÇÃO")`,
       ...implementationTasks.map(task => 
-        `console.log("  - ${task.name}: ${task.hours}h")`,
+        `console.log("  - ${task.name}: ${task.hours}h - R$ ${(task.hours * 150).toFixed(2)}")`,
       ),
       `console.log("💰 Total Implementação: R$ ${implementationPrice}")`,
       ``,
       `console.log("🔧 SUSTENTAÇÃO MENSAL")`,
       ...maintenanceTasks.map(task => 
-        `console.log("  - ${task.name}: ${task.hours}h/mês")`,
+        `console.log("  - ${task.name}: ${task.hours}h/mês - R$ ${(task.hours * 200).toFixed(2)}/mês")`,
       ),
       `console.log("💰 Total Mensal: R$ ${maintenancePrice}")`,
       ``,
@@ -80,26 +81,35 @@ const ConsoleOutput = ({
   };
 
   return (
-    <div className="rounded-lg overflow-hidden shadow-xl bg-[#1A1F2C] border border-[#1A1F2C]/20">
-      <div className="p-4 border-b border-[#1A1F2C]/20 bg-[#1A1F2C]/50 backdrop-blur-sm">
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="rounded-lg overflow-hidden shadow-xl bg-[#1A1F2C] border border-[#1A1F2C]/20">
+        <div className="p-4 border-b border-[#1A1F2C]/20 bg-[#1A1F2C]/50 backdrop-blur-sm">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+          </div>
+        </div>
+        <div className="p-6 space-y-2 min-h-[200px] font-mono bg-gradient-to-br from-[#1A1F2C]/5 to-[#1A1F2C]/10 backdrop-blur-sm">
+          {typedLines.map((line, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              className={`text-sm ${getLineColor(line)}`}
+            >
+              {line}
+            </motion.div>
+          ))}
+          <div className="animate-pulse text-white">_</div>
         </div>
       </div>
-      <div className="p-6 space-y-2 min-h-[200px] font-mono bg-gradient-to-br from-[#1A1F2C]/5 to-[#1A1F2C]/10 backdrop-blur-sm">
-        {typedLines.map((line, index) => (
-          <div 
-            key={index}
-            className={`text-sm ${getLineColor(line)}`}
-          >
-            {line}
-          </div>
-        ))}
-        <div className="animate-pulse text-white">_</div>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

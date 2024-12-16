@@ -8,6 +8,7 @@ export interface Task {
   type: TaskType;
   story: string;
   category: string;
+  price?: number;
   dependencies?: {
     essential: string[];
     recurring: string[];

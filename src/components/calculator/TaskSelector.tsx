@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Task } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
@@ -10,6 +11,7 @@ import { Info } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
+import { motion } from "framer-motion";
 
 interface TaskSelectorProps {
   onTasksChange: (tasks: Task[]) => void;
@@ -71,47 +73,59 @@ const TaskSelector = ({
 
   return (
     <div className="space-y-4">
-      {filteredTasks.map((task) => (
-        <Card key={task.id} className="p-4 hover:shadow-md transition-shadow duration-200">
-          <div className="flex items-start gap-4">
-            <Checkbox
-              id={task.id}
-              checked={selectedTaskIds.has(task.id)}
-              onCheckedChange={(checked) => 
-                handleTaskSelection(task.id, checked as boolean)
-              }
-            />
-            <div className="flex-1 space-y-1">
-              <div className="flex items-center gap-2">
-                <label
-                  htmlFor={task.id}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {task.name}
-                </label>
-                <Badge variant="secondary" className={getBadgeColor(task.type)}>
-                  {task.hours}h
-                </Badge>
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-80">
-                    <div className="space-y-2">
-                      <p className="text-sm">{task.description}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Categoria: {task.category}
-                      </p>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+      {filteredTasks.map((task, index) => (
+        <motion.div
+          key={task.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
+        >
+          <Card className="p-4 hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200">
+            <div className="flex items-start gap-4">
+              <Checkbox
+                id={task.id}
+                checked={selectedTaskIds.has(task.id)}
+                onCheckedChange={(checked) => 
+                  handleTaskSelection(task.id, checked as boolean)
+                }
+              />
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <label
+                    htmlFor={task.id}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {task.name}
+                  </label>
+                  <Badge variant="secondary" className={getBadgeColor(task.type)}>
+                    {task.hours}h
+                  </Badge>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <Info className="h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80">
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-600">{task.description}</p>
+                        <div className="flex gap-2">
+                          <Badge variant="outline" className="text-xs">
+                            {task.category}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {task.story}
+                          </Badge>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+                <p className="text-sm text-gray-500">
+                  {task.description}
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                {task.description}
-              </p>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </motion.div>
       ))}
     </div>
   );
