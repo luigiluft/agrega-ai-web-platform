@@ -98,6 +98,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
           onTasksChange={setSelectedTasks}
           selectedExtensions={selectedExtensions}
           onExtensionToggle={handleExtensionToggle}
+          prices={prices}
         />
         
         <div className="space-y-6">
