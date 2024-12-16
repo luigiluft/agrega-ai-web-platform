@@ -26,9 +26,30 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
     ...ecommerceTasks.flatMap(category => category.tasks)
   ];
   
-  const extensionsByCategory = getExtensionsByCategory();
-  
   const getTaskById = (id: string) => allTasks.find(task => task.id === id);
+
+  const getDependentTasks = (taskId: string) => {
+    const task = getTaskById(taskId);
+    if (!task?.dependencies) {
+      return {
+        essential: [],
+        recurring: []
+      };
+    }
+
+    const essentialTasks = task.dependencies.essential
+      .map(id => getTaskById(id))
+      .filter((t): t is Task => t !== undefined);
+
+    const recurringTasks = task.dependencies.recurring
+      .map(id => getTaskById(id))
+      .filter((t): t is Task => t !== undefined);
+
+    return {
+      essential: essentialTasks,
+      recurring: recurringTasks
+    };
+  };
   
   const handleTaskSelection = (taskId: string, checked: boolean) => {
     const newSelectedIds = new Set(selectedTaskIds);
@@ -129,7 +150,7 @@ const TaskSelector = ({ onTasksChange }: TaskSelectorProps) => {
       
       <div className="mt-8">
         <h3 className="text-xl font-semibold mb-4">Extensões Disponíveis</h3>
-        {Array.from(extensionsByCategory.entries()).map(([category, extensions]) => (
+        {Array.from(getExtensionsByCategory().entries()).map(([category, extensions]) => (
           <div key={category} className="mb-6">
             <h4 className="text-lg font-medium mb-3">{category}</h4>
             <ExtensionSelector
