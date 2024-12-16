@@ -1,48 +1,25 @@
 import { useState } from "react";
 import NavigationMenuDemo from "@/components/NavigationMenu";
-import { calculatorCategories } from "@/utils/calculatorCategories";
-import { Card } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Task } from "@/types/calculator-types";
 import CalculatorHeader from "@/components/calculator/CalculatorHeader";
 import CalculatorResults from "@/components/calculator/CalculatorResults";
 import DeveloperAnimation from "@/components/calculator/DeveloperAnimation";
-import { Feature } from "@/types/calculator";
-import { motion } from "framer-motion";
+import TaskSelector from "@/components/calculator/TaskSelector";
 
 const DynamicCalculator = () => {
   const { toast } = useToast();
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-
-  const getFeatureHours = (feature: Feature): number => {
-    if (feature.hours !== undefined) {
-      return feature.hours;
-    }
-    if (feature.monthlyHours !== undefined) {
-      return feature.monthlyHours;
-    }
-    return 0;
-  };
 
   const calculatePrices = () => {
-    const implementationHours = calculatorCategories
-      .filter(cat => !['maintenance', 'meetings', 'campaigns'].includes(cat.id))
-      .reduce((total, category) => {
-        return total + category.features
-          .filter(feature => selectedFeatures.includes(feature.id))
-          .reduce((sum, feature) => sum + getFeatureHours(feature), 0);
-      }, 0);
+    const implementationHours = selectedTasks
+      .filter(task => task.type !== 'recurring')
+      .reduce((total, task) => total + task.hours, 0);
 
-    const monthlyHours = calculatorCategories
-      .filter(cat => ['maintenance', 'meetings', 'campaigns'].includes(cat.id))
-      .reduce((total, category) => {
-        return total + category.features
-          .filter(feature => selectedFeatures.includes(feature.id))
-          .reduce((sum, feature) => sum + getFeatureHours(feature), 0);
-      }, 0);
+    const monthlyHours = selectedTasks
+      .filter(task => task.type === 'recurring')
+      .reduce((total, task) => total + task.hours, 0);
 
     const rate = 150;
     const monthlyRate = 200;
@@ -77,9 +54,6 @@ const DynamicCalculator = () => {
   };
 
   const prices = calculatePrices();
-  const filteredCategories = activeCategory === "all" 
-    ? calculatorCategories 
-    : calculatorCategories.filter(category => category.id === activeCategory);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -88,104 +62,28 @@ const DynamicCalculator = () => {
       <div className="container mx-auto px-4 py-8 lg:py-12">
         <CalculatorHeader />
 
-        <Tabs defaultValue="all" className="w-full mb-8">
-          <TabsList className="w-full justify-start overflow-x-auto flex-wrap gap-2 bg-white/50 p-1 rounded-lg border border-orange-100">
-            <TabsTrigger 
-              value="all" 
-              onClick={() => setActiveCategory("all")}
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
-            >
-              Todos
-            </TabsTrigger>
-            {calculatorCategories.map((category) => (
-              <TabsTrigger 
-                key={category.id} 
-                value={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
-              >
-                {category.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           <div className="space-y-6 order-2 lg:order-1">
-            {filteredCategories.map((category) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card className="p-6 hover:shadow-lg transition-all duration-300 bg-white/50 backdrop-blur-sm border-orange-100">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center justify-between text-gray-800">
-                    {category.name}
-                    <span className="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
-                      {category.features
-                        .filter(f => selectedFeatures.includes(f.id))
-                        .reduce((sum, f) => sum + getFeatureHours(f), 0)}h
-                      {category.totalHours && ` / ${category.totalHours}h`}
-                    </span>
-                  </h3>
-                  <div className="space-y-4">
-                    {category.features.map((feature) => (
-                      <motion.div 
-                        key={feature.id} 
-                        className="flex items-start space-x-3 p-3 rounded-lg hover:bg-orange-50/50 transition-colors duration-300"
-                        whileHover={{ scale: 1.01 }}
-                      >
-                        <Checkbox
-                          id={feature.id}
-                          checked={selectedFeatures.includes(feature.id)}
-                          onCheckedChange={(checked) => {
-                            setSelectedFeatures(prev => 
-                              checked 
-                                ? [...prev, feature.id]
-                                : prev.filter(id => id !== feature.id)
-                            );
-                          }}
-                          className="border-orange-200 data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500"
-                        />
-                        <div className="grid gap-1.5 leading-none">
-                          <label
-                            htmlFor={feature.id}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            {feature.name} ({getFeatureHours(feature)}h)
-                          </label>
-                          <p className="text-sm text-muted-foreground">
-                            {feature.description}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+            <TaskSelector onTasksChange={setSelectedTasks} />
           </div>
 
           <div className="lg:sticky lg:top-4 h-fit order-1 lg:order-2">
             <div className="space-y-6">
               <DeveloperAnimation 
                 totalHours={prices.totalHours || 0}
-                layoutHours={calculatorCategories[0].features
-                  .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
-                maintenanceHours={calculatorCategories[2].features
-                  .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
-                meetingHours={calculatorCategories[3].features
-                  .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
-                campaignHours={calculatorCategories[4].features
-                  .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
-                functionalityHours={calculatorCategories[1].features
-                  .filter(f => selectedFeatures.includes(f.id))
-                  .reduce((sum, f) => sum + getFeatureHours(f), 0)}
+                layoutHours={selectedTasks
+                  .filter(t => t.story === "Elaboração dos criativos")
+                  .reduce((sum, t) => sum + t.hours, 0)}
+                maintenanceHours={selectedTasks
+                  .filter(t => t.type === "recurring")
+                  .reduce((sum, t) => sum + t.hours, 0)}
+                meetingHours={selectedTasks
+                  .filter(t => t.story === "Briefing")
+                  .reduce((sum, t) => sum + t.hours, 0)}
+                campaignHours={0}
+                functionalityHours={selectedTasks
+                  .filter(t => t.story === "Implementação do layout")
+                  .reduce((sum, t) => sum + t.hours, 0)}
                 selectedPlanName="Plano Personalizado"
               />
 
