@@ -25,8 +25,7 @@ const TaskSelector = ({
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
   
   const allTasks = [
-    ...calculatorTasks
-      .flatMap(category => category.tasks),
+    ...calculatorTasks.flatMap(category => category.tasks),
     ...ecommerceTasks.flatMap(category => category.tasks)
   ];
 
@@ -60,11 +59,11 @@ const TaskSelector = ({
   const getBadgeColor = (type: string) => {
     switch (type) {
       case "essential":
-        return "bg-primary/10 text-primary";
+        return "bg-blue-100 text-blue-700";
       case "optional":
-        return "bg-secondary/10 text-secondary";
+        return "bg-purple-100 text-purple-700";
       case "recurring":
-        return "bg-accent/10 text-accent";
+        return "bg-green-100 text-green-700";
       default:
         return "";
     }
@@ -73,8 +72,8 @@ const TaskSelector = ({
   return (
     <div className="space-y-4">
       {filteredTasks.length === 0 ? (
-        <Card className="p-4">
-          <p className="text-muted-foreground text-center">
+        <Card className="p-6 text-center">
+          <p className="text-muted-foreground">
             Nenhuma tarefa disponível para esta categoria.
           </p>
         </Card>
@@ -86,7 +85,7 @@ const TaskSelector = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="p-4 hover:shadow-md transition-all duration-300">
+            <Card className="p-4 hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-white to-gray-50">
               <div className="flex items-start gap-4">
                 <Checkbox
                   id={task.id}
@@ -95,7 +94,7 @@ const TaskSelector = ({
                     handleTaskSelection(task.id, checked as boolean)
                   }
                 />
-                <div className="flex-1 space-y-1">
+                <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2">
                     <label
                       htmlFor={task.id}
