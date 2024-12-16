@@ -1,29 +1,25 @@
-import { Marker } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { Popup } from 'react-leaflet';
-import { DeliveryStatus } from '../types';
+import { Delivery, StatusConfig } from '../types';
 
 interface DeliveryMarkerProps {
-  position: [number, number];
-  status: DeliveryStatus;
-  onClick: () => void;
-  children: React.ReactNode;
-  delivery: any; // Add this to match the parent component's props
+  delivery: Delivery;
   isSelected: boolean;
-  statusConfig: any;
+  onClick: () => void;
+  statusConfig: StatusConfig;
 }
 
-const DeliveryMarker: React.FC<DeliveryMarkerProps> = ({
-  position,
-  onClick,
-  children,
+const DeliveryMarker = ({
   delivery,
   isSelected,
+  onClick,
   statusConfig
-}) => {
+}: DeliveryMarkerProps) => {
+  const position: [number, number] = [delivery.latitude, delivery.longitude];
+  
   const markerIcon = L.divIcon({
     className: 'custom-marker-icon',
-    html: `<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+    html: `<div class="w-8 h-8 ${isSelected ? 'bg-primary' : 'bg-secondary'} rounded-full flex items-center justify-center text-white">
       <span>📍</span>
     </div>`,
     iconSize: [32, 32],
@@ -37,7 +33,10 @@ const DeliveryMarker: React.FC<DeliveryMarkerProps> = ({
       icon={markerIcon}
     >
       <Popup>
-        {children}
+        <div className="p-2">
+          <h3 className="font-semibold">{delivery.customer}</h3>
+          <p className="text-sm text-gray-600">{delivery.destination}</p>
+        </div>
       </Popup>
     </Marker>
   );

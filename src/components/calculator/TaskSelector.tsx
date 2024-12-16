@@ -15,12 +15,12 @@ import { motion } from "framer-motion";
 
 interface TaskSelectorProps {
   onTasksChange: (tasks: Task[]) => void;
-  filter: "implementation" | "maintenance";
+  filter?: "implementation" | "maintenance";
 }
 
 const TaskSelector = ({
   onTasksChange,
-  filter
+  filter = "implementation"
 }: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
   

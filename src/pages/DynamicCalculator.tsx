@@ -85,7 +85,10 @@ const DynamicCalculator = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           <div className="space-y-6 order-2 lg:order-1">
-            <TaskSelector onTasksChange={setSelectedTasks} />
+            <TaskSelector 
+              onTasksChange={setSelectedTasks} 
+              filter="implementation"
+            />
           </div>
 
           <div className="lg:sticky lg:top-4 h-fit order-1 lg:order-2">
