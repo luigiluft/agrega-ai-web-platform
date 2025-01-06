@@ -28,7 +28,7 @@ const DeliveryMarker = ({
     `,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
-  }) as Icon;
+  });
 
   return (
     <Marker 
