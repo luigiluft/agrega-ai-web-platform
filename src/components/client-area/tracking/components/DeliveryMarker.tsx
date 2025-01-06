@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
-import { DivIcon, LatLngExpression } from 'leaflet';
+import { DivIcon, LatLngExpression, Icon } from 'leaflet';
 import { Delivery, StatusConfig } from '../types';
 
 interface DeliveryMarkerProps {
@@ -28,7 +28,7 @@ const DeliveryMarker = ({
     `,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
-  });
+  }) as Icon;
 
   return (
     <Marker 
