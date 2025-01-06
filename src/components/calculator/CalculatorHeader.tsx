@@ -5,7 +5,7 @@ const CalculatorHeader = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="text-center mb-16 mt-16 max-w-4xl mx-auto px-4"
+      className="text-center mb-16 pt-24 max-w-4xl mx-auto px-4"
     >
       <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
         Calculadora de Preços
