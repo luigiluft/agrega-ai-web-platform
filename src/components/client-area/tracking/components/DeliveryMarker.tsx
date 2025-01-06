@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
-import { DivIcon, Icon } from 'leaflet';
+import { DivIcon, LatLngExpression } from 'leaflet';
 import { Delivery, StatusConfig } from '../types';
 
 interface DeliveryMarkerProps {
@@ -15,10 +15,10 @@ const DeliveryMarker = ({
   onClick,
   statusConfig
 }: DeliveryMarkerProps) => {
-  const position: [number, number] = [delivery.currentLocation.lat, delivery.currentLocation.lng];
+  const position: LatLngExpression = [delivery.currentLocation.lat, delivery.currentLocation.lng];
   const status = statusConfig[delivery.status];
   
-  const customIcon = new DivIcon({
+  const markerIcon = new DivIcon({
     className: '',
     html: `
       <div class="w-8 h-8 rounded-full flex items-center justify-center text-white" 
@@ -34,7 +34,7 @@ const DeliveryMarker = ({
     <Marker 
       position={position} 
       eventHandlers={{ click: onClick }}
-      icon={customIcon}
+      icon={markerIcon}
     >
       <Popup>
         <div className="p-2">
