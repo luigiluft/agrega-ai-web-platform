@@ -5,14 +5,13 @@ import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import { useToast } from "../ui/use-toast";
-import { Theme } from "../theme/types";
+import { Task } from "@/types/calculator-types";
 import PlanStep from "./steps/PlanStep";
 import ThemeStep from "./steps/ThemeStep";
 import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
-import { Task } from "@/types/calculator-types";
 
 type Step = "plan" | "theme" | "tasks" | "summary";
 
@@ -21,13 +20,25 @@ const StepCalculator = () => {
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
+  const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
-  const shouldShowStep = (step: Step): boolean => {
-    if (step === "theme") {
-      return selectedPlan?.id === "express";
-    }
-    return true;
+  const calculatePrice = () => {
+    const HOUR_RATE = 200; // R$ 200 per hour
+    
+    // Calculate total hours from selected tasks
+    const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0);
+    
+    // Calculate base price from hours
+    const basePrice = totalHours * HOUR_RATE;
+    
+    // Calculate extensions price
+    const extensionsPrice = Array.from(selectedExtensions).reduce((acc, extensionId) => {
+      const extension = ecommerceExtensions.find(ext => ext.id === extensionId);
+      return acc + (extension?.price || 0);
+    }, 0);
+    
+    return basePrice + extensionsPrice;
   };
 
   const handlePlanSelect = (plan: Plan) => {
@@ -43,7 +54,6 @@ const StepCalculator = () => {
     let preSelectedTasks: Task[] = [];
     
     if (plan.id === 'express') {
-      // Express plan - 40h implementation, 8h sustentation
       preSelectedTasks = allTasks.filter(task => 
         (task.story === "Briefing" && task.hours <= 4) ||
         (task.story === "Implementação do layout" && task.hours <= 8) ||
@@ -51,7 +61,6 @@ const StepCalculator = () => {
         (task.type === "recurring" && task.hours <= 4)
       );
     } else if (plan.id === 'standard') {
-      // Standard plan - 96h implementation, 16h sustentation
       preSelectedTasks = allTasks.filter(task => 
         (task.story === "Briefing" && task.hours <= 8) ||
         (task.story === "Implementação do layout" && task.hours <= 16) ||
@@ -60,7 +69,6 @@ const StepCalculator = () => {
         (task.type === "recurring" && task.hours <= 6)
       );
     } else {
-      // Premium plan - 160h implementation, 32h sustentation
       preSelectedTasks = allTasks.filter(task => 
         task.type === "essential" ||
         (task.type === "optional" && task.hours <= 32) ||
@@ -77,6 +85,13 @@ const StepCalculator = () => {
     { step: "tasks", label: "Configure seu projeto" },
     { step: "summary", label: "Resumo do projeto" }
   ].filter(({ step }) => shouldShowStep(step));
+
+  const shouldShowStep = (step: Step): boolean => {
+    if (step === "theme") {
+      return selectedPlan?.id === "express";
+    }
+    return true;
+  };
 
   const handleNext = () => {
     if (currentStep === "plan" && !selectedPlan) {
@@ -121,13 +136,22 @@ const StepCalculator = () => {
       case "tasks":
         return selectedPlan && (
           <TasksStep 
-            selectedPlan={selectedPlan} 
+            selectedPlan={selectedPlan}
             selectedTasks={selectedTasks}
             setSelectedTasks={setSelectedTasks}
+            selectedExtensions={selectedExtensions}
+            setSelectedExtensions={setSelectedExtensions}
+            totalPrice={calculatePrice()}
           />
         );
       case "summary":
-        return <SummaryStep selectedTasks={selectedTasks} />;
+        return (
+          <SummaryStep 
+            selectedTasks={selectedTasks} 
+            selectedExtensions={selectedExtensions}
+            totalPrice={calculatePrice()}
+          />
+        );
       default:
         return null;
     }
