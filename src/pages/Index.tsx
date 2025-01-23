@@ -9,9 +9,9 @@ import FAQSection from "../components/sections/FAQSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-primary">
+    <div className="min-h-screen bg-primary w-full">
       <NavigationMenuDemo />
-      <main>
+      <main className="w-full">
         <HeroSection />
         <FeaturesSection />
         <StatsSection />
