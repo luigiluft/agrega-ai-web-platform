@@ -20,11 +20,11 @@ const NavigationMenuDemo = () => {
   }, []);
 
   return (
-    <NavigationMenu className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <NavigationMenu className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${
       scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
     }`}>
       <div className="w-full border-b border-transparent">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-full">
           <div className="flex items-center justify-between h-20">
             {/* Logo Section */}
             <div 
