@@ -12,6 +12,7 @@ import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
+import { Task } from "@/types/calculator-types";
 
 type Step = "plan" | "theme" | "tasks" | "summary";
 
@@ -19,6 +20,7 @@ const StepCalculator = () => {
   const [currentStep, setCurrentStep] = useState<Step>("plan");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const { toast } = useToast();
 
   const shouldShowStep = (step: Step): boolean => {
@@ -30,34 +32,43 @@ const StepCalculator = () => {
 
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
-    const essentialTasks = [
-      ...calculatorTasks.flatMap(category => 
-        category.tasks.filter(task => task.type === "essential")
-      ),
-      ...ecommerceTasks.flatMap(category => 
-        category.tasks.filter(task => task.type === "essential")
-      )
+    
+    // Get all tasks from both calculatorTasks and ecommerceTasks
+    const allTasks = [
+      ...calculatorTasks.flatMap(category => category.tasks),
+      ...ecommerceTasks.flatMap(category => category.tasks)
     ];
 
+    // Pre-select tasks based on plan
+    let preSelectedTasks: Task[] = [];
+    
     if (plan.id === 'express') {
-      const basicTasks = essentialTasks.filter(task => 
-        !task.name.includes("Avançad") && !task.name.includes("Premium")
+      // Express plan - 40h implementation, 8h sustentation
+      preSelectedTasks = allTasks.filter(task => 
+        (task.story === "Briefing" && task.hours <= 4) ||
+        (task.story === "Implementação do layout" && task.hours <= 8) ||
+        (task.name.includes("Base") && task.hours <= 4) ||
+        (task.type === "recurring" && task.hours <= 4)
       );
     } else if (plan.id === 'standard') {
-      const standardTasks = [
-        ...essentialTasks,
-        ...calculatorTasks.flatMap(category => 
-          category.tasks.filter(task => 
-            task.type === "optional" && !task.name.includes("Premium")
-          )
-        )
-      ];
+      // Standard plan - 96h implementation, 16h sustentation
+      preSelectedTasks = allTasks.filter(task => 
+        (task.story === "Briefing" && task.hours <= 8) ||
+        (task.story === "Implementação do layout" && task.hours <= 16) ||
+        (task.story === "Elaboração dos criativos" && task.hours <= 16) ||
+        (task.name.includes("Avançad") && task.hours <= 8) ||
+        (task.type === "recurring" && task.hours <= 6)
+      );
     } else {
-      const allTasks = [
-        ...calculatorTasks.flatMap(category => category.tasks),
-        ...ecommerceTasks.flatMap(category => category.tasks)
-      ];
+      // Premium plan - 160h implementation, 32h sustentation
+      preSelectedTasks = allTasks.filter(task => 
+        task.type === "essential" ||
+        (task.type === "optional" && task.hours <= 32) ||
+        (task.type === "recurring" && task.hours <= 12)
+      );
     }
+
+    setSelectedTasks(preSelectedTasks);
   };
 
   const steps: Array<{ step: Step; label: string }> = [
@@ -108,9 +119,15 @@ const StepCalculator = () => {
           <ThemeStep selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />
         );
       case "tasks":
-        return selectedPlan && <TasksStep selectedPlan={selectedPlan} />;
+        return selectedPlan && (
+          <TasksStep 
+            selectedPlan={selectedPlan} 
+            selectedTasks={selectedTasks}
+            setSelectedTasks={setSelectedTasks}
+          />
+        );
       case "summary":
-        return <SummaryStep />;
+        return <SummaryStep selectedTasks={selectedTasks} />;
       default:
         return null;
     }
