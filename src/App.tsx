@@ -1,21 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import DynamicCalculator from "./pages/DynamicCalculator";
-import ClientArea from "./pages/ClientArea";
-import { Toaster } from "./components/ui/toaster";
-import { Toaster as SonnerToaster } from "sonner";
-import "./App.css";
+import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/contexts/AuthContext";
+import NavigationMenu from "@/components/NavigationMenu";
+import Index from "@/pages/Index";
+import DynamicCalculator from "@/pages/DynamicCalculator";
+import Login from "@/pages/Login";
+import ClientArea from "@/pages/ClientArea";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/calculadora" element={<DynamicCalculator />} />
-        <Route path="/area-do-cliente/*" element={<ClientArea />} />
-      </Routes>
-      <Toaster />
-      <SonnerToaster position="top-right" />
+      <AuthProvider>
+        <NavigationMenu />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/calculadora" element={<DynamicCalculator />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/area-cliente" element={<ClientArea />} />
+        </Routes>
+        <Toaster />
+      </AuthProvider>
     </Router>
   );
 }
