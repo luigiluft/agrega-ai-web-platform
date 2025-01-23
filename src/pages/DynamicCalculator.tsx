@@ -13,12 +13,51 @@ import TaskSelector from "@/components/calculator/TaskSelector";
 import ExtensionSelector from "@/components/calculator/ExtensionSelector";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { motion } from "framer-motion";
+import { Plan } from "@/components/calculator/PlanSelector";
+
+const plans: Plan[] = [
+  {
+    id: 'express',
+    name: 'E-commerce Express',
+    description: 'Solução básica padronizada com temas predefinidos',
+    monthlyLimit: 2000,
+    features: [
+      'Temas predefinidos',
+      'Até R$2.000/mês',
+      'Configuração simplificada',
+      'Suporte básico'
+    ]
+  },
+  {
+    id: 'standard',
+    name: 'E-Commerce Pro',
+    description: 'Personalização moderada com recursos avançados',
+    features: [
+      'Personalização moderada',
+      'Integrações padrão',
+      'Suporte dedicado',
+      'Manutenção mensal'
+    ]
+  },
+  {
+    id: 'premium',
+    name: 'Full-commerce Enterprise',
+    description: 'Personalização completa com integrações customizadas',
+    features: [
+      'Personalização total',
+      'Integrações customizadas',
+      'Suporte premium 24/7',
+      'Consultoria especializada'
+    ]
+  }
+];
 
 const DynamicCalculator = () => {
   const { toast } = useToast();
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
+  const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[0]);
 
   const handleExtensionToggle = (extensionId: string, checked: boolean) => {
     const newSelectedExtensions = new Set(selectedExtensions);
@@ -119,6 +158,7 @@ const DynamicCalculator = () => {
                   <TaskSelector 
                     onTasksChange={setSelectedTasks}
                     filter="implementation"
+                    selectedPlan={selectedPlan}
                   />
                 </TabsContent>
 
@@ -126,6 +166,7 @@ const DynamicCalculator = () => {
                   <TaskSelector 
                     onTasksChange={setSelectedTasks}
                     filter="maintenance"
+                    selectedPlan={selectedPlan}
                   />
                 </TabsContent>
 
