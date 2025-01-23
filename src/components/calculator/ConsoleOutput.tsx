@@ -15,13 +15,13 @@ interface ConsoleOutputProps {
 }
 
 const ConsoleOutput = ({
-  implementationTasks,
-  maintenanceTasks,
-  implementationPrice,
-  maintenancePrice,
-  revenueShare,
-  revenueSharePercent,
-  totalHours,
+  implementationTasks = [],
+  maintenanceTasks = [],
+  implementationPrice = "0",
+  maintenancePrice = "0",
+  revenueShare = "0",
+  revenueSharePercent = "0",
+  totalHours = 0,
 }: ConsoleOutputProps) => {
   return (
     <motion.div
@@ -75,7 +75,7 @@ const ConsoleOutput = ({
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-gray-300">Tarefas de Implementação</h4>
               <div className="flex flex-wrap gap-2">
-                {implementationTasks.map((task) => (
+                {implementationTasks?.map((task) => (
                   <Badge
                     key={task.id}
                     variant="secondary"
@@ -90,7 +90,7 @@ const ConsoleOutput = ({
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-gray-300">Tarefas de Manutenção</h4>
               <div className="flex flex-wrap gap-2">
-                {maintenanceTasks.map((task) => (
+                {maintenanceTasks?.map((task) => (
                   <Badge
                     key={task.id}
                     variant="secondary"
