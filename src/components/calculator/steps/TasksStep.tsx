@@ -18,10 +18,7 @@ const TasksStep = ({ selectedPlan, selectedTasks, setSelectedTasks }: TasksStepP
       <TaskCategorySection
         selectedPlan={selectedPlan}
         onTasksChange={setSelectedTasks}
-        selectedExtensions={new Set()}
-        onExtensionToggle={() => {}}
-        prices={{}}
-        initialTasks={selectedTasks}
+        selectedTasks={selectedTasks}
       />
     </div>
   );
