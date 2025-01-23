@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
-import { useNavigate } from "react-router-dom";
-import { Calculator, User, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Logo from "./navigation/Logo";
+import DesktopNav from "./navigation/DesktopNav";
+import MobileNav from "./navigation/MobileNav";
 
 const NavigationMenuDemo = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,50 +27,8 @@ const NavigationMenuDemo = () => {
       <div className="w-full border-b border-transparent">
         <div className="container mx-auto px-4 max-w-full">
           <div className="flex items-center justify-between h-20">
-            {/* Logo Section */}
-            <div 
-              className="flex items-center cursor-pointer transform hover:scale-105 transition-all duration-300" 
-              onClick={() => navigate('/')}
-            >
-              <span className={`font-bold text-3xl tracking-tight ${
-                scrolled ? 'text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark' : 'text-white'
-              }`}>
-                AGREGAÍ
-              </span>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Button
-                variant="ghost"
-                onClick={() => navigate('/calculadora')}
-                className={`group flex items-center gap-2 hover:bg-primary/10 transition-all duration-300 ${
-                  scrolled ? 'text-gray-800' : 'text-white'
-                }`}
-              >
-                <Calculator className="w-4 h-4 group-hover:text-primary transition-colors" />
-                <span className="group-hover:text-primary">Calculadora</span>
-              </Button>
-              
-              <Button
-                variant="ghost"
-                onClick={() => navigate('/area-cliente')}
-                className={`group flex items-center gap-2 hover:bg-primary/10 transition-all duration-300 ${
-                  scrolled ? 'text-gray-800' : 'text-white'
-                }`}
-              >
-                <User className="w-4 h-4 group-hover:text-primary transition-colors" />
-                <span className="group-hover:text-primary">Área do Cliente</span>
-              </Button>
-
-              <Button
-                variant="default"
-                onClick={() => navigate('/login')}
-                className="bg-primary hover:bg-primary-dark text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-              >
-                Entrar
-              </Button>
-            </div>
+            <Logo scrolled={scrolled} />
+            <DesktopNav scrolled={scrolled} />
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
@@ -83,51 +42,11 @@ const NavigationMenuDemo = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
-          <div className={`md:hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen ? 'max-h-screen opacity-100 py-4' : 'max-h-0 opacity-0 overflow-hidden'
-          }`}>
-            <div className="flex flex-col space-y-4">
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  navigate('/calculadora');
-                  setIsMenuOpen(false);
-                }}
-                className={`flex items-center gap-2 justify-start ${
-                  scrolled ? 'text-gray-800' : 'text-white'
-                }`}
-              >
-                <Calculator className="w-4 h-4" />
-                Calculadora
-              </Button>
-              
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  navigate('/area-cliente');
-                  setIsMenuOpen(false);
-                }}
-                className={`flex items-center gap-2 justify-start ${
-                  scrolled ? 'text-gray-800' : 'text-white'
-                }`}
-              >
-                <User className="w-4 h-4" />
-                Área do Cliente
-              </Button>
-
-              <Button
-                variant="default"
-                onClick={() => {
-                  navigate('/login');
-                  setIsMenuOpen(false);
-                }}
-                className="bg-primary hover:bg-primary-dark text-white w-full justify-start"
-              >
-                Entrar
-              </Button>
-            </div>
-          </div>
+          <MobileNav 
+            isOpen={isMenuOpen}
+            onClose={() => setIsMenuOpen(false)}
+            scrolled={scrolled}
+          />
         </div>
       </div>
     </NavigationMenu>
