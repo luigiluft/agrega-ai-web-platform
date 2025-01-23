@@ -12,25 +12,13 @@ import { ecommerceTasks } from "@/data/ecommerceTasks";
 import ThemeSelector from "../theme/ThemeSelector";
 import { themes } from "../theme/themeData";
 import { Theme } from "../theme/types";
-import { Task } from "@/types/calculator-types";
 
 type Step = "plan" | "theme" | "tasks" | "summary";
-
-const HOURLY_RATE = 185;
-
-const calculateRevenueShare = (revenue: number): number => {
-  if (revenue <= 50000) return 0.15;
-  else if (revenue <= 100000) return 0.12;
-  else if (revenue <= 200000) return 0.10;
-  else return 0.08;
-};
 
 const StepCalculator = () => {
   const [currentStep, setCurrentStep] = useState<Step>("plan");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
-  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
-  const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
   const { toast } = useToast();
 
   const handlePlanSelect = (plan: Plan) => {
@@ -47,11 +35,13 @@ const StepCalculator = () => {
     ];
 
     if (plan.id === 'express') {
+      // For express, only select essential tasks with basic configuration
       const basicTasks = essentialTasks.filter(task => 
         !task.name.includes("Avançad") && !task.name.includes("Premium")
       );
-      setSelectedTasks(basicTasks);
+      // TODO: Set selected tasks state
     } else if (plan.id === 'standard') {
+      // For standard, select all essential tasks and some optional ones
       const standardTasks = [
         ...essentialTasks,
         ...calculatorTasks.flatMap(category => 
@@ -60,51 +50,15 @@ const StepCalculator = () => {
           )
         )
       ];
-      setSelectedTasks(standardTasks);
+      // TODO: Set selected tasks state
     } else {
+      // For premium, select all available tasks
       const allTasks = [
         ...calculatorTasks.flatMap(category => category.tasks),
         ...ecommerceTasks.flatMap(category => category.tasks)
       ];
-      setSelectedTasks(allTasks);
+      // TODO: Set selected tasks state
     }
-  };
-
-  const calculatePrices = () => {
-    const implementationTasks = selectedTasks.filter(task => 
-      task.type === 'essential' || task.type === 'optional'
-    );
-    
-    const maintenanceTasks = selectedTasks.filter(task => 
-      task.type === 'recurring'
-    );
-
-    const implementationHours = implementationTasks.reduce(
-      (total, task) => total + task.hours, 
-      0
-    );
-
-    const maintenanceHours = maintenanceTasks.reduce(
-      (total, task) => total + task.hours, 
-      0
-    );
-    
-    const implementationPrice = implementationHours * HOURLY_RATE;
-    const maintenancePrice = maintenanceHours * HOURLY_RATE;
-    
-    const revenue = parseFloat(monthlyRevenue) || 0;
-    const revenueSharePercent = calculateRevenueShare(revenue);
-    const revenueShare = revenue * revenueSharePercent;
-
-    return {
-      implementationPrice: implementationPrice.toFixed(2),
-      maintenancePrice: maintenancePrice.toFixed(2),
-      revenueShare: revenueShare.toFixed(2),
-      revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
-      implementationTasks,
-      maintenanceTasks,
-      totalHours: implementationHours + maintenanceHours
-    };
   };
 
   const handleNext = () => {
@@ -139,19 +93,24 @@ const StepCalculator = () => {
     }
   };
 
-  const steps: { step: Step; label: string }[] = [
-    { step: "plan" as Step, label: "Escolha seu plano" },
-    { step: "theme" as Step, label: "Selecione o tema" },
-    { step: "tasks" as Step, label: "Configure seu projeto" },
-    { step: "summary" as Step, label: "Resumo do projeto" },
-  ].filter(({ step }) => {
+  const getStepNumber = (step: Step): number => {
+    const stepOrder: Step[] = ["plan", "theme", "tasks", "summary"];
+    return stepOrder.indexOf(step) + 1;
+  };
+
+  const shouldShowStep = (step: Step): boolean => {
     if (step === "theme") {
       return selectedPlan?.id === "express";
     }
     return true;
-  });
+  };
 
-  const prices = calculatePrices();
+  const steps: { step: Step; label: string }[] = [
+    { step: "plan", label: "Escolha seu plano" },
+    { step: "theme", label: "Selecione o tema" },
+    { step: "tasks", label: "Configure seu projeto" },
+    { step: "summary", label: "Resumo do projeto" },
+  ].filter(({ step }) => shouldShowStep(step));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-500 to-orange-600 p-6">
@@ -210,24 +169,13 @@ const StepCalculator = () => {
           {currentStep === "tasks" && selectedPlan && (
             <div className="space-y-6">
               <h2 className="text-2xl font-bold">Configure seu projeto</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <TaskCategorySection
-                  onTasksChange={setSelectedTasks}
-                  selectedExtensions={new Set()}
-                  onExtensionToggle={() => {}}
-                  prices={prices}
-                  selectedPlan={selectedPlan}
-                />
-                <ConsoleOutput
-                  implementationTasks={prices.implementationTasks}
-                  maintenanceTasks={prices.maintenanceTasks}
-                  implementationPrice={prices.implementationPrice}
-                  maintenancePrice={prices.maintenancePrice}
-                  revenueShare={prices.revenueShare}
-                  revenueSharePercent={prices.revenueSharePercent}
-                  totalHours={prices.totalHours}
-                />
-              </div>
+              <TaskCategorySection
+                selectedPlan={selectedPlan}
+                onTasksChange={() => {}}
+                selectedExtensions={new Set()}
+                onExtensionToggle={() => {}}
+                prices={{}}
+              />
             </div>
           )}
 
@@ -235,13 +183,13 @@ const StepCalculator = () => {
             <div className="space-y-6">
               <h2 className="text-2xl font-bold">Resumo do projeto</h2>
               <ConsoleOutput
-                implementationTasks={prices.implementationTasks}
-                maintenanceTasks={prices.maintenanceTasks}
-                implementationPrice={prices.implementationPrice}
-                maintenancePrice={prices.maintenancePrice}
-                revenueShare={prices.revenueShare}
-                revenueSharePercent={prices.revenueSharePercent}
-                totalHours={prices.totalHours}
+                implementationTasks={[]}
+                maintenanceTasks={[]}
+                implementationPrice="0"
+                maintenancePrice="0"
+                revenueShare="0"
+                revenueSharePercent="0"
+                totalHours={0}
               />
             </div>
           )}
