@@ -1,159 +1,139 @@
 import { useState, useEffect } from "react";
-import { Task } from "@/types/calculator-types";
-import { Badge } from "../ui/badge";
-import { Card } from "../ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Task, Plan } from "@/types/calculator-types";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
 import TaskSelector from "./TaskSelector";
-import ExtensionSelector from "./ExtensionSelector";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
-import { motion } from "framer-motion";
-import { Plan } from "./PlanSelector";
-import ConsoleOutput from "./ConsoleOutput";
 
 interface TaskCategorySectionProps {
   onTasksChange: (tasks: Task[]) => void;
-  selectedExtensions: Set<string>;
-  onExtensionToggle: (extensionId: string, checked: boolean) => void;
-  prices: any;
   selectedPlan: Plan;
 }
 
 const TaskCategorySection = ({
   onTasksChange,
-  selectedExtensions,
-  onExtensionToggle,
-  prices,
   selectedPlan
 }: TaskCategorySectionProps) => {
   const [activeTab, setActiveTab] = useState("implementation");
-  const [allSelectedTasks, setAllSelectedTasks] = useState<Task[]>([]);
+  const [implementationTasks, setImplementationTasks] = useState<Task[]>([]);
+  const [maintenanceTasks, setMaintenanceTasks] = useState<Task[]>([]);
+  const [extensionTasks, setExtensionTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     // Pre-select all sections by triggering their content with delay
-    ["implementation", "maintenance", "extensions"].forEach((tab, index) => {
+    const tabs = ["implementation", "maintenance", "extensions"];
+    tabs.forEach((tab, index) => {
       setTimeout(() => {
         setActiveTab(tab);
-      }, index * 500);
+      }, index * 1000);
     });
   }, []);
 
-  const handleTasksChange = (newTasks: Task[], filter: string) => {
-    let updatedTasks: Task[];
-    
-    if (filter === "implementation") {
-      // Keep maintenance tasks, update implementation tasks
-      const maintenanceTasks = allSelectedTasks.filter(t => t.type === "recurring");
-      const implementationTasks = newTasks.filter(t => t.type !== "recurring");
-      updatedTasks = [...implementationTasks, ...maintenanceTasks];
-    } else if (filter === "maintenance") {
-      // Keep implementation tasks, update maintenance tasks
-      const implementationTasks = allSelectedTasks.filter(t => t.type !== "recurring");
-      const maintenanceTasks = newTasks.filter(t => t.type === "recurring");
-      updatedTasks = [...implementationTasks, ...maintenanceTasks];
-    } else {
-      updatedTasks = newTasks;
+  const handleTasksChange = (newTasks: Task[], category: string) => {
+    switch (category) {
+      case "implementation":
+        setImplementationTasks(newTasks.filter(t => t.type !== "recurring"));
+        break;
+      case "maintenance":
+        setMaintenanceTasks(newTasks.filter(t => t.type === "recurring"));
+        break;
+      case "extensions":
+        setExtensionTasks(newTasks);
+        break;
     }
 
-    setAllSelectedTasks(updatedTasks);
-    onTasksChange(updatedTasks);
+    // Combine all tasks and notify parent
+    const allTasks = [
+      ...implementationTasks,
+      ...maintenanceTasks,
+      ...extensionTasks
+    ].filter((task, index, self) => 
+      index === self.findIndex(t => t.id === task.id)
+    );
+
+    onTasksChange(allTasks);
   };
 
   const filteredExtensions = selectedPlan.id === 'express'
-    ? ecommerceExtensions.filter(ext => ext.price <= 500)
+    ? ecommerceExtensions.filter(ext => ext.isBasic)
     : ecommerceExtensions;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <Card className="p-6 space-y-6 bg-white shadow-lg rounded-xl border border-gray-100">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Configurar {selectedPlan.name}
-          </h2>
-          <p className="text-gray-600">
-            Selecione as funcionalidades desejadas para seu projeto
+    <Card className="p-6">
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">
+            Configuração do Projeto
+          </h3>
+          <p className="text-sm text-gray-500">
+            Selecione as funcionalidades que deseja incluir no seu projeto
           </p>
         </div>
 
-        <Tabs 
+        <Tabs
+          defaultValue="implementation"
           value={activeTab}
+          onValueChange={setActiveTab}
           className="w-full"
-          onValueChange={(value) => setActiveTab(value)}
         >
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger 
-              value="implementation" 
-              className="space-x-2 data-[state=active]:bg-purple-100 data-[state=active]:text-purple-700"
-            >
-              <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-                Implementação
-              </Badge>
+          <TabsList className="w-full justify-start mb-8">
+            <TabsTrigger value="implementation">
+              Implementação
             </TabsTrigger>
-            <TabsTrigger 
-              value="maintenance" 
-              className="space-x-2 data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700"
-            >
-              <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                Sustentação
-              </Badge>
+            <TabsTrigger value="maintenance">
+              Sustentação
             </TabsTrigger>
-            <TabsTrigger 
-              value="extensions" 
-              className="space-x-2 data-[state=active]:bg-green-100 data-[state=active]:text-green-700"
-            >
-              <Badge variant="secondary" className="bg-green-100 text-green-700">
-                Extensões
-              </Badge>
+            <TabsTrigger value="extensions">
+              Extensões
             </TabsTrigger>
           </TabsList>
-          
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
+
+          <div className="mt-4 space-y-4">
             <TabsContent value="implementation">
-              <TaskSelector 
+              <TaskSelector
                 onTasksChange={(tasks) => handleTasksChange(tasks, "implementation")}
                 filter="implementation"
                 selectedPlan={selectedPlan}
-                selectedTasks={allSelectedTasks}
+                selectedTasks={implementationTasks}
               />
             </TabsContent>
             
             <TabsContent value="maintenance">
-              <TaskSelector 
+              <TaskSelector
                 onTasksChange={(tasks) => handleTasksChange(tasks, "maintenance")}
                 filter="maintenance"
                 selectedPlan={selectedPlan}
-                selectedTasks={allSelectedTasks}
+                selectedTasks={maintenanceTasks}
               />
             </TabsContent>
             
             <TabsContent value="extensions">
-              <ExtensionSelector
-                extensions={filteredExtensions}
-                selectedExtensions={selectedExtensions}
-                onExtensionToggle={onExtensionToggle}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredExtensions.map((extension) => (
+                  <Card
+                    key={extension.id}
+                    className="p-4 hover:shadow-md transition-shadow"
+                  >
+                    <h4 className="font-medium mb-2">{extension.name}</h4>
+                    <p className="text-sm text-gray-500 mb-4">
+                      {extension.description}
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">
+                        {extension.price}
+                      </span>
+                      <button className="text-primary hover:underline text-sm">
+                        Adicionar
+                      </button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
             </TabsContent>
-          </motion.div>
+          </div>
         </Tabs>
-      </Card>
-
-      <div className="lg:sticky lg:top-4">
-        <ConsoleOutput
-          implementationTasks={prices.implementationTasks}
-          maintenanceTasks={prices.maintenanceTasks}
-          implementationPrice={prices.implementationPrice}
-          maintenancePrice={prices.maintenancePrice}
-          revenueShare={prices.revenueShare}
-          revenueSharePercent={prices.revenueSharePercent}
-          totalHours={prices.totalHours}
-        />
       </div>
-    </div>
+    </Card>
   );
 };
 

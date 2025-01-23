@@ -2,17 +2,16 @@ import { useState, useEffect } from "react";
 import { Task } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
-import { 
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../ui/hover-card";
+import { Label } from "../ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 import { Info } from "lucide-react";
-import { Badge } from "../ui/badge";
 import { calculatorTasks } from "@/data/calculatorTasks";
-import { ecommerceTasks } from "@/data/ecommerceTasks";
-import { motion } from "framer-motion";
-import { Plan } from "./PlanSelector";
+import { Plan } from "@/types/calculator-types";
 
 interface TaskSelectorProps {
   onTasksChange: (tasks: Task[]) => void;
@@ -28,24 +27,21 @@ const TaskSelector = ({
   selectedTasks
 }: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
-  
-  const allTasks = [
-    ...calculatorTasks.flatMap(category => category.tasks),
-    ...ecommerceTasks.flatMap(category => category.tasks)
-  ];
 
-  const filteredTasks = allTasks.filter(task => {
+  // Filter tasks based on the filter prop
+  const filteredTasks = calculatorTasks.filter(task => {
     if (filter === "implementation") {
-      return task.type === "essential" || task.type === "optional";
-    } else {
+      return task.type !== "recurring";
+    } else if (filter === "maintenance") {
       return task.type === "recurring";
     }
+    return true;
   });
 
   useEffect(() => {
-    // Initialize selectedTaskIds from selectedTasks prop
-    const initialSelectedIds = new Set(selectedTasks.map(task => task.id));
-    setSelectedTaskIds(initialSelectedIds);
+    // Update selectedTaskIds when selectedTasks prop changes
+    const newSelectedIds = new Set(selectedTasks.map(task => task.id));
+    setSelectedTaskIds(newSelectedIds);
   }, [selectedTasks]);
 
   const handleTaskSelection = (taskId: string, checked: boolean) => {
@@ -53,97 +49,81 @@ const TaskSelector = ({
     
     if (checked) {
       newSelectedIds.add(taskId);
-      const task = allTasks.find(t => t.id === taskId);
-      if (task?.dependencies) {
-        task.dependencies.essential?.forEach(id => newSelectedIds.add(id));
-        task.dependencies.recurring?.forEach(id => newSelectedIds.add(id));
-      }
     } else {
       newSelectedIds.delete(taskId);
     }
     
     setSelectedTaskIds(newSelectedIds);
-    const selectedTasks = allTasks.filter(task => newSelectedIds.has(task.id));
+    
+    // Convert selected IDs back to tasks
+    const selectedTasks = filteredTasks.filter(task => 
+      newSelectedIds.has(task.id)
+    );
+    
     onTasksChange(selectedTasks);
   };
 
-  const getBadgeColor = (type: string) => {
-    switch (type) {
-      case "essential":
-        return "bg-blue-100 text-blue-700";
-      case "optional":
-        return "bg-purple-100 text-purple-700";
-      case "recurring":
-        return "bg-green-100 text-green-700";
-      default:
-        return "";
-    }
-  };
+  // Pre-select tasks based on the selected plan
+  useEffect(() => {
+    const tasksToPreselect = filteredTasks.filter(task => {
+      switch (selectedPlan.id) {
+        case 'express':
+          return task.isBasic;
+        case 'standard':
+          return task.isBasic || task.isStandard;
+        case 'premium':
+          return true;
+        default:
+          return false;
+      }
+    });
+
+    const preselectedIds = new Set(tasksToPreselect.map(task => task.id));
+    setSelectedTaskIds(preselectedIds);
+    onTasksChange(tasksToPreselect);
+  }, [selectedPlan.id, filter]);
 
   return (
     <div className="space-y-4">
-      {filteredTasks.length === 0 ? (
-        <Card className="p-6 text-center">
-          <p className="text-muted-foreground">
-            Nenhuma tarefa disponível para esta categoria.
-          </p>
-        </Card>
-      ) : (
-        filteredTasks.map((task, index) => (
-          <motion.div
-            key={task.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-          >
-            <Card className="p-4 hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-white to-gray-50">
-              <div className="flex items-start gap-4">
-                <Checkbox
-                  id={task.id}
-                  checked={selectedTaskIds.has(task.id)}
-                  onCheckedChange={(checked) => 
-                    handleTaskSelection(task.id, checked as boolean)
-                  }
-                />
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor={task.id}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {task.name}
-                    </label>
-                    <Badge variant="secondary" className={getBadgeColor(task.type)}>
-                      {task.hours}h
-                    </Badge>
-                    <HoverCard>
-                      <HoverCardTrigger>
-                        <Info className="h-4 w-4 text-muted-foreground cursor-help" />
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-80">
-                        <div className="space-y-2">
-                          <p className="text-sm">{task.description}</p>
-                          <div className="flex gap-2">
-                            <Badge variant="outline">
-                              {task.category}
-                            </Badge>
-                            <Badge variant="outline">
-                              {task.story}
-                            </Badge>
-                          </div>
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {task.description}
-                  </p>
-                </div>
+      {filteredTasks.map((task) => (
+        <Card key={task.id} className="p-4">
+          <div className="flex items-start gap-4">
+            <Checkbox
+              id={task.id}
+              checked={selectedTaskIds.has(task.id)}
+              onCheckedChange={(checked) => 
+                handleTaskSelection(task.id, checked as boolean)
+              }
+            />
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <Label htmlFor={task.id} className="font-medium">
+                  {task.name}
+                </Label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="w-4 h-4 text-gray-400" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{task.description}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
-            </Card>
-          </motion.div>
-        ))
-      )}
+              <p className="text-sm text-gray-500 mt-1">
+                {task.hours}h estimadas
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="font-medium">R$ {task.price.toFixed(2)}</p>
+              {task.type === "recurring" && (
+                <p className="text-sm text-gray-500">mensal</p>
+              )}
+            </div>
+          </div>
+        </Card>
+      ))}
     </div>
   );
 };
