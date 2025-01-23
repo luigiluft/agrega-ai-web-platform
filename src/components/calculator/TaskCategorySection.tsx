@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Task } from "@/types/calculator-types";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
@@ -26,6 +26,16 @@ const TaskCategorySection = ({
   selectedPlan
 }: TaskCategorySectionProps) => {
   const [activeTab, setActiveTab] = useState("implementation");
+
+  useEffect(() => {
+    // Pre-select all sections by triggering their content
+    ["implementation", "maintenance", "extensions"].forEach(tab => {
+      const tabContent = document.querySelector(`[data-state="active"][data-value="${tab}"]`);
+      if (tabContent) {
+        (tabContent as HTMLElement).click();
+      }
+    });
+  }, []);
 
   const filteredExtensions = selectedPlan.id === 'express'
     ? ecommerceExtensions.filter(ext => ext.price <= 500)
