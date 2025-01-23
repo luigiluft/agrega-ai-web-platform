@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
-import { DivIcon, LatLngExpression, Icon } from 'leaflet';
+import { DivIcon, LatLngExpression } from 'leaflet';
 import { Delivery, StatusConfig } from '../types';
 
 interface DeliveryMarkerProps {
