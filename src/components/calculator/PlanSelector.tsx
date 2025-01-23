@@ -1,6 +1,7 @@
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { motion } from "framer-motion";
+import { Check } from "lucide-react";
 
 export type Plan = {
   id: 'express' | 'standard' | 'premium';
@@ -63,29 +64,30 @@ export const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) 
           transition={{ duration: 0.3 }}
         >
           <Card
-            className={`p-6 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-              selectedPlan?.id === plan.id
-                ? 'border-primary ring-2 ring-primary/20'
-                : 'hover:border-primary/20'
-            }`}
+            className={`
+              relative p-6 cursor-pointer transition-all duration-300
+              ${selectedPlan?.id === plan.id 
+                ? 'border-orange-500 ring-2 ring-orange-500/20 shadow-lg' 
+                : 'hover:border-orange-500/20 hover:shadow-md'}
+            `}
             onClick={() => onPlanSelect(plan)}
           >
             <div className="space-y-4">
               <div>
-                <h3 className="text-xl font-bold">{plan.name}</h3>
+                <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
                 <p className="text-sm text-gray-600 mt-1">{plan.description}</p>
               </div>
 
               {plan.monthlyLimit && (
-                <div className="bg-primary/10 text-primary rounded-lg px-3 py-2 text-sm">
+                <div className="bg-orange-100 text-orange-600 rounded-lg px-3 py-2 text-sm font-medium">
                   Até R${plan.monthlyLimit.toLocaleString('pt-BR')}/mês
                 </div>
               )}
 
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {plan.features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2 text-sm">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                  <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
+                    <Check className="h-4 w-4 text-orange-500 flex-shrink-0" />
                     {feature}
                   </li>
                 ))}
@@ -93,10 +95,15 @@ export const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) 
 
               <Button
                 variant={selectedPlan?.id === plan.id ? "default" : "outline"}
-                className="w-full"
+                className={`
+                  w-full mt-4
+                  ${selectedPlan?.id === plan.id 
+                    ? 'bg-orange-500 hover:bg-orange-600 text-white' 
+                    : 'text-orange-500 border-orange-500 hover:bg-orange-50'}
+                `}
                 onClick={() => onPlanSelect(plan)}
               >
-                Selecionar {plan.name}
+                {`Selecionar ${plan.name}`}
               </Button>
             </div>
           </Card>
