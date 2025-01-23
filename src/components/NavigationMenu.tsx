@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { useNavigate } from "react-router-dom";
 import { Calculator, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NavigationMenuDemo = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -23,37 +24,41 @@ const NavigationMenuDemo = () => {
     }`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <img 
-              src="/lovable-uploads/ff36e6ef-290f-4f4f-a7aa-8df3bd8dbff2.png" 
-              alt="Logo" 
-              className="h-10 w-auto"
-            />
-            <span className={`font-bold text-xl ${scrolled ? 'text-gray-900' : 'text-white'}`}>
-              Lovable
+          <div 
+            className="flex items-center cursor-pointer" 
+            onClick={() => navigate('/')}
+          >
+            <span className={`font-bold text-2xl tracking-tight ${
+              scrolled ? 'text-primary' : 'text-white'
+            } hover:scale-105 transition-transform duration-200`}>
+              AGREGAÍ
             </span>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <button
+          <div className="flex items-center gap-4">
+            <Button
+              variant={scrolled ? "outline" : "secondary"}
               onClick={() => navigate('/calculadora')}
-              className={`flex items-center space-x-2 hover:text-primary transition-colors ${
-                scrolled ? 'text-gray-900' : 'text-white'
-              }`}
+              className="group relative overflow-hidden"
             >
-              <Calculator className="w-5 h-5" />
-              <span>Calculadora</span>
-            </button>
+              <span className="absolute inset-0 bg-gradient-calculator transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <span className="relative flex items-center gap-2">
+                <Calculator className="w-4 h-4" />
+                Calculadora
+              </span>
+            </Button>
             
-            <button
+            <Button
+              variant={scrolled ? "outline" : "secondary"}
               onClick={() => navigate('/area-cliente')}
-              className={`flex items-center space-x-2 hover:text-primary transition-colors ${
-                scrolled ? 'text-gray-900' : 'text-white'
-              }`}
+              className="group relative overflow-hidden"
             >
-              <User className="w-5 h-5" />
-              <span>Área do Cliente</span>
-            </button>
+              <span className="absolute inset-0 bg-gradient-calculator transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <span className="relative flex items-center gap-2">
+                <User className="w-4 h-4" />
+                Área do Cliente
+              </span>
+            </Button>
           </div>
         </div>
       </div>
