@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
-import { Task, Plan } from "@/types/calculator-types";
+import { Task, TaskCategorySectionProps } from "@/types/calculator-types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import TaskSelector from "./TaskSelector";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 
-interface TaskCategorySectionProps {
-  onTasksChange: (tasks: Task[]) => void;
-  selectedPlan: Plan;
-}
-
 const TaskCategorySection = ({
   onTasksChange,
-  selectedPlan
+  selectedPlan,
+  selectedExtensions,
+  onExtensionToggle,
+  prices
 }: TaskCategorySectionProps) => {
   const [activeTab, setActiveTab] = useState("implementation");
   const [implementationTasks, setImplementationTasks] = useState<Task[]>([]);
@@ -120,10 +118,13 @@ const TaskCategorySection = ({
                     </p>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">
-                        {extension.price}
+                        R$ {extension.price.toFixed(2)}
                       </span>
-                      <button className="text-primary hover:underline text-sm">
-                        Adicionar
+                      <button 
+                        className="text-primary hover:underline text-sm"
+                        onClick={() => onExtensionToggle(extension.id, !selectedExtensions.has(extension.id))}
+                      >
+                        {selectedExtensions.has(extension.id) ? 'Remover' : 'Adicionar'}
                       </button>
                     </div>
                   </Card>

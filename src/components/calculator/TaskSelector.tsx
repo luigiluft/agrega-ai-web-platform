@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Task } from "@/types/calculator-types";
+import { Task, Plan, TaskSelectorProps } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
@@ -11,14 +11,6 @@ import {
 } from "../ui/tooltip";
 import { Info } from "lucide-react";
 import { calculatorTasks } from "@/data/calculatorTasks";
-import { Plan } from "@/types/calculator-types";
-
-interface TaskSelectorProps {
-  onTasksChange: (tasks: Task[]) => void;
-  filter?: "implementation" | "maintenance";
-  selectedPlan: Plan;
-  selectedTasks: Task[];
-}
 
 const TaskSelector = ({
   onTasksChange,
@@ -29,14 +21,16 @@ const TaskSelector = ({
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
 
   // Filter tasks based on the filter prop
-  const filteredTasks = calculatorTasks.filter(task => {
-    if (filter === "implementation") {
-      return task.type !== "recurring";
-    } else if (filter === "maintenance") {
-      return task.type === "recurring";
-    }
-    return true;
-  });
+  const filteredTasks = calculatorTasks
+    .flatMap(category => category.tasks)
+    .filter(task => {
+      if (filter === "implementation") {
+        return task.type !== "recurring";
+      } else if (filter === "maintenance") {
+        return task.type === "recurring";
+      }
+      return true;
+    });
 
   useEffect(() => {
     // Update selectedTaskIds when selectedTasks prop changes
@@ -116,7 +110,7 @@ const TaskSelector = ({
               </p>
             </div>
             <div className="text-right">
-              <p className="font-medium">R$ {task.price.toFixed(2)}</p>
+              <p className="font-medium">R$ {(task.hours * 185).toFixed(2)}</p>
               {task.type === "recurring" && (
                 <p className="text-sm text-gray-500">mensal</p>
               )}
