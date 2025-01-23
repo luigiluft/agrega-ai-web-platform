@@ -12,6 +12,8 @@ import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
 import { Theme } from "@/components/theme/types";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
+import { calculatorTasks } from "@/data/calculatorTasks";
+import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { Step } from "@/types/calculator-steps";
 
 const StepCalculator = () => {

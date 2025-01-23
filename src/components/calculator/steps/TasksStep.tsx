@@ -1,12 +1,6 @@
 import { motion } from "framer-motion";
 import TaskCategorySection from "../TaskCategorySection";
-import { Plan } from "../PlanSelector";
-import { Task } from "@/types/calculator-types";
-import { TaskCategorySectionProps } from "@/types/calculator-steps";
-
-interface TasksStepProps extends TaskCategorySectionProps {
-  selectedPlan: Plan;
-}
+import { TasksStepProps } from "@/types/calculator-steps";
 
 const TasksStep = ({ 
   selectedPlan, 
