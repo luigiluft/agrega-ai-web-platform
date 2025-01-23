@@ -15,6 +15,8 @@ import TaskCategorySection from "./calculator/TaskCategorySection";
 import ConsoleOutput from "./calculator/ConsoleOutput";
 import PlanSelector, { Plan } from "./calculator/PlanSelector";
 import { motion } from "framer-motion";
+import { calculatorTasks } from "@/data/calculatorTasks";
+import { ecommerceTasks } from "@/data/ecommerceTasks";
 
 const HOURLY_RATE = 185;
 
@@ -39,8 +41,38 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
-    // Reset selections when plan changes
-    setSelectedTasks([]);
+    
+    const allTasks = [
+      ...calculatorTasks.flatMap(category => category.tasks),
+      ...ecommerceTasks.flatMap(category => category.tasks)
+    ];
+
+    let preSelectedTasks: Task[] = [];
+    
+    if (plan.id === 'express') {
+      preSelectedTasks = allTasks.filter(task => 
+        (task.story === "Briefing" && task.hours <= 4) ||
+        (task.story === "Implementação do layout" && task.hours <= 8) ||
+        (task.name.includes("Base") && task.hours <= 4) ||
+        (task.type === "recurring" && task.hours <= 4)
+      );
+    } else if (plan.id === 'standard') {
+      preSelectedTasks = allTasks.filter(task => 
+        (task.story === "Briefing" && task.hours <= 8) ||
+        (task.story === "Implementação do layout" && task.hours <= 16) ||
+        (task.story === "Elaboração dos criativos" && task.hours <= 16) ||
+        (task.name.includes("Avançad") && task.hours <= 8) ||
+        (task.type === "recurring" && task.hours <= 6)
+      );
+    } else {
+      preSelectedTasks = allTasks.filter(task => 
+        task.type === "essential" ||
+        (task.type === "optional" && task.hours <= 32) ||
+        (task.type === "recurring" && task.hours <= 12)
+      );
+    }
+
+    setSelectedTasks(preSelectedTasks);
     setSelectedExtensions(new Set());
   };
 
@@ -80,7 +112,6 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
 
-    // Check if monthly cost exceeds Express plan limit
     if (selectedPlan?.id === 'express' && maintenancePrice > (selectedPlan.monthlyLimit || 2000)) {
       toast({
         title: "Limite de plano excedido",

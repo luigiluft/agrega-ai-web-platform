@@ -29,11 +29,10 @@ const TaskCategorySection = ({
 
   useEffect(() => {
     // Pre-select all sections by triggering their content
-    ["implementation", "maintenance", "extensions"].forEach(tab => {
-      const tabContent = document.querySelector(`[data-state="active"][data-value="${tab}"]`);
-      if (tabContent) {
-        (tabContent as HTMLElement).click();
-      }
+    ["implementation", "maintenance", "extensions"].forEach((tab, index) => {
+      setTimeout(() => {
+        setActiveTab(tab);
+      }, index * 500); // Add a delay between each tab switch
     });
   }, []);
 
@@ -54,7 +53,7 @@ const TaskCategorySection = ({
         </div>
 
         <Tabs 
-          defaultValue="implementation" 
+          value={activeTab}
           className="w-full"
           onValueChange={(value) => setActiveTab(value)}
         >
