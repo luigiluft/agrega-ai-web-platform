@@ -67,7 +67,7 @@ const StepCalculator = () => {
     }
   };
 
-  const steps: { step: Step; label: string }[] = [
+  const steps: Array<{ step: Step; label: string }> = [
     { step: "plan", label: "Escolha seu plano" },
     { step: "theme", label: "Selecione o tema" },
     { step: "tasks", label: "Configure seu projeto" },
