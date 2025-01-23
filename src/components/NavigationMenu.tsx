@@ -30,28 +30,34 @@ const NavigationMenuDemo = () => {
           >
             <span className={`font-bold text-2xl tracking-tight ${
               scrolled ? 'text-primary' : 'text-white'
-            }`}>
+            } hover:scale-105 transition-transform duration-200`}>
               AGREGAÍ
             </span>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-4">
             <Button
-              variant="secondary"
+              variant={scrolled ? "outline" : "secondary"}
               onClick={() => navigate('/calculadora')}
-              className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
+              className="group relative overflow-hidden"
             >
-              <Calculator className="w-4 h-4" />
-              Calculadora
+              <span className="absolute inset-0 bg-gradient-calculator transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <span className="relative flex items-center gap-2">
+                <Calculator className="w-4 h-4" />
+                Calculadora
+              </span>
             </Button>
             
             <Button
-              variant="secondary"
+              variant={scrolled ? "outline" : "secondary"}
               onClick={() => navigate('/area-cliente')}
-              className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
+              className="group relative overflow-hidden"
             >
-              <User className="w-4 h-4" />
-              Área do Cliente
+              <span className="absolute inset-0 bg-gradient-calculator transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <span className="relative flex items-center gap-2">
+                <User className="w-4 h-4" />
+                Área do Cliente
+              </span>
             </Button>
           </div>
         </div>
