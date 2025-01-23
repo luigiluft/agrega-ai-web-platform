@@ -1,7 +1,5 @@
-import { Link } from "react-scroll";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Rocket, Building2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Rocket, Building2 } from "lucide-react";
 
 const HeroSection = () => {
   const navigate = useNavigate();
