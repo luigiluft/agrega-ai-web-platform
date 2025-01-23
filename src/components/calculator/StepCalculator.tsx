@@ -10,6 +10,8 @@ import PlanStep from "./steps/PlanStep";
 import ThemeStep from "./steps/ThemeStep";
 import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
+import { calculatorTasks } from "@/data/calculatorTasks";
+import { ecommerceTasks } from "@/data/ecommerceTasks";
 
 type Step = "plan" | "theme" | "tasks" | "summary";
 
@@ -18,6 +20,13 @@ const StepCalculator = () => {
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const { toast } = useToast();
+
+  const shouldShowStep = (step: Step): boolean => {
+    if (step === "theme") {
+      return selectedPlan?.id === "express";
+    }
+    return true;
+  };
 
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -62,13 +71,6 @@ const StepCalculator = () => {
       // Implementation: 160 hours total
       // Sustentation: 32 hours/month
     }
-  };
-
-  const shouldShowStep = (step: Step): boolean => {
-    if (step === "theme") {
-      return selectedPlan?.id === "express";
-    }
-    return true;
   };
 
   const steps: Array<{ step: Step; label: string }> = [
