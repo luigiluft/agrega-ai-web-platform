@@ -25,6 +25,20 @@ const StepCalculator = () => {
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
+  const shouldShowStep = (step: Step): boolean => {
+    if (step === "theme") {
+      return selectedPlan?.id === "express";
+    }
+    return true;
+  };
+
+  const steps: Array<{ step: Step; label: string }> = [
+    { step: "plan", label: "Escolha seu plano" },
+    { step: "theme", label: "Selecione o tema" },
+    { step: "tasks", label: "Configure seu projeto" },
+    { step: "summary", label: "Resumo do projeto" }
+  ].filter(({ step }) => shouldShowStep(step));
+
   const calculatePrice = () => {
     const HOUR_RATE = 200;
     
@@ -81,20 +95,6 @@ const StepCalculator = () => {
     setSelectedTasks(preSelectedTasks);
   };
 
-  const steps: Array<{ step: Step; label: string }> = [
-    { step: "plan", label: "Escolha seu plano" },
-    { step: "theme", label: "Selecione o tema" },
-    { step: "tasks", label: "Configure seu projeto" },
-    { step: "summary", label: "Resumo do projeto" }
-  ].filter(({ step }) => shouldShowStep(step));
-
-  const shouldShowStep = (step: Step): boolean => {
-    if (step === "theme") {
-      return selectedPlan?.id === "express";
-    }
-    return true;
-  };
-
   const handleNext = () => {
     if (currentStep === "plan" && !selectedPlan) {
       toast({
@@ -130,7 +130,7 @@ const StepCalculator = () => {
   const renderStepContent = () => {
     switch (currentStep) {
       case "plan":
-        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={setSelectedPlan} />;
+        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={handlePlanSelect} />;
       case "theme":
         return selectedPlan?.id === "express" && (
           <ThemeStep selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />

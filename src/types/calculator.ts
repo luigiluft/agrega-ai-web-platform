@@ -1,24 +1,11 @@
-export interface Feature {
-  id: string;
-  name: string;
-  description: string;
-  hours?: number;
-  monthlyHours?: number;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-  totalHours?: number;
-  features: Feature[];
-}
+import { Task } from "./calculator-types";
 
 export interface CalculatorResultsProps {
   implementationPrice: string;
   maintenancePrice: string;
   revenueShare: string;
   revenueSharePercent: string;
-  monthlyRevenue?: string;
+  monthlyRevenue: string;
   setMonthlyRevenue?: (value: string) => void;
   onContactClick: () => void;
   layoutHours: number;
@@ -26,9 +13,15 @@ export interface CalculatorResultsProps {
   meetingHours: number;
   campaignHours: number;
   functionalityHours: number;
-  baseImplementationCost?: string;
-  baseMaintenanceCost?: string;
-  totalHours?: number;
-  rouletteDiscount?: number;
-  totalImplementationHours?: number;
+  baseImplementationCost: string;
+  baseMaintenanceCost: string;
+  totalHours: number;
+  rouletteDiscount: number;
+  totalImplementationHours: number;
+}
+
+export interface SummaryStepProps {
+  selectedTasks: Task[];
+  selectedExtensions: Set<string>;
+  totalPrice: number;
 }
