@@ -1,28 +1,17 @@
-import { Link } from "react-router-dom";
-import { Calculator, User } from "lucide-react";
-import { Button } from "./ui/button";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useEffect } from "react";
+import { Menu } from "lucide-react";
+import Logo from "./navigation/Logo";
+import DesktopNav from "./navigation/DesktopNav";
+import MobileNav from "./navigation/MobileNav";
 
-const NavigationMenuDemo = () => {
-  const { scrollY } = useScroll();
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  const backgroundColor = useTransform(
-    scrollY,
-    [0, 100],
-    ["rgba(0, 0, 0, 0)", "rgba(255, 255, 255, 1)"]
-  );
-
-  const textColor = useTransform(
-    scrollY,
-    [0, 100],
-    ["rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 0.8)"]
-  );
+const NavigationMenu = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setHasScrolled(window.scrollY > 50);
+      const isScrolled = window.scrollY > 20;
+      setScrolled(isScrolled);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -30,56 +19,46 @@ const NavigationMenuDemo = () => {
   }, []);
 
   return (
-    <motion.header
-      style={{ backgroundColor }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
-        hasScrolled ? "shadow-lg" : ""
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+          : 'bg-gradient-to-b from-black/50 to-transparent'
       }`}
     >
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <motion.span
-            style={{ color: textColor }}
-            className="text-2xl font-bold bg-clip-text"
-          >
-            AGREGAÍ
-          </motion.span>
-        </Link>
+      <div className="w-full border-b border-gray-200/10">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex items-center justify-between h-24 max-w-[1400px] mx-auto">
+            <Logo scrolled={scrolled} />
+            <div className="hidden md:flex items-center justify-end flex-1">
+              <DesktopNav scrolled={scrolled} />
+            </div>
 
-        <div className="flex items-center space-x-4">
-          <Link to="/calculadora">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/20 transition-colors"
-            >
-              <Calculator className="w-4 h-4 mr-2" />
-              Calculadora
-            </Button>
-          </Link>
-          
-          <Link to="/area-do-cliente">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/20 transition-colors"
-            >
-              <User className="w-4 h-4 mr-2" />
-              Área do Cliente
-            </Button>
-          </Link>
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`p-2 rounded-lg ${
+                  scrolled ? 'hover:bg-gray-100' : 'hover:bg-white/10'
+                }`}
+              >
+                <Menu className={scrolled ? 'text-gray-800' : 'text-white'} />
+              </button>
+            </div>
+          </div>
 
-          <Button
-            variant="secondary"
-            size="sm"
-            className="bg-white/20 hover:bg-white/30 text-white border border-white/40"
-          >
-            Entrar
-          </Button>
+          <div className={`md:hidden fixed left-0 right-0 transition-all duration-300 bg-white shadow-lg ${
+            isMenuOpen ? 'top-24 opacity-100' : '-top-full opacity-0'
+          }`}>
+            <MobileNav 
+              isOpen={isMenuOpen}
+              onClose={() => setIsMenuOpen(false)}
+              scrolled={scrolled}
+            />
+          </div>
         </div>
-      </nav>
-    </motion.header>
+      </div>
+    </header>
   );
 };
 
-export default NavigationMenuDemo;
+export default NavigationMenu;
