@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import PlanSelector, { Plan } from "./PlanSelector";
+import { Plan } from "./PlanSelector";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import { useToast } from "../ui/use-toast";
-import TaskCategorySection from "./TaskCategorySection";
-import ConsoleOutput from "./ConsoleOutput";
-import { calculatorTasks } from "@/data/calculatorTasks";
-import { ecommerceTasks } from "@/data/ecommerceTasks";
-import ThemeSelector from "../theme/ThemeSelector";
-import { themes } from "../theme/themeData";
 import { Theme } from "../theme/types";
+import PlanStep from "./steps/PlanStep";
+import ThemeStep from "./steps/ThemeStep";
+import TasksStep from "./steps/TasksStep";
+import SummaryStep from "./steps/SummaryStep";
 
 type Step = "plan" | "theme" | "tasks" | "summary";
 
@@ -23,7 +21,6 @@ const StepCalculator = () => {
 
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
-    
     // Preset task selection based on plan
     const essentialTasks = [
       ...calculatorTasks.flatMap(category => 
@@ -67,19 +64,19 @@ const StepCalculator = () => {
     }
   };
 
-  const steps: Array<{ step: Step; label: string }> = [
-    { step: "plan", label: "Escolha seu plano" },
-    { step: "theme", label: "Selecione o tema" },
-    { step: "tasks", label: "Configure seu projeto" },
-    { step: "summary", label: "Resumo do projeto" }
-  ].filter(({ step }) => shouldShowStep(step));
-
   const shouldShowStep = (step: Step): boolean => {
     if (step === "theme") {
       return selectedPlan?.id === "express";
     }
     return true;
   };
+
+  const steps: Array<{ step: Step; label: string }> = [
+    { step: "plan", label: "Escolha seu plano" },
+    { step: "theme", label: "Selecione o tema" },
+    { step: "tasks", label: "Configure seu projeto" },
+    { step: "summary", label: "Resumo do projeto" }
+  ].filter(({ step }) => shouldShowStep(step));
 
   const handleNext = () => {
     if (currentStep === "plan" && !selectedPlan) {
@@ -110,6 +107,23 @@ const StepCalculator = () => {
       setCurrentStep("tasks");
     } else if (currentStep === "tasks") {
       setCurrentStep("summary");
+    }
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case "plan":
+        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={handlePlanSelect} />;
+      case "theme":
+        return selectedPlan?.id === "express" && (
+          <ThemeStep selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />
+        );
+      case "tasks":
+        return selectedPlan && <TasksStep selectedPlan={selectedPlan} />;
+      case "summary":
+        return <SummaryStep />;
+      default:
+        return null;
     }
   };
 
@@ -146,62 +160,7 @@ const StepCalculator = () => {
           transition={{ duration: 0.3 }}
           className="min-h-[400px]"
         >
-          {currentStep === "plan" && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                Escolha o plano ideal para seu negócio
-              </h2>
-              <PlanSelector
-                selectedPlan={selectedPlan}
-                onPlanSelect={handlePlanSelect}
-              />
-            </div>
-          )}
-
-          {currentStep === "theme" && selectedPlan?.id === "express" && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                Selecione o tema do seu e-commerce
-              </h2>
-              <ThemeSelector
-                themes={themes}
-                selectedTheme={selectedTheme}
-                onThemeSelect={setSelectedTheme}
-              />
-            </div>
-          )}
-
-          {currentStep === "tasks" && selectedPlan && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                Configure seu projeto
-              </h2>
-              <TaskCategorySection
-                selectedPlan={selectedPlan}
-                onTasksChange={() => {}}
-                selectedExtensions={new Set()}
-                onExtensionToggle={() => {}}
-                prices={{}}
-              />
-            </div>
-          )}
-
-          {currentStep === "summary" && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                Resumo do projeto
-              </h2>
-              <ConsoleOutput
-                implementationTasks={[]}
-                maintenanceTasks={[]}
-                implementationPrice="0"
-                maintenancePrice="0"
-                revenueShare="0"
-                revenueSharePercent="0"
-                totalHours={0}
-              />
-            </div>
-          )}
+          {renderStepContent()}
         </motion.div>
 
         {/* Navigation Button */}
