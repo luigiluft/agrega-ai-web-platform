@@ -140,10 +140,10 @@ const StepCalculator = () => {
   };
 
   const steps: { step: Step; label: string }[] = [
-    { step: "plan", label: "Escolha seu plano" },
-    { step: "theme", label: "Selecione o tema" },
-    { step: "tasks", label: "Configure seu projeto" },
-    { step: "summary", label: "Resumo do projeto" },
+    { step: "plan" as Step, label: "Escolha seu plano" },
+    { step: "theme" as Step, label: "Selecione o tema" },
+    { step: "tasks" as Step, label: "Configure seu projeto" },
+    { step: "summary" as Step, label: "Resumo do projeto" },
   ].filter(({ step }) => {
     if (step === "theme") {
       return selectedPlan?.id === "express";
