@@ -33,8 +33,10 @@ const DeliveryMarker = ({
   return (
     <Marker 
       position={position} 
-      eventHandlers={{ click: onClick }}
       icon={markerIcon}
+      eventHandlers={{
+        click: onClick
+      }}
     >
       <Popup>
         <div className="p-2">
