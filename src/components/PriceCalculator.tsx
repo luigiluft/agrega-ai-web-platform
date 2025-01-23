@@ -50,25 +50,50 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     let preSelectedTasks: Task[] = [];
     
     if (plan.id === 'express') {
-      preSelectedTasks = allTasks.filter(task => 
-        (task.story === "Briefing" && task.hours <= 4) ||
-        (task.story === "Implementação do layout" && task.hours <= 8) ||
-        (task.name.includes("Base") && task.hours <= 4) ||
-        (task.type === "recurring" && task.hours <= 4)
-      );
+      preSelectedTasks = allTasks.filter(task => {
+        if (task.story === "Briefing") {
+          return task.name.includes("técnico") && task.hours <= 2;
+        }
+        if (task.story === "Implementação do layout") {
+          return task.name.includes("Homepage") && task.hours <= 10;
+        }
+        if (task.type === "recurring") {
+          return (
+            (task.name.includes("conteúdo") && task.hours <= 2) ||
+            (task.name.includes("bugs") && task.hours <= 4) ||
+            (task.name.includes("pagamentos") && task.hours <= 4)
+          );
+        }
+        if (task.name.includes("Base")) {
+          return task.hours <= 8;
+        }
+        return false;
+      });
     } else if (plan.id === 'standard') {
-      preSelectedTasks = allTasks.filter(task => 
-        (task.story === "Briefing" && task.hours <= 8) ||
-        (task.story === "Implementação do layout" && task.hours <= 16) ||
-        (task.story === "Elaboração dos criativos" && task.hours <= 16) ||
-        (task.name.includes("Avançad") && task.hours <= 8) ||
-        (task.type === "recurring" && task.hours <= 6)
-      );
+      preSelectedTasks = allTasks.filter(task => {
+        if (task.story === "Briefing") {
+          return task.hours <= 8;
+        }
+        if (task.story === "Implementação do layout") {
+          return task.hours <= 24;
+        }
+        if (task.story === "Elaboração dos criativos") {
+          return task.hours <= 16;
+        }
+        if (task.type === "recurring") {
+          return task.hours <= 8;
+        }
+        if (task.name.includes("Base")) {
+          return task.hours <= 8;
+        }
+        return false;
+      });
     } else {
+      // Premium plan gets all essential tasks and most optional ones
       preSelectedTasks = allTasks.filter(task => 
         task.type === "essential" ||
-        (task.type === "optional" && task.hours <= 32) ||
-        (task.type === "recurring" && task.hours <= 12)
+        task.type === "optional" ||
+        (task.type === "recurring" && task.hours <= 16)
       );
     }
 

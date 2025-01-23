@@ -26,15 +26,33 @@ const TaskCategorySection = ({
   selectedPlan
 }: TaskCategorySectionProps) => {
   const [activeTab, setActiveTab] = useState("implementation");
+  const [selectedImplementationTasks, setSelectedImplementationTasks] = useState<Task[]>([]);
+  const [selectedMaintenanceTasks, setSelectedMaintenanceTasks] = useState<Task[]>([]);
 
   useEffect(() => {
-    // Pre-select all sections by triggering their content
+    // Pre-select all sections by triggering their content with delay
     ["implementation", "maintenance", "extensions"].forEach((tab, index) => {
       setTimeout(() => {
         setActiveTab(tab);
-      }, index * 500); // Add a delay between each tab switch
+      }, index * 500);
     });
   }, []);
+
+  const handleTasksChange = (tasks: Task[], filter: string) => {
+    if (filter === "implementation") {
+      setSelectedImplementationTasks(tasks.filter(t => t.type !== "recurring"));
+    } else if (filter === "maintenance") {
+      setSelectedMaintenanceTasks(tasks.filter(t => t.type === "recurring"));
+    }
+    
+    // Combine both implementation and maintenance tasks
+    const allTasks = [
+      ...selectedImplementationTasks,
+      ...selectedMaintenanceTasks
+    ];
+    
+    onTasksChange(allTasks);
+  };
 
   const filteredExtensions = selectedPlan.id === 'express'
     ? ecommerceExtensions.filter(ext => ext.price <= 500)
@@ -93,7 +111,7 @@ const TaskCategorySection = ({
           >
             <TabsContent value="implementation">
               <TaskSelector 
-                onTasksChange={onTasksChange}
+                onTasksChange={(tasks) => handleTasksChange(tasks, "implementation")}
                 filter="implementation"
                 selectedPlan={selectedPlan}
               />
@@ -101,7 +119,7 @@ const TaskCategorySection = ({
             
             <TabsContent value="maintenance">
               <TaskSelector 
-                onTasksChange={onTasksChange}
+                onTasksChange={(tasks) => handleTasksChange(tasks, "maintenance")}
                 filter="maintenance"
                 selectedPlan={selectedPlan}
               />
