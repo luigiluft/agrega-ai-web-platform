@@ -12,6 +12,8 @@ import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
+import { Theme } from "@/components/theme/types";
+import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 
 type Step = "plan" | "theme" | "tasks" | "summary";
 
@@ -24,7 +26,7 @@ const StepCalculator = () => {
   const { toast } = useToast();
 
   const calculatePrice = () => {
-    const HOUR_RATE = 200; // R$ 200 per hour
+    const HOUR_RATE = 200;
     
     // Calculate total hours from selected tasks
     const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0);
@@ -128,7 +130,7 @@ const StepCalculator = () => {
   const renderStepContent = () => {
     switch (currentStep) {
       case "plan":
-        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={handlePlanSelect} />;
+        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={setSelectedPlan} />;
       case "theme":
         return selectedPlan?.id === "express" && (
           <ThemeStep selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />
@@ -138,16 +140,24 @@ const StepCalculator = () => {
           <TasksStep 
             selectedPlan={selectedPlan}
             selectedTasks={selectedTasks}
-            setSelectedTasks={setSelectedTasks}
+            onTasksChange={setSelectedTasks}
             selectedExtensions={selectedExtensions}
-            setSelectedExtensions={setSelectedExtensions}
+            onExtensionToggle={(extensionId, checked) => {
+              const newExtensions = new Set(selectedExtensions);
+              if (checked) {
+                newExtensions.add(extensionId);
+              } else {
+                newExtensions.delete(extensionId);
+              }
+              setSelectedExtensions(newExtensions);
+            }}
             totalPrice={calculatePrice()}
           />
         );
       case "summary":
         return (
           <SummaryStep 
-            selectedTasks={selectedTasks} 
+            selectedTasks={selectedTasks}
             selectedExtensions={selectedExtensions}
             totalPrice={calculatePrice()}
           />

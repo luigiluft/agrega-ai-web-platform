@@ -6,18 +6,18 @@ import { Task } from "@/types/calculator-types";
 interface TasksStepProps {
   selectedPlan: Plan;
   selectedTasks: Task[];
-  setSelectedTasks: (tasks: Task[]) => void;
+  onTasksChange: (tasks: Task[]) => void;
   selectedExtensions: Set<string>;
-  setSelectedExtensions: (extensions: Set<string>) => void;
+  onExtensionToggle: (extensionId: string, checked: boolean) => void;
   totalPrice: number;
 }
 
 const TasksStep = ({ 
   selectedPlan, 
-  selectedTasks, 
-  setSelectedTasks,
+  selectedTasks,
+  onTasksChange,
   selectedExtensions,
-  setSelectedExtensions,
+  onExtensionToggle,
   totalPrice 
 }: TasksStepProps) => {
   return (
@@ -31,17 +31,10 @@ const TasksStep = ({
       <TaskCategorySection
         selectedPlan={selectedPlan}
         selectedTasks={selectedTasks}
-        onTasksChange={setSelectedTasks}
+        onTasksChange={onTasksChange}
         selectedExtensions={selectedExtensions}
-        onExtensionToggle={(extensionId, checked) => {
-          const newExtensions = new Set(selectedExtensions);
-          if (checked) {
-            newExtensions.add(extensionId);
-          } else {
-            newExtensions.delete(extensionId);
-          }
-          setSelectedExtensions(newExtensions);
-        }}
+        onExtensionToggle={onExtensionToggle}
+        totalPrice={totalPrice}
       />
     </div>
   );
