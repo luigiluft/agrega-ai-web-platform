@@ -8,6 +8,7 @@ export interface Plan {
   description: string;
   features: string[];
   isPopular?: boolean;
+  monthlyLimit?: number;
 }
 
 interface PlanSelectorProps {
@@ -27,6 +28,7 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
         "Suporte por email",
         "Treinamento inicial",
       ],
+      monthlyLimit: 2000,
     },
     {
       id: "standard",
