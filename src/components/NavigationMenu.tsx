@@ -25,10 +25,12 @@ const NavigationMenuDemo = () => {
       scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
     }`}>
       <div className="w-full border-b border-transparent">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between h-20 max-w-[1400px] mx-auto">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex items-center justify-between h-24 max-w-[1400px] mx-auto">
             <Logo scrolled={scrolled} />
-            <DesktopNav scrolled={scrolled} />
+            <div className="hidden md:flex items-center justify-end flex-1">
+              <DesktopNav scrolled={scrolled} />
+            </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
@@ -42,9 +44,9 @@ const NavigationMenuDemo = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation with fixed positioning */}
+          {/* Mobile Navigation */}
           <div className={`md:hidden fixed left-0 right-0 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-lg ${
-            isMenuOpen ? 'top-20 opacity-100' : '-top-full opacity-0'
+            isMenuOpen ? 'top-24 opacity-100' : '-top-full opacity-0'
           }`}>
             <MobileNav 
               isOpen={isMenuOpen}
