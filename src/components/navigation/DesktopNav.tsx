@@ -10,7 +10,7 @@ const DesktopNav = ({ scrolled }: DesktopNavProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="hidden md:flex items-center gap-6">
+    <div className="fixed top-0 right-0 p-4 z-50 flex items-center space-x-6">
       <Button
         variant="ghost"
         onClick={() => navigate('/calculadora')}

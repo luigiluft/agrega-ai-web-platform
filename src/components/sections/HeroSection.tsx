@@ -52,10 +52,10 @@ const HeroSection = () => {
               ].map((product, index) => (
                 <div 
                   key={product.title}
-                  className="group flex flex-col bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer"
+                  className="group bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer h-full flex flex-col justify-between"
                   onClick={() => navigate("/calculadora")}
                 >
-                  <div className="flex-1">
+                  <div>
                     <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                       <product.icon className="w-7 h-7 text-white" />
                     </div>
