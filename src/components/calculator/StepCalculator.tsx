@@ -10,12 +10,9 @@ import PlanStep from "./steps/PlanStep";
 import ThemeStep from "./steps/ThemeStep";
 import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
-import { calculatorTasks } from "@/data/calculatorTasks";
-import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { Theme } from "@/components/theme/types";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
-
-type Step = "plan" | "theme" | "tasks" | "summary";
+import { Step } from "@/types/calculator-steps";
 
 const StepCalculator = () => {
   const [currentStep, setCurrentStep] = useState<Step>("plan");
@@ -128,6 +125,8 @@ const StepCalculator = () => {
   };
 
   const renderStepContent = () => {
+    const totalPrice = calculatePrice();
+
     switch (currentStep) {
       case "plan":
         return <PlanStep selectedPlan={selectedPlan} onPlanSelect={handlePlanSelect} />;
@@ -151,7 +150,7 @@ const StepCalculator = () => {
               }
               setSelectedExtensions(newExtensions);
             }}
-            totalPrice={calculatePrice()}
+            totalPrice={totalPrice}
           />
         );
       case "summary":
@@ -159,7 +158,7 @@ const StepCalculator = () => {
           <SummaryStep 
             selectedTasks={selectedTasks}
             selectedExtensions={selectedExtensions}
-            totalPrice={calculatePrice()}
+            totalPrice={totalPrice}
           />
         );
       default:

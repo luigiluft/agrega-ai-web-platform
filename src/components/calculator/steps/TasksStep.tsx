@@ -2,14 +2,10 @@ import { motion } from "framer-motion";
 import TaskCategorySection from "../TaskCategorySection";
 import { Plan } from "../PlanSelector";
 import { Task } from "@/types/calculator-types";
+import { TaskCategorySectionProps } from "@/types/calculator-steps";
 
-interface TasksStepProps {
+interface TasksStepProps extends TaskCategorySectionProps {
   selectedPlan: Plan;
-  selectedTasks: Task[];
-  onTasksChange: (tasks: Task[]) => void;
-  selectedExtensions: Set<string>;
-  onExtensionToggle: (extensionId: string, checked: boolean) => void;
-  totalPrice: number;
 }
 
 const TasksStep = ({ 
