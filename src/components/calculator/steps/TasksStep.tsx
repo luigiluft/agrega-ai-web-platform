@@ -13,8 +13,8 @@ const TasksStep = ({
   const prices = {
     implementationTasks: selectedTasks.filter(task => task.type !== "recurring"),
     maintenanceTasks: selectedTasks.filter(task => task.type === "recurring"),
-    implementationPrice: totalPrice.toString(), // Convert to string
-    maintenancePrice: "0", // Set as string
+    implementationPrice: totalPrice.toString(),
+    maintenancePrice: "0",
     revenueShare: "0",
     revenueSharePercent: "0",
     totalHours: selectedTasks.reduce((acc, task) => acc + task.hours, 0)
