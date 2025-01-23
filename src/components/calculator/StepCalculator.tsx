@@ -40,19 +40,12 @@ const StepCalculator = () => {
 
   const calculatePrice = () => {
     const HOUR_RATE = 200;
-    
-    // Calculate total hours from selected tasks
     const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0);
-    
-    // Calculate base price from hours
     const basePrice = totalHours * HOUR_RATE;
-    
-    // Calculate extensions price
     const extensionsPrice = Array.from(selectedExtensions).reduce((acc, extensionId) => {
       const extension = ecommerceExtensions.find(ext => ext.id === extensionId);
       return acc + (extension?.price || 0);
     }, 0);
-    
     return basePrice + extensionsPrice;
   };
 
@@ -64,7 +57,6 @@ const StepCalculator = () => {
       ...ecommerceTasks.flatMap(category => category.tasks)
     ];
 
-    // Pre-select tasks based on plan
     let preSelectedTasks: Task[] = [];
     
     if (plan.id === 'express') {
