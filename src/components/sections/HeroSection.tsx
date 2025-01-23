@@ -5,33 +5,22 @@ import { useState, useEffect } from "react";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 50;
-      setScrolled(isScrolled);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-secondary via-secondary/95 to-secondary">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-secondary via-secondary/95 to-secondary">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10" />
       
       <div className="container mx-auto px-4 py-8 md:py-16 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-6">
             <div className="space-y-4 md:space-y-6 bg-white/5 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-white/10">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white animate-fade-up">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white text-center">
                 Soluções <span className="text-white/90">Sob Medida</span> para Seu{" "}
                 <span className="font-extrabold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                   E-commerce
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-white/90 animate-fade-up [animation-delay:200ms] leading-relaxed max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-white/90 animate-fade-up [animation-delay:200ms] leading-relaxed max-w-2xl mx-auto text-center">
                 Desenvolvemos, <span className="text-white font-semibold">integramos</span> e{" "}
                 <span className="text-white font-semibold">gerenciamos</span> seu e-commerce.{" "}
                 <span className="text-xl md:text-2xl font-bold text-white">

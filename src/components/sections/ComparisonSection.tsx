@@ -8,7 +8,7 @@ const ComparisonSection = () => {
           Escolha a solução ideal para seu negócio
         </h2>
         
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* E-commerce Express */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
             <div className="mb-8">
@@ -36,21 +36,55 @@ const ComparisonSection = () => {
               </div>
             </div>
 
-            {/* Case Moda */}
+            {/* Setor de Moda */}
             <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
-              <img 
-                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8" 
-                alt="Setor de Moda" 
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h4 className="text-lg font-semibold mb-3">Case: Setor de Moda</h4>
+              <h4 className="text-lg font-semibold mb-3">Setor: Moda e Vestuário</h4>
               <p className="text-gray-600 text-sm mb-4">
                 "Com o E-commerce Express, conseguimos iniciar nossas vendas online em apenas 10 dias. 
-                A solução simplificada e eficiente nos permitiu focar no crescimento do negócio sem 
-                preocupações técnicas."
+                A solução simplificada e eficiente nos permitiu focar no crescimento do negócio."
               </p>
               <div className="text-sm text-primary font-medium">
                 Implementação em 2 semanas | ROI positivo no 1º mês
+              </div>
+            </div>
+          </div>
+
+          {/* E-commerce Pro */}
+          <div className="bg-white p-8 rounded-xl shadow-lg">
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-6">E-commerce Pro</h3>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Personalização moderada</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Integrações avançadas</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Suporte prioritário</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="text-primary" />
+                  <span>Gestão de marketplaces</span>
+                </div>
+              </div>
+              <div className="text-sm font-medium text-primary bg-primary/5 p-4 rounded-lg mb-6">
+                Para empresas em crescimento que precisam de mais recursos e personalização
+              </div>
+            </div>
+
+            {/* Setor de Cosméticos */}
+            <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+              <h4 className="text-lg font-semibold mb-3">Setor: Cosméticos</h4>
+              <p className="text-gray-600 text-sm mb-4">
+                "O E-commerce Pro nos permitiu expandir nossa presença online com recursos avançados 
+                e integrações que impulsionaram nossas vendas."
+              </p>
+              <div className="text-sm text-primary font-medium">
+                Crescimento de 150% em 6 meses | Integração com 3+ marketplaces
               </div>
             </div>
           </div>
@@ -82,18 +116,12 @@ const ComparisonSection = () => {
               </div>
             </div>
 
-            {/* Case Varejo */}
+            {/* Setor de Varejo */}
             <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
-              <img 
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" 
-                alt="Setor de Varejo" 
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h4 className="text-lg font-semibold mb-3">Case: Setor de Varejo</h4>
+              <h4 className="text-lg font-semibold mb-3">Setor: Varejo Multicanal</h4>
               <p className="text-gray-600 text-sm mb-4">
                 "O Full-commerce nos permitiu escalar nossa operação com segurança. 
-                A personalização completa e o suporte dedicado foram fundamentais para 
-                atingirmos nossos objetivos de crescimento."
+                A personalização completa e o suporte dedicado foram fundamentais."
               </p>
               <div className="text-sm text-primary font-medium">
                 Crescimento de 300% em vendas | Integração com 5+ marketplaces
