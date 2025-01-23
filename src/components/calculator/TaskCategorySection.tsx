@@ -26,8 +26,7 @@ const TaskCategorySection = ({
   selectedPlan
 }: TaskCategorySectionProps) => {
   const [activeTab, setActiveTab] = useState("implementation");
-  const [selectedImplementationTasks, setSelectedImplementationTasks] = useState<Task[]>([]);
-  const [selectedMaintenanceTasks, setSelectedMaintenanceTasks] = useState<Task[]>([]);
+  const [allSelectedTasks, setAllSelectedTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     // Pre-select all sections by triggering their content with delay
@@ -38,20 +37,25 @@ const TaskCategorySection = ({
     });
   }, []);
 
-  const handleTasksChange = (tasks: Task[], filter: string) => {
+  const handleTasksChange = (newTasks: Task[], filter: string) => {
+    let updatedTasks: Task[];
+    
     if (filter === "implementation") {
-      setSelectedImplementationTasks(tasks.filter(t => t.type !== "recurring"));
+      // Keep maintenance tasks, update implementation tasks
+      const maintenanceTasks = allSelectedTasks.filter(t => t.type === "recurring");
+      const implementationTasks = newTasks.filter(t => t.type !== "recurring");
+      updatedTasks = [...implementationTasks, ...maintenanceTasks];
     } else if (filter === "maintenance") {
-      setSelectedMaintenanceTasks(tasks.filter(t => t.type === "recurring"));
+      // Keep implementation tasks, update maintenance tasks
+      const implementationTasks = allSelectedTasks.filter(t => t.type !== "recurring");
+      const maintenanceTasks = newTasks.filter(t => t.type === "recurring");
+      updatedTasks = [...implementationTasks, ...maintenanceTasks];
+    } else {
+      updatedTasks = newTasks;
     }
-    
-    // Combine both implementation and maintenance tasks
-    const allTasks = [
-      ...selectedImplementationTasks,
-      ...selectedMaintenanceTasks
-    ];
-    
-    onTasksChange(allTasks);
+
+    setAllSelectedTasks(updatedTasks);
+    onTasksChange(updatedTasks);
   };
 
   const filteredExtensions = selectedPlan.id === 'express'
@@ -114,6 +118,7 @@ const TaskCategorySection = ({
                 onTasksChange={(tasks) => handleTasksChange(tasks, "implementation")}
                 filter="implementation"
                 selectedPlan={selectedPlan}
+                selectedTasks={allSelectedTasks}
               />
             </TabsContent>
             
@@ -122,6 +127,7 @@ const TaskCategorySection = ({
                 onTasksChange={(tasks) => handleTasksChange(tasks, "maintenance")}
                 filter="maintenance"
                 selectedPlan={selectedPlan}
+                selectedTasks={allSelectedTasks}
               />
             </TabsContent>
             

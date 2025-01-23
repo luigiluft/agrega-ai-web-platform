@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Task } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
@@ -18,12 +18,14 @@ interface TaskSelectorProps {
   onTasksChange: (tasks: Task[]) => void;
   filter?: "implementation" | "maintenance";
   selectedPlan: Plan;
+  selectedTasks: Task[];
 }
 
 const TaskSelector = ({
   onTasksChange,
   filter = "implementation",
-  selectedPlan
+  selectedPlan,
+  selectedTasks
 }: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
   
@@ -39,6 +41,12 @@ const TaskSelector = ({
       return task.type === "recurring";
     }
   });
+
+  useEffect(() => {
+    // Initialize selectedTaskIds from selectedTasks prop
+    const initialSelectedIds = new Set(selectedTasks.map(task => task.id));
+    setSelectedTaskIds(initialSelectedIds);
+  }, [selectedTasks]);
 
   const handleTaskSelection = (taskId: string, checked: boolean) => {
     const newSelectedIds = new Set(selectedTaskIds);
