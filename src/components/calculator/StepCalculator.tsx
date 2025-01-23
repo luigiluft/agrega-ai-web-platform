@@ -9,12 +9,16 @@ import TaskCategorySection from "./TaskCategorySection";
 import ConsoleOutput from "./ConsoleOutput";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
+import ThemeSelector from "../theme/ThemeSelector";
+import { themes } from "../theme/themeData";
+import { Theme } from "../theme/types";
 
-type Step = "plan" | "tasks" | "summary";
+type Step = "plan" | "theme" | "tasks" | "summary";
 
 const StepCalculator = () => {
   const [currentStep, setCurrentStep] = useState<Step>("plan");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const { toast } = useToast();
 
   const handlePlanSelect = (plan: Plan) => {
@@ -67,9 +71,46 @@ const StepCalculator = () => {
       return;
     }
 
-    if (currentStep === "plan") setCurrentStep("tasks");
-    else if (currentStep === "tasks") setCurrentStep("summary");
+    if (currentStep === "theme" && selectedPlan?.id === "express" && !selectedTheme) {
+      toast({
+        title: "Selecione um tema",
+        description: "Por favor, selecione um tema para continuar.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (currentStep === "plan") {
+      if (selectedPlan?.id === "express") {
+        setCurrentStep("theme");
+      } else {
+        setCurrentStep("tasks");
+      }
+    } else if (currentStep === "theme") {
+      setCurrentStep("tasks");
+    } else if (currentStep === "tasks") {
+      setCurrentStep("summary");
+    }
   };
+
+  const getStepNumber = (step: Step): number => {
+    const stepOrder: Step[] = ["plan", "theme", "tasks", "summary"];
+    return stepOrder.indexOf(step) + 1;
+  };
+
+  const shouldShowStep = (step: Step): boolean => {
+    if (step === "theme") {
+      return selectedPlan?.id === "express";
+    }
+    return true;
+  };
+
+  const steps: { step: Step; label: string }[] = [
+    { step: "plan", label: "Escolha seu plano" },
+    { step: "theme", label: "Selecione o tema" },
+    { step: "tasks", label: "Configure seu projeto" },
+    { step: "summary", label: "Resumo do projeto" },
+  ].filter(({ step }) => shouldShowStep(step));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-500 to-orange-600 p-6">
@@ -77,7 +118,7 @@ const StepCalculator = () => {
         {/* Progress Steps */}
         <div className="flex justify-between items-center mb-12 relative">
           <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -z-10" />
-          {["plan", "tasks", "summary"].map((step, index) => (
+          {steps.map(({ step, label }, index) => (
             <div key={step} className="flex flex-col items-center gap-2 bg-white p-2">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold
@@ -89,9 +130,7 @@ const StepCalculator = () => {
                 {index + 1}
               </div>
               <span className="text-sm font-medium text-gray-600">
-                {step === "plan" ? "Escolha seu plano" :
-                 step === "tasks" ? "Configure seu projeto" :
-                 "Resumo do projeto"}
+                {label}
               </span>
             </div>
           ))}
@@ -112,6 +151,17 @@ const StepCalculator = () => {
               <PlanSelector
                 selectedPlan={selectedPlan}
                 onPlanSelect={handlePlanSelect}
+              />
+            </div>
+          )}
+
+          {currentStep === "theme" && selectedPlan?.id === "express" && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-center mb-8">Selecione o tema do seu e-commerce</h2>
+              <ThemeSelector
+                themes={themes}
+                selectedTheme={selectedTheme}
+                onThemeSelect={setSelectedTheme}
               />
             </div>
           )}
@@ -146,7 +196,7 @@ const StepCalculator = () => {
         </motion.div>
 
         {/* Navigation Button */}
-        {currentStep === "plan" && selectedPlan && (
+        {currentStep !== "summary" && (
           <div className="flex justify-end mt-8">
             <Button
               onClick={handleNext}
