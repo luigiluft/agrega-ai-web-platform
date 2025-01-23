@@ -5,7 +5,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary via-primary-light to-[#FEF7CD]">
+    <section className="relative min-h-screen flex items-center justify-center bg-primary">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10" />
       
       <div className="container mx-auto px-4 py-8 md:py-16 relative z-10">
@@ -64,7 +64,7 @@ const HeroSection = () => {
                       {product.description}
                     </p>
                   </div>
-                  <button className="w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 group mt-auto">
+                  <button className="w-full bg-white hover:bg-white/90 text-primary px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 group mt-auto">
                     <span>Saiba mais</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>

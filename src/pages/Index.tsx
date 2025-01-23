@@ -6,12 +6,10 @@ import ComparisonSection from "../components/sections/ComparisonSection";
 import TestimonialsSection from "../components/sections/TestimonialsSection";
 import CTASection from "../components/sections/CTASection";
 import FAQSection from "../components/sections/FAQSection";
-import { Link } from "react-router-dom";
-import { Calculator } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-primary">
       <NavigationMenuDemo />
       <main>
         <HeroSection />
