@@ -7,6 +7,7 @@ import TaskSelector from "./TaskSelector";
 import ExtensionSelector from "./ExtensionSelector";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { motion } from "framer-motion";
+import { Plan } from "./PlanSelector";
 import ConsoleOutput from "./ConsoleOutput";
 
 interface TaskCategorySectionProps {
@@ -14,22 +15,28 @@ interface TaskCategorySectionProps {
   selectedExtensions: Set<string>;
   onExtensionToggle: (extensionId: string, checked: boolean) => void;
   prices: any;
+  selectedPlan: Plan;
 }
 
 const TaskCategorySection = ({
   onTasksChange,
   selectedExtensions,
   onExtensionToggle,
-  prices
+  prices,
+  selectedPlan
 }: TaskCategorySectionProps) => {
   const [activeTab, setActiveTab] = useState("implementation");
+
+  const filteredExtensions = selectedPlan.id === 'express'
+    ? ecommerceExtensions.filter(ext => ext.price <= 500)
+    : ecommerceExtensions;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <Card className="p-6 space-y-6 bg-white shadow-lg rounded-xl border border-gray-100">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Configurar Projeto
+            Configurar {selectedPlan.name}
           </h2>
           <p className="text-gray-600">
             Selecione as funcionalidades desejadas para seu projeto
@@ -79,6 +86,7 @@ const TaskCategorySection = ({
               <TaskSelector 
                 onTasksChange={onTasksChange}
                 filter="implementation"
+                selectedPlan={selectedPlan}
               />
             </TabsContent>
             
@@ -86,12 +94,13 @@ const TaskCategorySection = ({
               <TaskSelector 
                 onTasksChange={onTasksChange}
                 filter="maintenance"
+                selectedPlan={selectedPlan}
               />
             </TabsContent>
             
             <TabsContent value="extensions">
               <ExtensionSelector
-                extensions={ecommerceExtensions}
+                extensions={filteredExtensions}
                 selectedExtensions={selectedExtensions}
                 onExtensionToggle={onExtensionToggle}
               />

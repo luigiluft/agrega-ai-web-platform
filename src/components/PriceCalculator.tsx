@@ -13,6 +13,10 @@ import {
 import { Task } from "@/types/calculator-types";
 import TaskCategorySection from "./calculator/TaskCategorySection";
 import ConsoleOutput from "./calculator/ConsoleOutput";
+import PlanSelector, { Plan } from "./calculator/PlanSelector";
+import { motion } from "framer-motion";
+
+const HOURLY_RATE = 185;
 
 const calculateRevenueShare = (revenue: number): number => {
   if (revenue <= 50000) {
@@ -28,9 +32,17 @@ const calculateRevenueShare = (revenue: number): number => {
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
+
+  const handlePlanSelect = (plan: Plan) => {
+    setSelectedPlan(plan);
+    // Reset selections when plan changes
+    setSelectedTasks([]);
+    setSelectedExtensions(new Set());
+  };
 
   const handleExtensionToggle = (extensionId: string, checked: boolean) => {
     const newSelectedExtensions = new Set(selectedExtensions);
@@ -60,16 +72,22 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       (total, task) => total + task.hours, 
       0
     );
-
-    const rate = 100;
-    const maintenanceRate = 130;
     
-    const implementationPrice = implementationHours * rate;
-    const maintenancePrice = maintenanceHours * maintenanceRate;
+    const implementationPrice = implementationHours * HOURLY_RATE;
+    const maintenancePrice = maintenanceHours * HOURLY_RATE;
     
     const revenue = parseFloat(monthlyRevenue) || 0;
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
+
+    // Check if monthly cost exceeds Express plan limit
+    if (selectedPlan?.id === 'express' && maintenancePrice > (selectedPlan.monthlyLimit || 2000)) {
+      toast({
+        title: "Limite de plano excedido",
+        description: "O plano Express tem um limite mensal de R$2.000. Por favor, ajuste as horas de manutenção.",
+        variant: "destructive",
+      });
+    }
 
     return {
       implementationPrice: implementationPrice.toFixed(2),
@@ -93,46 +111,65 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
 
   const calculatorContent = (
     <div className="mt-8 space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <TaskCategorySection
-          onTasksChange={setSelectedTasks}
-          selectedExtensions={selectedExtensions}
-          onExtensionToggle={handleExtensionToggle}
-          prices={prices}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <PlanSelector
+          selectedPlan={selectedPlan}
+          onPlanSelect={handlePlanSelect}
         />
-        
-        <div className="space-y-6">
-          <ConsoleOutput
-            implementationTasks={prices.implementationTasks}
-            maintenanceTasks={prices.maintenanceTasks}
-            implementationPrice={prices.implementationPrice}
-            maintenancePrice={prices.maintenancePrice}
-            revenueShare={prices.revenueShare}
-            revenueSharePercent={prices.revenueSharePercent}
-            totalHours={prices.totalHours}
-          />
+      </motion.div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Button 
-              variant="outline"
-              className="w-full space-x-2"
-              onClick={handleContactClick}
-            >
-              <Mail className="w-4 h-4" />
-              <span>Receber por Email</span>
-            </Button>
-            
-            <Button 
-              variant="default"
-              className="w-full space-x-2"
-              onClick={handleContactClick}
-            >
-              <PhoneCall className="w-4 h-4" />
-              <span>Falar com Consultor</span>
-            </Button>
+      {selectedPlan && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+        >
+          <TaskCategorySection
+            onTasksChange={setSelectedTasks}
+            selectedExtensions={selectedExtensions}
+            onExtensionToggle={handleExtensionToggle}
+            prices={prices}
+            selectedPlan={selectedPlan}
+          />
+          
+          <div className="space-y-6">
+            <ConsoleOutput
+              implementationTasks={prices.implementationTasks}
+              maintenanceTasks={prices.maintenanceTasks}
+              implementationPrice={prices.implementationPrice}
+              maintenancePrice={prices.maintenancePrice}
+              revenueShare={prices.revenueShare}
+              revenueSharePercent={prices.revenueSharePercent}
+              totalHours={prices.totalHours}
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <Button 
+                variant="outline"
+                className="w-full space-x-2"
+                onClick={handleContactClick}
+              >
+                <Mail className="w-4 h-4" />
+                <span>Receber por Email</span>
+              </Button>
+              
+              <Button 
+                variant="default"
+                className="w-full space-x-2"
+                onClick={handleContactClick}
+              >
+                <PhoneCall className="w-4 h-4" />
+                <span>Falar com Consultor</span>
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      )}
     </div>
   );
 
@@ -155,7 +192,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
         <SheetHeader>
           <SheetTitle>Calculadora de Preços</SheetTitle>
           <SheetDescription>
-            Ajuste os parâmetros para simular diferentes cenários de precificação
+            Escolha um plano e ajuste os parâmetros para simular diferentes cenários de precificação
           </SheetDescription>
         </SheetHeader>
         {calculatorContent}
