@@ -30,7 +30,6 @@ const StepCalculator = () => {
 
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
-    // Preset task selection based on plan
     const essentialTasks = [
       ...calculatorTasks.flatMap(category => 
         category.tasks.filter(task => task.type === "essential")
@@ -41,15 +40,10 @@ const StepCalculator = () => {
     ];
 
     if (plan.id === 'express') {
-      // For express, only select essential tasks with basic configuration
       const basicTasks = essentialTasks.filter(task => 
         !task.name.includes("Avançad") && !task.name.includes("Premium")
       );
-      // Set selected tasks state with predefined hours
-      // Implementation: 40 hours total
-      // Sustentation: 8 hours/month
     } else if (plan.id === 'standard') {
-      // For standard, select all essential tasks and some optional ones
       const standardTasks = [
         ...essentialTasks,
         ...calculatorTasks.flatMap(category => 
@@ -58,26 +52,19 @@ const StepCalculator = () => {
           )
         )
       ];
-      // Set selected tasks state with predefined hours
-      // Implementation: 96 hours total
-      // Sustentation: 16 hours/month
     } else {
-      // For premium, select all available tasks
       const allTasks = [
         ...calculatorTasks.flatMap(category => category.tasks),
         ...ecommerceTasks.flatMap(category => category.tasks)
       ];
-      // Set selected tasks state with predefined hours
-      // Implementation: 160 hours total
-      // Sustentation: 32 hours/month
     }
   };
 
-  const steps: Array<{ step: Step; label: string }> = [
-    { step: "plan", label: "Escolha seu plano" },
-    { step: "theme", label: "Selecione o tema" },
-    { step: "tasks", label: "Configure seu projeto" },
-    { step: "summary", label: "Resumo do projeto" }
+  const steps = [
+    { step: "plan" as Step, label: "Escolha seu plano" },
+    { step: "theme" as Step, label: "Selecione o tema" },
+    { step: "tasks" as Step, label: "Configure seu projeto" },
+    { step: "summary" as Step, label: "Resumo do projeto" }
   ].filter(({ step }) => shouldShowStep(step));
 
   const handleNext = () => {
@@ -132,7 +119,6 @@ const StepCalculator = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-500 to-orange-600 p-6">
       <Card className="max-w-5xl mx-auto p-8 shadow-xl">
-        {/* Progress Steps */}
         <div className="flex justify-between items-center mb-12 relative">
           <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -z-10" />
           {steps.map(({ step, label }, index) => (
@@ -153,7 +139,6 @@ const StepCalculator = () => {
           ))}
         </div>
 
-        {/* Step Content */}
         <motion.div
           key={currentStep}
           initial={{ opacity: 0, y: 20 }}
@@ -165,7 +150,6 @@ const StepCalculator = () => {
           {renderStepContent()}
         </motion.div>
 
-        {/* Navigation Button */}
         {currentStep !== "summary" && (
           <div className="flex justify-end mt-8">
             <Button
