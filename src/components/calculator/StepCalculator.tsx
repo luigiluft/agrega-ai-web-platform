@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plan } from "./PlanSelector";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
@@ -15,6 +14,7 @@ import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { Step } from "@/types/calculator-steps";
+import { Plan } from "./PlanSelector";
 
 const StepCalculator = () => {
   const [currentStep, setCurrentStep] = useState<Step>("plan");
