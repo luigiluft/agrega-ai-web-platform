@@ -17,18 +17,6 @@ const DeliveryMarker = ({
 }: DeliveryMarkerProps) => {
   const position: LatLngExpression = [delivery.currentLocation.lat, delivery.currentLocation.lng];
   const status = statusConfig[delivery.status];
-  
-  const markerIcon = new DivIcon({
-    className: '',
-    html: `
-      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white" 
-           style="background-color: ${status.markerColor}">
-        📍
-      </div>
-    `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-  });
 
   return (
     <Marker 
@@ -37,6 +25,12 @@ const DeliveryMarker = ({
         click: onClick
       }}
     >
+      <div 
+        className="w-8 h-8 rounded-full flex items-center justify-center text-white"
+        style={{ backgroundColor: status.markerColor }}
+      >
+        📍
+      </div>
       <Popup>
         <div className="p-2">
           <h3 className="font-semibold">{delivery.customer}</h3>
