@@ -19,45 +19,39 @@ const NavigationMenuDemo = () => {
   }, []);
 
   return (
-    <NavigationMenu className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+    <NavigationMenu className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-white shadow-md' : 'bg-transparent'
     }`}>
-      <div className="w-full mx-auto px-4 py-4">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
           <div 
             className="flex items-center cursor-pointer" 
             onClick={() => navigate('/')}
           >
             <span className={`font-bold text-2xl tracking-tight ${
               scrolled ? 'text-primary' : 'text-white'
-            } hover:scale-105 transition-transform duration-200`}>
+            }`}>
               AGREGAÍ
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-4">
             <Button
-              variant={scrolled ? "outline" : "secondary"}
+              variant="secondary"
               onClick={() => navigate('/calculadora')}
-              className="group relative overflow-hidden"
+              className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
             >
-              <span className="absolute inset-0 bg-gradient-calculator transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-              <span className="relative flex items-center gap-2">
-                <Calculator className="w-4 h-4" />
-                Calculadora
-              </span>
+              <Calculator className="w-4 h-4" />
+              Calculadora
             </Button>
             
             <Button
-              variant={scrolled ? "outline" : "secondary"}
+              variant="secondary"
               onClick={() => navigate('/area-cliente')}
-              className="group relative overflow-hidden"
+              className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
             >
-              <span className="absolute inset-0 bg-gradient-calculator transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-              <span className="relative flex items-center gap-2">
-                <User className="w-4 h-4" />
-                Área do Cliente
-              </span>
+              <User className="w-4 h-4" />
+              Área do Cliente
             </Button>
           </div>
         </div>

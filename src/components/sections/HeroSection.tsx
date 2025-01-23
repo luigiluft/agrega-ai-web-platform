@@ -28,44 +28,41 @@ const HeroSection = () => {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 animate-fade-up [animation-delay:400ms]">
-              {/* E-commerce Express */}
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                  <Rocket className="w-6 h-6 text-white" />
+              <div className="bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Rocket className="w-6 h-6 md:w-7 md:h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">E-commerce Express</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">E-commerce Express</h3>
                 <p className="text-sm text-white/90 mb-4">
                   Lojas online com desenvolvimento ágil e custo acessível.
                 </p>
-                <button onClick={() => navigate("/calculadora")} className="mt-auto w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors">
+                <button onClick={() => navigate("/calculadora")} className="w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors">
                   Saiba mais
                 </button>
               </div>
 
-              {/* E-commerce Pro */}
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                  <Building2 className="w-6 h-6 text-white" />
+              <div className="bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Building2 className="w-6 h-6 md:w-7 md:h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">E-commerce Pro</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">E-commerce Pro</h3>
                 <p className="text-sm text-white/90 mb-4">
                   Solução intermediária com recursos avançados.
                 </p>
-                <button onClick={() => navigate("/calculadora")} className="mt-auto w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors">
+                <button onClick={() => navigate("/calculadora")} className="w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors">
                   Saiba mais
                 </button>
               </div>
 
-              {/* Full-commerce Enterprise */}
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                  <Building2 className="w-6 h-6 text-white" />
+              <div className="bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Building2 className="w-6 h-6 md:w-7 md:h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Full-commerce Enterprise</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Full-commerce Enterprise</h3>
                 <p className="text-sm text-white/90 mb-4">
                   Solução completa com personalização total.
                 </p>
-                <button onClick={() => navigate("/calculadora")} className="mt-auto w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors">
+                <button onClick={() => navigate("/calculadora")} className="w-full bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors">
                   Saiba mais
                 </button>
               </div>
