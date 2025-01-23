@@ -12,15 +12,18 @@ import { Badge } from "../ui/badge";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { motion } from "framer-motion";
+import { Plan } from "./PlanSelector";
 
 interface TaskSelectorProps {
   onTasksChange: (tasks: Task[]) => void;
   filter?: "implementation" | "maintenance";
+  selectedPlan: Plan;
 }
 
 const TaskSelector = ({
   onTasksChange,
-  filter = "implementation"
+  filter = "implementation",
+  selectedPlan
 }: TaskSelectorProps) => {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
   

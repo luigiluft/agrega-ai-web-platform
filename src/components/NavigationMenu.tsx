@@ -30,7 +30,6 @@ const NavigationMenu = () => {
               <DesktopNav scrolled={scrolled} />
             </div>
 
-            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -41,13 +40,13 @@ const NavigationMenu = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           <div className={`md:hidden fixed left-0 right-0 transition-all duration-300 bg-white shadow-lg ${
             isMenuOpen ? 'top-24 opacity-100' : '-top-full opacity-0'
           }`}>
             <MobileNav 
               isOpen={isMenuOpen}
               onClose={() => setIsMenuOpen(false)}
+              scrolled={scrolled}
             />
           </div>
         </div>

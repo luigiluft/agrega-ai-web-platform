@@ -18,7 +18,7 @@ interface PlanSelectorProps {
 const plans: Plan[] = [
   {
     id: 'express',
-    name: 'Express',
+    name: 'E-commerce Express',
     description: 'Solução básica padronizada com temas predefinidos',
     monthlyLimit: 2000,
     features: [
@@ -30,7 +30,7 @@ const plans: Plan[] = [
   },
   {
     id: 'standard',
-    name: 'Standard',
+    name: 'E-Commerce Pro',
     description: 'Personalização moderada com recursos avançados',
     features: [
       'Personalização moderada',
@@ -41,7 +41,7 @@ const plans: Plan[] = [
   },
   {
     id: 'premium',
-    name: 'Premium',
+    name: 'Full-commerce Enterprise',
     description: 'Personalização completa com integrações customizadas',
     features: [
       'Personalização total',
