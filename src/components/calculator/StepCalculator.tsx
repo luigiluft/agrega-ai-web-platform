@@ -59,7 +59,6 @@ const StepCalculator = () => {
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
     
-    // Get all tasks from both calculatorTasks and ecommerceTasks
     const allTasks = [
       ...calculatorTasks.flatMap(category => category.tasks),
       ...ecommerceTasks.flatMap(category => category.tasks)

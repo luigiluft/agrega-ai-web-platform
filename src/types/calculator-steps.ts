@@ -1,5 +1,4 @@
 import { Task } from "./calculator-types";
-import { Theme } from "@/components/theme/types";
 import { Plan } from "@/components/calculator/PlanSelector";
 
 export type Step = "plan" | "theme" | "tasks" | "summary";
@@ -10,7 +9,7 @@ export interface TaskCategorySectionProps {
   onTasksChange: (tasks: Task[]) => void;
   selectedExtensions: Set<string>;
   onExtensionToggle: (extensionId: string, checked: boolean) => void;
-  totalPrice: number;
+  prices: any;
 }
 
 export interface SummaryStepProps {
@@ -19,6 +18,11 @@ export interface SummaryStepProps {
   totalPrice: number;
 }
 
-export interface TasksStepProps extends TaskCategorySectionProps {
+export interface TasksStepProps {
   selectedPlan: Plan;
+  selectedTasks: Task[];
+  onTasksChange: (tasks: Task[]) => void;
+  selectedExtensions: Set<string>;
+  onExtensionToggle: (extensionId: string, checked: boolean) => void;
+  totalPrice: number;
 }

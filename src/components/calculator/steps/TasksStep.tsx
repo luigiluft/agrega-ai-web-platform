@@ -10,21 +10,27 @@ const TasksStep = ({
   onExtensionToggle,
   totalPrice 
 }: TasksStepProps) => {
+  const prices = {
+    implementationTasks: selectedTasks.filter(task => task.type !== "recurring"),
+    maintenanceTasks: selectedTasks.filter(task => task.type === "recurring"),
+    implementationPrice: totalPrice,
+    maintenancePrice: 0,
+    revenueShare: "0",
+    revenueSharePercent: "0",
+    totalHours: selectedTasks.reduce((acc, task) => acc + task.hours, 0)
+  };
+
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
         Configure seu projeto
       </h2>
-      <div className="text-2xl font-bold text-center text-orange-600">
-        Valor Total: R$ {totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-      </div>
       <TaskCategorySection
         selectedPlan={selectedPlan}
-        selectedTasks={selectedTasks}
         onTasksChange={onTasksChange}
         selectedExtensions={selectedExtensions}
         onExtensionToggle={onExtensionToggle}
-        totalPrice={totalPrice}
+        prices={prices}
       />
     </div>
   );
