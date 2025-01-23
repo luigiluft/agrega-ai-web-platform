@@ -21,7 +21,7 @@ const NavigationMenuDemo = () => {
   }, []);
 
   return (
-    <NavigationMenu className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${
+    <NavigationMenu className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-500 ${
       scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
     }`}>
       <div className="w-full border-b border-transparent">
@@ -42,11 +42,16 @@ const NavigationMenuDemo = () => {
             </div>
           </div>
 
-          <MobileNav 
-            isOpen={isMenuOpen}
-            onClose={() => setIsMenuOpen(false)}
-            scrolled={scrolled}
-          />
+          {/* Mobile Navigation with fixed positioning */}
+          <div className={`md:hidden fixed left-0 right-0 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-lg ${
+            isMenuOpen ? 'top-20 opacity-100' : '-top-full opacity-0'
+          }`}>
+            <MobileNav 
+              isOpen={isMenuOpen}
+              onClose={() => setIsMenuOpen(false)}
+              scrolled={scrolled}
+            />
+          </div>
         </div>
       </div>
     </NavigationMenu>
