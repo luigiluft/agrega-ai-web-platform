@@ -10,12 +10,14 @@ const DesktopNav = ({ scrolled }: DesktopNavProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed top-0 right-0 p-4 z-50 flex items-center space-x-6">
+    <div className="flex items-center space-x-6">
       <Button
         variant="ghost"
         onClick={() => navigate('/calculadora')}
         className={`group flex items-center gap-2 hover:bg-primary/10 transition-all duration-300 ${
-          scrolled ? 'text-gray-800' : 'text-white'
+          scrolled 
+            ? 'text-gray-800' 
+            : 'text-white hover:bg-white/10 drop-shadow-lg'
         }`}
       >
         <Calculator className="w-4 h-4 group-hover:text-primary transition-colors" />
@@ -26,7 +28,9 @@ const DesktopNav = ({ scrolled }: DesktopNavProps) => {
         variant="ghost"
         onClick={() => navigate('/area-cliente')}
         className={`group flex items-center gap-2 hover:bg-primary/10 transition-all duration-300 ${
-          scrolled ? 'text-gray-800' : 'text-white'
+          scrolled 
+            ? 'text-gray-800' 
+            : 'text-white hover:bg-white/10 drop-shadow-lg'
         }`}
       >
         <User className="w-4 h-4 group-hover:text-primary transition-colors" />
@@ -35,8 +39,10 @@ const DesktopNav = ({ scrolled }: DesktopNavProps) => {
 
       <Button
         variant="default"
-        onClick={() => navigate('/login')}
-        className="bg-primary hover:bg-primary-dark text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+        onClick={() => navigate('/area-cliente')}
+        className={`bg-primary hover:bg-primary-dark text-white transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${
+          !scrolled && 'shadow-black/20'
+        }`}
       >
         Entrar
       </Button>

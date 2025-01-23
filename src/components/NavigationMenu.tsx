@@ -10,7 +10,7 @@ const NavigationMenu = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 0;
+      const isScrolled = window.scrollY > 20;
       setScrolled(isScrolled);
     };
 
@@ -19,10 +19,14 @@ const NavigationMenu = () => {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white'
-    }`}>
-      <div className="w-full border-b border-gray-200">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+          : 'bg-gradient-to-b from-black/50 to-transparent'
+      }`}
+    >
+      <div className="w-full border-b border-gray-200/10">
         <div className="container mx-auto px-4 md:px-8">
           <div className="flex items-center justify-between h-24 max-w-[1400px] mx-auto">
             <Logo scrolled={scrolled} />
@@ -33,9 +37,11 @@ const NavigationMenu = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100"
+                className={`p-2 rounded-lg ${
+                  scrolled ? 'hover:bg-gray-100' : 'hover:bg-white/10'
+                }`}
               >
-                <Menu className="h-6 w-6" />
+                <Menu className={scrolled ? 'text-gray-800' : 'text-white'} />
               </button>
             </div>
           </div>

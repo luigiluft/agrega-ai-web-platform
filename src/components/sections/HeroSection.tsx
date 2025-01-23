@@ -5,12 +5,12 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary via-primary-light to-[#FEF7CD]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary via-primary-light to-[#FEF7CD]">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10" />
       
       <div className="container mx-auto px-4 py-8 md:py-16 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="space-y-8">
+          <div className="space-y-8 mt-24">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 animate-fade-up">
               <span className="text-white/90">Transforme seu negócio digital</span>
               <ArrowRight className="w-4 h-4 text-white" />
@@ -32,7 +32,7 @@ const HeroSection = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 animate-fade-up [animation-delay:400ms]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 animate-fade-up [animation-delay:400ms]">
               {[
                 {
                   title: "E-commerce Express",

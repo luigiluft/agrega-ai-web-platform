@@ -13,7 +13,9 @@ const Logo = ({ scrolled }: LogoProps) => {
       onClick={() => navigate('/')}
     >
       <span className={`font-bold text-3xl tracking-tight ${
-        scrolled ? 'text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark' : 'text-white'
+        scrolled 
+          ? 'text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark' 
+          : 'text-white drop-shadow-lg'
       }`}>
         AGREGAÍ
       </span>
