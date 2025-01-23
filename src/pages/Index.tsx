@@ -5,7 +5,6 @@ import FeaturesSection from "../components/sections/FeaturesSection";
 import ComparisonSection from "../components/sections/ComparisonSection";
 import PricingSection from "../components/sections/PricingSection";
 import TestimonialsSection from "../components/sections/TestimonialsSection";
-import ImplementationTimeline from "../components/sections/ImplementationTimeline";
 import CTASection from "../components/sections/CTASection";
 import FAQSection from "../components/sections/FAQSection";
 import { Link } from "react-router-dom";
@@ -15,7 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <NavigationMenuDemo />
-      <main className="pt-16">
+      <main>
         <HeroSection />
         
         <section className="py-16 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5">
@@ -47,7 +46,6 @@ const Index = () => {
         <FeaturesSection />
         <StatsSection />
         <ComparisonSection />
-        <ImplementationTimeline />
         <PricingSection />
         <TestimonialsSection />
         <FAQSection />
