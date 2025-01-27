@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 
 export interface Plan {
@@ -9,6 +9,10 @@ export interface Plan {
   features: string[];
   isPopular?: boolean;
   monthlyLimit?: number;
+  baseImplementationPrice: number;
+  baseMaintenancePrice: number;
+  basePOHours: number;
+  maxIntegrations: number;
 }
 
 interface PlanSelectorProps {
@@ -29,6 +33,10 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
         "Treinamento inicial",
       ],
       monthlyLimit: 2000,
+      baseImplementationPrice: 15000,
+      baseMaintenancePrice: 2000,
+      basePOHours: 4,
+      maxIntegrations: 2,
     },
     {
       id: "standard",
@@ -41,6 +49,10 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
         "Gestão de marketplaces",
       ],
       isPopular: true,
+      baseImplementationPrice: 30000,
+      baseMaintenancePrice: 4000,
+      basePOHours: 8,
+      maxIntegrations: 4,
     },
     {
       id: "enterprise",
@@ -52,6 +64,10 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
         "Suporte 24/7",
         "Infraestrutura dedicada",
       ],
+      baseImplementationPrice: 50000,
+      baseMaintenancePrice: 8000,
+      basePOHours: 16,
+      maxIntegrations: 8,
     },
   ];
 
@@ -80,6 +96,20 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
           <div className="text-center mb-6">
             <h3 className="text-xl font-bold">{plan.name}</h3>
             <p className="text-gray-600 mt-2">{plan.description}</p>
+            <div className="mt-4 space-y-2">
+              <p className="font-semibold text-lg">
+                R$ {plan.baseImplementationPrice.toLocaleString('pt-BR')}
+              </p>
+              <p className="text-sm text-gray-500">Implementação base</p>
+              <p className="font-semibold text-lg">
+                R$ {plan.baseMaintenancePrice.toLocaleString('pt-BR')}
+              </p>
+              <p className="text-sm text-gray-500">Manutenção mensal</p>
+              <div className="flex items-center justify-center gap-2 text-primary">
+                <Clock className="w-4 h-4" />
+                <span>{plan.basePOHours}h PO/mês</span>
+              </div>
+            </div>
           </div>
 
           <ul className="space-y-3 mb-6">
