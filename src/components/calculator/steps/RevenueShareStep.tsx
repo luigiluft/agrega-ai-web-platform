@@ -26,6 +26,18 @@ interface RevenueShareStepProps {
   setMonthlyOrders: (value: string) => void;
 }
 
+const calculateRevenueShare = (revenue: number): number => {
+  if (revenue <= 100000) {
+    return 0.15; // 15%
+  } else if (revenue <= 500000) {
+    return 0.12; // 12%
+  } else if (revenue <= 1000000) {
+    return 0.10; // 10%
+  } else {
+    return 0.05; // 5%
+  }
+};
+
 const RevenueShareStep = ({
   monthlyRevenue,
   setMonthlyRevenue,
@@ -45,6 +57,9 @@ const RevenueShareStep = ({
     const revenue = parseFloat(value) * parseFloat(monthlyOrders || "0");
     setMonthlyRevenue(revenue.toString());
   };
+
+  const currentRevenue = parseFloat(monthlyRevenue) || 0;
+  const revenueSharePercent = calculateRevenueShare(currentRevenue) * 100;
 
   return (
     <Card className="p-6 space-y-6">
@@ -103,6 +118,9 @@ const RevenueShareStep = ({
               readOnly
             />
           </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            Revenue Share Aplicado: {revenueSharePercent.toFixed(1)}%
+          </p>
         </div>
       </div>
 
