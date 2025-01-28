@@ -56,11 +56,11 @@ const HeroSection = () => {
                   onClick={() => navigate("/calculadora")}
                 >
                   <div>
-                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
                       <product.icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{product.title}</h3>
-                    <p className="text-sm text-white/90 mb-4">
+                    <h3 className="text-xl font-bold text-white mb-2 text-center">{product.title}</h3>
+                    <p className="text-sm text-white/90 mb-4 text-center">
                       {product.description}
                     </p>
                   </div>

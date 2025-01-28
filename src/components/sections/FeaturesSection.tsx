@@ -8,8 +8,8 @@ const FeaturesSection = () => {
           Saiba como a gente <span className="text-primary">agregaí</span> na sua empresa
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors mx-auto">
               <Settings className="w-7 h-7 text-primary transition-transform duration-700 group-hover:rotate-180" />
             </div>
             <h3 className="text-xl font-bold mb-4 text-secondary">Personalização Total</h3>
@@ -19,8 +19,8 @@ const FeaturesSection = () => {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors mx-auto">
               <Zap className="w-7 h-7 text-primary transition-all duration-500 group-hover:scale-125 group-hover:opacity-0 group-hover:animate-pulse" />
             </div>
             <h3 className="text-xl font-bold mb-4">Agilidade na Implementação</h3>
@@ -30,8 +30,8 @@ const FeaturesSection = () => {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors mx-auto">
               <BarChart3 className="w-7 h-7 text-primary transition-transform duration-500 group-hover:translate-y-[-4px]" />
             </div>
             <h3 className="text-xl font-bold mb-4">Escalabilidade com Economia</h3>
@@ -41,8 +41,8 @@ const FeaturesSection = () => {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors mx-auto">
               <Scale className="w-7 h-7 text-primary transition-transform duration-500 group-hover:rotate-12" />
             </div>
             <h3 className="text-xl font-bold mb-4">Custos Transparentes</h3>
@@ -52,8 +52,8 @@ const FeaturesSection = () => {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors mx-auto">
               <Network className="w-7 h-7 text-primary transition-all duration-500 group-hover:scale-110" />
             </div>
             <h3 className="text-xl font-bold mb-4">Integrações Nativas</h3>
@@ -63,8 +63,8 @@ const FeaturesSection = () => {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group text-center">
+            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors mx-auto">
               <HeadsetIcon className="w-7 h-7 text-primary transition-transform duration-500 group-hover:scale-x-[-1]" />
             </div>
             <h3 className="text-xl font-bold mb-4">Suporte Especializado</h3>
