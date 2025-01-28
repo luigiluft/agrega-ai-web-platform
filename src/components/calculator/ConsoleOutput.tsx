@@ -3,6 +3,7 @@ import { Card } from "../ui/card";
 import { Task } from "@/types/calculator-types";
 import { Badge } from "../ui/badge";
 import { Calculator, Clock, DollarSign, Percent } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 interface ConsoleOutputProps {
   implementationTasks: Task[];
@@ -23,6 +24,13 @@ const ConsoleOutput = ({
   revenueSharePercent = "0",
   totalHours = 0,
 }: ConsoleOutputProps) => {
+  const formatCurrency = (value: string) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(parseFloat(value));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -42,7 +50,7 @@ const ConsoleOutput = ({
                 <DollarSign className="w-4 h-4 text-primary" />
                 <span className="text-sm text-gray-300">Implementação</span>
               </div>
-              <p className="text-2xl font-bold">R$ {implementationPrice}</p>
+              <p className="text-2xl font-bold">{formatCurrency(implementationPrice)}</p>
             </div>
 
             <div className="p-4 rounded-lg bg-white/5">
@@ -50,7 +58,7 @@ const ConsoleOutput = ({
                 <DollarSign className="w-4 h-4 text-primary" />
                 <span className="text-sm text-gray-300">Mensalidade</span>
               </div>
-              <p className="text-2xl font-bold">R$ {maintenancePrice}</p>
+              <p className="text-2xl font-bold">{formatCurrency(maintenancePrice)}</p>
             </div>
 
             <div className="p-4 rounded-lg bg-white/5">
@@ -59,7 +67,7 @@ const ConsoleOutput = ({
                 <span className="text-sm text-gray-300">Revenue Share</span>
               </div>
               <p className="text-2xl font-bold">{revenueSharePercent}%</p>
-              <p className="text-sm text-gray-400">R$ {revenueShare}/mês</p>
+              <p className="text-sm text-gray-400">{formatCurrency(revenueShare)}/mês</p>
             </div>
 
             <div className="p-4 rounded-lg bg-white/5">
@@ -73,7 +81,7 @@ const ConsoleOutput = ({
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-gray-300">Tarefas de Implementação</h4>
+              <h4 className="text-sm font-medium text-gray-300">Escopo de Implementação</h4>
               <div className="flex flex-wrap gap-2">
                 {implementationTasks?.map((task) => (
                   <Badge
@@ -87,8 +95,10 @@ const ConsoleOutput = ({
               </div>
             </div>
 
+            <Separator className="bg-white/10" />
+
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-gray-300">Tarefas de Manutenção</h4>
+              <h4 className="text-sm font-medium text-gray-300">Escopo de Manutenção</h4>
               <div className="flex flex-wrap gap-2">
                 {maintenanceTasks?.map((task) => (
                   <Badge

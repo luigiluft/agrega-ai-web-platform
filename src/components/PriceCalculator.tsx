@@ -22,14 +22,14 @@ import { ecommerceTasks } from "@/data/ecommerceTasks";
 const HOURLY_RATE = 185;
 
 const calculateRevenueShare = (revenue: number): number => {
-  if (revenue <= 50000) {
+  if (revenue <= 100000) {
     return 0.15; // 15%
-  } else if (revenue <= 100000) {
+  } else if (revenue <= 500000) {
     return 0.12; // 12%
-  } else if (revenue <= 200000) {
+  } else if (revenue <= 1000000) {
     return 0.10; // 10%
   } else {
-    return 0.08; // 8%
+    return 0.05; // 5%
   }
 };
 

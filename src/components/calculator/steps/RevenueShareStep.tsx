@@ -1,7 +1,22 @@
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { DollarSign, ShoppingBag, CreditCard } from "lucide-react";
+import { DollarSign, ShoppingBag, CreditCard, Info } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface RevenueShareStepProps {
   monthlyRevenue: string;
@@ -11,6 +26,18 @@ interface RevenueShareStepProps {
   monthlyOrders: string;
   setMonthlyOrders: (value: string) => void;
 }
+
+const calculateRevenueShare = (revenue: number): number => {
+  if (revenue <= 100000) {
+    return 0.15; // 15%
+  } else if (revenue <= 500000) {
+    return 0.12; // 12%
+  } else if (revenue <= 1000000) {
+    return 0.10; // 10%
+  } else {
+    return 0.05; // 5%
+  }
+};
 
 const RevenueShareStep = ({
   monthlyRevenue,
@@ -32,9 +59,24 @@ const RevenueShareStep = ({
     setMonthlyRevenue(revenue.toString());
   };
 
+  const currentRevenue = parseFloat(monthlyRevenue) || 0;
+  const revenueSharePercent = calculateRevenueShare(currentRevenue) * 100;
+
   return (
-    <Card className="p-6 space-y-4">
-      <h3 className="text-lg font-semibold">Projeção de Faturamento</h3>
+    <Card className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">Projeção de Faturamento</h3>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Info className="h-4 w-4 text-muted-foreground" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>O revenue share é calculado com base no faturamento mensal</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
       
       <div className="space-y-4">
         <div className="space-y-2">
@@ -77,8 +119,38 @@ const RevenueShareStep = ({
               readOnly
             />
           </div>
+          <p className="text-sm text-muted-foreground">
+            Revenue Share Aplicado: {revenueSharePercent.toFixed(1)}%
+          </p>
         </div>
       </div>
+
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Faturamento Mensal</TableHead>
+            <TableHead>Taxa Aplicada</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Até R$ 100.000</TableCell>
+            <TableCell>15%</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>R$ 100.001 a R$ 500.000</TableCell>
+            <TableCell>12%</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>R$ 500.001 a R$ 1.000.000</TableCell>
+            <TableCell>10%</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Acima de R$ 1.000.000</TableCell>
+            <TableCell>5%</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     </Card>
   );
 };
