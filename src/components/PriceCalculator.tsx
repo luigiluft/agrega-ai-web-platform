@@ -14,6 +14,7 @@ import { Task } from "@/types/calculator-types";
 import TaskCategorySection from "./calculator/TaskCategorySection";
 import ConsoleOutput from "./calculator/ConsoleOutput";
 import PlanSelector, { Plan } from "./calculator/PlanSelector";
+import RevenueShareStep from "./calculator/steps/RevenueShareStep";
 import { motion } from "framer-motion";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
@@ -22,13 +23,13 @@ const HOURLY_RATE = 185;
 
 const calculateRevenueShare = (revenue: number): number => {
   if (revenue <= 50000) {
-    return 0.15;
+    return 0.15; // 15%
   } else if (revenue <= 100000) {
-    return 0.12;
+    return 0.12; // 12%
   } else if (revenue <= 200000) {
-    return 0.10;
+    return 0.10; // 10%
   } else {
-    return 0.08;
+    return 0.08; // 8%
   }
 };
 
@@ -38,6 +39,8 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
+  const [averageTicket, setAverageTicket] = useState<string>("150");
+  const [monthlyOrders, setMonthlyOrders] = useState<string>("100");
 
   const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -185,13 +188,24 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
           transition={{ duration: 0.3, delay: 0.2 }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-8"
         >
-          <TaskCategorySection
-            onTasksChange={setSelectedTasks}
-            selectedExtensions={selectedExtensions}
-            onExtensionToggle={handleExtensionToggle}
-            prices={prices}
-            selectedPlan={selectedPlan}
-          />
+          <div className="space-y-6">
+            <TaskCategorySection
+              onTasksChange={setSelectedTasks}
+              selectedExtensions={selectedExtensions}
+              onExtensionToggle={handleExtensionToggle}
+              prices={prices}
+              selectedPlan={selectedPlan}
+            />
+            
+            <RevenueShareStep
+              monthlyRevenue={monthlyRevenue}
+              setMonthlyRevenue={setMonthlyRevenue}
+              averageTicket={averageTicket}
+              setAverageTicket={setAverageTicket}
+              monthlyOrders={monthlyOrders}
+              setMonthlyOrders={setMonthlyOrders}
+            />
+          </div>
           
           <div className="space-y-6">
             <ConsoleOutput
