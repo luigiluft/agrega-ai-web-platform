@@ -1,4 +1,4 @@
-import { Settings, Zap, BarChart3, Scale, Network, HeadsetIcon } from "lucide-react";
+import { Settings, Zap, BarChart3, Scale, Network, HeadsetIcon, ArrowRight } from "lucide-react";
 
 const FeaturesSection = () => {
   return (
@@ -73,6 +73,13 @@ const FeaturesSection = () => {
               Suporte técnico e consultoria de negócios sempre disponíveis.
             </p>
           </div>
+        </div>
+        
+        <div className="mt-16 text-center">
+          <button className="group bg-primary text-white px-8 py-4 rounded-xl font-medium hover:bg-primary-dark transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 animate-fade-up flex items-center gap-2 mx-auto">
+            <span>Fale com um Especialista</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
     </section>
