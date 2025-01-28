@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { DollarSign, ShoppingBag, CreditCard } from "lucide-react";
 
 interface RevenueShareStepProps {
   monthlyRevenue: string;
@@ -34,50 +33,53 @@ const RevenueShareStep = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
-    >
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Projeção de Faturamento</h3>
-        
-        <div className="space-y-4">
-          <div>
-            <Label>Ticket Médio (R$)</Label>
+    <Card className="p-6 space-y-4">
+      <h3 className="text-lg font-semibold">Projeção de Faturamento</h3>
+      
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label>Ticket Médio (R$)</Label>
+          <div className="relative">
+            <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
             <Input
               type="number"
               value={averageTicket}
               onChange={(e) => handleTicketChange(e.target.value)}
+              className="pl-10"
               placeholder="Ex: 150"
-              className="mt-1"
             />
           </div>
+        </div>
 
-          <div>
-            <Label>Vendas por Mês (quantidade)</Label>
+        <div className="space-y-2">
+          <Label>Vendas por Mês</Label>
+          <div className="relative">
+            <ShoppingBag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
             <Input
               type="number"
               value={monthlyOrders}
               onChange={(e) => handleOrdersChange(e.target.value)}
+              className="pl-10"
               placeholder="Ex: 100"
-              className="mt-1"
             />
           </div>
+        </div>
 
-          <div>
-            <Label>Faturamento Mensal Estimado (R$)</Label>
+        <div className="space-y-2">
+          <Label>Faturamento Mensal Estimado (R$)</Label>
+          <div className="relative">
+            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
             <Input
               type="number"
               value={monthlyRevenue}
               onChange={(e) => setMonthlyRevenue(e.target.value)}
+              className="pl-10 bg-gray-50"
               readOnly
-              className="mt-1 bg-gray-50"
             />
           </div>
         </div>
-      </Card>
-    </motion.div>
+      </div>
+    </Card>
   );
 };
 

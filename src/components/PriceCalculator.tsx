@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Calculator, Mail, PhoneCall } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
