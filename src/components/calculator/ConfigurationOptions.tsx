@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Plan } from './PlanSelector';
-import { Button } from '../ui/button';
-import { Label } from '../ui/label';
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
-import { Minus, Plus } from 'lucide-react';
-import { Card } from '../ui/card';
-import { Badge } from '../ui/badge';
+import { useState } from "react";
+import { Plan } from "./PlanSelector";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Minus, Plus } from "lucide-react";
+import { Card } from "../ui/card";
+import { Badge } from "../ui/badge";
 
 type POFrequency = 'weekly' | 'biweekly' | 'monthly' | 'hybrid';
 
@@ -88,7 +88,7 @@ const ConfigurationOptions = ({
         
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label>Frequência de Reuniões com PO</Label>
+            <Label>Frequência de Reuniões com o Nosso Time</Label>
             <RadioGroup
               defaultValue="biweekly"
               onValueChange={(value) => handlePoFrequencyChange(value as POFrequency)}

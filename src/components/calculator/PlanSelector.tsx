@@ -101,6 +101,9 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
                 R$ {plan.baseImplementationPrice.toLocaleString('pt-BR')}
               </p>
               <p className="text-sm text-gray-500">Implementação base</p>
+              <p className="text-xs text-green-600">
+                Parcele em até 12x no plano anual
+              </p>
               <p className="font-semibold text-lg">
                 R$ {plan.baseMaintenancePrice.toLocaleString('pt-BR')}
               </p>
