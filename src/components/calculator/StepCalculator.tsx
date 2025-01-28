@@ -22,6 +22,9 @@ const StepCalculator = () => {
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
+  const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
+  const [averageTicket, setAverageTicket] = useState<string>("150");
+  const [monthlyOrders, setMonthlyOrders] = useState<string>("100");
   const { toast } = useToast();
 
   const shouldShowStep = (step: Step): boolean => {
@@ -144,6 +147,12 @@ const StepCalculator = () => {
               setSelectedExtensions(newExtensions);
             }}
             totalPrice={totalPrice}
+            monthlyRevenue={monthlyRevenue}
+            setMonthlyRevenue={setMonthlyRevenue}
+            averageTicket={averageTicket}
+            setAverageTicket={setAverageTicket}
+            monthlyOrders={monthlyOrders}
+            setMonthlyOrders={setMonthlyOrders}
           />
         );
       case "summary":

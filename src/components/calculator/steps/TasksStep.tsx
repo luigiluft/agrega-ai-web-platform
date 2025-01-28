@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { TasksStepProps } from "@/types/calculator-steps";
 import ConfigurationOptions from "../ConfigurationOptions";
 import ExtensionSelector from "../ExtensionSelector";
+import RevenueShareStep from "./RevenueShareStep";
 import { useState, useEffect } from "react";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 
@@ -13,7 +14,13 @@ const TasksStep = ({
   onTasksChange,
   selectedExtensions,
   onExtensionToggle,
-  totalPrice 
+  totalPrice,
+  monthlyRevenue,
+  setMonthlyRevenue,
+  averageTicket,
+  setAverageTicket,
+  monthlyOrders,
+  setMonthlyOrders
 }: TasksStepProps) => {
   const [configPrice, setConfigPrice] = useState({
     implementation: selectedPlan.baseImplementationPrice,
@@ -61,6 +68,15 @@ const TasksStep = ({
       <ConfigurationOptions
         selectedPlan={selectedPlan}
         onConfigurationChange={handleConfigurationChange}
+      />
+
+      <RevenueShareStep
+        monthlyRevenue={monthlyRevenue}
+        setMonthlyRevenue={setMonthlyRevenue}
+        averageTicket={averageTicket}
+        setAverageTicket={setAverageTicket}
+        monthlyOrders={monthlyOrders}
+        setMonthlyOrders={setMonthlyOrders}
       />
 
       <div className="mt-8">
