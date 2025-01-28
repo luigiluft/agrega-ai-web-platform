@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import ConsoleOutput from "../ConsoleOutput";
 import { SummaryStepProps } from "@/types/calculator-steps";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
+import MaintenancePricing, { calculateMaintenancePrice } from "../pricing/MaintenancePricing";
+import RevenueSharePricing, { calculateRevenueShare } from "../pricing/RevenueSharePricing";
 
 const SummaryStep = ({ 
   selectedTasks, 
@@ -12,22 +14,15 @@ const SummaryStep = ({
   const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
   const implementationTasks = selectedTasks.filter(task => task.type !== "recurring");
   
-  // Calculate maintenance price (sum of maintenance tasks hours * rate)
   const HOUR_RATE = 185;
-  const maintenancePrice = maintenanceTasks.reduce((acc, task) => {
-    return acc + (task.hours * HOUR_RATE);
-  }, 0);
-
-  // Calculate revenue share (3% of monthly revenue)
+  const maintenancePrice = calculateMaintenancePrice(maintenanceTasks, HOUR_RATE);
   const REVENUE_SHARE_PERCENT = "3";
-  const revenueShare = (Number(monthlyRevenue) * Number(REVENUE_SHARE_PERCENT) / 100).toString();
+  const revenueShare = calculateRevenueShare(monthlyRevenue, REVENUE_SHARE_PERCENT);
 
-  // Get selected extensions details
   const selectedExtensionDetails = Array.from(selectedExtensions).map(id => 
     ecommerceExtensions.find(ext => ext.id === id)
   ).filter(Boolean);
 
-  // Calculate total hours including extensions
   const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0) +
     selectedExtensionDetails.reduce((acc, ext) => acc + (ext?.implementationHours || 0), 0);
 

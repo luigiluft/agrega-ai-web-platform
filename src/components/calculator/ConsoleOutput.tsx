@@ -64,7 +64,7 @@ const ConsoleOutput = ({
             <div className="p-4 rounded-lg bg-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <Percent className="w-4 h-4 text-primary" />
-                <span className="text-sm text-gray-300">Revenue Share</span>
+                <span className="text-sm text-gray-300">Comissão sobre Faturamento</span>
               </div>
               <p className="text-2xl font-bold">{revenueSharePercent}%</p>
               <p className="text-sm text-gray-400">{formatCurrency(revenueShare)}/mês</p>
