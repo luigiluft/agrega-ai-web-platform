@@ -5,29 +5,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Percent } from "lucide-react";
 import { toast } from "sonner";
 import PromotionForm from "./PromotionForm";
-
-interface Promotion {
-  id: string;
-  name: string;
-  type: "percentage" | "fixed";
-  value: number;
-  startDate: Date;
-  endDate: Date;
-  minPurchase?: number;
-  maxDiscount?: number;
-  applicableProducts: "all" | "specific" | "category";
-  active: boolean;
-}
+import BannerManager from "./BannerManager";
+import { EnhancedPromotion } from "./types";
 
 const PromotionsManager = () => {
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [promotions, setPromotions] = useState<EnhancedPromotion[]>([]);
   const [showPromotionForm, setShowPromotionForm] = useState(false);
 
   const handlePromotionSubmit = (data: any) => {
-    const newPromotion: Promotion = {
+    const newPromotion: EnhancedPromotion = {
       id: Date.now().toString(),
       ...data,
-      active: true,
+      status: 'active',
+      usageCount: 0,
+      metrics: {
+        sales: 0,
+        revenue: 0,
+        averageOrderValue: 0,
+      },
     };
     setPromotions([...promotions, newPromotion]);
     setShowPromotionForm(false);
@@ -64,11 +59,26 @@ const PromotionsManager = () => {
                     <div className="space-y-1">
                       <h3 className="font-semibold">{promotion.name}</h3>
                       <p className="text-sm text-gray-500">
-                        {promotion.type === "percentage" ? `${promotion.value}% de desconto` : `R$ ${promotion.value} de desconto`}
+                        {promotion.type === "percentage"
+                          ? `${promotion.value}% de desconto`
+                          : promotion.type === "fixed"
+                          ? `R$ ${promotion.value} de desconto`
+                          : promotion.type === "bogo"
+                          ? "Compre 1, Leve 2"
+                          : "Frete Grátis"}
                       </p>
                       <p className="text-xs text-gray-400">
-                        Válido de {promotion.startDate.toLocaleDateString()} até {promotion.endDate.toLocaleDateString()}
+                        Válido de {promotion.startDate.toLocaleDateString()} até{" "}
+                        {promotion.endDate.toLocaleDateString()}
                       </p>
+                    </div>
+                    <div className="text-sm text-gray-500 text-right">
+                      <div>
+                        {promotion.metrics?.sales || 0} vendas
+                      </div>
+                      <div>
+                        R$ {promotion.metrics?.revenue.toFixed(2)} em receita
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Button variant="outline" size="sm">
@@ -86,7 +96,7 @@ const PromotionsManager = () => {
         </TabsContent>
 
         <TabsContent value="banners">
-          {/* Add banner management code here */}
+          <BannerManager />
         </TabsContent>
       </Tabs>
     </div>
