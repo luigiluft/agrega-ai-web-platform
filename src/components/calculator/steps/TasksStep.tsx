@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import TaskCategorySection from "../TaskCategorySection";
 import { TasksStepProps } from "@/types/calculator-steps";
 import ConfigurationOptions from "../ConfigurationOptions";
+import ExtensionSelector from "../ExtensionSelector";
 import { useState, useEffect } from "react";
+import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 
 const HOUR_RATE = 185;
 
@@ -62,13 +63,14 @@ const TasksStep = ({
         onConfigurationChange={handleConfigurationChange}
       />
 
-      <TaskCategorySection
-        selectedPlan={selectedPlan}
-        onTasksChange={onTasksChange}
-        selectedExtensions={selectedExtensions}
-        onExtensionToggle={onExtensionToggle}
-        prices={prices}
-      />
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4">Extensões Disponíveis</h3>
+        <ExtensionSelector
+          extensions={ecommerceExtensions}
+          selectedExtensions={selectedExtensions}
+          onExtensionToggle={onExtensionToggle}
+        />
+      </div>
     </div>
   );
 };
