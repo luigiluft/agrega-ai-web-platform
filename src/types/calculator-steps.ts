@@ -17,6 +17,7 @@ export interface SummaryStepProps {
   selectedTasks: Task[];
   selectedExtensions: Set<string>;
   totalPrice: number;
+  monthlyRevenue?: string;
 }
 
 export interface TasksStepProps {

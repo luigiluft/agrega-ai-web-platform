@@ -161,6 +161,7 @@ const StepCalculator = () => {
             selectedTasks={selectedTasks}
             selectedExtensions={selectedExtensions}
             totalPrice={totalPrice}
+            monthlyRevenue={monthlyRevenue}
           />
         );
       default:
