@@ -7,12 +7,15 @@ import { Minus, Plus } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 
+type POFrequency = 'weekly' | 'biweekly' | 'monthly' | 'hybrid';
+
 interface ConfigurationOptionsProps {
   selectedPlan: Plan;
   onConfigurationChange: (config: {
     poHours: number;
     customTheme: boolean;
     integrationCount: number;
+    firstMonthPoHours?: number;
   }) => void;
 }
 
@@ -20,17 +23,38 @@ const ConfigurationOptions = ({
   selectedPlan,
   onConfigurationChange,
 }: ConfigurationOptionsProps) => {
-  const [poHours, setPoHours] = useState(selectedPlan.basePOHours);
+  const [poFrequency, setPoFrequency] = useState<POFrequency>('biweekly');
   const [customTheme, setCustomTheme] = useState(false);
   const [integrationCount, setIntegrationCount] = useState(1);
 
+  const calculatePoHours = (frequency: POFrequency) => {
+    switch (frequency) {
+      case 'weekly':
+        return 4;
+      case 'biweekly':
+        return 2;
+      case 'monthly':
+        return 1;
+      case 'hybrid':
+        return 2; // Regular months after first month
+      default:
+        return 2;
+    }
+  };
+
+  const getFirstMonthPoHours = (frequency: POFrequency) => {
+    return frequency === 'hybrid' ? 6 : calculatePoHours(frequency);
+  };
+
   const updateConfiguration = (updates: Partial<{
-    poHours: number;
+    poFrequency: POFrequency;
     customTheme: boolean;
     integrationCount: number;
   }>) => {
+    const newFrequency = updates.poFrequency ?? poFrequency;
     const newConfig = {
-      poHours: updates.poHours ?? poHours,
+      poHours: calculatePoHours(newFrequency),
+      firstMonthPoHours: getFirstMonthPoHours(newFrequency),
       customTheme: updates.customTheme ?? customTheme,
       integrationCount: updates.integrationCount ?? integrationCount,
     };
@@ -38,10 +62,9 @@ const ConfigurationOptions = ({
     onConfigurationChange(newConfig);
   };
 
-  const handlePoHoursChange = (increment: boolean) => {
-    const newHours = increment ? poHours + 1 : Math.max(selectedPlan.basePOHours, poHours - 1);
-    setPoHours(newHours);
-    updateConfiguration({ poHours: newHours });
+  const handlePoFrequencyChange = (value: POFrequency) => {
+    setPoFrequency(value);
+    updateConfiguration({ poFrequency: value });
   };
 
   const handleThemeChange = (value: string) => {
@@ -65,26 +88,35 @@ const ConfigurationOptions = ({
         
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label>Horas de Reunião com PO</Label>
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handlePoHoursChange(false)}
-                disabled={poHours <= selectedPlan.basePOHours}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <span className="font-medium">{poHours}h/mês</span>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handlePoHoursChange(true)}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+            <Label>Frequência de Reuniões com PO</Label>
+            <RadioGroup
+              defaultValue="biweekly"
+              onValueChange={(value) => handlePoFrequencyChange(value as POFrequency)}
+              className="space-y-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="weekly" id="weekly" />
+                <Label htmlFor="weekly">1x por semana (4h/mês)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="biweekly" id="biweekly" />
+                <Label htmlFor="biweekly">1x por quinzena (2h/mês)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="monthly" id="monthly" />
+                <Label htmlFor="monthly">1x por mês (1h/mês)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="hybrid" id="hybrid" />
+                <Label htmlFor="hybrid">1º mês semanal, depois quinzenal (6h 1º mês, 2h/mês depois)</Label>
+              </div>
+            </RadioGroup>
+            <div className="mt-2">
               <Badge variant="secondary">
-                Base: {selectedPlan.basePOHours}h
+                {poFrequency === 'hybrid' 
+                  ? `1º mês: ${getFirstMonthPoHours(poFrequency)}h, Depois: ${calculatePoHours(poFrequency)}h/mês`
+                  : `${calculatePoHours(poFrequency)}h/mês`
+                }
               </Badge>
             </div>
           </div>
