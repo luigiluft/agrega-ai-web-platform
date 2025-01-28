@@ -24,7 +24,7 @@ const HeroSection = () => {
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto text-center">
-                Desenvolvemos, <span className="text-white font-semibold">integramos</span> e{" "}
+                Desenvolvemos e{" "}
                 <span className="text-white font-semibold">gerenciamos</span> seu e-commerce.{" "}
                 <span className="text-xl md:text-2xl font-bold text-white">
                   Escolha o que precisa e foque no crescimento do seu negócio.
