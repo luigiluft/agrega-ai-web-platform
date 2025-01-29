@@ -3,9 +3,11 @@ import { Plan } from "./PlanSelector";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Settings2, Calendar, Palette, Network } from "lucide-react";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { motion } from "framer-motion";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 type POFrequency = 'weekly' | 'biweekly' | 'monthly' | 'hybrid';
 
@@ -36,7 +38,7 @@ const ConfigurationOptions = ({
       case 'monthly':
         return 1;
       case 'hybrid':
-        return 2; // Regular months after first month
+        return 2;
       default:
         return 2;
     }
@@ -82,90 +84,130 @@ const ConfigurationOptions = ({
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Configurações do Projeto</h3>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-8"
+    >
+      <Card className="p-6 bg-gradient-to-br from-white to-gray-50">
+        <div className="flex items-center gap-3 mb-6">
+          <Settings2 className="w-6 h-6 text-primary" />
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Configurações do Projeto
+          </h3>
+        </div>
         
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label>Frequência de Reuniões com o Nosso Time</Label>
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-primary" />
+              <Label className="text-lg font-medium">Frequência de Reuniões com o Nosso Time</Label>
+            </div>
             <RadioGroup
               defaultValue="biweekly"
               onValueChange={(value) => handlePoFrequencyChange(value as POFrequency)}
-              className="space-y-2"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="weekly" id="weekly" />
-                <Label htmlFor="weekly">1x por semana (4h/mês)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="biweekly" id="biweekly" />
-                <Label htmlFor="biweekly">1x por quinzena (2h/mês)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="monthly" id="monthly" />
-                <Label htmlFor="monthly">1x por mês (1h/mês)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="hybrid" id="hybrid" />
-                <Label htmlFor="hybrid">1º mês semanal, depois quinzenal (6h 1º mês, 2h/mês depois)</Label>
-              </div>
+              {[
+                { value: 'weekly', label: '1x por semana', desc: '4 reuniões/mês' },
+                { value: 'biweekly', label: '1x por quinzena', desc: '2 reuniões/mês' },
+                { value: 'monthly', label: '1x por mês', desc: '1 reunião/mês' },
+                { value: 'hybrid', label: 'Híbrido', desc: '1º mês semanal, depois quinzenal' }
+              ].map((option) => (
+                <div
+                  key={option.value}
+                  className={`relative flex items-center space-x-2 rounded-lg border p-4 transition-colors
+                    ${poFrequency === option.value ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
+                >
+                  <RadioGroupItem value={option.value} id={option.value} />
+                  <div className="flex-1">
+                    <Label htmlFor={option.value} className="font-medium">{option.label}</Label>
+                    <p className="text-sm text-gray-500">{option.desc}</p>
+                  </div>
+                </div>
+              ))}
             </RadioGroup>
-            <div className="mt-2">
-              <Badge variant="secondary">
-                {poFrequency === 'hybrid' 
-                  ? `1º mês: ${getFirstMonthPoHours(poFrequency)}h, Depois: ${calculatePoHours(poFrequency)}h/mês`
-                  : `${calculatePoHours(poFrequency)}h/mês`
-                }
-              </Badge>
-            </div>
+            <Badge variant="secondary" className="ml-6">
+              {poFrequency === 'hybrid' 
+                ? `1º mês: ${getFirstMonthPoHours(poFrequency)}h, Depois: ${calculatePoHours(poFrequency)}h/mês`
+                : `${calculatePoHours(poFrequency)}h/mês`
+              }
+            </Badge>
           </div>
 
-          <div className="space-y-2">
-            <Label>Tema</Label>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Palette className="w-5 h-5 text-primary" />
+              <Label className="text-lg font-medium">Tema</Label>
+            </div>
             <RadioGroup
               defaultValue="standard"
               onValueChange={handleThemeChange}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="standard" id="standard" />
-                <Label htmlFor="standard">Tema Padrão (2h)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="custom" id="custom" />
-                <Label htmlFor="custom">Tema Personalizado (20h)</Label>
-              </div>
+              {[
+                { value: 'standard', label: 'Tema Padrão', hours: '2h' },
+                { value: 'custom', label: 'Tema Personalizado', hours: '20h' }
+              ].map((option) => (
+                <div
+                  key={option.value}
+                  className={`relative flex items-center space-x-2 rounded-lg border p-4 transition-colors
+                    ${(option.value === 'custom' ? customTheme : !customTheme) ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
+                >
+                  <RadioGroupItem value={option.value} id={`theme-${option.value}`} />
+                  <div className="flex-1">
+                    <Label htmlFor={`theme-${option.value}`} className="font-medium">{option.label}</Label>
+                    <p className="text-sm text-gray-500">Estimativa: {option.hours}</p>
+                  </div>
+                </div>
+              ))}
             </RadioGroup>
           </div>
 
-          <div className="space-y-2">
-            <Label>Número de Integrações</Label>
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleIntegrationCountChange(false)}
-                disabled={integrationCount <= 1}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <span className="font-medium">{integrationCount}</span>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleIntegrationCountChange(true)}
-                disabled={integrationCount >= selectedPlan.maxIntegrations}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-              <Badge variant="secondary">
-                Máx: {selectedPlan.maxIntegrations}
-              </Badge>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Network className="w-5 h-5 text-primary" />
+              <Label className="text-lg font-medium">Número de Integrações</Label>
             </div>
+            <HoverCard>
+              <HoverCardTrigger>
+                <div className="flex items-center gap-4 p-4 border rounded-lg hover:border-primary/50 transition-colors">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleIntegrationCountChange(false)}
+                    disabled={integrationCount <= 1}
+                    className="h-8 w-8"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="font-medium text-lg min-w-[2ch] text-center">{integrationCount}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleIntegrationCountChange(true)}
+                    disabled={integrationCount >= selectedPlan.maxIntegrations}
+                    className="h-8 w-8"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                  <Badge variant="secondary" className="ml-2">
+                    Máx: {selectedPlan.maxIntegrations}
+                  </Badge>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <p className="text-sm">
+                  Selecione o número de integrações que seu projeto necessita.
+                  Cada integração adiciona aproximadamente 8 horas ao projeto.
+                </p>
+              </HoverCardContent>
+            </HoverCard>
           </div>
         </div>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
