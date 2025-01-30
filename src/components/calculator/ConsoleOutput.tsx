@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Check, Info } from 'lucide-react';
+import { Plan } from './PlanSelector';
 import {
   HoverCard,
   HoverCardContent,
@@ -16,8 +17,8 @@ interface ConsoleOutputProps {
   revenueShare: string;
   revenueSharePercent: string;
   totalHours: number;
-  selectedPlan?: 'monthly' | 'annual';
-  onPlanSelect?: (plan: 'monthly' | 'annual') => void;
+  selectedPlan?: Plan | null;
+  onPlanSelect?: (plan: Plan) => void;
 }
 
 const ConsoleOutput = ({
@@ -42,7 +43,7 @@ const ConsoleOutput = ({
   const annualRevenueShare = (Number(revenueShare) * annualRevenueSharePercent / Number(revenueSharePercent)).toFixed(2);
 
   const renderPlanOption = (isAnnual: boolean) => {
-    const isSelected = isAnnual ? selectedPlan === 'annual' : selectedPlan === 'monthly';
+    const isSelected = isAnnual ? selectedPlan?.id === 'annual' : selectedPlan?.id === 'monthly';
     const installments = isAnnual ? 12 : 3;
     const installmentValue = (Number(implementationPrice) / installments).toFixed(2);
     const currentRevenueShare = isAnnual ? annualRevenueShare : revenueShare;
@@ -55,7 +56,7 @@ const ConsoleOutput = ({
             ? 'border-2 border-primary bg-primary/5' 
             : 'hover:border-primary/50'
         }`}
-        onClick={() => onPlanSelect?.(isAnnual ? 'annual' : 'monthly')}
+        onClick={() => onPlanSelect?.(isAnnual ? { id: 'annual', name: 'Anual', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 } : { id: 'monthly', name: 'Mensal', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 })}
       >
         <div className="flex justify-between items-start mb-4">
           <div>
@@ -110,7 +111,7 @@ const ConsoleOutput = ({
             <Button 
               variant="outline" 
               className="w-full"
-              onClick={() => onPlanSelect?.(isAnnual ? 'annual' : 'monthly')}
+              onClick={() => onPlanSelect?.(isAnnual ? { id: 'annual', name: 'Anual', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 } : { id: 'monthly', name: 'Mensal', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 })}
             >
               Selecionar {isAnnual ? 'Plano Anual' : 'Plano Mensal'}
             </Button>

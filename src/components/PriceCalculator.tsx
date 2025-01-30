@@ -140,7 +140,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     const revenueSharePercent = calculateRevenueShare(revenue);
     const revenueShare = revenue * revenueSharePercent;
 
-    if (selectedPlan?.id === 'express' && maintenancePrice > (selectedPlan.monthlyLimit || 2000)) {
+    if (selectedPlan?.monthlyLimit && maintenancePrice > selectedPlan.monthlyLimit) {
       toast({
         title: "Limite de plano excedido",
         description: "O plano Express tem um limite mensal de R$2.000. Por favor, ajuste as horas de manutenção.",
