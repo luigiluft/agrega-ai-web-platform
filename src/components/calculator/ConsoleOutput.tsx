@@ -1,16 +1,23 @@
-import { Task } from "@/types/calculator-types";
-import { Card } from "../ui/card";
-import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
+import React from 'react';
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
+import { Check, Info } from 'lucide-react';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 interface ConsoleOutputProps {
-  implementationTasks: Task[];
-  maintenanceTasks: Task[];
+  implementationTasks: any[];
+  maintenanceTasks: any[];
   implementationPrice: string;
   maintenancePrice: string;
   revenueShare: string;
   revenueSharePercent: string;
   totalHours: number;
+  selectedPlan?: 'monthly' | 'annual';
+  onPlanSelect?: (plan: 'monthly' | 'annual') => void;
 }
 
 const ConsoleOutput = ({
@@ -21,9 +28,11 @@ const ConsoleOutput = ({
   revenueShare,
   revenueSharePercent,
   totalHours,
+  selectedPlan,
+  onPlanSelect,
 }: ConsoleOutputProps) => {
-  const formatPrice = (price: string | number) => {
-    return Number(price).toLocaleString('pt-BR', {
+  const formatCurrency = (value: string | number) => {
+    return Number(value).toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     });
@@ -32,105 +41,100 @@ const ConsoleOutput = ({
   const annualRevenueSharePercent = Number(revenueSharePercent) - 1;
   const annualRevenueShare = (Number(revenueShare) * annualRevenueSharePercent / Number(revenueSharePercent)).toFixed(2);
 
+  const renderPlanOption = (isAnnual: boolean) => {
+    const isSelected = isAnnual ? selectedPlan === 'annual' : selectedPlan === 'monthly';
+    const installments = isAnnual ? 12 : 3;
+    const installmentValue = (Number(implementationPrice) / installments).toFixed(2);
+    const currentRevenueShare = isAnnual ? annualRevenueShare : revenueShare;
+    const currentRevenuePercent = isAnnual ? annualRevenueSharePercent : revenueSharePercent;
+
+    return (
+      <Card 
+        className={`p-6 transition-all duration-300 cursor-pointer hover:shadow-lg ${
+          isSelected 
+            ? 'border-2 border-primary bg-primary/5' 
+            : 'hover:border-primary/50'
+        }`}
+        onClick={() => onPlanSelect?.(isAnnual ? 'annual' : 'monthly')}
+      >
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-lg font-semibold">
+              Plano {isAnnual ? 'Anual' : 'Mensal'}
+            </h3>
+            {isAnnual && (
+              <span className="text-sm text-green-600 font-medium">
+                Economia de 1% no Revenue Share
+              </span>
+            )}
+          </div>
+          {isSelected && <Check className="text-primary h-5 w-5" />}
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Implementação</span>
+              <div className="text-right">
+                <div className="font-semibold">{formatCurrency(implementationPrice)}</div>
+                <div className="text-sm text-gray-600">
+                  {installments}x de {formatCurrency(installmentValue)}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Manutenção Mensal</span>
+              <div className="font-semibold">{formatCurrency(maintenancePrice)}</div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Revenue Share</span>
+                <HoverCard>
+                  <HoverCardTrigger>
+                    <Info className="h-4 w-4 text-gray-400" />
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <p className="text-sm">
+                      {currentRevenuePercent}% sobre o faturamento mensal
+                    </p>
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
+              <div className="font-semibold">{formatCurrency(currentRevenueShare)}/mês</div>
+            </div>
+          </div>
+
+          {!selectedPlan && (
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => onPlanSelect?.(isAnnual ? 'annual' : 'monthly')}
+            >
+              Selecionar {isAnnual ? 'Plano Anual' : 'Plano Mensal'}
+            </Button>
+          )}
+        </div>
+      </Card>
+    );
+  };
+
   return (
-    <Card className="p-6 space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Plano Mensal</h3>
-        <div className="space-y-4">
-          <div>
-            <div className="flex justify-between items-baseline mb-1">
-              <span className="text-sm text-gray-600">Implementação (3x)</span>
-              <span className="font-semibold">
-                {formatPrice(Number(implementationPrice) / 3)}/mês
-              </span>
-            </div>
-            <div className="text-xs text-gray-500">
-              Total: {formatPrice(implementationPrice)} em 3x
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between items-baseline">
-              <span className="text-sm text-gray-600">Mensalidade</span>
-              <span className="font-semibold">{formatPrice(maintenancePrice)}/mês</span>
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between items-baseline">
-              <span className="text-sm text-gray-600">Comissão sobre vendas</span>
-              <span className="font-semibold">{revenueSharePercent}%</span>
-            </div>
-            <div className="text-xs text-gray-500">
-              Aproximadamente {formatPrice(revenueShare)}/mês
-            </div>
-          </div>
-        </div>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {renderPlanOption(false)} {/* Monthly Plan */}
+        {renderPlanOption(true)}  {/* Annual Plan */}
       </div>
 
-      <Separator />
-
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Plano Anual</h3>
-        <div className="space-y-4">
-          <div>
-            <div className="flex justify-between items-baseline mb-1">
-              <span className="text-sm text-gray-600">Implementação (12x)</span>
-              <span className="font-semibold">
-                {formatPrice(Number(implementationPrice) / 12)}/mês
-              </span>
-            </div>
-            <div className="text-xs text-gray-500">
-              Total: {formatPrice(implementationPrice)} em 12x
-            </div>
+      {selectedPlan && (
+        <Card className="p-4 bg-gray-50">
+          <div className="text-sm text-gray-600">
+            Total de horas estimadas: <span className="font-semibold">{totalHours}h</span>
           </div>
-          <div>
-            <div className="flex justify-between items-baseline">
-              <span className="text-sm text-gray-600">Mensalidade</span>
-              <span className="font-semibold">{formatPrice(maintenancePrice)}/mês</span>
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between items-baseline">
-              <span className="text-sm text-gray-600">Comissão sobre vendas</span>
-              <span className="font-semibold">{annualRevenueSharePercent}%</span>
-            </div>
-            <div className="text-xs text-gray-500">
-              Aproximadamente {formatPrice(annualRevenueShare)}/mês
-            </div>
-            <div className="text-xs text-green-600 mt-1">
-              Desconto de 1% na comissão para contratos anuais
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Separator />
-
-      <div className="space-y-4">
-        <div>
-          <h4 className="font-medium mb-2">Escopo da Implementação</h4>
-          <ul className="text-sm text-gray-600 space-y-1">
-            {implementationTasks.map((task, index) => (
-              <li key={index}>{task.name} ({task.hours}h)</li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="font-medium mb-2">Escopo da Sustentação Mensal</h4>
-          <ul className="text-sm text-gray-600 space-y-1">
-            {maintenanceTasks.map((task, index) => (
-              <li key={index}>{task.name} ({task.hours}h)</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="pt-4">
-          <Badge variant="secondary">
-            Total de horas: {totalHours}h
-          </Badge>
-        </div>
-      </div>
-    </Card>
+        </Card>
+      )}
+    </div>
   );
 };
 

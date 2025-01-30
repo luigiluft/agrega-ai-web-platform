@@ -35,7 +35,7 @@ const calculateRevenueShare = (revenue: number): number => {
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
-  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual' | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
@@ -216,6 +216,8 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
               revenueShare={prices.revenueShare}
               revenueSharePercent={prices.revenueSharePercent}
               totalHours={prices.totalHours}
+              selectedPlan={selectedPlan}
+              onPlanSelect={setSelectedPlan}
             />
 
             <div className="grid grid-cols-2 gap-4">

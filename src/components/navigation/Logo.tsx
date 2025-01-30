@@ -12,13 +12,11 @@ const Logo = ({ scrolled }: LogoProps) => {
       className="flex items-center cursor-pointer transform hover:scale-105 transition-all duration-300" 
       onClick={() => navigate('/')}
     >
-      <span className={`font-bold text-3xl tracking-tight ${
-        scrolled 
-          ? 'text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark' 
-          : 'text-white drop-shadow-lg'
-      }`}>
-        AGREGAÍ
-      </span>
+      <img 
+        src="/lovable-uploads/25ca2603-e3be-4cea-9ca8-54050f619e24.png"
+        alt="Agregaí"
+        className={`h-12 ${scrolled ? 'brightness-75' : 'brightness-100'} transition-all duration-300`}
+      />
     </div>
   );
 };
