@@ -9,6 +9,7 @@ import PlanStep from "./steps/PlanStep";
 import ThemeStep from "./steps/ThemeStep";
 import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
+import ContractStep from "./steps/ContractStep";
 import { Theme } from "@/components/theme/types";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { calculatorTasks } from "@/data/calculatorTasks";
@@ -35,10 +36,11 @@ const StepCalculator = () => {
   };
 
   const steps: Array<{ step: Step; label: string }> = [
-    { step: "plan" as Step, label: "Escolha seu plano" },
-    { step: "theme" as Step, label: "Selecione o tema" },
-    { step: "tasks" as Step, label: "Configure seu projeto" },
-    { step: "summary" as Step, label: "Resumo do projeto" }
+    { step: "plan", label: "Escolha seu plano" },
+    { step: "theme", label: "Selecione o tema" },
+    { step: "tasks", label: "Configure seu projeto" },
+    { step: "summary", label: "Resumo do projeto" },
+    { step: "contract", label: "Contrato" }
   ].filter(({ step }) => shouldShowStep(step));
 
   const calculatePrice = () => {
@@ -117,11 +119,20 @@ const StepCalculator = () => {
       setCurrentStep("tasks");
     } else if (currentStep === "tasks") {
       setCurrentStep("summary");
+    } else if (currentStep === "summary") {
+      setCurrentStep("contract");
     }
   };
 
   const renderStepContent = () => {
     const totalPrice = calculatePrice();
+    const implementationPrice = totalPrice;
+    const maintenancePrice = selectedTasks
+      .filter(task => task.type === "recurring")
+      .reduce((acc, task) => acc + (task.hours * 200), 0);
+    const revenue = parseFloat(monthlyRevenue) || 0;
+    const revenueSharePercent = revenue <= 100000 ? 15 : revenue <= 500000 ? 12 : revenue <= 1000000 ? 10 : 5;
+    const revenueShare = (revenue * revenueSharePercent) / 100;
 
     switch (currentStep) {
       case "plan":
@@ -164,6 +175,17 @@ const StepCalculator = () => {
             monthlyRevenue={monthlyRevenue}
           />
         );
+      case "contract":
+        return (
+          <ContractStep
+            selectedPlan={selectedPlan}
+            selectedTasks={selectedTasks}
+            implementationPrice={implementationPrice}
+            maintenancePrice={maintenancePrice}
+            revenueShare={revenueShare}
+            revenueSharePercent={revenueSharePercent}
+          />
+        );
       default:
         return null;
     }
@@ -203,7 +225,7 @@ const StepCalculator = () => {
           {renderStepContent()}
         </motion.div>
 
-        {currentStep !== "summary" && (
+        {currentStep !== "contract" && (
           <div className="flex justify-end mt-8">
             <Button
               onClick={handleNext}
