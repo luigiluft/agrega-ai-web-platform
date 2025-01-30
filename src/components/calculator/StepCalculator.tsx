@@ -9,7 +9,7 @@ import PlanStep from "./steps/PlanStep";
 import ThemeStep from "./steps/ThemeStep";
 import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
-import ContractStep from "./steps/ContractStep";
+import ContractStep from "./ContractStep";
 import { Theme } from "@/components/theme/types";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { calculatorTasks } from "@/data/calculatorTasks";
