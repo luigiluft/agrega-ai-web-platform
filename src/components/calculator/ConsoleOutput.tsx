@@ -51,7 +51,8 @@ const ConsoleOutput = ({
     const currentRevenuePercent = isAnnual ? annualRevenueSharePercent : revenueSharePercent;
 
     const handlePlanSelect = (e: React.MouseEvent) => {
-      e.stopPropagation(); // Prevent event bubbling
+      e.preventDefault();
+      e.stopPropagation();
       if (onPlanSelect) {
         onPlanSelect({
           id: planId,
@@ -68,11 +69,14 @@ const ConsoleOutput = ({
 
     return (
       <Card 
-        className={`p-6 transition-all duration-300 cursor-pointer transform ${
-          isSelected 
-            ? 'border-2 border-primary bg-primary/5 shadow-lg scale-[1.02]' 
+        className={`
+          p-6 transition-all duration-300 cursor-pointer
+          ${isSelected 
+            ? 'border-2 border-primary bg-primary/5 shadow-xl ring-2 ring-primary/20' 
             : 'hover:border-primary/50 hover:shadow-md hover:scale-[1.01]'
-        }`}
+          }
+          ${isSelected ? 'scale-[1.02]' : 'scale-100'}
+        `}
         onClick={handlePlanSelect}
       >
         <div className="flex justify-between items-start mb-4">
@@ -87,7 +91,9 @@ const ConsoleOutput = ({
             )}
           </div>
           {isSelected && (
-            <Check className="text-primary h-5 w-5 animate-bounce" />
+            <div className="bg-primary/10 p-1.5 rounded-full">
+              <Check className="text-primary h-5 w-5" />
+            </div>
           )}
         </div>
 
@@ -128,12 +134,16 @@ const ConsoleOutput = ({
 
           <Button 
             variant={isSelected ? "default" : "outline"}
-            className={`w-full transition-all duration-300 ${
-              isSelected ? 'bg-primary text-white shadow-md transform scale-[1.02]' : ''
-            }`}
+            className={`
+              w-full transition-all duration-300
+              ${isSelected 
+                ? 'bg-primary text-white shadow-md transform scale-[1.02] hover:bg-primary/90' 
+                : 'hover:bg-primary/10'
+              }
+            `}
             onClick={handlePlanSelect}
           >
-            {isSelected ? 'Plano Selecionado' : `Selecionar ${isAnnual ? 'Plano Anual' : 'Plano Mensal'}`}
+            {isSelected ? 'Plano Selecionado' : `Selecionar Plano ${isAnnual ? 'Anual' : 'Mensal'}`}
           </Button>
         </div>
       </Card>
