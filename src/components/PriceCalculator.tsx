@@ -18,20 +18,7 @@ import RevenueShareStep from "./calculator/steps/RevenueShareStep";
 import { motion } from "framer-motion";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
-
-const HOURLY_RATE = 185;
-
-const calculateRevenueShare = (revenue: number): number => {
-  if (revenue <= 100000) {
-    return 0.15; // 15%
-  } else if (revenue <= 500000) {
-    return 0.12; // 12%
-  } else if (revenue <= 1000000) {
-    return 0.10; // 10%
-  } else {
-    return 0.05; // 5%
-  }
-};
+import { calculatePrices } from "./calculator/pricing/PricingLogic";
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
@@ -92,7 +79,6 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
         return false;
       });
     } else {
-      // Premium plan gets all essential tasks and most optional ones
       preSelectedTasks = allTasks.filter(task => 
         task.type === "essential" ||
         task.type === "optional" ||
@@ -114,52 +100,7 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
     setSelectedExtensions(newSelectedExtensions);
   };
 
-  const calculatePrices = () => {
-    const implementationTasks = selectedTasks.filter(task => 
-      task.type === 'essential' || task.type === 'optional'
-    );
-    
-    const maintenanceTasks = selectedTasks.filter(task => 
-      task.type === 'recurring'
-    );
-
-    const implementationHours = implementationTasks.reduce(
-      (total, task) => total + task.hours, 
-      0
-    );
-
-    const maintenanceHours = maintenanceTasks.reduce(
-      (total, task) => total + task.hours, 
-      0
-    );
-    
-    const implementationPrice = implementationHours * HOURLY_RATE;
-    const maintenancePrice = maintenanceHours * HOURLY_RATE;
-    
-    const revenue = parseFloat(monthlyRevenue) || 0;
-    const revenueSharePercent = calculateRevenueShare(revenue);
-    const revenueShare = revenue * revenueSharePercent;
-
-    if (selectedPlan?.monthlyLimit && maintenancePrice > selectedPlan.monthlyLimit) {
-      toast({
-        title: "Limite de plano excedido",
-        description: "O plano Express tem um limite mensal de R$2.000. Por favor, ajuste as horas de manutenção.",
-        variant: "destructive",
-      });
-    }
-
-    return {
-      implementationPrice: implementationPrice.toFixed(2),
-      maintenancePrice: maintenancePrice.toFixed(2),
-      revenueShare: revenueShare.toFixed(2),
-      revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
-      implementationTasks,
-      maintenanceTasks,
-      totalHours: implementationHours + maintenanceHours
-    };
-  };
-
-  const prices = calculatePrices();
+  const prices = calculatePrices(selectedTasks, selectedPlan, monthlyRevenue);
 
   const handleContactClick = () => {
     toast({

@@ -15,7 +15,7 @@ const Logo = ({ scrolled }: LogoProps) => {
       <img 
         src="/lovable-uploads/25ca2603-e3be-4cea-9ca8-54050f619e24.png"
         alt="Agregaí"
-        className={`h-12 ${scrolled ? 'brightness-75' : 'brightness-100'} transition-all duration-300`}
+        className={`h-48 ${scrolled ? 'brightness-75' : 'brightness-100'} transition-all duration-300`}
       />
     </div>
   );
