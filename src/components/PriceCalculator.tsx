@@ -35,7 +35,7 @@ const calculateRevenueShare = (revenue: number): number => {
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual' | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
