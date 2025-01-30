@@ -50,7 +50,8 @@ const ConsoleOutput = ({
     const currentRevenueShare = isAnnual ? annualRevenueShare : revenueShare;
     const currentRevenuePercent = isAnnual ? annualRevenueSharePercent : revenueSharePercent;
 
-    const handlePlanSelect = () => {
+    const handlePlanSelect = (e: React.MouseEvent) => {
+      e.stopPropagation(); // Prevent event bubbling
       if (onPlanSelect) {
         onPlanSelect({
           id: planId,
@@ -67,10 +68,10 @@ const ConsoleOutput = ({
 
     return (
       <Card 
-        className={`p-6 transition-all duration-300 cursor-pointer ${
+        className={`p-6 transition-all duration-300 cursor-pointer transform ${
           isSelected 
-            ? 'border-2 border-primary bg-primary/5 animate-scale-up shadow-lg' 
-            : 'hover:border-primary/50 hover:shadow-md'
+            ? 'border-2 border-primary bg-primary/5 shadow-lg scale-[1.02]' 
+            : 'hover:border-primary/50 hover:shadow-md hover:scale-[1.01]'
         }`}
         onClick={handlePlanSelect}
       >
@@ -86,7 +87,7 @@ const ConsoleOutput = ({
             )}
           </div>
           {isSelected && (
-            <Check className="text-primary h-5 w-5 animate-fade-in" />
+            <Check className="text-primary h-5 w-5 animate-bounce" />
           )}
         </div>
 
@@ -128,7 +129,7 @@ const ConsoleOutput = ({
           <Button 
             variant={isSelected ? "default" : "outline"}
             className={`w-full transition-all duration-300 ${
-              isSelected ? 'bg-primary text-white animate-fade-in' : ''
+              isSelected ? 'bg-primary text-white shadow-md transform scale-[1.02]' : ''
             }`}
             onClick={handlePlanSelect}
           >
