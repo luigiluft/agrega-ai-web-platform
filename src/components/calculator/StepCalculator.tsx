@@ -109,6 +109,15 @@ const StepCalculator = () => {
       return;
     }
 
+    if (currentStep === "summary" && !selectedPlan) {
+      toast({
+        title: "Plano não selecionado",
+        description: "Por favor, volte e selecione um plano antes de continuar.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (currentStep === "plan") {
       if (selectedPlan?.id === "express") {
         setCurrentStep("theme");

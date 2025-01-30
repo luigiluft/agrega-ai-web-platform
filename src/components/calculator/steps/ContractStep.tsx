@@ -7,7 +7,8 @@ import { Label } from "../../ui/label";
 import { useToast } from "../../ui/use-toast";
 import { motion } from "framer-motion";
 import { Card } from "../../ui/card";
-import { File, Mail, Check, User, Signature } from "lucide-react";
+import { File, Mail, Check, CreditCard, QrCode, Receipt } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface ContractStepProps {
   selectedPlan: Plan | null;
@@ -27,6 +28,7 @@ const ContractStep = ({
   revenueSharePercent,
 }: ContractStepProps) => {
   const [email, setEmail] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"credit" | "pix" | "boleto">("credit");
   const { toast } = useToast();
 
   const formatPrice = (price: number) => {
@@ -76,7 +78,7 @@ const ContractStep = ({
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-lg font-semibold text-gray-900">
             <File className="h-5 w-5 text-orange-500" />
-            <h2>Resumo do Plano</h2>
+            <h2>Resumo do Plano {selectedPlan?.name}</h2>
           </div>
           
           <div className="grid gap-4 text-sm">
@@ -116,7 +118,7 @@ const ContractStep = ({
           <h4 className="text-base font-medium mt-4 mb-2">1. OBJETO</h4>
           <p className="text-sm leading-relaxed">
             O presente contrato tem por objeto a prestação de serviços de desenvolvimento e 
-            manutenção de plataforma digital, conforme escopo detalhado abaixo:
+            manutenção de plataforma digital no plano {selectedPlan?.name}, conforme escopo detalhado abaixo:
           </p>
           <ul className="list-disc pl-5 text-sm space-y-1">
             {selectedTasks.map((task) => (
@@ -137,33 +139,47 @@ const ContractStep = ({
           </ul>
         </div>
 
-        <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <User className="h-4 w-4" />
-              <span>CCO</span>
+        <Card className="p-6 bg-orange-50/50 border border-orange-100">
+          <h4 className="text-base font-medium mb-4">3. MÉTODO DE PAGAMENTO</h4>
+          <RadioGroup value={paymentMethod} onValueChange={(value: "credit" | "pix" | "boleto") => setPaymentMethod(value)} className="space-y-4">
+            <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
+              <RadioGroupItem value="credit" id="credit" />
+              <Label htmlFor="credit" className="flex items-center gap-2 cursor-pointer">
+                <CreditCard className="h-4 w-4 text-orange-500" />
+                Cartão de Crédito
+                <span className="text-sm text-gray-500">(até 12x)</span>
+              </Label>
             </div>
+            <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
+              <RadioGroupItem value="pix" id="pix" />
+              <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer">
+                <QrCode className="h-4 w-4 text-orange-500" />
+                PIX
+                <span className="text-sm text-gray-500">(5% de desconto)</span>
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
+              <RadioGroupItem value="boleto" id="boleto" />
+              <Label htmlFor="boleto" className="flex items-center gap-2 cursor-pointer">
+                <Receipt className="h-4 w-4 text-orange-500" />
+                Boleto Bancário
+                <span className="text-sm text-gray-500">(vencimento em 3 dias)</span>
+              </Label>
+            </div>
+          </RadioGroup>
+        </Card>
+
+        <div className="grid grid-cols-2 gap-8 mt-12 pt-8 border-t">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-500">CONTRATADA</p>
             <div className="h-0.5 bg-gray-300 w-full mt-12"></div>
-            <p className="text-sm font-medium">Luigi Luft</p>
+            <p className="text-sm font-medium">Agrega.ai Tecnologia LTDA</p>
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <User className="h-4 w-4" />
-              <span>COO</span>
-            </div>
+            <p className="text-sm font-medium text-gray-500">CONTRATANTE</p>
             <div className="h-0.5 bg-gray-300 w-full mt-12"></div>
-            <p className="text-sm font-medium">Lucca Luft</p>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Signature className="h-4 w-4" />
-              <span>Assinatura do Cliente</span>
-            </div>
-            <div className="h-24 border rounded-lg border-dashed border-gray-300 bg-gray-50 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
-              <p className="text-sm text-gray-400">Clique ou arraste para assinar</p>
-            </div>
+            <p className="text-sm font-medium">Cliente</p>
           </div>
         </div>
 
