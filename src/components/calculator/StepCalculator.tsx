@@ -17,6 +17,14 @@ import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { Step } from "@/types/calculator-steps";
 import { Plan } from "./PlanSelector";
 
+const steps = [
+  { step: "plan" as Step, label: "Plano" },
+  { step: "theme" as Step, label: "Tema" },
+  { step: "tasks" as Step, label: "Tarefas" },
+  { step: "summary" as Step, label: "Resumo" },
+  { step: "contract" as Step, label: "Contrato" }
+];
+
 const StepCalculator = () => {
   const [currentStep, setCurrentStep] = useState<Step>("plan");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
