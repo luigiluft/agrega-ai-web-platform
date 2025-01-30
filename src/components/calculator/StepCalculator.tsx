@@ -36,11 +36,11 @@ const StepCalculator = () => {
   };
 
   const steps: Array<{ step: Step; label: string }> = [
-    { step: "plan", label: "Escolha seu plano" },
-    { step: "theme", label: "Selecione o tema" },
-    { step: "tasks", label: "Configure seu projeto" },
-    { step: "summary", label: "Resumo do projeto" },
-    { step: "contract", label: "Contrato" }
+    { step: "plan" as Step, label: "Escolha seu plano" },
+    { step: "theme" as Step, label: "Selecione o tema" },
+    { step: "tasks" as Step, label: "Configure seu projeto" },
+    { step: "summary" as Step, label: "Resumo do projeto" },
+    { step: "contract" as Step, label: "Contrato" }
   ].filter(({ step }) => shouldShowStep(step));
 
   const calculatePrice = () => {
