@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calculator, Mail, PhoneCall } from "lucide-react";
+import { Calculator } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import {
@@ -11,14 +11,12 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Task } from "@/types/calculator-types";
-import TaskCategorySection from "./calculator/TaskCategorySection";
-import ConsoleOutput from "./calculator/ConsoleOutput";
-import PlanSelector, { Plan } from "./calculator/PlanSelector";
-import RevenueShareStep from "./calculator/steps/RevenueShareStep";
 import { motion } from "framer-motion";
+import PlanSelector, { Plan } from "./calculator/PlanSelector";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { calculatePrices } from "./calculator/pricing/PricingLogic";
+import PlanContent from "./calculator/PlanContent";
 
 const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { toast } = useToast();
@@ -123,65 +121,22 @@ const PriceCalculator = ({ fullPage = false }: { fullPage?: boolean }) => {
       </motion.div>
 
       {selectedPlan && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-        >
-          <div className="space-y-6">
-            <TaskCategorySection
-              onTasksChange={setSelectedTasks}
-              selectedExtensions={selectedExtensions}
-              onExtensionToggle={handleExtensionToggle}
-              prices={prices}
-              selectedPlan={selectedPlan}
-            />
-            
-            <RevenueShareStep
-              monthlyRevenue={monthlyRevenue}
-              setMonthlyRevenue={setMonthlyRevenue}
-              averageTicket={averageTicket}
-              setAverageTicket={setAverageTicket}
-              monthlyOrders={monthlyOrders}
-              setMonthlyOrders={setMonthlyOrders}
-            />
-          </div>
-          
-          <div className="space-y-6">
-            <ConsoleOutput
-              implementationTasks={prices.implementationTasks}
-              maintenanceTasks={prices.maintenanceTasks}
-              implementationPrice={prices.implementationPrice}
-              maintenancePrice={prices.maintenancePrice}
-              revenueShare={prices.revenueShare}
-              revenueSharePercent={prices.revenueSharePercent}
-              totalHours={prices.totalHours}
-              selectedPlan={selectedPlan}
-              onPlanSelect={setSelectedPlan}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
-              <Button 
-                variant="outline"
-                className="w-full space-x-2"
-                onClick={handleContactClick}
-              >
-                <Mail className="w-4 h-4" />
-                <span>Receber por Email</span>
-              </Button>
-              
-              <Button 
-                variant="default"
-                className="w-full space-x-2"
-                onClick={handleContactClick}
-              >
-                <PhoneCall className="w-4 h-4" />
-                <span>Falar com Consultor</span>
-              </Button>
-            </div>
-          </div>
-        </motion.div>
+        <PlanContent
+          selectedPlan={selectedPlan}
+          selectedTasks={selectedTasks}
+          selectedExtensions={selectedExtensions}
+          monthlyRevenue={monthlyRevenue}
+          averageTicket={averageTicket}
+          monthlyOrders={monthlyOrders}
+          prices={prices}
+          onTasksChange={setSelectedTasks}
+          onExtensionToggle={handleExtensionToggle}
+          setMonthlyRevenue={setMonthlyRevenue}
+          setAverageTicket={setAverageTicket}
+          setMonthlyOrders={setMonthlyOrders}
+          onContactClick={handleContactClick}
+          setSelectedPlan={setSelectedPlan}
+        />
       )}
     </div>
   );
