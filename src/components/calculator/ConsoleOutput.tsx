@@ -43,11 +43,27 @@ const ConsoleOutput = ({
   const annualRevenueShare = (Number(revenueShare) * annualRevenueSharePercent / Number(revenueSharePercent)).toFixed(2);
 
   const renderPlanOption = (isAnnual: boolean) => {
-    const isSelected = isAnnual ? selectedPlan?.id === 'annual' : selectedPlan?.id === 'monthly';
+    const planId = isAnnual ? 'annual' : 'monthly';
+    const isSelected = selectedPlan?.id === planId;
     const installments = isAnnual ? 12 : 3;
     const installmentValue = (Number(implementationPrice) / installments).toFixed(2);
     const currentRevenueShare = isAnnual ? annualRevenueShare : revenueShare;
     const currentRevenuePercent = isAnnual ? annualRevenueSharePercent : revenueSharePercent;
+
+    const handlePlanSelect = () => {
+      if (onPlanSelect) {
+        onPlanSelect({
+          id: planId,
+          name: isAnnual ? 'Anual' : 'Mensal',
+          description: '',
+          features: [],
+          baseImplementationPrice: 0,
+          baseMaintenancePrice: 0,
+          basePOHours: 0,
+          maxIntegrations: 0
+        });
+      }
+    };
 
     return (
       <Card 
@@ -56,7 +72,7 @@ const ConsoleOutput = ({
             ? 'border-2 border-primary bg-primary/5' 
             : 'hover:border-primary/50'
         }`}
-        onClick={() => onPlanSelect?.(isAnnual ? { id: 'annual', name: 'Anual', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 } : { id: 'monthly', name: 'Mensal', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 })}
+        onClick={handlePlanSelect}
       >
         <div className="flex justify-between items-start mb-4">
           <div>
@@ -107,15 +123,13 @@ const ConsoleOutput = ({
             </div>
           </div>
 
-          {!selectedPlan && (
-            <Button 
-              variant="outline" 
-              className="w-full"
-              onClick={() => onPlanSelect?.(isAnnual ? { id: 'annual', name: 'Anual', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 } : { id: 'monthly', name: 'Mensal', description: '', features: [], baseImplementationPrice: 0, baseMaintenancePrice: 0, basePOHours: 0, maxIntegrations: 0 })}
-            >
-              Selecionar {isAnnual ? 'Plano Anual' : 'Plano Mensal'}
-            </Button>
-          )}
+          <Button 
+            variant={isSelected ? "default" : "outline"}
+            className="w-full"
+            onClick={handlePlanSelect}
+          >
+            {isSelected ? 'Plano Selecionado' : `Selecionar ${isAnnual ? 'Plano Anual' : 'Plano Mensal'}`}
+          </Button>
         </div>
       </Card>
     );
