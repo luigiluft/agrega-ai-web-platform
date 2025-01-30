@@ -1,6 +1,16 @@
 import { Plan } from "../PlanSelector";
 import { Task } from "@/types/calculator-types";
 
+export interface PricingResult {
+  implementationPrice: string;
+  maintenancePrice: string;
+  revenueShare: string;
+  revenueSharePercent: string;
+  implementationTasks: Task[];
+  maintenanceTasks: Task[];
+  totalHours: number;
+}
+
 export const HOURLY_RATE = 185;
 
 export const calculateRevenueShare = (revenue: number): number => {
@@ -19,7 +29,7 @@ export const calculatePrices = (
   selectedTasks: Task[],
   selectedPlan: Plan | null,
   monthlyRevenue: string
-) => {
+): PricingResult => {
   const implementationTasks = selectedTasks.filter(task => 
     task.type === 'essential' || task.type === 'optional'
   );
