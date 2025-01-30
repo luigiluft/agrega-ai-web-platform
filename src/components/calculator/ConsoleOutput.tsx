@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '../ui/card';
-import { Button } from '../ui/button';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Check, Info } from 'lucide-react';
 import { Plan } from './PlanSelector';
 import {
@@ -67,10 +67,10 @@ const ConsoleOutput = ({
 
     return (
       <Card 
-        className={`p-6 transition-all duration-300 cursor-pointer hover:shadow-lg ${
+        className={`p-6 transition-all duration-300 cursor-pointer ${
           isSelected 
-            ? 'border-2 border-primary bg-primary/5' 
-            : 'hover:border-primary/50'
+            ? 'border-2 border-primary bg-primary/5 animate-scale-up shadow-lg' 
+            : 'hover:border-primary/50 hover:shadow-md'
         }`}
         onClick={handlePlanSelect}
       >
@@ -85,7 +85,9 @@ const ConsoleOutput = ({
               </span>
             )}
           </div>
-          {isSelected && <Check className="text-primary h-5 w-5" />}
+          {isSelected && (
+            <Check className="text-primary h-5 w-5 animate-fade-in" />
+          )}
         </div>
 
         <div className="space-y-4">
@@ -125,7 +127,9 @@ const ConsoleOutput = ({
 
           <Button 
             variant={isSelected ? "default" : "outline"}
-            className="w-full"
+            className={`w-full transition-all duration-300 ${
+              isSelected ? 'bg-primary text-white animate-fade-in' : ''
+            }`}
             onClick={handlePlanSelect}
           >
             {isSelected ? 'Plano Selecionado' : `Selecionar ${isAnnual ? 'Plano Anual' : 'Plano Mensal'}`}
@@ -138,12 +142,12 @@ const ConsoleOutput = ({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {renderPlanOption(false)} {/* Monthly Plan */}
-        {renderPlanOption(true)}  {/* Annual Plan */}
+        {renderPlanOption(false)}
+        {renderPlanOption(true)}
       </div>
 
       {selectedPlan && (
-        <Card className="p-4 bg-gray-50">
+        <Card className="p-4 bg-gray-50 animate-fade-up">
           <div className="text-sm text-gray-600">
             Total de horas estimadas: <span className="font-semibold">{totalHours}h</span>
           </div>
