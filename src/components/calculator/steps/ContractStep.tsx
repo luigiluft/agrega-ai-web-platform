@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Plan } from "../PlanSelector";
-import { Task } from "@/types/calculator-types";
-import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
-import { Label } from "../../ui/label";
-import { useToast } from "../../ui/use-toast";
 import { motion } from "framer-motion";
-import { Card } from "../../ui/card";
-import { File, Mail, Check, CreditCard, QrCode, Receipt } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { File, Mail, Check, CreditCard, QrCode, Receipt } from "lucide-react";
 
 interface ContractStepProps {
   selectedPlan: Plan | null;
-  selectedTasks: Task[];
+  selectedTasks: any[];
   implementationPrice: number;
   maintenancePrice: number;
   revenueShare: number;
@@ -68,7 +67,7 @@ const ContractStep = ({
         <img
           src="/lovable-uploads/193914c2-f64d-4f1c-b42e-95d160e8b8d9.png"
           alt="Agrega.ai Logo"
-          className="h-20" // Increased logo size
+          className="h-20"
         />
         <div className="text-right">
           <h1 className="text-2xl font-bold text-gray-900">Contrato de Prestação de Serviços</h1>
@@ -110,10 +109,10 @@ const ContractStep = ({
             <div className="space-y-2">
               <p className="text-sm font-medium text-gray-500">CONTRATADA</p>
               <div className="h-0.5 bg-gray-300 w-full"></div>
-              <p className="font-['Dancing_Script'] text-xl">João Silva</p>
-              <p className="text-sm font-medium">Diretor Comercial</p>
-              <p className="font-['Dancing_Script'] text-xl">Maria Santos</p>
-              <p className="text-sm font-medium">Diretora de Operações</p>
+              <p className="font-['Dancing_Script'] text-xl">Lucca Luft</p>
+              <p className="text-sm font-medium">COO</p>
+              <p className="font-['Dancing_Script'] text-xl">Luigi Luft</p>
+              <p className="text-sm font-medium">CCO</p>
             </div>
 
             <div className="space-y-2">
