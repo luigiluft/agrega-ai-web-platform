@@ -68,7 +68,7 @@ const ContractStep = ({
         <img
           src="/lovable-uploads/193914c2-f64d-4f1c-b42e-95d160e8b8d9.png"
           alt="Agrega.ai Logo"
-          className="h-12"
+          className="h-20" // Increased logo size
         />
         <div className="text-right">
           <h1 className="text-2xl font-bold text-gray-900">Contrato de Prestação de Serviços</h1>
@@ -76,113 +76,82 @@ const ContractStep = ({
         </div>
       </div>
 
-      <Card className="p-6 bg-orange-50/50 border border-orange-100">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-            <File className="h-5 w-5 text-orange-500" />
-            <h2>Resumo do Plano {selectedPlan?.name}</h2>
+      <Card className="p-8 bg-white border border-gray-200">
+        <div className="space-y-6 text-gray-700">
+          <div className="prose prose-sm max-w-none">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h3>
+            
+            <p className="text-sm leading-relaxed">
+              Por este instrumento particular, de um lado <strong>AGREGA AI TECNOLOGIA LTDA</strong>, 
+              inscrita no CNPJ sob nº XX.XXX.XXX/0001-XX, com sede na Rua XXXXX, nº XXX, 
+              Bairro XXXXX, CEP XXXXX-XXX, São Paulo/SP, doravante denominada <strong>CONTRATADA</strong>, 
+              e de outro lado a pessoa física ou jurídica identificada no cadastro eletrônico, 
+              doravante denominada <strong>CONTRATANTE</strong>, têm entre si justo e acordado o seguinte:
+            </p>
+
+            <h4 className="text-base font-medium mt-6 mb-2">1. OBJETO</h4>
+            <p className="text-sm leading-relaxed">
+              O presente contrato tem por objeto a prestação de serviços de desenvolvimento e 
+              manutenção de plataforma digital no plano {selectedPlan?.name}, conforme escopo detalhado 
+              e condições comerciais estabelecidas.
+            </p>
+
+            <h4 className="text-base font-medium mt-4 mb-2">2. VALORES E CONDIÇÕES</h4>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Implementação: {formatPrice(implementationPrice)} em até {installments}x de {formatPrice(Number(installmentValue))}</li>
+              <li>Manutenção Mensal: {formatPrice(maintenancePrice)}</li>
+              {revenueShare > 0 && (
+                <li>Revenue Share: {revenueSharePercent}% sobre o faturamento mensal</li>
+              )}
+            </ul>
           </div>
-          
-          <div className="grid gap-4 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Plano:</span>
-              <span className="font-medium text-gray-900">{selectedPlan?.name}</span>
+
+          <div className="grid grid-cols-2 gap-8 mt-12 pt-8 border-t">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-500">CONTRATADA</p>
+              <div className="h-0.5 bg-gray-300 w-full"></div>
+              <p className="font-['Dancing_Script'] text-xl">João Silva</p>
+              <p className="text-sm font-medium">Diretor Comercial</p>
+              <p className="font-['Dancing_Script'] text-xl">Maria Santos</p>
+              <p className="text-sm font-medium">Diretora de Operações</p>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Implementação:</span>
-              <span className="font-medium text-gray-900">{formatPrice(implementationPrice)}</span>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-500">CONTRATANTE</p>
+              <div className="h-0.5 bg-gray-300 w-full"></div>
+              <p className="text-sm font-medium">Cliente</p>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Manutenção Mensal:</span>
-              <span className="font-medium text-gray-900">{formatPrice(maintenancePrice)}</span>
-            </div>
-            {revenueShare > 0 && (
-              <div className="flex justify-between">
-                <span className="text-gray-600">Revenue Share:</span>
-                <span className="font-medium text-gray-900">{revenueSharePercent}%</span>
-              </div>
-            )}
           </div>
         </div>
       </Card>
 
-      <div className="space-y-6 text-gray-700">
-        <div className="prose prose-sm max-w-none">
-          <h3 className="text-lg font-semibold text-gray-900">CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h3>
-          
-          <p className="text-sm leading-relaxed">
-            Por este instrumento particular, de um lado <strong>AGREGA AI TECNOLOGIA LTDA</strong>, 
-            inscrita no CNPJ sob nº XX.XXX.XXX/0001-XX, doravante denominada <strong>CONTRATADA</strong>, 
-            e de outro lado a pessoa física ou jurídica identificada no cadastro eletrônico, 
-            doravante denominada <strong>CONTRATANTE</strong>, têm entre si justo e acordado o seguinte:
-          </p>
-
-          <h4 className="text-base font-medium mt-4 mb-2">1. OBJETO</h4>
-          <p className="text-sm leading-relaxed">
-            O presente contrato tem por objeto a prestação de serviços de desenvolvimento e 
-            manutenção de plataforma digital no plano {selectedPlan?.name}, conforme escopo detalhado abaixo:
-          </p>
-          <ul className="list-disc pl-5 text-sm space-y-1">
-            {selectedTasks.map((task) => (
-              <li key={task.name} className="text-gray-700">{task.name}</li>
-            ))}
-          </ul>
-
-          <h4 className="text-base font-medium mt-4 mb-2">2. VALORES E CONDIÇÕES DE PAGAMENTO</h4>
-          <p className="text-sm leading-relaxed">
-            Pelos serviços prestados, a CONTRATANTE pagará à CONTRATADA os seguintes valores:
-          </p>
-          <ul className="list-disc pl-5 text-sm space-y-1">
-            <li>Implementação: {formatPrice(implementationPrice)} em até {installments}x de {formatPrice(Number(installmentValue))}</li>
-            <li>Manutenção Mensal: {formatPrice(maintenancePrice)}</li>
-            {revenueShare > 0 && (
-              <li>Revenue Share: {revenueSharePercent}% sobre o faturamento mensal</li>
-            )}
-          </ul>
-        </div>
-
-        <Card className="p-6 bg-orange-50/50 border border-orange-100">
-          <h4 className="text-base font-medium mb-4">3. MÉTODO DE PAGAMENTO</h4>
-          <RadioGroup value={paymentMethod} onValueChange={(value: "credit" | "pix" | "boleto") => setPaymentMethod(value)} className="space-y-4">
-            <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
-              <RadioGroupItem value="credit" id="credit" />
-              <Label htmlFor="credit" className="flex items-center gap-2 cursor-pointer">
-                <CreditCard className="h-4 w-4 text-orange-500" />
-                Cartão de Crédito
-                <span className="text-sm text-gray-500">(até {installments}x)</span>
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
-              <RadioGroupItem value="pix" id="pix" />
-              <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer">
-                <QrCode className="h-4 w-4 text-orange-500" />
-                PIX
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
-              <RadioGroupItem value="boleto" id="boleto" />
-              <Label htmlFor="boleto" className="flex items-center gap-2 cursor-pointer">
-                <Receipt className="h-4 w-4 text-orange-500" />
-                Boleto Bancário
-                <span className="text-sm text-gray-500">(vencimento em 3 dias)</span>
-              </Label>
-            </div>
-          </RadioGroup>
-        </Card>
-
-        <div className="grid grid-cols-2 gap-8 mt-12 pt-8 border-t">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-500">CONTRATADA</p>
-            <div className="h-0.5 bg-gray-300 w-full mt-12"></div>
-            <p className="text-sm font-medium">Agrega.ai Tecnologia LTDA</p>
+      <div className="space-y-6 mt-8">
+        <h4 className="text-lg font-semibold">Método de Pagamento</h4>
+        <RadioGroup value={paymentMethod} onValueChange={(value: "credit" | "pix" | "boleto") => setPaymentMethod(value)} className="space-y-4">
+          <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
+            <RadioGroupItem value="credit" id="credit" />
+            <Label htmlFor="credit" className="flex items-center gap-2 cursor-pointer">
+              <CreditCard className="h-4 w-4 text-orange-500" />
+              Cartão de Crédito
+              <span className="text-sm text-gray-500">(até {installments}x)</span>
+            </Label>
           </div>
-
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-500">CONTRATANTE</p>
-            <div className="h-0.5 bg-gray-300 w-full mt-12"></div>
-            <p className="text-sm font-medium">Cliente</p>
+          <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
+            <RadioGroupItem value="pix" id="pix" />
+            <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer">
+              <QrCode className="h-4 w-4 text-orange-500" />
+              PIX
+            </Label>
           </div>
-        </div>
+          <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
+            <RadioGroupItem value="boleto" id="boleto" />
+            <Label htmlFor="boleto" className="flex items-center gap-2 cursor-pointer">
+              <Receipt className="h-4 w-4 text-orange-500" />
+              Boleto Bancário
+              <span className="text-sm text-gray-500">(vencimento em 3 dias)</span>
+            </Label>
+          </div>
+        </RadioGroup>
 
         <div className="space-y-2 mt-8">
           <Label htmlFor="email" className="flex items-center gap-2 text-gray-700">
