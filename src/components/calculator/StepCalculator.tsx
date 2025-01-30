@@ -26,22 +26,8 @@ const StepCalculator = () => {
   const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
   const [averageTicket, setAverageTicket] = useState<string>("150");
   const [monthlyOrders, setMonthlyOrders] = useState<string>("100");
+  const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
   const { toast } = useToast();
-
-  const shouldShowStep = (step: Step): boolean => {
-    if (step === "theme") {
-      return selectedPlan?.id === "express";
-    }
-    return true;
-  };
-
-  const steps: Array<{ step: Step; label: string }> = [
-    { step: "plan" as Step, label: "Escolha seu plano" },
-    { step: "theme" as Step, label: "Selecione o tema" },
-    { step: "tasks" as Step, label: "Configure seu projeto" },
-    { step: "summary" as Step, label: "Resumo do projeto" },
-    { step: "contract" as Step, label: "Contrato" }
-  ].filter(({ step }) => shouldShowStep(step));
 
   const calculatePrice = () => {
     const HOUR_RATE = 200;
@@ -100,10 +86,10 @@ const StepCalculator = () => {
       return;
     }
 
-    if (currentStep === "summary" && !selectedPlan) {
+    if (currentStep === "summary" && !paymentPlan) {
       toast({
-        title: "Plano não selecionado",
-        description: "Por favor, volte e selecione um plano antes de continuar.",
+        title: "Selecione uma opção de pagamento",
+        description: "Por favor, selecione entre o plano mensal ou anual para continuar.",
         variant: "destructive",
       });
       return;
@@ -120,14 +106,6 @@ const StepCalculator = () => {
     } else if (currentStep === "tasks") {
       setCurrentStep("summary");
     } else if (currentStep === "summary") {
-      if (!selectedPlan) {
-        toast({
-          title: "Selecione um plano",
-          description: "Por favor, selecione um plano antes de prosseguir para o contrato.",
-          variant: "destructive",
-        });
-        return;
-      }
       setCurrentStep("contract");
     }
   };
@@ -181,12 +159,14 @@ const StepCalculator = () => {
             selectedExtensions={selectedExtensions}
             totalPrice={totalPrice}
             monthlyRevenue={monthlyRevenue}
+            onPlanSelect={setPaymentPlan}
+            selectedPlan={paymentPlan}
           />
         );
       case "contract":
-        return (
+        return paymentPlan && (
           <ContractStep
-            selectedPlan={selectedPlan}
+            selectedPlan={paymentPlan}
             selectedTasks={selectedTasks}
             implementationPrice={implementationPrice}
             maintenancePrice={maintenancePrice}
