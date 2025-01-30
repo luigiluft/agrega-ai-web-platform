@@ -100,15 +100,6 @@ const StepCalculator = () => {
       return;
     }
 
-    if (currentStep === "theme" && selectedPlan?.id === "express" && !selectedTheme) {
-      toast({
-        title: "Selecione um tema",
-        description: "Por favor, selecione um tema para continuar.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     if (currentStep === "summary" && !selectedPlan) {
       toast({
         title: "Plano não selecionado",
@@ -129,6 +120,14 @@ const StepCalculator = () => {
     } else if (currentStep === "tasks") {
       setCurrentStep("summary");
     } else if (currentStep === "summary") {
+      if (!selectedPlan) {
+        toast({
+          title: "Selecione um plano",
+          description: "Por favor, selecione um plano antes de prosseguir para o contrato.",
+          variant: "destructive",
+        });
+        return;
+      }
       setCurrentStep("contract");
     }
   };

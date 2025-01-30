@@ -55,6 +55,8 @@ const ContractStep = ({
   };
 
   const today = new Date().toLocaleDateString('pt-BR');
+  const installments = selectedPlan?.id === 'annual' ? 12 : 3;
+  const installmentValue = (implementationPrice / installments).toFixed(2);
 
   return (
     <motion.div
@@ -131,7 +133,7 @@ const ContractStep = ({
             Pelos serviços prestados, a CONTRATANTE pagará à CONTRATADA os seguintes valores:
           </p>
           <ul className="list-disc pl-5 text-sm space-y-1">
-            <li>Implementação: {formatPrice(implementationPrice)}</li>
+            <li>Implementação: {formatPrice(implementationPrice)} em até {installments}x de {formatPrice(Number(installmentValue))}</li>
             <li>Manutenção Mensal: {formatPrice(maintenancePrice)}</li>
             {revenueShare > 0 && (
               <li>Revenue Share: {revenueSharePercent}% sobre o faturamento mensal</li>
@@ -147,7 +149,7 @@ const ContractStep = ({
               <Label htmlFor="credit" className="flex items-center gap-2 cursor-pointer">
                 <CreditCard className="h-4 w-4 text-orange-500" />
                 Cartão de Crédito
-                <span className="text-sm text-gray-500">(até 12x)</span>
+                <span className="text-sm text-gray-500">(até {installments}x)</span>
               </Label>
             </div>
             <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
@@ -155,7 +157,6 @@ const ContractStep = ({
               <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer">
                 <QrCode className="h-4 w-4 text-orange-500" />
                 PIX
-                <span className="text-sm text-gray-500">(5% de desconto)</span>
               </Label>
             </div>
             <div className="flex items-center space-x-2 bg-white p-4 rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 transition-colors">
