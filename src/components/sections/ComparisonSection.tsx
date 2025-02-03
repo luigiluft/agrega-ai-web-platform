@@ -1,6 +1,14 @@
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 const ComparisonSection = () => {
+  const navigate = useNavigate();
+
+  const handlePlanSelect = (planId: string) => {
+    navigate(`/calculator?plan=${planId}`);
+  };
+
   return (
     <section className="py-24 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -47,6 +55,13 @@ const ComparisonSection = () => {
                 Implementação em 2 semanas | ROI positivo no 1º mês
               </div>
             </div>
+            <Button
+              onClick={() => handlePlanSelect('express')}
+              className="w-full mt-6 bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2"
+            >
+              Montar proposta
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
 
           {/* E-commerce Pro */}
@@ -87,6 +102,13 @@ const ComparisonSection = () => {
                 Crescimento de 150% em 6 meses | Integração com 3+ marketplaces
               </div>
             </div>
+            <Button
+              onClick={() => handlePlanSelect('standard')}
+              className="w-full mt-6 bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2"
+            >
+              Montar proposta
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
 
           {/* Full-commerce Enterprise */}
@@ -127,6 +149,13 @@ const ComparisonSection = () => {
                 Crescimento de 300% em vendas | Integração com 5+ marketplaces
               </div>
             </div>
+            <Button
+              onClick={() => handlePlanSelect('enterprise')}
+              className="w-full mt-6 bg-primary text-white hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+            >
+              Montar proposta
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </div>

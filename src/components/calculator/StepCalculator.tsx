@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "../ui/card";
-import { Button } from "../ui/button";
-import { ArrowRight } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import { Task } from "@/types/calculator-types";
 import PlanStep from "./steps/PlanStep";
@@ -16,6 +14,9 @@ import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { Step } from "@/types/calculator-steps";
 import { Plan } from "./PlanSelector";
+import StepProgress from "./StepProgress";
+import StepNavigation from "./StepNavigation";
+import { useSearchParams } from "react-router-dom";
 
 const steps = [
   { step: "plan" as Step, label: "Plano" },
@@ -26,6 +27,8 @@ const steps = [
 ];
 
 const StepCalculator = () => {
+  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<Step>("plan");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
@@ -35,7 +38,14 @@ const StepCalculator = () => {
   const [averageTicket, setAverageTicket] = useState<string>("150");
   const [monthlyOrders, setMonthlyOrders] = useState<string>("100");
   const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
-  const { toast } = useToast();
+
+  useEffect(() => {
+    const planId = searchParams.get('plan');
+    if (planId) {
+      const plan = { id: planId } as Plan;
+      handlePlanSelect(plan);
+    }
+  }, [searchParams]);
 
   const calculatePrice = () => {
     const HOUR_RATE = 200;
@@ -190,25 +200,7 @@ const StepCalculator = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-500 to-orange-600 p-6">
       <Card className="max-w-5xl mx-auto p-8 shadow-xl">
-        <div className="flex justify-between items-center mb-12 relative">
-          <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -z-10" />
-          {steps.map(({ step, label }, index) => (
-            <div key={step} className="flex flex-col items-center gap-2 bg-white p-2">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold transition-colors duration-300
-                  ${currentStep === step
-                    ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
-                    : "bg-gray-100 text-gray-600"
-                  }`}
-              >
-                {index + 1}
-              </div>
-              <span className="text-sm font-medium text-gray-600">
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
+        <StepProgress currentStep={currentStep} steps={steps} />
 
         <motion.div
           key={currentStep}
@@ -221,17 +213,7 @@ const StepCalculator = () => {
           {renderStepContent()}
         </motion.div>
 
-        {currentStep !== "contract" && (
-          <div className="flex justify-end mt-8">
-            <Button
-              onClick={handleNext}
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-all duration-300 transform hover:scale-105"
-            >
-              Próximo
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+        <StepNavigation currentStep={currentStep} onNext={handleNext} />
       </Card>
     </div>
   );
