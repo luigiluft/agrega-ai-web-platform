@@ -2,9 +2,15 @@ import { Check, Monitor, ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { scrollToTop } from "@/utils/scrollUtils";
 
 const CalculatorInstructionsSection = () => {
   const navigate = useNavigate();
+
+  const handleCalculatorClick = () => {
+    navigate("/calculadora");
+    scrollToTop();
+  };
 
   const steps = [
     {
@@ -36,7 +42,7 @@ const CalculatorInstructionsSection = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-white to-orange-50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Instructions Column */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -86,7 +92,7 @@ const CalculatorInstructionsSection = () => {
               className="pt-2"
             >
               <Button 
-                onClick={() => navigate("/calculadora")}
+                onClick={handleCalculatorClick}
                 className="w-full sm:w-auto bg-gradient-calculator hover:opacity-90 transition-opacity text-lg py-4 px-6 gap-2"
               >
                 Calcular meu projeto agora
@@ -100,7 +106,7 @@ const CalculatorInstructionsSection = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative lg:sticky lg:top-8"
+            className="relative lg:sticky lg:top-[30vh]"
           >
             <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-3xl p-6 shadow-lg">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
