@@ -69,7 +69,7 @@ const CalculatorInstructionsSection = () => {
             <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-3xl p-8">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="/lovable-uploads/49451f54-98f1-4cad-b3e2-61ff223545b4.png"
+                  src="/lovable-uploads/Gen-3 Alpha Turbo 3827173418, An isometric-style i, Cropped - DALL·E 202, M 5.mp4.gif"
                   alt="Calculadora Agrega Aí em um laptop"
                   className="object-cover w-full h-full"
                 />
