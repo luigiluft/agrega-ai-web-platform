@@ -6,6 +6,7 @@ import ComparisonSection from "../components/sections/ComparisonSection";
 import TestimonialsSection from "../components/sections/TestimonialsSection";
 import CTASection from "../components/sections/CTASection";
 import FAQSection from "../components/sections/FAQSection";
+import CalculatorInstructionsSection from "../components/sections/CalculatorInstructionsSection";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
       <NavigationMenuDemo />
       <main className="w-full">
         <HeroSection />
+        <CalculatorInstructionsSection />
         <FeaturesSection />
         <StatsSection />
         <ComparisonSection />
