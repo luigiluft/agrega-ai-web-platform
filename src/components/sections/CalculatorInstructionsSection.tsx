@@ -1,6 +1,10 @@
 import { Check, Monitor } from "lucide-react";
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 const CalculatorInstructionsSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
@@ -21,7 +25,7 @@ const CalculatorInstructionsSection = () => {
                 {
                   title: "Escolha do Tema",
                   description:
-                    "Selecione um tema pré-configurado que reflita a identidade visual do seu projeto.",
+                    "Selecione um tema pré-configurado que reflita a identidade visual do seu projeto. Obrigatório apenas para o plano E-commerce Express, já que os planos E-commerce Pro e FullCommerce incluem personalização completa.",
                 },
                 {
                   title: "Configuração do Projeto",
@@ -51,6 +55,13 @@ const CalculatorInstructionsSection = () => {
                 </div>
               ))}
             </div>
+
+            <Button 
+              onClick={() => navigate("/calculadora")}
+              className="w-full sm:w-auto bg-gradient-calculator hover:opacity-90 transition-opacity"
+            >
+              Calcular meu projeto agora
+            </Button>
           </div>
 
           {/* Image Column */}
@@ -58,7 +69,7 @@ const CalculatorInstructionsSection = () => {
             <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-3xl p-8">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg"
+                  src="/lovable-uploads/49451f54-98f1-4cad-b3e2-61ff223545b4.png"
                   alt="Calculadora Agrega Aí em um laptop"
                   className="object-cover w-full h-full"
                 />
