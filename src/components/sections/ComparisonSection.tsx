@@ -111,10 +111,10 @@ const ComparisonSection = () => {
             </Button>
           </div>
 
-          {/* Full-commerce Enterprise */}
+          {/* FullCommerce */}
           <div className="bg-white p-8 rounded-xl shadow-lg border-2 border-primary">
             <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-6">Full-commerce Enterprise</h3>
+              <h3 className="text-2xl font-bold mb-6">FullCommerce</h3>
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-3">
                   <Check className="text-primary" />
@@ -142,7 +142,7 @@ const ComparisonSection = () => {
             <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
               <h4 className="text-lg font-semibold mb-3">Setor: Varejo Multicanal</h4>
               <p className="text-gray-600 text-sm mb-4">
-                "O Full-commerce nos permitiu escalar nossa operação com segurança. 
+                "O FullCommerce nos permitiu escalar nossa operação com segurança. 
                 A personalização completa e o suporte dedicado foram fundamentais."
               </p>
               <div className="text-sm text-primary font-medium">

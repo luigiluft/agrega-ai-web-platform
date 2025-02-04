@@ -24,7 +24,7 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
   const plans: Plan[] = [
     {
       id: "express",
-      name: "Express",
+      name: "E-commerce Express",
       description: "Ideal para pequenos negócios",
       features: [
         "Layout personalizado",
@@ -40,7 +40,7 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
     },
     {
       id: "standard",
-      name: "Standard",
+      name: "E-commerce Pro",
       description: "Para negócios em crescimento",
       features: [
         "Tudo do Express",
@@ -56,7 +56,7 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
     },
     {
       id: "enterprise",
-      name: "Enterprise",
+      name: "FullCommerce",
       description: "Solução completa para grandes operações",
       features: [
         "Tudo do Standard",

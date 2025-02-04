@@ -17,9 +17,15 @@ const PlanStep = ({ selectedPlan, onPlanSelect }: PlanStepProps) => {
   useEffect(() => {
     const planId = searchParams.get('plan');
     if (planId && !selectedPlan) {
+      const planNames = {
+        express: "E-commerce Express",
+        standard: "E-commerce Pro",
+        enterprise: "FullCommerce"
+      };
+      
       const plan = {
         id: planId,
-        name: planId.charAt(0).toUpperCase() + planId.slice(1),
+        name: planNames[planId as keyof typeof planNames] || planId,
         description: '',
         features: [],
         baseImplementationPrice: 0,
