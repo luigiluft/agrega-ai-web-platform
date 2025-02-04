@@ -6,7 +6,7 @@ const ComparisonSection = () => {
   const navigate = useNavigate();
 
   const handlePlanSelect = (planId: string) => {
-    navigate(`/calculator?plan=${planId}`);
+    navigate(`/calculadora?plan=${planId}`);
   };
 
   return (
