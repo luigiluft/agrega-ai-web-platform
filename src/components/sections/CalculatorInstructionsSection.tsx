@@ -34,18 +34,18 @@ const CalculatorInstructionsSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-orange-50">
+    <section className="py-16 bg-gradient-to-b from-white to-orange-50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Instructions Column */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="space-y-8"
+            className="space-y-6"
           >
-            <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
                 Como Usar a Calculadora Agrega Aí
               </h2>
               <p className="text-lg text-gray-600">
@@ -53,25 +53,25 @@ const CalculatorInstructionsSection = () => {
               </p>
             </div>
             
-            <div className="space-y-8">
+            <div className="space-y-4">
               {steps.map((step, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex gap-6 group hover:bg-white hover:shadow-lg rounded-xl p-6 transition-all duration-300"
+                  className="flex gap-4 group hover:bg-white hover:shadow-lg rounded-xl p-4 transition-all duration-300"
                 >
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-gradient-calculator rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-10 h-10 bg-gradient-calculator rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
                       {step.icon}
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <h3 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors">
                       {step.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -83,10 +83,11 @@ const CalculatorInstructionsSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
+              className="pt-2"
             >
               <Button 
                 onClick={() => navigate("/calculadora")}
-                className="w-full sm:w-auto bg-gradient-calculator hover:opacity-90 transition-opacity text-lg py-6 px-8 gap-3"
+                className="w-full sm:w-auto bg-gradient-calculator hover:opacity-90 transition-opacity text-lg py-4 px-6 gap-2"
               >
                 Calcular meu projeto agora
                 <ArrowRight className="w-5 h-5" />
@@ -99,9 +100,9 @@ const CalculatorInstructionsSection = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative"
+            className="relative lg:sticky lg:top-8"
           >
-            <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-3xl p-8 shadow-lg">
+            <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-3xl p-6 shadow-lg">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src="/lovable-uploads/Gen-3 Alpha Turbo 3827173418, An isometric-style i, Cropped - DALL·E 202, M 5.mp4.gif"
