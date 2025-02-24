@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { TasksStepProps } from "@/types/calculator-steps";
 import ConfigurationOptions from "../ConfigurationOptions";
@@ -70,14 +71,16 @@ const TasksStep = ({
         onConfigurationChange={handleConfigurationChange}
       />
 
-      <RevenueShareStep
-        monthlyRevenue={monthlyRevenue}
-        setMonthlyRevenue={setMonthlyRevenue}
-        averageTicket={averageTicket}
-        setAverageTicket={setAverageTicket}
-        monthlyOrders={monthlyOrders}
-        setMonthlyOrders={setMonthlyOrders}
-      />
+      {selectedPlan.id === 'fullcommerce' && (
+        <RevenueShareStep
+          monthlyRevenue={monthlyRevenue}
+          setMonthlyRevenue={setMonthlyRevenue}
+          averageTicket={averageTicket}
+          setAverageTicket={setAverageTicket}
+          monthlyOrders={monthlyOrders}
+          setMonthlyOrders={setMonthlyOrders}
+        />
+      )}
 
       <div className="mt-8">
         <h3 className="text-xl font-semibold mb-4">Extensões Disponíveis</h3>
