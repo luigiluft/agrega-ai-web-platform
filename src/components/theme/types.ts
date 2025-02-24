@@ -1,3 +1,4 @@
+
 export interface Theme {
   id: number;
   name: string;
@@ -5,6 +6,6 @@ export interface Theme {
   description: string;
   features: string[];
   fullDescription: string;
-  market: "fashion" | "cosmetics" | "pets" | "marketplace" | "tech" | "market";
+  market: "fashion" | "cosmetics" | "pets" | "marketplace" | "tech" | "market" | "sports" | "furniture" | "digital" | "books" | "organic";
   demoUrl: string;
 }

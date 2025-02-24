@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import ThemeSelector from "../../theme/ThemeSelector";
 import { Theme } from "../../theme/types";
 import { themes } from "../../theme/themeData";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 

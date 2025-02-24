@@ -69,5 +69,85 @@ export const themes = [
     fullDescription: "Design elegante e sofisticado para lojas de cosméticos e produtos de beleza, com recursos especiais para demonstração de produtos.",
     market: "cosmetics" as const,
     demoUrl: "https://m2.portotheme.com/demo18_en/"
+  },
+  {
+    id: 8,
+    name: "Porto Premium Fashion",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema premium para marcas de moda",
+    features: ["Lookbook Interativo", "Variações de Produto", "Stories", "Checkout Premium"],
+    fullDescription: "Layout sofisticado para marcas de moda premium, com recursos avançados para apresentação de coleções.",
+    market: "fashion" as const,
+    demoUrl: "https://m2.portotheme.com/demo21_en/"
+  },
+  {
+    id: 9,
+    name: "Porto Sports",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema para artigos esportivos",
+    features: ["Filtros Dinâmicos", "Grade de Tamanhos", "Comparador", "Recomendações"],
+    fullDescription: "Design dinâmico e esportivo, ideal para lojas de artigos esportivos e equipamentos.",
+    market: "sports" as const,
+    demoUrl: "https://m2.portotheme.com/demo25_en/"
+  },
+  {
+    id: 10,
+    name: "Porto Modern",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Design moderno e minimalista",
+    features: ["Layout Clean", "Navegação Intuitiva", "Carrossel Avançado", "Mega Menu"],
+    fullDescription: "Layout contemporâneo com foco em experiência do usuário e conversão.",
+    market: "fashion" as const,
+    demoUrl: "https://m2.portotheme.com/demo37_en/"
+  },
+  {
+    id: 11,
+    name: "Porto Furniture",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema para móveis e decoração",
+    features: ["Visualização 3D", "Configurador de Produtos", "Galeria Avançada", "Filtros Específicos"],
+    fullDescription: "Especializado para lojas de móveis e decoração, com recursos de visualização e personalização.",
+    market: "furniture" as const,
+    demoUrl: "https://m2.portotheme.com/demo32_en/"
+  },
+  {
+    id: 12,
+    name: "Porto Digital",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema para produtos digitais",
+    features: ["Download Automático", "Área do Cliente", "Licenciamento", "Suporte Integrado"],
+    fullDescription: "Ideal para venda de produtos digitais, com sistema de entrega automática e gerenciamento de licenças.",
+    market: "digital" as const,
+    demoUrl: "https://m2.portotheme.com/demo27_en/"
+  },
+  {
+    id: 13,
+    name: "Porto Books",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema para livrarias online",
+    features: ["Prévia de Conteúdo", "Recomendações", "Busca Avançada", "Reviews"],
+    fullDescription: "Especializado para livrarias, com recursos específicos para apresentação e venda de livros.",
+    market: "books" as const,
+    demoUrl: "https://m2.portotheme.com/demo26_en/"
+  },
+  {
+    id: 14,
+    name: "Porto Minimal",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Design minimalista e elegante",
+    features: ["Layout Clean", "Tipografia Premium", "Animações Suaves", "UX Otimizada"],
+    fullDescription: "Design minimalista que destaca seus produtos com elegância e simplicidade.",
+    market: "fashion" as const,
+    demoUrl: "https://m2.portotheme.com/demo43_en/"
+  },
+  {
+    id: 15,
+    name: "Porto Organic",
+    image: "/lovable-uploads/04ecb4e9-d4ab-4a46-941c-d3ffbc7ae268.png",
+    description: "Tema para produtos orgânicos",
+    features: ["Certificações", "Origem dos Produtos", "Blog Integrado", "Newsletter"],
+    fullDescription: "Perfeito para lojas de produtos orgânicos, naturais e sustentáveis.",
+    market: "organic" as const,
+    demoUrl: "https://m2.portotheme.com/demo41_en/"
   }
 ];
