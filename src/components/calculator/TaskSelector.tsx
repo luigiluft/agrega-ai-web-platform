@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { Task, Plan, TaskSelectorProps } from "@/types/calculator-types";
+import { Task, TaskSelectorProps } from "@/types/calculator-types";
 import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";

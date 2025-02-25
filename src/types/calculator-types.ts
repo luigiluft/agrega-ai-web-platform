@@ -69,3 +69,22 @@ export interface RevenueShareTier {
   maxRevenue: number | null;
   percentage: number;
 }
+
+export interface TaskCategorySectionProps {
+  onTasksChange: (tasks: Task[]) => void;
+  selectedPlan: Plan;
+  selectedTasks: Task[];
+  selectedExtensions: Set<string>;
+  onExtensionToggle: (extensionId: string, isSelected: boolean) => void;
+  prices: {
+    implementation: number;
+    maintenance: number;
+  };
+}
+
+export interface TaskSelectorProps {
+  onTasksChange: (tasks: Task[]) => void;
+  filter?: string;
+  selectedPlan: Plan;
+  selectedTasks: Task[];
+}

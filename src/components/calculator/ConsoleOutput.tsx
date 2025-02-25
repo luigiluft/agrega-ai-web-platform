@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check, Info } from 'lucide-react';
-import { Plan } from './PlanSelector';
+import { Plan } from '@/types/calculator-types';
 import {
   HoverCard,
   HoverCardContent,
@@ -62,7 +62,9 @@ const ConsoleOutput = ({
           baseImplementationPrice: 0,
           baseMaintenancePrice: 0,
           basePOHours: 0,
-          maxIntegrations: 0
+          maxIntegrations: 0,
+          supportLevel: 'basic',
+          layout: 'standard'
         });
       }
     };
