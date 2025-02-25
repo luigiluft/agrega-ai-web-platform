@@ -39,7 +39,7 @@ const ERPs = [
   {
     value: 'tiny',
     name: 'Tiny',
-    logo: '/lovable-uploads/fb296eeb-0813-49b4-aefc-c27d92911133.png',
+    logo: '/lovable-uploads/af3eaa25-8bdc-415f-bedf-7ba256e146ff.png',
     description: 'Sistema de gestão para e-commerce'
   }
 ];
