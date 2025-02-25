@@ -1,15 +1,14 @@
 
 import { useState } from "react";
 import { Plan } from "./PlanSelector";
-import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Settings2, Calendar, Palette } from "lucide-react";
+import { Settings2, Calendar, Palette, Database } from "lucide-react";
 import { Card } from "../ui/card";
-import { Badge } from "../ui/badge";
 import { motion } from "framer-motion";
 import { Checkbox } from "../ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Input } from "../ui/input";
 
 type POFrequency = 'weekly' | 'biweekly' | 'monthly' | 'hybrid';
 type ERPOption = 'omie' | 'bling' | 'tiny' | null;
@@ -21,8 +20,30 @@ interface ConfigurationOptionsProps {
     customTheme: boolean;
     hasCRM: boolean;
     selectedERP: ERPOption;
+    crmName?: string;
   }) => void;
 }
+
+const ERPs = [
+  {
+    value: 'omie',
+    name: 'Omie',
+    logo: '/lovable-uploads/2dbe71b6-85c4-47f0-a5a8-8e14a59cd1b0.png',
+    description: 'Sistema ERP completo para pequenas e médias empresas'
+  },
+  {
+    value: 'bling',
+    name: 'Bling',
+    logo: '/lovable-uploads/40bf9c1d-1e96-40c7-aa9f-37dd7e113858.png',
+    description: 'Gestão empresarial simplificada online'
+  },
+  {
+    value: 'tiny',
+    name: 'Tiny',
+    logo: '/lovable-uploads/2735e670-a85d-45f9-ac3b-2aa7605c25ca.png',
+    description: 'Sistema de gestão para e-commerce'
+  }
+];
 
 const ConfigurationOptions = ({
   selectedPlan,
@@ -31,24 +52,17 @@ const ConfigurationOptions = ({
   const [poFrequency, setPoFrequency] = useState<POFrequency>('biweekly');
   const [customTheme, setCustomTheme] = useState(false);
   const [hasCRM, setHasCRM] = useState(false);
+  const [crmName, setCrmName] = useState('');
   const [selectedERP, setSelectedERP] = useState<ERPOption>(null);
 
-  const updateConfiguration = (updates: Partial<{
-    poFrequency: POFrequency;
-    customTheme: boolean;
-    hasCRM: boolean;
-    selectedERP: ERPOption;
-  }>) => {
-    const newFrequency = updates.poFrequency ?? poFrequency;
-    const newConfig = {
-      poHours: calculatePoHours(newFrequency),
-      firstMonthPoHours: getFirstMonthPoHours(newFrequency),
-      customTheme: updates.customTheme ?? customTheme,
-      hasCRM: updates.hasCRM ?? hasCRM,
-      selectedERP: updates.selectedERP ?? selectedERP,
-    };
-    
-    onConfigurationChange(newConfig);
+  const updateConfiguration = () => {
+    onConfigurationChange({
+      poHours: calculatePoHours(poFrequency),
+      customTheme,
+      hasCRM,
+      selectedERP,
+      crmName: hasCRM ? crmName : undefined
+    });
   };
 
   const calculatePoHours = (frequency: POFrequency) => {
@@ -59,10 +73,6 @@ const ConfigurationOptions = ({
       case 'hybrid': return 2;
       default: return 2;
     }
-  };
-
-  const getFirstMonthPoHours = (frequency: POFrequency) => {
-    return frequency === 'hybrid' ? 6 : calculatePoHours(frequency);
   };
 
   return (
@@ -91,7 +101,7 @@ const ConfigurationOptions = ({
               defaultValue="biweekly"
               onValueChange={(value) => {
                 setPoFrequency(value as POFrequency);
-                updateConfiguration({ poFrequency: value as POFrequency });
+                updateConfiguration();
               }}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
@@ -127,7 +137,7 @@ const ConfigurationOptions = ({
               onValueChange={(value) => {
                 const isCustom = value === 'custom';
                 setCustomTheme(isCustom);
-                updateConfiguration({ customTheme: isCustom });
+                updateConfiguration();
               }}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
@@ -152,26 +162,45 @@ const ConfigurationOptions = ({
 
           {/* Integrations Section */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2">
+              <Database className="w-5 h-5 text-primary" />
               <Label className="text-lg font-medium">Integrações</Label>
             </div>
 
             {/* CRM Integration */}
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="crm"
-                checked={hasCRM}
-                onCheckedChange={(checked) => {
-                  setHasCRM(checked as boolean);
-                  updateConfiguration({ hasCRM: checked as boolean });
-                }}
-              />
-              <label
-                htmlFor="crm"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Integração com CRM
-              </label>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="crm"
+                  checked={hasCRM}
+                  onCheckedChange={(checked) => {
+                    setHasCRM(checked as boolean);
+                    if (!checked) setCrmName('');
+                    updateConfiguration();
+                  }}
+                />
+                <Label
+                  htmlFor="crm"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Integração com CRM
+                </Label>
+              </div>
+              {hasCRM && (
+                <div className="ml-6">
+                  <Label htmlFor="crmName">Nome do CRM</Label>
+                  <Input
+                    id="crmName"
+                    placeholder="Ex: Salesforce, Pipedrive, etc."
+                    value={crmName}
+                    onChange={(e) => {
+                      setCrmName(e.target.value);
+                      updateConfiguration();
+                    }}
+                    className="mt-2"
+                  />
+                </div>
+              )}
             </div>
 
             {/* ERP Integration */}
@@ -181,31 +210,24 @@ const ConfigurationOptions = ({
                 value={selectedERP || ""}
                 onValueChange={(value) => {
                   setSelectedERP(value as ERPOption);
-                  updateConfiguration({ selectedERP: value as ERPOption });
+                  updateConfiguration();
                 }}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Selecione um ERP" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="omie">
-                    <div className="flex items-center gap-2">
-                      <img src="/lovable-uploads/2dbe71b6-85c4-47f0-a5a8-8e14a59cd1b0.png" alt="Omie" className="h-6" />
-                      Omie
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="bling">
-                    <div className="flex items-center gap-2">
-                      <img src="/lovable-uploads/40bf9c1d-1e96-40c7-aa9f-37dd7e113858.png" alt="Bling" className="h-6" />
-                      Bling
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="tiny">
-                    <div className="flex items-center gap-2">
-                      <img src="/lovable-uploads/2735e670-a85d-45f9-ac3b-2aa7605c25ca.png" alt="Tiny" className="h-6" />
-                      Tiny
-                    </div>
-                  </SelectItem>
+                  {ERPs.map((erp) => (
+                    <SelectItem key={erp.value} value={erp.value}>
+                      <div className="flex items-center gap-3 py-1">
+                        <img src={erp.logo} alt={erp.name} className="h-8 object-contain" />
+                        <div>
+                          <div className="font-medium">{erp.name}</div>
+                          <div className="text-xs text-gray-500">{erp.description}</div>
+                        </div>
+                      </div>
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

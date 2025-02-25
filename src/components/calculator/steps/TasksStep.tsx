@@ -4,10 +4,8 @@ import { TasksStepProps } from "@/types/calculator-steps";
 import ConfigurationOptions from "../ConfigurationOptions";
 import ExtensionSelector from "../ExtensionSelector";
 import RevenueShareStep from "./RevenueShareStep";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
-
-const HOUR_RATE = 185;
 
 const TasksStep = ({ 
   selectedPlan, 
@@ -31,33 +29,24 @@ const TasksStep = ({
   const handleConfigurationChange = (config: {
     poHours: number;
     customTheme: boolean;
-    integrationCount: number;
+    hasCRM: boolean;
+    selectedERP: string | null;
+    crmName?: string;
   }) => {
-    const additionalPoHours = Math.max(0, config.poHours - selectedPlan.basePOHours);
-    const themeHours = config.customTheme ? 20 : 2;
-    const integrationHours = config.integrationCount * 8;
+    const themeHours = config.customTheme ? 50 : 2;
 
     const implementationPrice = selectedPlan.baseImplementationPrice + 
-      (themeHours * HOUR_RATE) + 
-      (integrationHours * HOUR_RATE);
+      (themeHours * 200) + 
+      (config.hasCRM ? 1600 : 0) + 
+      (config.selectedERP ? 2400 : 0);
 
     const maintenancePrice = selectedPlan.baseMaintenancePrice + 
-      (additionalPoHours * HOUR_RATE);
+      (config.poHours * 200);
 
     setConfigPrice({
       implementation: implementationPrice,
       maintenance: maintenancePrice
     });
-  };
-
-  const prices = {
-    implementationTasks: selectedTasks.filter(task => task.type !== "recurring"),
-    maintenanceTasks: selectedTasks.filter(task => task.type === "recurring"),
-    implementationPrice: configPrice.implementation.toString(),
-    maintenancePrice: configPrice.maintenance.toString(),
-    revenueShare: "0",
-    revenueSharePercent: "0",
-    totalHours: selectedTasks.reduce((acc, task) => acc + task.hours, 0)
   };
 
   return (
