@@ -1,32 +1,34 @@
-import { Plan } from "../PlanSelector";
-import { Task } from "@/types/calculator-types";
+
+import { Plan } from "@/types/calculator-types";
 
 export interface PricingResult {
   implementationPrice: string;
   maintenancePrice: string;
   revenueShare: string;
   revenueSharePercent: string;
-  implementationTasks: Task[];
-  maintenanceTasks: Task[];
+  implementationTasks: any[];
+  maintenanceTasks: any[];
   totalHours: number;
+  implementation: number;
+  maintenance: number;
 }
 
 export const HOURLY_RATE = 185;
 
 export const calculateRevenueShare = (revenue: number): number => {
   if (revenue <= 100000) {
-    return 0.15; // 15%
+    return 0.15;
   } else if (revenue <= 500000) {
-    return 0.12; // 12%
+    return 0.12;
   } else if (revenue <= 1000000) {
-    return 0.10; // 10%
+    return 0.10;
   } else {
-    return 0.05; // 5%
+    return 0.05;
   }
 };
 
 export const calculatePrices = (
-  selectedTasks: Task[],
+  selectedTasks: any[],
   selectedPlan: Plan | null,
   monthlyRevenue: string
 ): PricingResult => {
@@ -62,6 +64,8 @@ export const calculatePrices = (
     revenueSharePercent: (revenueSharePercent * 100).toFixed(1),
     implementationTasks,
     maintenanceTasks,
-    totalHours: implementationHours + maintenanceHours
+    totalHours: implementationHours + maintenanceHours,
+    implementation: implementationPrice,
+    maintenance: maintenancePrice
   };
 };
