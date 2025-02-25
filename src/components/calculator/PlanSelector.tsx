@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Check, Clock, Info, Zap, Shield, Tool, Users } from "lucide-react";
+import { Check, Clock, Info, Zap, Shield, Wrench, Users } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Badge } from "../ui/badge";
@@ -89,7 +89,7 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
       case "standard":
         return <Shield className="w-12 h-12 text-primary" />;
       case "enterprise":
-        return <Tool className="w-12 h-12 text-primary" />;
+        return <Wrench className="w-12 h-12 text-primary" />;
       default:
         return null;
     }
