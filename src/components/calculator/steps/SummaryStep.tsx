@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { SummaryStepProps } from "@/types/calculator-steps";
 import { Plan } from "../PlanSelector";
@@ -6,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import ProjectConfiguration from "../summary/ProjectConfiguration";
 import SelectedExtensions from "../summary/SelectedExtensions";
 import InvestmentSummary from "../summary/InvestmentSummary";
+import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 
 const SummaryStep = ({ 
   selectedTasks, 

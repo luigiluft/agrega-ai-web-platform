@@ -12,6 +12,10 @@ interface InvestmentSummaryProps {
   totalHours: number;
   onPlanSelect: (plan: Plan) => void;
   selectedPlan: Plan | null;
+  securityCost?: number;
+  marketingCost?: number;
+  performanceCost?: number;
+  supportCost?: number;
 }
 
 const InvestmentSummary = ({
@@ -20,12 +24,20 @@ const InvestmentSummary = ({
   revenueShare,
   totalHours,
   onPlanSelect,
-  selectedPlan
+  selectedPlan,
+  securityCost = 0,
+  marketingCost = 0,
+  performanceCost = 0,
+  supportCost = 0
 }: InvestmentSummaryProps) => {
   const REVENUE_SHARE_PERCENT = "3";
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
+
+  const additionalCosts = securityCost + marketingCost + performanceCost;
+  const finalImplementationPrice = totalPrice + additionalCosts;
+  const finalMonthlyPrice = maintenancePrice + supportCost;
 
   return (
     <Card className="p-6 space-y-6">
@@ -37,13 +49,13 @@ const InvestmentSummary = ({
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h4 className="font-medium">Implementação</h4>
-          <span className="text-lg font-semibold">{formatCurrency(totalPrice)}</span>
+          <span className="text-lg font-semibold">{formatCurrency(finalImplementationPrice)}</span>
         </div>
 
-        {maintenancePrice > 0 && (
+        {finalMonthlyPrice > 0 && (
           <div className="flex justify-between items-center">
             <h4 className="font-medium">Manutenção Mensal</h4>
-            <span className="text-lg">{formatCurrency(maintenancePrice)}</span>
+            <span className="text-lg">{formatCurrency(finalMonthlyPrice)}</span>
           </div>
         )}
 

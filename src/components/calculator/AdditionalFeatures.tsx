@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Card } from "../ui/card";
-import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import { Shield, Rocket, Gauge, Headphones } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -17,8 +16,7 @@ import {
   SupportLevel,
   SecurityFeature,
   MarketingFeature,
-  PerformanceFeature,
-  Documentation
+  PerformanceFeature
 } from "@/types/calculator-new-features";
 
 interface AdditionalFeaturesProps {
@@ -27,7 +25,6 @@ interface AdditionalFeaturesProps {
     security: SecurityFeature[];
     marketing: MarketingFeature[];
     performance: PerformanceFeature[];
-    documentation: Documentation;
   }) => void;
 }
 
@@ -36,19 +33,13 @@ const AdditionalFeatures = ({ onFeaturesChange }: AdditionalFeaturesProps) => {
   const [selectedSecurity, setSelectedSecurity] = useState<Set<SecurityFeature>>(new Set());
   const [selectedMarketing, setSelectedMarketing] = useState<Set<MarketingFeature>>(new Set());
   const [selectedPerformance, setSelectedPerformance] = useState<Set<PerformanceFeature>>(new Set());
-  const [documentation, setDocumentation] = useState<Documentation>({
-    technical: true,
-    userGuide: true,
-    training: false
-  });
 
   const updateFeatures = () => {
     onFeaturesChange({
       support: selectedSupport,
       security: Array.from(selectedSecurity),
       marketing: Array.from(selectedMarketing),
-      performance: Array.from(selectedPerformance),
-      documentation
+      performance: Array.from(selectedPerformance)
     });
   };
 
@@ -219,69 +210,6 @@ const AdditionalFeatures = ({ onFeaturesChange }: AdditionalFeaturesProps) => {
               </div>
             </div>
           ))}
-        </div>
-      </Card>
-
-      {/* Documentação */}
-      <Card className="p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <h3 className="text-lg font-semibold">Documentação e Treinamento</h3>
-        </div>
-        <div className="space-y-4">
-          <div className="flex items-start space-x-3">
-            <Checkbox
-              id="technical"
-              checked={documentation.technical}
-              onCheckedChange={(checked) => {
-                setDocumentation(prev => ({ ...prev, technical: !!checked }));
-                updateFeatures();
-              }}
-            />
-            <div className="flex-1">
-              <Label htmlFor="technical" className="font-medium">
-                Documentação Técnica
-              </Label>
-              <p className="text-sm text-gray-500">
-                Documentação detalhada da arquitetura e código
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <Checkbox
-              id="userGuide"
-              checked={documentation.userGuide}
-              onCheckedChange={(checked) => {
-                setDocumentation(prev => ({ ...prev, userGuide: !!checked }));
-                updateFeatures();
-              }}
-            />
-            <div className="flex-1">
-              <Label htmlFor="userGuide" className="font-medium">
-                Manual do Usuário
-              </Label>
-              <p className="text-sm text-gray-500">
-                Guia completo de uso do sistema
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <Checkbox
-              id="training"
-              checked={documentation.training}
-              onCheckedChange={(checked) => {
-                setDocumentation(prev => ({ ...prev, training: !!checked }));
-                updateFeatures();
-              }}
-            />
-            <div className="flex-1">
-              <Label htmlFor="training" className="font-medium">
-                Treinamento da Equipe
-              </Label>
-              <p className="text-sm text-gray-500">
-                Sessões de treinamento para sua equipe
-              </p>
-            </div>
-          </div>
         </div>
       </Card>
     </div>
