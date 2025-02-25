@@ -131,6 +131,24 @@ const StepCalculator = () => {
     scrollToTop();
   };
 
+  const handlePrevious = () => {
+    let previousStep: Step;
+    if (currentStep === "tasks") {
+      previousStep = selectedPlan?.id === "express" ? "theme" : "plan";
+    } else if (currentStep === "theme") {
+      previousStep = "plan";
+    } else if (currentStep === "summary") {
+      previousStep = "tasks";
+    } else if (currentStep === "contract") {
+      previousStep = "summary";
+    } else {
+      return;
+    }
+
+    setCurrentStep(previousStep);
+    scrollToTop();
+  };
+
   const renderStepContent = () => {
     const totalPrice = calculatePrice();
     const implementationPrice = totalPrice;
@@ -216,7 +234,11 @@ const StepCalculator = () => {
           {renderStepContent()}
         </motion.div>
 
-        <StepNavigation currentStep={currentStep} onNext={handleNext} />
+        <StepNavigation 
+          currentStep={currentStep} 
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+        />
       </Card>
     </div>
   );
