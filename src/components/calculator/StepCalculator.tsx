@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "../ui/card";
@@ -86,7 +87,7 @@ const StepCalculator = ({
   };
 
   const handlePlanSelect = (plan: Plan) => {
-    setSelectedPlan(plan);
+    onPlanSelect(plan);
     
     const allTasks = [
       ...calculatorTasks.flatMap(category => category.tasks),
@@ -118,7 +119,7 @@ const StepCalculator = ({
       );
     }
 
-    setSelectedTasks(preSelectedTasks);
+    onTasksChange(preSelectedTasks);
   };
 
   const handleNext = () => {
@@ -197,17 +198,9 @@ const StepCalculator = ({
           <TasksStep 
             selectedPlan={selectedPlan}
             selectedTasks={selectedTasks}
-            onTasksChange={setSelectedTasks}
+            onTasksChange={onTasksChange}
             selectedExtensions={selectedExtensions}
-            onExtensionToggle={(extensionId, checked) => {
-              const newExtensions = new Set(selectedExtensions);
-              if (checked) {
-                newExtensions.add(extensionId);
-              } else {
-                newExtensions.delete(extensionId);
-              }
-              setSelectedExtensions(newExtensions);
-            }}
+            onExtensionToggle={onExtensionToggle}
             totalPrice={totalPrice}
             monthlyRevenue={monthlyRevenue}
             setMonthlyRevenue={setMonthlyRevenue}
@@ -245,28 +238,26 @@ const StepCalculator = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-500 to-orange-600 p-6">
-      <Card className="max-w-5xl mx-auto p-8 shadow-xl">
-        <StepProgress currentStep={currentStep} steps={steps} />
+    <Card className="max-w-5xl mx-auto p-8 shadow-xl">
+      <StepProgress currentStep={currentStep} steps={steps} />
 
-        <motion.div
-          key={currentStep}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="min-h-[400px]"
-        >
-          {renderStepContent()}
-        </motion.div>
+      <motion.div
+        key={currentStep}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
+        className="min-h-[400px]"
+      >
+        {renderStepContent()}
+      </motion.div>
 
-        <StepNavigation 
-          currentStep={currentStep} 
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-        />
-      </Card>
-    </div>
+      <StepNavigation 
+        currentStep={currentStep} 
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+      />
+    </Card>
   );
 };
 
