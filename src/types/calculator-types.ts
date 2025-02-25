@@ -1,4 +1,7 @@
+
 export type TaskType = 'essential' | 'optional' | 'recurring';
+export type SupportLevel = 'basic' | 'priority' | '24/7';
+export type LayoutType = 'standard' | 'custom' | 'enterprise';
 
 export interface Task {
   id: string;
@@ -34,6 +37,7 @@ export interface Extension {
   implementationCost?: number;
   maintenanceCost?: number;
   isBasic?: boolean;
+  maxPlanLevel?: 'express' | 'standard' | 'enterprise';
 }
 
 export interface Plan {
@@ -43,27 +47,25 @@ export interface Plan {
   features: string[];
   isPopular?: boolean;
   monthlyLimit?: number;
+  baseImplementationPrice: number;
+  baseMaintenancePrice: number;
+  basePOHours: number;
+  maxIntegrations: number;
+  supportLevel: SupportLevel;
+  layout: LayoutType;
 }
 
-export interface TaskCategorySectionProps {
-  onTasksChange: (tasks: Task[]) => void;
-  selectedPlan: Plan;
-  selectedExtensions: Set<string>;
-  onExtensionToggle: (extensionId: string, checked: boolean) => void;
-  prices: {
-    implementationTasks: Task[];
-    maintenanceTasks: Task[];
-    implementationPrice: string;
-    maintenancePrice: string;
-    revenueShare: string;
-    revenueSharePercent: string;
-    totalHours: number;
-  };
+export interface Integration {
+  id: string;
+  name: string;
+  price: number;
+  implementationHours: number;
+  maintenanceHours: number;
+  description: string;
+  isAvailable: (plan: Plan) => boolean;
 }
 
-export interface TaskSelectorProps {
-  onTasksChange: (tasks: Task[]) => void;
-  filter?: "implementation" | "maintenance";
-  selectedPlan: Plan;
-  selectedTasks: Task[];
+export interface RevenueShareTier {
+  maxRevenue: number | null;
+  percentage: number;
 }
