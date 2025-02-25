@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { Plan } from "../PlanSelector";
-import { motion } from "framer-motion";
+import { Plan } from "@/types/calculator-types";
+import { Task } from "@/types/calculator-types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { File, Mail, Check, CreditCard, QrCode, Receipt } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface ContractStepProps {
   selectedPlan: Plan | null;
-  selectedTasks: any[];
+  selectedTasks: Task[];
   implementationPrice: number;
   maintenancePrice: number;
   revenueShare: number;
@@ -56,6 +57,7 @@ const ContractStep = ({
   const today = new Date().toLocaleDateString('pt-BR');
   const installments = selectedPlan?.id === 'annual' ? 12 : 3;
   const installmentValue = (implementationPrice / installments).toFixed(2);
+  const planType = selectedPlan?.id === 'annual' ? 'Anual' : 'Mensal';
 
   return (
     <motion.div
@@ -91,9 +93,23 @@ const ContractStep = ({
             <h4 className="text-base font-medium mt-6 mb-2">1. OBJETO</h4>
             <p className="text-sm leading-relaxed">
               O presente contrato tem por objeto a prestação de serviços de desenvolvimento e 
-              manutenção de plataforma digital no plano {selectedPlan?.name}, conforme escopo detalhado 
-              e condições comerciais estabelecidas.
+              manutenção de plataforma digital no <strong>Plano {planType}</strong>, conforme escopo detalhado 
+              e condições comerciais estabelecidas abaixo:
             </p>
+
+            <div className="mt-4 p-4 bg-orange-50 rounded-lg border border-orange-100">
+              <h5 className="font-medium mb-2">Detalhes do Plano Selecionado:</h5>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Tipo de Plano: <strong>{planType}</strong></li>
+                <li>Parcelamento: <strong>até {installments}x</strong></li>
+                <li>Valor da Implementação: <strong>{formatPrice(implementationPrice)}</strong></li>
+                <li>Valor da Parcela: <strong>{formatPrice(Number(installmentValue))}</strong></li>
+                <li>Manutenção Mensal: <strong>{formatPrice(maintenancePrice)}</strong></li>
+                {revenueShare > 0 && (
+                  <li>Revenue Share: <strong>{revenueSharePercent}% sobre o faturamento mensal</strong></li>
+                )}
+              </ul>
+            </div>
 
             <h4 className="text-base font-medium mt-4 mb-2">2. VALORES E CONDIÇÕES</h4>
             <ul className="list-disc pl-5 text-sm space-y-1">

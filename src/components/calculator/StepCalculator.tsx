@@ -13,11 +13,29 @@ import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { calculatorTasks } from "@/data/calculatorTasks";
 import { ecommerceTasks } from "@/data/ecommerceTasks";
 import { Step } from "@/types/calculator-steps";
-import { Plan } from "./PlanSelector";
+import { Plan } from "@/types/calculator-types";
 import StepProgress from "./StepProgress";
 import StepNavigation from "./StepNavigation";
 import { useSearchParams } from "react-router-dom";
 import { scrollToTop } from "@/utils/scrollUtils";
+import type { Dispatch, SetStateAction } from "react";
+
+interface StepCalculatorProps {
+  currentStep: Step;
+  setCurrentStep: Dispatch<SetStateAction<Step>>;
+  selectedPlan: Plan | null;
+  onPlanSelect: (plan: Plan) => void;
+  selectedTasks: Task[];
+  onTasksChange: (tasks: Task[]) => void;
+  selectedExtensions: Set<string>;
+  onExtensionToggle: (extensionId: string, checked: boolean) => void;
+  monthlyRevenue: string;
+  setMonthlyRevenue: (value: string) => void;
+  averageTicket: string;
+  setAverageTicket: (value: string) => void;
+  monthlyOrders: string;
+  setMonthlyOrders: (value: string) => void;
+}
 
 const steps = [
   { step: "plan" as Step, label: "Plano" },
@@ -27,18 +45,26 @@ const steps = [
   { step: "contract" as Step, label: "Contrato" }
 ];
 
-const StepCalculator = () => {
+const StepCalculator = ({
+  currentStep,
+  setCurrentStep,
+  selectedPlan,
+  onPlanSelect,
+  selectedTasks,
+  onTasksChange,
+  selectedExtensions,
+  onExtensionToggle,
+  monthlyRevenue,
+  setMonthlyRevenue,
+  averageTicket,
+  setAverageTicket,
+  monthlyOrders,
+  setMonthlyOrders
+}: StepCalculatorProps) => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<Step>("plan");
-  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
-  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
-  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
-  const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());
-  const [monthlyRevenue, setMonthlyRevenue] = useState<string>("50000");
-  const [averageTicket, setAverageTicket] = useState<string>("150");
-  const [monthlyOrders, setMonthlyOrders] = useState<string>("100");
   const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
+  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
     const planId = searchParams.get('plan');

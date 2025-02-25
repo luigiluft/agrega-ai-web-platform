@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Plan } from "./PlanSelector";
+import React, { useState } from "react";
+import { Plan } from "@/types/calculator-types";
 import { Task } from "@/types/calculator-types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

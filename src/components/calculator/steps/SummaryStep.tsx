@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
+import { Plan } from "@/types/calculator-types";
 import { SummaryStepProps } from "@/types/calculator-steps";
-import { Plan } from "../PlanSelector";
 import { useToast } from "@/components/ui/use-toast";
 import ProjectConfiguration from "../summary/ProjectConfiguration";
 import SelectedExtensions from "../summary/SelectedExtensions";

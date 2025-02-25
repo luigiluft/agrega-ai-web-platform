@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import PlanSelector from "../PlanSelector";
-import { Plan } from "../PlanSelector";
+import { Plan } from "@/types/calculator-types";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";

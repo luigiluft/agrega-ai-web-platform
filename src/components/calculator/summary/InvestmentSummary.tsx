@@ -1,9 +1,8 @@
-
 import { Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Plan } from "@/components/calculator/PlanSelector";
+import { Plan } from "@/types/calculator-types";
 
 interface InvestmentSummaryProps {
   totalPrice: number;

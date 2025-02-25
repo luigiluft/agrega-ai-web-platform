@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plan } from "@/types/calculator-types";
-import { Task } from "@/types/calculator-types";
+import { Plan, Task } from "@/types/calculator-types";
 import TaskCategorySection from "./TaskCategorySection";
 import { PricingResult } from "./pricing/PricingLogic";
 
@@ -17,6 +16,7 @@ interface PlanContentProps {
   setMonthlyRevenue: (value: string) => void;
   setAverageTicket: (value: string) => void;
   setMonthlyOrders: (value: string) => void;
+  onContactClick: () => void;
 }
 
 const PlanContent = ({
@@ -32,6 +32,7 @@ const PlanContent = ({
   setMonthlyRevenue,
   setAverageTicket,
   setMonthlyOrders,
+  onContactClick
 }: PlanContentProps) => {
   return (
     <div className="space-y-8">
