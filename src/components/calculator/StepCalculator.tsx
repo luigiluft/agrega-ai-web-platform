@@ -17,6 +17,7 @@ import { Plan } from "./PlanSelector";
 import StepProgress from "./StepProgress";
 import StepNavigation from "./StepNavigation";
 import { useSearchParams } from "react-router-dom";
+import { scrollToTop } from "@/utils/scrollUtils";
 
 const steps = [
   { step: "plan" as Step, label: "Plano" },
@@ -113,19 +114,21 @@ const StepCalculator = () => {
       return;
     }
 
+    let nextStep: Step;
     if (currentStep === "plan") {
-      if (selectedPlan?.id === "express") {
-        setCurrentStep("theme");
-      } else {
-        setCurrentStep("tasks");
-      }
+      nextStep = selectedPlan?.id === "express" ? "theme" : "tasks";
     } else if (currentStep === "theme") {
-      setCurrentStep("tasks");
+      nextStep = "tasks";
     } else if (currentStep === "tasks") {
-      setCurrentStep("summary");
+      nextStep = "summary";
     } else if (currentStep === "summary") {
-      setCurrentStep("contract");
+      nextStep = "contract";
+    } else {
+      return;
     }
+
+    setCurrentStep(nextStep);
+    scrollToTop();
   };
 
   const renderStepContent = () => {

@@ -1,23 +1,26 @@
+
 import { useState } from "react";
 import { Plan } from "./PlanSelector";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Minus, Plus, Settings2, Calendar, Palette, Network } from "lucide-react";
+import { Settings2, Calendar, Palette } from "lucide-react";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { motion } from "framer-motion";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
+import { Checkbox } from "../ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 type POFrequency = 'weekly' | 'biweekly' | 'monthly' | 'hybrid';
+type ERPOption = 'omie' | 'bling' | 'tiny' | null;
 
 interface ConfigurationOptionsProps {
   selectedPlan: Plan;
   onConfigurationChange: (config: {
     poHours: number;
     customTheme: boolean;
-    integrationCount: number;
-    firstMonthPoHours?: number;
+    hasCRM: boolean;
+    selectedERP: ERPOption;
   }) => void;
 }
 
@@ -27,60 +30,39 @@ const ConfigurationOptions = ({
 }: ConfigurationOptionsProps) => {
   const [poFrequency, setPoFrequency] = useState<POFrequency>('biweekly');
   const [customTheme, setCustomTheme] = useState(false);
-  const [integrationCount, setIntegrationCount] = useState(1);
-
-  const calculatePoHours = (frequency: POFrequency) => {
-    switch (frequency) {
-      case 'weekly':
-        return 4;
-      case 'biweekly':
-        return 2;
-      case 'monthly':
-        return 1;
-      case 'hybrid':
-        return 2;
-      default:
-        return 2;
-    }
-  };
-
-  const getFirstMonthPoHours = (frequency: POFrequency) => {
-    return frequency === 'hybrid' ? 6 : calculatePoHours(frequency);
-  };
+  const [hasCRM, setHasCRM] = useState(false);
+  const [selectedERP, setSelectedERP] = useState<ERPOption>(null);
 
   const updateConfiguration = (updates: Partial<{
     poFrequency: POFrequency;
     customTheme: boolean;
-    integrationCount: number;
+    hasCRM: boolean;
+    selectedERP: ERPOption;
   }>) => {
     const newFrequency = updates.poFrequency ?? poFrequency;
     const newConfig = {
       poHours: calculatePoHours(newFrequency),
       firstMonthPoHours: getFirstMonthPoHours(newFrequency),
       customTheme: updates.customTheme ?? customTheme,
-      integrationCount: updates.integrationCount ?? integrationCount,
+      hasCRM: updates.hasCRM ?? hasCRM,
+      selectedERP: updates.selectedERP ?? selectedERP,
     };
     
     onConfigurationChange(newConfig);
   };
 
-  const handlePoFrequencyChange = (value: POFrequency) => {
-    setPoFrequency(value);
-    updateConfiguration({ poFrequency: value });
+  const calculatePoHours = (frequency: POFrequency) => {
+    switch (frequency) {
+      case 'weekly': return 4;
+      case 'biweekly': return 2;
+      case 'monthly': return 1;
+      case 'hybrid': return 2;
+      default: return 2;
+    }
   };
 
-  const handleThemeChange = (value: string) => {
-    const isCustom = value === 'custom';
-    setCustomTheme(isCustom);
-    updateConfiguration({ customTheme: isCustom });
-  };
-
-  const handleIntegrationCountChange = (increment: boolean) => {
-    const newCount = increment 
-      ? Math.min(selectedPlan.maxIntegrations, integrationCount + 1)
-      : Math.max(1, integrationCount - 1);
-    setIntegrationCount(newCount);
-    updateConfiguration({ integrationCount: newCount });
+  const getFirstMonthPoHours = (frequency: POFrequency) => {
+    return frequency === 'hybrid' ? 6 : calculatePoHours(frequency);
   };
 
   return (
@@ -99,6 +81,7 @@ const ConfigurationOptions = ({
         </div>
         
         <div className="space-y-8">
+          {/* PO Frequency Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-primary" />
@@ -106,7 +89,10 @@ const ConfigurationOptions = ({
             </div>
             <RadioGroup
               defaultValue="biweekly"
-              onValueChange={(value) => handlePoFrequencyChange(value as POFrequency)}
+              onValueChange={(value) => {
+                setPoFrequency(value as POFrequency);
+                updateConfiguration({ poFrequency: value as POFrequency });
+              }}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               {[
@@ -128,14 +114,9 @@ const ConfigurationOptions = ({
                 </div>
               ))}
             </RadioGroup>
-            <Badge variant="secondary" className="ml-6">
-              {poFrequency === 'hybrid' 
-                ? `1º mês: ${getFirstMonthPoHours(poFrequency)}h, Depois: ${calculatePoHours(poFrequency)}h/mês`
-                : `${calculatePoHours(poFrequency)}h/mês`
-              }
-            </Badge>
           </div>
 
+          {/* Theme Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Palette className="w-5 h-5 text-primary" />
@@ -143,12 +124,16 @@ const ConfigurationOptions = ({
             </div>
             <RadioGroup
               defaultValue="standard"
-              onValueChange={handleThemeChange}
+              onValueChange={(value) => {
+                const isCustom = value === 'custom';
+                setCustomTheme(isCustom);
+                updateConfiguration({ customTheme: isCustom });
+              }}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               {[
                 { value: 'standard', label: 'Tema Padrão', hours: '2h' },
-                { value: 'custom', label: 'Tema Personalizado', hours: '20h' }
+                { value: 'custom', label: 'Tema Personalizado', hours: '50h' }
               ].map((option) => (
                 <div
                   key={option.value}
@@ -165,45 +150,65 @@ const ConfigurationOptions = ({
             </RadioGroup>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Network className="w-5 h-5 text-primary" />
-              <Label className="text-lg font-medium">Número de Integrações</Label>
+          {/* Integrations Section */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Label className="text-lg font-medium">Integrações</Label>
             </div>
-            <HoverCard>
-              <HoverCardTrigger>
-                <div className="flex items-center gap-4 p-4 border rounded-lg hover:border-primary/50 transition-colors">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleIntegrationCountChange(false)}
-                    disabled={integrationCount <= 1}
-                    className="h-8 w-8"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <span className="font-medium text-lg min-w-[2ch] text-center">{integrationCount}</span>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleIntegrationCountChange(true)}
-                    disabled={integrationCount >= selectedPlan.maxIntegrations}
-                    className="h-8 w-8"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                  <Badge variant="secondary" className="ml-2">
-                    Máx: {selectedPlan.maxIntegrations}
-                  </Badge>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent>
-                <p className="text-sm">
-                  Selecione o número de integrações que seu projeto necessita.
-                  Cada integração adiciona aproximadamente 8 horas ao projeto.
-                </p>
-              </HoverCardContent>
-            </HoverCard>
+
+            {/* CRM Integration */}
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="crm"
+                checked={hasCRM}
+                onCheckedChange={(checked) => {
+                  setHasCRM(checked as boolean);
+                  updateConfiguration({ hasCRM: checked as boolean });
+                }}
+              />
+              <label
+                htmlFor="crm"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Integração com CRM
+              </label>
+            </div>
+
+            {/* ERP Integration */}
+            <div className="space-y-2">
+              <Label>ERP</Label>
+              <Select
+                value={selectedERP || ""}
+                onValueChange={(value) => {
+                  setSelectedERP(value as ERPOption);
+                  updateConfiguration({ selectedERP: value as ERPOption });
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione um ERP" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="omie">
+                    <div className="flex items-center gap-2">
+                      <img src="/lovable-uploads/2dbe71b6-85c4-47f0-a5a8-8e14a59cd1b0.png" alt="Omie" className="h-6" />
+                      Omie
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="bling">
+                    <div className="flex items-center gap-2">
+                      <img src="/lovable-uploads/40bf9c1d-1e96-40c7-aa9f-37dd7e113858.png" alt="Bling" className="h-6" />
+                      Bling
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="tiny">
+                    <div className="flex items-center gap-2">
+                      <img src="/lovable-uploads/2735e670-a85d-45f9-ac3b-2aa7605c25ca.png" alt="Tiny" className="h-6" />
+                      Tiny
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </Card>
