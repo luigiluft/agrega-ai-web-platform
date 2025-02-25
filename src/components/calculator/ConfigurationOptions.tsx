@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plan } from "./PlanSelector";
 import { Label } from "../ui/label";
@@ -40,7 +39,7 @@ const ERPs = [
   {
     value: 'tiny',
     name: 'Tiny',
-    logo: '/lovable-uploads/2735e670-a85d-45f9-ac3b-2aa7605c25ca.png',
+    logo: '/lovable-uploads/fb296eeb-0813-49b4-aefc-c27d92911133.png',
     description: 'Sistema de gestão para e-commerce'
   }
 ];
@@ -204,32 +203,45 @@ const ConfigurationOptions = ({
             </div>
 
             {/* ERP Integration */}
-            <div className="space-y-2">
-              <Label>ERP</Label>
-              <Select
-                value={selectedERP || ""}
-                onValueChange={(value) => {
-                  setSelectedERP(value as ERPOption);
-                  updateConfiguration();
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Selecione um ERP" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ERPs.map((erp) => (
-                    <SelectItem key={erp.value} value={erp.value}>
-                      <div className="flex items-center gap-3 py-1">
-                        <img src={erp.logo} alt={erp.name} className="h-8 object-contain" />
-                        <div>
-                          <div className="font-medium">{erp.name}</div>
-                          <div className="text-xs text-gray-500">{erp.description}</div>
+            <div className="space-y-4">
+              <Label className="text-lg font-medium">Selecione seu ERP</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {ERPs.map((erp) => (
+                  <motion.div
+                    key={erp.value}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedERP(selectedERP === erp.value ? null : erp.value as ERPOption);
+                        updateConfiguration();
+                      }}
+                      className={`w-full h-full p-4 rounded-lg border-2 transition-all duration-200
+                        ${selectedERP === erp.value 
+                          ? 'border-primary bg-primary/5 shadow-lg' 
+                          : 'border-gray-200 hover:border-primary/50 hover:shadow-md'
+                        }
+                      `}
+                    >
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-32 h-16 flex items-center justify-center bg-white rounded-lg p-2">
+                          <img 
+                            src={erp.logo} 
+                            alt={erp.name} 
+                            className="h-12 object-contain"
+                          />
+                        </div>
+                        <div className="text-center">
+                          <h4 className="font-medium text-lg">{erp.name}</h4>
+                          <p className="text-sm text-gray-500 mt-1">{erp.description}</p>
                         </div>
                       </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
