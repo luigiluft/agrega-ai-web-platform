@@ -238,8 +238,10 @@ const StepCalculator = ({
   };
 
   return (
-    <Card className="max-w-5xl mx-auto p-8 shadow-xl">
-      <StepProgress currentStep={currentStep} steps={steps} />
+    <Card className="border-0 shadow-none">
+      <div className="mb-6">
+        <StepProgress currentStep={currentStep} steps={steps} />
+      </div>
 
       <motion.div
         key={currentStep}
@@ -247,16 +249,18 @@ const StepCalculator = ({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className="min-h-[400px]"
+        className="min-h-[400px] py-4"
       >
         {renderStepContent()}
       </motion.div>
 
-      <StepNavigation 
-        currentStep={currentStep} 
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-      />
+      <div className="mt-6">
+        <StepNavigation 
+          currentStep={currentStep} 
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+        />
+      </div>
     </Card>
   );
 };
