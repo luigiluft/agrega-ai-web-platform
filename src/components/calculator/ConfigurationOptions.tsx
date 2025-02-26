@@ -12,6 +12,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Clock } from "lucide-react";
 
 interface ConfigurationOptionsProps {
   selectedPlan: Plan;
@@ -29,19 +31,42 @@ const crmOptions = [
     id: "hubspot",
     name: "HubSpot",
     description: "Integração com HubSpot CRM",
-    image: "/lovable-uploads/b507c896-698a-4cde-968a-925f5288b4be.png"
+    image: "/lovable-uploads/b1910f66-63c7-4505-a6fd-295bb3b1d219.png"
   },
   {
     id: "rdstation",
     name: "RD Station",
     description: "Integração com RD Station CRM",
-    image: "/lovable-uploads/d588d50d-ae20-4d85-bdc9-eda09646e347.png"
+    image: "/lovable-uploads/ac5f6e35-0177-479e-a49d-edec43580ebe.png"
   },
   {
     id: "pipedrive",
     name: "Pipedrive",
     description: "Integração com Pipedrive CRM",
-    image: "/lovable-uploads/73f995a5-6a9f-4274-8593-e4fec168a2d4.png"
+    image: "/lovable-uploads/53cf28a0-7d18-4838-8723-92f2ed91b3ad.png"
+  }
+];
+
+const poHourOptions = [
+  {
+    value: "4",
+    label: "4 horas/mês",
+    description: "1 reunião mensal de alinhamento + pequenas alterações",
+  },
+  {
+    value: "8",
+    label: "8 horas/mês",
+    description: "2 reuniões mensais + implementação de melhorias",
+  },
+  {
+    value: "16",
+    label: "16 horas/mês",
+    description: "Reuniões semanais + desenvolvimento contínuo",
+  },
+  {
+    value: "32",
+    label: "32 horas/mês",
+    description: "Dedicação parcial + desenvolvimento avançado",
   }
 ];
 
@@ -63,14 +88,6 @@ const ConfigurationOptions = ({
   const handleThemeChange = (checked: boolean) => {
     setCustomTheme(checked);
     updateConfiguration(poHours, checked, hasCRM, selectedCRM);
-  };
-
-  const handleCRMChange = (checked: boolean) => {
-    setHasCRM(checked);
-    if (!checked) {
-      setSelectedCRM("");
-    }
-    updateConfiguration(poHours, customTheme, checked, checked ? selectedCRM : "");
   };
 
   const handleCRMSelect = (crmId: string) => {
@@ -99,19 +116,38 @@ const ConfigurationOptions = ({
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <div className="flex flex-col space-y-2">
-          <Label htmlFor="po-hours">Horas de Product Owner por mês</Label>
-          <Select onValueChange={handlePOChange} defaultValue={String(poHours)}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Selecione as horas" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="4">4 horas/mês</SelectItem>
-              <SelectItem value="8">8 horas/mês</SelectItem>
-              <SelectItem value="16">16 horas/mês</SelectItem>
-              <SelectItem value="32">32 horas/mês</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Clock className="w-5 h-5 text-primary" />
+            <Label className="text-lg font-medium">Suporte mensal do Product Owner</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Selecione a quantidade de horas mensais para reuniões de alinhamento e implementação de melhorias no site
+          </p>
+          <RadioGroup
+            defaultValue={String(poHours)}
+            onValueChange={handlePOChange}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
+            {poHourOptions.map((option) => (
+              <div key={option.value}>
+                <RadioGroupItem
+                  value={option.value}
+                  id={`po-hours-${option.value}`}
+                  className="peer sr-only"
+                />
+                <Label
+                  htmlFor={`po-hours-${option.value}`}
+                  className="flex flex-col h-full p-4 border rounded-lg cursor-pointer hover:bg-accent peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5"
+                >
+                  <span className="font-semibold">{option.label}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {option.description}
+                  </span>
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
         </div>
 
         <div className="flex items-center space-x-2">
