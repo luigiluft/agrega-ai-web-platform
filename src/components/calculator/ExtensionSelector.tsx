@@ -23,7 +23,12 @@ const ExtensionSelector = ({
   const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const categories = Array.from(new Set(extensions.map(ext => ext.category)));
+  const categories = Array.from(new Set([
+    ...extensions.map(ext => ext.category),
+    'Segurança e Compliance',
+    'Marketing Digital',
+    'Performance e Acessibilidade'
+  ]));
 
   const filteredExtensions = extensions.filter(ext => {
     const matchesPrice = 
