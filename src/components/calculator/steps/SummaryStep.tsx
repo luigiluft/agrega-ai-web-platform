@@ -1,4 +1,3 @@
-
 import { Plan } from "@/types/calculator-types";
 import { SummaryStepProps } from "@/types/calculator-steps";
 import { useToast } from "@/components/ui/use-toast";
@@ -6,7 +5,6 @@ import ProjectConfiguration from "../summary/ProjectConfiguration";
 import SelectedExtensions from "../summary/SelectedExtensions";
 import InvestmentSummary from "../summary/InvestmentSummary";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
-import { SecurityFeature, MarketingFeature, PerformanceFeature } from "@/types/calculator-new-features";
 
 const SummaryStep = ({ 
   selectedTasks, 
@@ -19,11 +17,7 @@ const SummaryStep = ({
   poFrequency,
   hasCRM,
   crmName,
-  selectedERP,
-  security,
-  marketing,
-  performance,
-  poHours
+  selectedERP
 }: SummaryStepProps & { 
   onPlanSelect: (plan: Plan) => void;
   selectedPlan: Plan | null;
@@ -32,10 +26,6 @@ const SummaryStep = ({
   hasCRM?: boolean;
   crmName?: string;
   selectedERP?: string | null;
-  security?: string[];
-  marketing?: string[];
-  performance?: string[];
-  poHours?: number;
 }) => {
   const { toast } = useToast();
   const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
@@ -51,26 +41,13 @@ const SummaryStep = ({
   const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0) +
     selectedExtensionDetails.reduce((acc, ext) => acc + (ext?.implementationHours || 0), 0);
 
-  // Automaticamente seleciona o plano anual se não houver plano selecionado
-  if (!selectedPlan) {
-    const annualPlan = {
-      id: 'annual',
-      name: 'Plano Anual',
-      description: '',
-      features: [],
-      baseImplementationPrice: 0,
-      baseMaintenancePrice: 0,
-      basePOHours: 0,
-      maxIntegrations: 0
-    } as Plan;
-    
-    onPlanSelect(annualPlan);
-  }
-
-  // Converter os arrays de string para os tipos corretos
-  const securityFeatures = security?.map(s => s as SecurityFeature) || [];
-  const marketingFeatures = marketing?.map(m => m as MarketingFeature) || [];
-  const performanceFeatures = performance?.map(p => p as PerformanceFeature) || [];
+  const handlePlanSelect = (plan: Plan) => {
+    onPlanSelect(plan);
+    toast({
+      title: "Plano selecionado",
+      description: `Você selecionou o plano ${plan.name}`,
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -86,11 +63,6 @@ const SummaryStep = ({
             hasCRM={hasCRM}
             crmName={crmName}
             selectedERP={selectedERP}
-            security={securityFeatures}
-            marketing={marketingFeatures}
-            performance={performanceFeatures}
-            poHours={poHours}
-            totalHours={totalHours}
           />
           <SelectedExtensions selectedExtensions={selectedExtensions} />
         </div>
@@ -100,7 +72,7 @@ const SummaryStep = ({
           maintenancePrice={maintenancePrice}
           revenueShare={revenueShare}
           totalHours={totalHours}
-          onPlanSelect={onPlanSelect}
+          onPlanSelect={handlePlanSelect}
           selectedPlan={selectedPlan}
         />
       </div>
