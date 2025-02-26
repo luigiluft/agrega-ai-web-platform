@@ -59,64 +59,56 @@ const ProjectConfiguration = ({
       <Card className="bg-white rounded-xl overflow-hidden">
         <div className="p-6 space-y-6">
           {/* Cards principais em grid */}
-          <div className="grid grid-cols-3 gap-4">
-            {/* Escopo */}
-            <Card className="p-4 bg-orange-50/50 border-orange-100">
-              <div className="flex items-center gap-2 mb-3">
-                <Clock className="w-5 h-5 text-orange-500" />
-                <h4 className="text-sm font-medium text-gray-600">Escopo</h4>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{totalHours}</p>
-                  <p className="text-sm text-gray-500">horas</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{Math.ceil((totalHours || 0) / 6)}</p>
-                  <p className="text-sm text-gray-500">semanas</p>
-                </div>
-              </div>
-            </Card>
-
+          <div className="grid grid-cols-2 gap-4">
             {/* Suporte */}
-            <Card className="p-4 bg-orange-50/50 border-orange-100">
-              <div className="flex items-center gap-2 mb-3">
-                <ListChecks className="w-5 h-5 text-orange-500" />
-                <h4 className="text-sm font-medium text-gray-600">Suporte</h4>
+            <Card className="p-6 bg-orange-50/50 border-orange-100">
+              <div className="flex items-center gap-2 mb-4">
+                <ListChecks className="w-6 h-6 text-orange-500" />
+                <h4 className="text-base font-medium text-gray-700">Suporte Mensal</h4>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{poHours}</p>
-                  <p className="text-sm text-gray-500">h/mês</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Frequência</p>
-                  <p className="text-sm font-medium text-gray-700">{poHours && getPoFrequencyText(poHours)}</p>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-3xl font-bold text-gray-900">{poHours}</p>
+                    <p className="text-base text-gray-600">horas/mês</p>
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    <p className="text-sm font-medium text-gray-700">Inclui:</p>
+                    <div className="space-y-2">
+                      {poHours && getPoFrequencyText(poHours).split('+').map((item, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                          <p className="text-sm text-gray-600">{item.trim()}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </Card>
 
             {/* Integrações */}
-            <Card className="p-4 bg-orange-50/50 border-orange-100">
-              <div className="flex items-center gap-2 mb-3">
-                <Database className="w-5 h-5 text-orange-500" />
-                <h4 className="text-sm font-medium text-gray-600">Integrações</h4>
+            <Card className="p-6 bg-orange-50/50 border-orange-100">
+              <div className="flex items-center gap-2 mb-4">
+                <Database className="w-6 h-6 text-orange-500" />
+                <h4 className="text-base font-medium text-gray-700">Integrações</h4>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {(hasCRM || crmName) && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                      <Database className="w-4 h-4 text-orange-500" />
+                  <div className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm">
+                    <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Database className="w-5 h-5 text-orange-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-700">CRM</p>
-                      <p className="text-xs text-gray-500">{crmName || "CRM personalizado"}</p>
+                      <p className="text-sm font-medium text-gray-800">CRM</p>
+                      <p className="text-sm text-gray-600">{crmName || "CRM personalizado"}</p>
+                      <p className="text-xs text-gray-500 mt-1">24h de implementação</p>
                     </div>
                   </div>
                 )}
                 {selectedERP && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm p-1.5">
+                  <div className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm">
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm p-2 flex-shrink-0">
                       <img
                         src={`/lovable-uploads/${selectedERP === 'bling' ? '127f1152-e8da-4bef-b098-3d5a01fc61a5.png' : 'bf82d247-a2d9-41cc-af14-4a13c149bec2.png'}`}
                         alt={`Logo ${selectedERP}`}
@@ -124,13 +116,16 @@ const ProjectConfiguration = ({
                       />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-700">{selectedERP.charAt(0).toUpperCase() + selectedERP.slice(1)}</p>
-                      <p className="text-xs text-gray-500">Integração completa</p>
+                      <p className="text-sm font-medium text-gray-800">{selectedERP.charAt(0).toUpperCase() + selectedERP.slice(1)}</p>
+                      <p className="text-sm text-gray-600">Integração completa</p>
+                      <p className="text-xs text-gray-500 mt-1">24h de implementação</p>
                     </div>
                   </div>
                 )}
                 {!hasCRM && !crmName && !selectedERP && (
-                  <p className="text-sm text-gray-500">Nenhuma integração selecionada</p>
+                  <div className="flex items-center justify-center h-24 bg-white rounded-lg">
+                    <p className="text-sm text-gray-500">Nenhuma integração selecionada</p>
+                  </div>
                 )}
               </div>
             </Card>
