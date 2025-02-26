@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface ConfigurationOptionsProps {
   selectedPlan: Plan;
@@ -26,17 +28,20 @@ const crmOptions = [
   {
     id: "hubspot",
     name: "HubSpot",
-    description: "Integração com HubSpot CRM"
+    description: "Integração com HubSpot CRM",
+    image: "/lovable-uploads/b507c896-698a-4cde-968a-925f5288b4be.png"
   },
   {
     id: "rdstation",
     name: "RD Station",
-    description: "Integração com RD Station CRM"
+    description: "Integração com RD Station CRM",
+    image: "/lovable-uploads/d588d50d-ae20-4d85-bdc9-eda09646e347.png"
   },
   {
     id: "pipedrive",
     name: "Pipedrive",
-    description: "Integração com Pipedrive CRM"
+    description: "Integração com Pipedrive CRM",
+    image: "/lovable-uploads/73f995a5-6a9f-4274-8593-e4fec168a2d4.png"
   }
 ];
 
@@ -68,9 +73,12 @@ const ConfigurationOptions = ({
     updateConfiguration(poHours, customTheme, checked, checked ? selectedCRM : "");
   };
 
-  const handleCRMSelect = (value: string) => {
-    setSelectedCRM(value);
-    updateConfiguration(poHours, customTheme, hasCRM, value);
+  const handleCRMSelect = (crmId: string) => {
+    const newSelectedCRM = selectedCRM === crmId ? "" : crmId;
+    setSelectedCRM(newSelectedCRM);
+    const hasSelectedCRM = newSelectedCRM !== "";
+    setHasCRM(hasSelectedCRM);
+    updateConfiguration(poHours, customTheme, hasSelectedCRM, newSelectedCRM);
   };
 
   const updateConfiguration = (
@@ -116,29 +124,35 @@ const ConfigurationOptions = ({
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="crm-integration"
-              checked={hasCRM}
-              onCheckedChange={handleCRMChange}
-            />
-            <Label htmlFor="crm-integration">Integração com CRM (+8h)</Label>
+          <div className="space-y-2">
+            <Label>Integração com CRM (+8h)</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {crmOptions.map((crm) => (
+                <Card
+                  key={crm.id}
+                  className={cn(
+                    "p-4 cursor-pointer transition-all hover:shadow-md",
+                    selectedCRM === crm.id && "ring-2 ring-primary shadow-lg"
+                  )}
+                  onClick={() => handleCRMSelect(crm.id)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 flex items-center justify-center">
+                      <img
+                        src={crm.image}
+                        alt={crm.name}
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-lg font-semibold">{crm.name}</h4>
+                      <p className="text-sm text-gray-600">{crm.description}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-
-          {hasCRM && (
-            <Select onValueChange={handleCRMSelect} value={selectedCRM}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Selecione o CRM" />
-              </SelectTrigger>
-              <SelectContent>
-                {crmOptions.map((crm) => (
-                  <SelectItem key={crm.id} value={crm.id}>
-                    {crm.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
         </div>
       </div>
     </div>
