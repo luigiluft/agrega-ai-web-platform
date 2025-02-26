@@ -6,6 +6,12 @@ import SelectedExtensions from "../summary/SelectedExtensions";
 import InvestmentSummary from "../summary/InvestmentSummary";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { SecurityFeature, MarketingFeature, PerformanceFeature } from "@/types/calculator-new-features";
+import { 
+  calculateTotalHours, 
+  calculateImplementationCosts, 
+  calculateMonthlyCosts 
+} from "@/utils/calculatorUtils";
+import { useAnnualPlan } from "@/hooks/useAnnualPlan";
 
 const SummaryStep = ({ 
   selectedTasks, 
@@ -36,35 +42,10 @@ const SummaryStep = ({
   performance?: PerformanceFeature[];
   poHours?: number;
 }) => {
-  // Automaticamente define o plano como anual
-  if (!selectedPlan) {
-    const annualPlan = {
-      id: 'annual',
-      name: 'Plano Anual',
-      description: 'Pagamento em 12x',
-      features: [],
-      baseImplementationPrice: totalPrice,
-      baseMaintenancePrice: 0,
-      basePOHours: poHours || 0,
-      maxIntegrations: 4,
-      supportLevel: 'priority',
-      layout: 'custom'
-    } as Plan;
-    onPlanSelect(annualPlan);
-  }
+  // Configuração do plano anual
+  useAnnualPlan(totalPrice, poHours, selectedPlan, onPlanSelect);
 
-  // Constantes de custos
-  const HOUR_RATE = 185; // Taxa padrão por hora
-  const DESIGN_HOUR_RATE = 200; // Taxa de design por hora
-  const INTEGRATION_MONTHLY_COST = 1500; // Custo mensal por integração
-  const SECURITY_IMPLEMENTATION_COST = 2000; // Custo de implementação por feature de segurança
-  const MARKETING_IMPLEMENTATION_COST = 1500; // Custo de implementação por feature de marketing
-  const PERFORMANCE_IMPLEMENTATION_COST = 1800; // Custo de implementação por feature de performance
-  const THEME_HOURS = selectedTheme ? 50 : 0; // Horas para tema personalizado
-  const CRM_HOURS = hasCRM ? 24 : 0; // Horas para integração CRM
-  const ERP_HOURS = selectedERP ? 24 : 0; // Horas para integração ERP
-
-  // Cálculos de horas de implementação
+  // Cálculo das horas de implementação
   const implementationHours = selectedTasks.reduce((acc, task) => 
     task.type !== "recurring" ? acc + task.hours : acc, 0);
   
@@ -75,60 +56,39 @@ const SummaryStep = ({
   const extensionImplementationHours = selectedExtensionDetails.reduce((acc, ext) => 
     acc + (ext?.implementationHours || 0), 0);
 
-  // Horas de recursos adicionais
-  const securityHours = (security?.length || 0) * 8; // 8 horas por feature
-  const marketingHours = (marketing?.length || 0) * 6; // 6 horas por feature
-  const performanceHours = (performance?.length || 0) * 8; // 8 horas por feature
+  // Cálculo do total de horas
+  const totalImplementationHours = calculateTotalHours({
+    implementationHours,
+    extensionImplementationHours,
+    hasTheme: !!selectedTheme,
+    hasCRM: !!hasCRM,
+    hasERP: !!selectedERP,
+    securityFeaturesCount: security?.length || 0,
+    marketingFeaturesCount: marketing?.length || 0,
+    performanceFeaturesCount: performance?.length || 0,
+  });
 
-  // Total de horas
-  const totalImplementationHours = 
-    implementationHours + 
-    extensionImplementationHours + 
-    THEME_HOURS +
-    CRM_HOURS +
-    ERP_HOURS +
-    securityHours +
-    marketingHours +
-    performanceHours;
+  // Cálculo dos custos de implementação
+  const implementationCosts = calculateImplementationCosts({
+    implementationHours,
+    extensionImplementationHours,
+    hasTheme: !!selectedTheme,
+    securityFeaturesCount: security?.length || 0,
+    marketingFeaturesCount: marketing?.length || 0,
+    performanceFeaturesCount: performance?.length || 0,
+  });
 
-  // Cálculos de custos de implementação
-  const baseImplementationCost = implementationHours * HOUR_RATE;
-  const extensionsImplementationCost = extensionImplementationHours * HOUR_RATE;
-  const securityImplementationCost = security?.length ? security.length * SECURITY_IMPLEMENTATION_COST : 0;
-  const marketingImplementationCost = marketing?.length ? marketing.length * MARKETING_IMPLEMENTATION_COST : 0;
-  const performanceImplementationCost = performance?.length ? performance.length * PERFORMANCE_IMPLEMENTATION_COST : 0;
-  const themeCustomizationCost = selectedTheme ? THEME_HOURS * DESIGN_HOUR_RATE : 0;
-  
-  const totalImplementationCost = 
-    baseImplementationCost + 
-    extensionsImplementationCost +
-    securityImplementationCost + 
-    marketingImplementationCost + 
-    performanceImplementationCost + 
-    themeCustomizationCost;
-
-  // Cálculos de custos mensais (sustentação)
+  // Cálculo dos custos mensais
   const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
   const maintenanceHours = maintenanceTasks.reduce((acc, task) => acc + task.hours, 0);
-  const maintenanceTasksCost = maintenanceHours * HOUR_RATE;
-  
-  // Custos mensais de integrações
   const numberOfIntegrations = (hasCRM ? 1 : 0) + (selectedERP ? 1 : 0);
-  const integrationsMonthlyCost = numberOfIntegrations * INTEGRATION_MONTHLY_COST;
-  
-  // Custo mensal do PO
-  const poMonthlyCost = poHours ? poHours * HOUR_RATE : 0;
 
-  // Revenue share
-  const REVENUE_SHARE_PERCENT = 3;
-  const revenueShare = (Number(monthlyRevenue) * REVENUE_SHARE_PERCENT) / 100;
-
-  // Total mensal (sustentação)
-  const totalMonthlyCost = 
-    maintenanceTasksCost + 
-    integrationsMonthlyCost + 
-    poMonthlyCost +
-    revenueShare;
+  const monthlyCosts = calculateMonthlyCosts({
+    maintenanceHours,
+    integrationCount: numberOfIntegrations,
+    poHours: poHours || 0,
+    monthlyRevenue,
+  });
 
   return (
     <div className="space-y-6">
@@ -154,21 +114,21 @@ const SummaryStep = ({
         </div>
 
         <InvestmentSummary
-          totalPrice={totalImplementationCost}
-          maintenancePrice={totalMonthlyCost}
-          revenueShare={revenueShare}
+          totalPrice={implementationCosts.total}
+          maintenancePrice={monthlyCosts.total}
+          revenueShare={monthlyCosts.revenueShare}
           totalHours={totalImplementationHours}
           onPlanSelect={onPlanSelect}
           selectedPlan={selectedPlan}
-          securityCost={securityImplementationCost}
-          marketingCost={marketingImplementationCost}
-          performanceCost={performanceImplementationCost}
-          supportCost={poMonthlyCost}
-          integrationsCost={integrationsMonthlyCost}
-          maintenanceTasksCost={maintenanceTasksCost}
-          baseImplementationCost={baseImplementationCost}
-          extensionsImplementationCost={extensionsImplementationCost}
-          themeCustomizationCost={themeCustomizationCost}
+          securityCost={implementationCosts.securityImplementationCost}
+          marketingCost={implementationCosts.marketingImplementationCost}
+          performanceCost={implementationCosts.performanceImplementationCost}
+          supportCost={monthlyCosts.poMonthlyCost}
+          integrationsCost={monthlyCosts.integrationsMonthlyCost}
+          maintenanceTasksCost={monthlyCosts.maintenanceTasksCost}
+          baseImplementationCost={implementationCosts.baseImplementationCost}
+          extensionsImplementationCost={implementationCosts.extensionsImplementationCost}
+          themeCustomizationCost={implementationCosts.themeCustomizationCost}
         />
       </div>
     </div>
