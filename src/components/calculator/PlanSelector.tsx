@@ -1,42 +1,23 @@
+
 import { motion } from "framer-motion";
-import { Check, Clock, Zap, Shield, Wrench } from "lucide-react";
+import { Check, Zap, Shield, Wrench, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
 import { Plan } from "@/types/calculator-types";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 interface PlanSelectorProps {
   selectedPlan: Plan | null;
   onPlanSelect: (plan: Plan) => void;
 }
 
-interface OperationalQuestions {
-  productSize: string;
-  skuCount: string;
-  averageTicket: string;
-  monthlyOrders: string;
-  stockLocation: string;
-}
-
 const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
-  const [showQuestions, setShowQuestions] = useState(false);
-  const [operationalData, setOperationalData] = useState<OperationalQuestions>({
-    productSize: "",
-    skuCount: "",
-    averageTicket: "",
-    monthlyOrders: "",
-    stockLocation: ""
-  });
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value);
+  };
 
   const plans: Plan[] = [
     {
@@ -49,7 +30,6 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
         "2.000 pedidos/mês",
         "4h PO/mês",
       ],
-      monthlyLimit: 2000,
       baseImplementationPrice: 15000,
       baseMaintenancePrice: 2000,
       basePOHours: 4,
@@ -94,120 +74,115 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
     },
   ];
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value);
-  };
-
   const getPlanIcon = (planId: string) => {
     switch (planId) {
       case "express":
-        return <Zap className="w-8 h-8 text-primary" />;
+        return <Zap className="h-10 w-10 text-orange-500" />;
       case "standard":
-        return <Shield className="w-8 h-8 text-primary" />;
+        return <Shield className="h-10 w-10 text-orange-500" />;
       case "enterprise":
-        return <Wrench className="w-8 h-8 text-primary" />;
+        return <Wrench className="h-10 w-10 text-orange-500" />;
       default:
         return null;
     }
   };
 
-  const handlePlanSelect = (plan: Plan) => {
-    if (plan.id === "enterprise") {
-      setShowQuestions(true);
-    } else {
-      onPlanSelect(plan);
-    }
-  };
-
-  const handleOperationalSubmit = () => {
-    const enterprisePlan = plans.find(p => p.id === "enterprise");
-    if (enterprisePlan) {
-      onPlanSelect(enterprisePlan);
-    }
-    setShowQuestions(false);
+  const getPopularBadge = (isPopular: boolean | undefined) => {
+    if (!isPopular) return null;
+    return (
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+        <div className="relative">
+          <Star className="h-6 w-6 text-orange-500 absolute -top-3 left-1/2 -translate-x-1/2" />
+          <Badge className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full">
+            Mais Popular
+          </Badge>
+        </div>
+      </div>
+    );
   };
 
   return (
-    <div className="space-y-10">
-      <div className="text-center space-y-6">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+    <div className="space-y-12">
+      <div className="text-center space-y-4">
+        <h2 className="text-4xl font-bold text-gray-900">
           Escolha o plano ideal para seu negócio
         </h2>
-        <p className="text-gray-600 text-lg">
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Selecione a solução que melhor atende às necessidades da sua empresa
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {plans.map((plan) => (
           <motion.div
             key={plan.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ y: -5 }}
             transition={{ duration: 0.3 }}
           >
             <Card 
-              className={`relative h-full overflow-hidden border-2 transition-all duration-300 ${
+              className={`relative h-full overflow-hidden transition-all duration-300 ${
                 selectedPlan?.id === plan.id
-                  ? "border-orange-500 shadow-lg shadow-orange-500/20"
-                  : "border-transparent hover:border-orange-300"
+                  ? "ring-4 ring-orange-500 ring-opacity-50 shadow-xl scale-105"
+                  : "hover:shadow-lg"
               }`}
             >
-              {plan.isPopular && (
-                <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
-                  <Badge className="bg-orange-500 text-white px-6 py-1 rounded-full font-semibold">
-                    Popular
-                  </Badge>
-                </div>
-              )}
+              {getPopularBadge(plan.isPopular)}
 
-              <CardContent className="p-6">
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    {getPlanIcon(plan.id)}
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
-                      <p className="text-gray-600 mt-1">{plan.description}</p>
+              <CardContent className="p-8">
+                <div className="space-y-8">
+                  <div className="text-center space-y-3">
+                    <div className="flex justify-center">
+                      {getPlanIcon(plan.id)}
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                    <p className="text-gray-600">{plan.description}</p>
+                  </div>
+
+                  <div className="text-center space-y-1">
+                    <div className="text-4xl font-bold text-orange-500">
+                      {formatCurrency(plan.baseImplementationPrice)}
+                    </div>
+                    <p className="text-gray-600">implementação</p>
+                    <div className="text-2xl font-semibold text-gray-900 mt-2">
+                      {formatCurrency(plan.baseMaintenancePrice)}
+                      <span className="text-gray-600 text-base">/mês</span>
                     </div>
                   </div>
 
-                  <div className="space-y-2 pt-4">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-orange-600">
-                        {formatCurrency(plan.baseImplementationPrice)}
-                      </span>
-                      <span className="text-gray-600">implementação</span>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-semibold text-gray-800">
-                        {formatCurrency(plan.baseMaintenancePrice)}
-                      </span>
-                      <span className="text-gray-600">/mês</span>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-3">
+                  <div className="space-y-4">
                     {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3 text-gray-700">
-                        <Check className="w-5 h-5 text-orange-500 shrink-0" />
+                      <div 
+                        key={index} 
+                        className="flex items-center gap-3 text-gray-700"
+                      >
+                        <div className="flex-shrink-0">
+                          <div className="rounded-full p-1 bg-orange-100">
+                            <Check className="w-4 h-4 text-orange-500" />
+                          </div>
+                        </div>
                         <span>{feature}</span>
-                      </li>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
 
                   <Button
-                    onClick={() => handlePlanSelect(plan)}
-                    className={`w-full text-lg py-6 ${
+                    onClick={() => onPlanSelect(plan)}
+                    className={`w-full py-6 text-lg font-medium transition-all duration-300 ${
                       selectedPlan?.id === plan.id
-                        ? "bg-orange-500 hover:bg-orange-600 text-white"
+                        ? "bg-orange-500 hover:bg-orange-600 text-white shadow-lg"
                         : "bg-orange-50 hover:bg-orange-100 text-orange-600"
                     }`}
                   >
-                    {selectedPlan?.id === plan.id ? "Selecionado" : "Selecionar"}
+                    {selectedPlan?.id === plan.id ? (
+                      <span className="flex items-center gap-2">
+                        <Check className="w-5 h-5" />
+                        Selecionado
+                      </span>
+                    ) : (
+                      "Selecionar plano"
+                    )}
                   </Button>
                 </div>
               </CardContent>

@@ -15,21 +15,21 @@ const DynamicCalculator = () => {
   const [monthlyOrders, setMonthlyOrders] = useState("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-500 to-orange-600">
+    <div className="min-h-screen bg-gradient-to-tr from-orange-600 via-orange-500 to-orange-400">
       <NavigationMenuDemo />
       
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-5xl mx-auto space-y-10">
+        <div className="max-w-7xl mx-auto space-y-10">
           <div className="text-center space-y-6">
-            <h1 className="text-5xl font-bold text-white drop-shadow-md">
+            <h1 className="text-5xl font-bold text-white drop-shadow-lg">
               Calculadora de Preços
             </h1>
-            <p className="text-xl text-white/95 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
               Configure seu projeto e receba um orçamento personalizado para sua loja virtual
             </p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+          <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl">
             <StepCalculator 
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
