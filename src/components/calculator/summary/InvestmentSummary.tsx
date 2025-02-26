@@ -1,3 +1,4 @@
+
 import { Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +30,7 @@ const InvestmentSummary = ({
   performanceCost = 0,
   supportCost = 0
 }: InvestmentSummaryProps) => {
-  const REVENUE_SHARE_PERCENT = "3";
+  const REVENUE_SHARE_PERCENT = "2";
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
@@ -60,7 +61,7 @@ const InvestmentSummary = ({
 
         <div className="flex justify-between items-center">
           <h4 className="font-medium">Revenue Share</h4>
-          <span className="text-lg">{formatCurrency(revenueShare)}/mês</span>
+          <span className="text-lg">{formatCurrency(revenueShare)}/mês ({REVENUE_SHARE_PERCENT}%)</span>
         </div>
 
         <Separator />
@@ -74,39 +75,6 @@ const InvestmentSummary = ({
             <span className="text-sm text-gray-600">Previsão de Entrega</span>
             <Badge variant="secondary">{Math.ceil(totalHours / 6)} semanas</Badge>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <button
-            onClick={() => onPlanSelect({ id: 'monthly', name: 'Mensal' } as Plan)}
-            className={`p-4 rounded-lg border-2 transition-all ${
-              selectedPlan?.id === 'monthly'
-                ? 'border-primary bg-primary/5'
-                : 'border-gray-200 hover:border-primary/50'
-            }`}
-          >
-            <h5 className="font-medium">Plano Mensal</h5>
-            <p className="text-sm text-gray-500 mt-1">
-              {REVENUE_SHARE_PERCENT}% Revenue Share
-            </p>
-          </button>
-
-          <button
-            onClick={() => onPlanSelect({ id: 'annual', name: 'Anual' } as Plan)}
-            className={`p-4 rounded-lg border-2 transition-all ${
-              selectedPlan?.id === 'annual'
-                ? 'border-primary bg-primary/5'
-                : 'border-gray-200 hover:border-primary/50'
-            }`}
-          >
-            <h5 className="font-medium">Plano Anual</h5>
-            <p className="text-sm text-gray-500 mt-1">
-              {Number(REVENUE_SHARE_PERCENT) - 1}% Revenue Share
-            </p>
-            <Badge className="mt-2 bg-green-100 text-green-800">
-              Economia de 1%
-            </Badge>
-          </button>
         </div>
       </div>
     </Card>
