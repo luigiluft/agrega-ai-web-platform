@@ -6,7 +6,7 @@ import { Step } from "@/types/calculator-steps";
 import { Plan, Task } from "@/types/calculator-types";
 
 const DynamicCalculator = () => {
-  const [currentStep, setCurrentStep] = useState<Step>("plan");
+  const [currentStep, setCurrentStep] = useState<Step>("platform");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [selectedExtensions, setSelectedExtensions] = useState<Set<string>>(new Set());

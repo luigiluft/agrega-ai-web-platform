@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "../ui/card";
@@ -9,6 +8,7 @@ import ThemeStep from "./steps/ThemeStep";
 import TasksStep from "./steps/TasksStep";
 import SummaryStep from "./steps/SummaryStep";
 import ContractStep from "./ContractStep";
+import PlatformStep, { PlatformType } from "./steps/PlatformStep";
 import { Theme } from "@/components/theme/types";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
 import { calculatorTasks } from "@/data/calculatorTasks";
@@ -39,6 +39,7 @@ interface StepCalculatorProps {
 }
 
 const steps = [
+  { step: "platform" as Step, label: "Plataforma" },
   { step: "plan" as Step, label: "Plano" },
   { step: "theme" as Step, label: "Tema" },
   { step: "tasks" as Step, label: "Tarefas" },
@@ -66,6 +67,7 @@ const StepCalculator = ({
   const { toast } = useToast();
   const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+  const [selectedPlatform, setSelectedPlatform] = useState<PlatformType | null>(null);
 
   useEffect(() => {
     const planId = searchParams.get('plan');
@@ -123,6 +125,15 @@ const StepCalculator = ({
   };
 
   const handleNext = () => {
+    if (currentStep === "platform" && !selectedPlatform) {
+      toast({
+        title: "Selecione uma plataforma",
+        description: "Por favor, selecione um tipo de plataforma para continuar.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (currentStep === "plan" && !selectedPlan) {
       toast({
         title: "Selecione um plano",
@@ -142,7 +153,9 @@ const StepCalculator = ({
     }
 
     let nextStep: Step;
-    if (currentStep === "plan") {
+    if (currentStep === "platform") {
+      nextStep = "plan";
+    } else if (currentStep === "plan") {
       nextStep = selectedPlan?.id === "express" ? "theme" : "tasks";
     } else if (currentStep === "theme") {
       nextStep = "tasks";
@@ -160,7 +173,9 @@ const StepCalculator = ({
 
   const handlePrevious = () => {
     let previousStep: Step;
-    if (currentStep === "tasks") {
+    if (currentStep === "plan") {
+      previousStep = "platform";
+    } else if (currentStep === "tasks") {
       previousStep = selectedPlan?.id === "express" ? "theme" : "plan";
     } else if (currentStep === "theme") {
       previousStep = "plan";
@@ -187,8 +202,10 @@ const StepCalculator = ({
     const revenueShare = (revenue * revenueSharePercent) / 100;
 
     switch (currentStep) {
+      case "platform":
+        return <PlatformStep selectedPlatform={selectedPlatform} onPlatformSelect={setSelectedPlatform} />;
       case "plan":
-        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={handlePlanSelect} />;
+        return <PlanStep selectedPlan={selectedPlan} onPlanSelect={onPlanSelect} />;
       case "theme":
         return selectedPlan?.id === "express" && (
           <ThemeStep selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />

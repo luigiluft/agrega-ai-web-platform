@@ -2,7 +2,7 @@
 import { Task } from "./calculator-types";
 import { Plan } from "./calculator-types";
 
-export type Step = "plan" | "theme" | "tasks" | "summary" | "contract";
+export type Step = "platform" | "plan" | "theme" | "tasks" | "summary" | "contract";
 
 export interface SummaryStepProps {
   selectedTasks: Task[];
