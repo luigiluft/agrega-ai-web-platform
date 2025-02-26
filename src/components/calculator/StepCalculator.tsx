@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "../ui/card";
@@ -46,22 +45,7 @@ const steps = [
   { step: "contract" as Step, label: "Contrato" }
 ];
 
-const StepCalculator = ({
-  currentStep,
-  setCurrentStep,
-  selectedPlan,
-  onPlanSelect,
-  selectedTasks,
-  onTasksChange,
-  selectedExtensions,
-  onExtensionToggle,
-  monthlyRevenue,
-  setMonthlyRevenue,
-  averageTicket,
-  setAverageTicket,
-  monthlyOrders,
-  setMonthlyOrders
-}: StepCalculatorProps) => {
+const StepCalculator = ({ currentStep, setCurrentStep, selectedPlan, onPlanSelect, selectedTasks, onTasksChange, selectedExtensions, onExtensionToggle, monthlyRevenue, setMonthlyRevenue, averageTicket, setAverageTicket, monthlyOrders, setMonthlyOrders }: StepCalculatorProps) => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
@@ -238,19 +222,23 @@ const StepCalculator = ({
   };
 
   return (
-    <Card className="max-w-5xl mx-auto p-8 shadow-xl">
+    <Card className="backdrop-blur-xl bg-white/95 p-8 shadow-xl rounded-xl border-0">
       <StepProgress currentStep={currentStep} steps={steps} />
 
-      <motion.div
-        key={currentStep}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        className="min-h-[400px]"
-      >
-        {renderStepContent()}
-      </motion.div>
+      <div className="py-8">
+        <motion.div
+          key={currentStep}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="min-h-[400px]"
+        >
+          <div className="max-w-3xl mx-auto">
+            {renderStepContent()}
+          </div>
+        </motion.div>
+      </div>
 
       <StepNavigation 
         currentStep={currentStep} 

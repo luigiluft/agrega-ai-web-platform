@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Check, Clock, Zap, Shield, Wrench } from "lucide-react";
 import { Button } from "../ui/button";
@@ -132,15 +131,17 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-          Escolha seu Plano
+    <div className="space-y-10">
+      <div className="text-center space-y-6">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          Escolha o plano ideal para seu negócio
         </h2>
-        <p className="text-gray-600">Selecione o plano ideal para seu negócio</p>
+        <p className="text-gray-600 text-lg">
+          Selecione a solução que melhor atende às necessidades da sua empresa
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {plans.map((plan) => (
           <motion.div
             key={plan.id}
@@ -149,14 +150,16 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className={`relative h-full overflow-hidden border-2 ${
-              selectedPlan?.id === plan.id
-                ? "border-primary shadow-lg"
-                : "border-transparent hover:border-primary/30"
-            }`}>
+            <Card 
+              className={`relative h-full overflow-hidden border-2 transition-all duration-300 ${
+                selectedPlan?.id === plan.id
+                  ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                  : "border-transparent hover:border-orange-300"
+              }`}
+            >
               {plan.isPopular && (
                 <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
-                  <Badge className="bg-primary text-white px-6 py-1 rounded-full">
+                  <Badge className="bg-orange-500 text-white px-6 py-1 rounded-full font-semibold">
                     Popular
                   </Badge>
                 </div>
@@ -164,44 +167,44 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
 
               <CardContent className="p-6">
                 <div className="space-y-6">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-start gap-4">
                     {getPlanIcon(plan.id)}
                     <div>
-                      <h3 className="text-xl font-bold">{plan.name}</h3>
-                      <p className="text-sm text-gray-600">{plan.description}</p>
+                      <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                      <p className="text-gray-600 mt-1">{plan.description}</p>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-primary">
+                  <div className="space-y-2 pt-4">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-orange-600">
                         {formatCurrency(plan.baseImplementationPrice)}
                       </span>
-                      <span className="text-sm text-gray-500">implementação</span>
+                      <span className="text-gray-600">implementação</span>
                     </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-lg font-semibold text-gray-700">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xl font-semibold text-gray-800">
                         {formatCurrency(plan.baseMaintenancePrice)}
                       </span>
-                      <span className="text-sm text-gray-500">/mês</span>
+                      <span className="text-gray-600">/mês</span>
                     </div>
                   </div>
 
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2 text-sm">
-                        <Check className="w-4 h-4 text-primary shrink-0" />
-                        <span className="text-gray-600">{feature}</span>
+                      <li key={index} className="flex items-center gap-3 text-gray-700">
+                        <Check className="w-5 h-5 text-orange-500 shrink-0" />
+                        <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   <Button
                     onClick={() => handlePlanSelect(plan)}
-                    className={`w-full ${
+                    className={`w-full text-lg py-6 ${
                       selectedPlan?.id === plan.id
-                        ? "bg-primary hover:bg-primary/90"
-                        : "bg-primary/10 hover:bg-primary/20 text-primary"
+                        ? "bg-orange-500 hover:bg-orange-600 text-white"
+                        : "bg-orange-50 hover:bg-orange-100 text-orange-600"
                     }`}
                   >
                     {selectedPlan?.id === plan.id ? "Selecionado" : "Selecionar"}
@@ -212,82 +215,6 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
           </motion.div>
         ))}
       </div>
-
-      <Dialog open={showQuestions} onOpenChange={setShowQuestions}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Informações Operacionais</DialogTitle>
-            <DialogDescription>
-              Para melhor adequarmos nossa solução, precisamos de algumas informações sobre sua operação.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="skuCount" className="col-span-4">
-                Quantidade de SKUs
-              </Label>
-              <Input
-                id="skuCount"
-                placeholder="Ex: 1000"
-                className="col-span-4"
-                value={operationalData.skuCount}
-                onChange={(e) => setOperationalData({...operationalData, skuCount: e.target.value})}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="productSize" className="col-span-4">
-                Tamanho médio dos produtos
-              </Label>
-              <Input
-                id="productSize"
-                placeholder="Ex: 30x20x10 cm"
-                className="col-span-4"
-                value={operationalData.productSize}
-                onChange={(e) => setOperationalData({...operationalData, productSize: e.target.value})}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="averageTicket" className="col-span-4">
-                Ticket Médio (R$)
-              </Label>
-              <Input
-                id="averageTicket"
-                placeholder="Ex: 150"
-                className="col-span-4"
-                value={operationalData.averageTicket}
-                onChange={(e) => setOperationalData({...operationalData, averageTicket: e.target.value})}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="monthlyOrders" className="col-span-4">
-                Pedidos por Mês
-              </Label>
-              <Input
-                id="monthlyOrders"
-                placeholder="Ex: 1000"
-                className="col-span-4"
-                value={operationalData.monthlyOrders}
-                onChange={(e) => setOperationalData({...operationalData, monthlyOrders: e.target.value})}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="stockLocation" className="col-span-4">
-                Localização do Estoque
-              </Label>
-              <Input
-                id="stockLocation"
-                placeholder="Ex: São Paulo - SP"
-                className="col-span-4"
-                value={operationalData.stockLocation}
-                onChange={(e) => setOperationalData({...operationalData, stockLocation: e.target.value})}
-              />
-            </div>
-          </div>
-          <Button onClick={handleOperationalSubmit} className="w-full">
-            Continuar
-          </Button>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
