@@ -10,7 +10,7 @@ export const supportPackages: SupportPackage[] = [
   {
     level: 'basic',
     hours: 10,
-    price: 2000,
+    price: 800, // 80 reais * 10 horas
     features: [
       'Suporte por email',
       'Tempo de resposta em até 48h',
@@ -21,7 +21,7 @@ export const supportPackages: SupportPackage[] = [
   {
     level: 'standard',
     hours: 20,
-    price: 3500,
+    price: 1600, // 80 reais * 20 horas
     features: [
       'Suporte por email e chat',
       'Tempo de resposta em até 24h',
@@ -34,7 +34,7 @@ export const supportPackages: SupportPackage[] = [
   {
     level: 'premium',
     hours: 40,
-    price: 6000,
+    price: 3200, // 80 reais * 40 horas
     features: [
       'Suporte prioritário',
       'Tempo de resposta em até 4h',

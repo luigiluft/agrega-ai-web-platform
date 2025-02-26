@@ -1,12 +1,12 @@
-
 import React, { useState } from 'react';
 import { Plan } from "@/types/calculator-types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Minus, Plus } from "lucide-react";
 
 const crmOptions = [
   {
@@ -55,8 +55,8 @@ const ConfigurationOptions = ({ selectedPlan, onConfigurationChange }: Configura
   const [customCRMName, setCustomCRMName] = useState('');
   const [selectedERP, setSelectedERP] = useState<string | null>(null);
 
-  const handlePOHoursChange = (value: number[]) => {
-    const hours = value[0];
+  const handlePOHoursChange = (newHours: number) => {
+    const hours = Math.max(4, Math.min(40, newHours));
     setPOHours(hours);
     updateConfiguration();
   };
@@ -87,24 +87,46 @@ const ConfigurationOptions = ({ selectedPlan, onConfigurationChange }: Configura
     });
   };
 
-  const poPrice = poHours * 80; // Novo valor por hora de atendimento
+  const poPrice = poHours * 200;
+
+  const commonButtonClasses = "h-8 w-8 rounded-full flex items-center justify-center transition-colors";
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="space-y-4">
         <Label htmlFor="po-hours">Horas de Product Owner (PO) por mês</Label>
-        <Slider
-          id="po-hours"
-          defaultValue={[selectedPlan.basePOHours]}
-          max={32}
-          step={2}
-          onValueChange={handlePOHoursChange}
-          className="mt-2"
-        />
-        <div className="flex justify-between mt-1 text-sm text-gray-500">
-          <span>{poHours} horas</span>
-          <span>R$ {poPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-        </div>
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              className={commonButtonClasses}
+              onClick={() => handlePOHoursChange(poHours - 4)}
+              disabled={poHours <= 4}
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <div className="text-center space-y-2">
+              <span className="text-3xl font-bold text-primary">{poHours}</span>
+              <p className="text-sm text-gray-500">horas/mês</p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className={commonButtonClasses}
+              onClick={() => handlePOHoursChange(poHours + 4)}
+              disabled={poHours >= 40}
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="mt-4 text-center">
+            <span className="text-lg font-semibold text-primary">
+              R$ {poPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            </span>
+            <p className="text-sm text-gray-500">R$ 200,00 por hora</p>
+          </div>
+        </Card>
       </div>
 
       <div className="space-y-2">
