@@ -1,4 +1,3 @@
-
 import { Package, Calendar, Palette, Database, Shield, Rocket, Gauge, Clock, Check, ListChecks } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -58,114 +57,107 @@ const ProjectConfiguration = ({
     <div className="space-y-8">
       <Card className="overflow-hidden bg-gradient-to-br from-orange-50 to-white">
         <div className="p-8 space-y-8">
-          {/* Métricas principais em grid largo */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Cards principais em grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Card de Escopo */}
             <div className="bg-white p-6 rounded-xl shadow-md border-2 border-orange-100 hover:border-orange-200 transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Clock className="w-6 h-6 text-orange-600" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <Clock className="w-8 h-8 text-orange-600" />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-800">Escopo do Projeto</h4>
+                <div>
+                  <h4 className="text-xl font-semibold text-gray-800">Escopo</h4>
+                  <p className="text-sm text-gray-500">do Projeto</p>
+                </div>
               </div>
               <div className="space-y-4">
-                <div className="p-3 bg-orange-50/70 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 font-medium">Total de Horas</span>
-                    <Badge variant="secondary" className="text-base bg-white text-orange-700 font-semibold px-4 py-1">
-                      {totalHours}h
-                    </Badge>
+                <div className="p-4 bg-orange-50/70 rounded-xl">
+                  <p className="text-sm text-gray-500 mb-1">Total de Horas</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-gray-800">{totalHours}</span>
+                    <span className="text-gray-600">horas</span>
                   </div>
                 </div>
-                <div className="p-3 bg-orange-50/70 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 font-medium">Previsão de Entrega</span>
-                    <Badge variant="secondary" className="text-base bg-white text-orange-700 font-semibold px-4 py-1">
-                      {Math.ceil((totalHours || 0) / 6)} semanas
-                    </Badge>
+                <div className="p-4 bg-orange-50/70 rounded-xl">
+                  <p className="text-sm text-gray-500 mb-1">Previsão de Entrega</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-gray-800">{Math.ceil((totalHours || 0) / 6)}</span>
+                    <span className="text-gray-600">semanas</span>
                   </div>
                 </div>
               </div>
             </div>
 
+            {/* Card de Suporte */}
             <div className="bg-white p-6 rounded-xl shadow-md border-2 border-orange-100 hover:border-orange-200 transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <ListChecks className="w-6 h-6 text-orange-600" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <ListChecks className="w-8 h-8 text-orange-600" />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-800">Suporte Mensal</h4>
+                <div>
+                  <h4 className="text-xl font-semibold text-gray-800">Suporte</h4>
+                  <p className="text-sm text-gray-500">Mensal</p>
+                </div>
               </div>
               <div className="space-y-4">
-                <div className="p-3 bg-orange-50/70 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 font-medium">Horas P.O.</span>
-                    <Badge variant="secondary" className="text-base bg-white text-orange-700 font-semibold px-4 py-1">
-                      {poHours}h/mês
-                    </Badge>
+                <div className="p-4 bg-orange-50/70 rounded-xl">
+                  <p className="text-sm text-gray-500 mb-1">Horas P.O.</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-gray-800">{poHours}</span>
+                    <span className="text-gray-600">h/mês</span>
                   </div>
                 </div>
-                <div className="p-3 bg-orange-50/70 rounded-lg">
-                  <p className="text-gray-700">
+                <div className="p-4 bg-orange-50/70 rounded-xl">
+                  <p className="text-sm text-gray-500 mb-1">Frequência</p>
+                  <p className="text-gray-700 font-medium">
                     {poHours && getPoFrequencyText(poHours)}
                   </p>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Integrações */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Database className="w-6 h-6 text-orange-600" />
+            {/* Card de Integrações */}
+            <div className="bg-white p-6 rounded-xl shadow-md border-2 border-orange-100 hover:border-orange-200 transition-all">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <Database className="w-8 h-8 text-orange-600" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-gray-800">Integrações</h4>
+                  <p className="text-sm text-gray-500">Sistemas</p>
+                </div>
               </div>
-              <h4 className="text-lg font-semibold text-gray-800">Integrações</h4>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* CRM Card */}
-              {(hasCRM || crmName) && (
-                <div className="bg-white p-6 rounded-xl shadow-md border-2 border-orange-100 hover:border-orange-200 transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-16 h-16 bg-orange-50 rounded-xl flex items-center justify-center">
-                      <Database className="w-8 h-8 text-orange-500" />
+              <div className="space-y-4">
+                {(hasCRM || crmName) && (
+                  <div className="p-4 bg-orange-50/70 rounded-xl flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                      <Database className="w-6 h-6 text-orange-500" />
                     </div>
-                    <div className="flex-1">
-                      <h5 className="text-lg font-medium text-gray-800">CRM</h5>
-                      <p className="text-gray-600 mt-2">
-                        Integração com {crmName || "CRM personalizado"}
-                      </p>
-                      <Badge className="mt-3 bg-orange-100 text-orange-700 px-4 py-1">
-                        Sustentação mensal
-                      </Badge>
+                    <div>
+                      <h5 className="font-medium text-gray-800">CRM</h5>
+                      <p className="text-sm text-gray-600">{crmName || "CRM personalizado"}</p>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* ERP Card */}
-              {selectedERP && (
-                <div className="bg-white p-6 rounded-xl shadow-md border-2 border-orange-100 hover:border-orange-200 transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden bg-white border border-orange-100 p-2">
+                )}
+                {selectedERP && (
+                  <div className="p-4 bg-orange-50/70 rounded-xl flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-lg p-2">
                       <img
                         src={`/lovable-uploads/${selectedERP === 'bling' ? '127f1152-e8da-4bef-b098-3d5a01fc61a5.png' : 'bf82d247-a2d9-41cc-af14-4a13c149bec2.png'}`}
                         alt={`Logo ${selectedERP}`}
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <div className="flex-1">
-                      <h5 className="text-lg font-medium text-gray-800">
-                        {selectedERP.charAt(0).toUpperCase() + selectedERP.slice(1)}
-                      </h5>
-                      <p className="text-gray-600 mt-2">
-                        Integração completa
-                      </p>
-                      <Badge className="mt-3 bg-orange-100 text-orange-700 px-4 py-1">
-                        Sustentação mensal
-                      </Badge>
+                    <div>
+                      <h5 className="font-medium text-gray-800">{selectedERP.charAt(0).toUpperCase() + selectedERP.slice(1)}</h5>
+                      <p className="text-sm text-gray-600">Integração completa</p>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+                {!hasCRM && !crmName && !selectedERP && (
+                  <p className="text-gray-500 text-center p-4">Nenhuma integração selecionada</p>
+                )}
+              </div>
             </div>
           </div>
 
