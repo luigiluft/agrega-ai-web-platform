@@ -1,5 +1,5 @@
 
-import { Clock, Calculator, Package, Calendar } from "lucide-react";
+import { Clock, Calculator, Package, Calendar, Database, Palette, Code } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -12,10 +12,15 @@ interface InvestmentSummaryProps {
   totalHours: number;
   onPlanSelect: (plan: Plan) => void;
   selectedPlan: Plan | null;
-  securityCost?: number;
-  marketingCost?: number;
-  performanceCost?: number;
-  supportCost?: number;
+  securityCost: number;
+  marketingCost: number;
+  performanceCost: number;
+  supportCost: number;
+  integrationsCost: number;
+  maintenanceTasksCost: number;
+  baseImplementationCost: number;
+  extensionsImplementationCost: number;
+  themeCustomizationCost: number;
 }
 
 const InvestmentSummary = ({
@@ -24,10 +29,15 @@ const InvestmentSummary = ({
   revenueShare,
   totalHours,
   selectedPlan,
-  securityCost = 0,
-  marketingCost = 0,
-  performanceCost = 0,
-  supportCost = 0
+  securityCost,
+  marketingCost,
+  performanceCost,
+  supportCost,
+  integrationsCost,
+  maintenanceTasksCost,
+  baseImplementationCost,
+  extensionsImplementationCost,
+  themeCustomizationCost
 }: InvestmentSummaryProps) => {
   const REVENUE_SHARE_PERCENT = "3";
   const formatCurrency = (value: number) => {
@@ -58,8 +68,20 @@ const InvestmentSummary = ({
           <div className="space-y-2">
             <div className="flex justify-between items-center text-sm">
               <span className="text-gray-600">Desenvolvimento base</span>
-              <span>{formatCurrency(totalPrice - (securityCost + marketingCost + performanceCost))}</span>
+              <span>{formatCurrency(baseImplementationCost)}</span>
             </div>
+            {extensionsImplementationCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Extensões</span>
+                <span>{formatCurrency(extensionsImplementationCost)}</span>
+              </div>
+            )}
+            {themeCustomizationCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Personalização do tema</span>
+                <span>{formatCurrency(themeCustomizationCost)}</span>
+              </div>
+            )}
             {securityCost > 0 && (
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-600">Segurança e Compliance</span>
@@ -93,17 +115,25 @@ const InvestmentSummary = ({
         <div className="bg-orange-50 p-4 rounded-lg space-y-3">
           <h4 className="font-medium text-gray-700 flex items-center gap-2">
             <Calendar className="w-4 h-4 text-orange-500" />
-            Custos Mensais
+            Sustentação Mensal
           </h4>
           <div className="space-y-2">
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-gray-600">Manutenção</span>
-              <span>{formatCurrency(maintenancePrice - supportCost)}</span>
-            </div>
+            {maintenanceTasksCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Manutenção básica</span>
+                <span>{formatCurrency(maintenanceTasksCost)}</span>
+              </div>
+            )}
             {supportCost > 0 && (
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-600">Suporte P.O.</span>
                 <span>{formatCurrency(supportCost)}</span>
+              </div>
+            )}
+            {integrationsCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Integrações</span>
+                <span>{formatCurrency(integrationsCost)}</span>
               </div>
             )}
             <div className="flex justify-between items-center text-sm">
@@ -113,7 +143,7 @@ const InvestmentSummary = ({
             <Separator className="my-2" />
             <div className="flex justify-between items-center font-medium">
               <span>Total Mensal</span>
-              <span className="text-lg">{formatCurrency(maintenancePrice + revenueShare)}</span>
+              <span className="text-lg">{formatCurrency(maintenancePrice)}</span>
             </div>
           </div>
         </div>

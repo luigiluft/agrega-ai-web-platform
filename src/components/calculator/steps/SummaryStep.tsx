@@ -53,33 +53,66 @@ const SummaryStep = ({
     onPlanSelect(annualPlan);
   }
 
-  // Cálculos de custos
-  const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
-  const HOUR_RATE = 185;
-  const maintenancePrice = maintenanceTasks.reduce((acc, task) => acc + task.hours * HOUR_RATE, 0);
-  const REVENUE_SHARE_PERCENT = "3";
-  const revenueShare = (Number(monthlyRevenue) * Number(REVENUE_SHARE_PERCENT)) / 100;
+  // Constantes de custos
+  const HOUR_RATE = 185; // Taxa padrão por hora
+  const DESIGN_HOUR_RATE = 200; // Taxa de design por hora
+  const INTEGRATION_MONTHLY_COST = 1500; // Custo mensal por integração
+  const SECURITY_IMPLEMENTATION_COST = 2000; // Custo de implementação por feature de segurança
+  const MARKETING_IMPLEMENTATION_COST = 1500; // Custo de implementação por feature de marketing
+  const PERFORMANCE_IMPLEMENTATION_COST = 1800; // Custo de implementação por feature de performance
 
+  // Cálculos de custos de implementação
+  const implementationHours = selectedTasks.reduce((acc, task) => 
+    task.type !== "recurring" ? acc + task.hours : acc, 0);
+  
   const selectedExtensionDetails = Array.from(selectedExtensions).map(id => 
     ecommerceExtensions.find(ext => ext.id === id)
   ).filter(Boolean);
 
-  // Cálculo do total de horas e custos
-  const implementationHours = selectedTasks.reduce((acc, task) => 
-    task.type !== "recurring" ? acc + task.hours : acc, 0);
-  const extensionHours = selectedExtensionDetails.reduce((acc, ext) => 
+  const extensionImplementationHours = selectedExtensionDetails.reduce((acc, ext) => 
     acc + (ext?.implementationHours || 0), 0);
-  const totalHours = implementationHours + extensionHours;
 
-  // Custos adicionais baseados nas features selecionadas
-  const securityCost = security?.length ? security.length * 2000 : 0;
-  const marketingCost = marketing?.length ? marketing.length * 1500 : 0;
-  const performanceCost = performance?.length ? performance.length * 1800 : 0;
-  const themeCustomizationCost = selectedTheme ? 50 * HOUR_RATE : 0;
+  // Custos adicionais de implementação
+  const securityImplementationCost = security?.length ? security.length * SECURITY_IMPLEMENTATION_COST : 0;
+  const marketingImplementationCost = marketing?.length ? marketing.length * MARKETING_IMPLEMENTATION_COST : 0;
+  const performanceImplementationCost = performance?.length ? performance.length * PERFORMANCE_IMPLEMENTATION_COST : 0;
+  const themeCustomizationCost = selectedTheme ? 50 * DESIGN_HOUR_RATE : 0;
+
+  // Total de horas e custo de implementação
+  const totalHours = implementationHours + extensionImplementationHours;
+  const baseImplementationCost = implementationHours * HOUR_RATE;
+  const extensionsImplementationCost = extensionImplementationHours * HOUR_RATE;
   
-  // Custos totais
-  const implementationCost = totalPrice + securityCost + marketingCost + performanceCost + themeCustomizationCost;
-  const monthlyMaintenanceCost = maintenancePrice + (poHours ? poHours * HOUR_RATE : 0);
+  const totalImplementationCost = 
+    baseImplementationCost + 
+    extensionsImplementationCost +
+    securityImplementationCost + 
+    marketingImplementationCost + 
+    performanceImplementationCost + 
+    themeCustomizationCost;
+
+  // Cálculos de custos mensais (sustentação)
+  const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
+  const maintenanceHours = maintenanceTasks.reduce((acc, task) => acc + task.hours, 0);
+  const maintenanceTasksCost = maintenanceHours * HOUR_RATE;
+  
+  // Custos mensais de integrações
+  const numberOfIntegrations = (hasCRM ? 1 : 0) + (selectedERP ? 1 : 0);
+  const integrationsMonthlyCost = numberOfIntegrations * INTEGRATION_MONTHLY_COST;
+  
+  // Custo mensal do PO
+  const poMonthlyCost = poHours ? poHours * HOUR_RATE : 0;
+
+  // Revenue share
+  const REVENUE_SHARE_PERCENT = 3;
+  const revenueShare = (Number(monthlyRevenue) * REVENUE_SHARE_PERCENT) / 100;
+
+  // Total mensal (sustentação)
+  const totalMonthlyCost = 
+    maintenanceTasksCost + 
+    integrationsMonthlyCost + 
+    poMonthlyCost +
+    revenueShare;
 
   return (
     <div className="space-y-6">
@@ -99,22 +132,26 @@ const SummaryStep = ({
             marketing={marketing}
             performance={performance}
             poHours={poHours}
-            totalHours={totalHours}
           />
           <SelectedExtensions selectedExtensions={selectedExtensions} />
         </div>
 
         <InvestmentSummary
-          totalPrice={implementationCost}
-          maintenancePrice={monthlyMaintenanceCost}
+          totalPrice={totalImplementationCost}
+          maintenancePrice={totalMonthlyCost}
           revenueShare={revenueShare}
           totalHours={totalHours}
           onPlanSelect={onPlanSelect}
           selectedPlan={selectedPlan}
-          securityCost={securityCost}
-          marketingCost={marketingCost}
-          performanceCost={performanceCost}
-          supportCost={poHours ? poHours * HOUR_RATE : 0}
+          securityCost={securityImplementationCost}
+          marketingCost={marketingImplementationCost}
+          performanceCost={performanceImplementationCost}
+          supportCost={poMonthlyCost}
+          integrationsCost={integrationsMonthlyCost}
+          maintenanceTasksCost={maintenanceTasksCost}
+          baseImplementationCost={baseImplementationCost}
+          extensionsImplementationCost={extensionsImplementationCost}
+          themeCustomizationCost={themeCustomizationCost}
         />
       </div>
     </div>
