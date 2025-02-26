@@ -1,4 +1,3 @@
-
 import { Package, Calendar, Palette, Database, Shield, Rocket, Gauge, Clock, Check, ListChecks } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -58,9 +57,7 @@ const ProjectConfiguration = ({
     <div className="space-y-8">
       <Card className="bg-white rounded-xl overflow-hidden">
         <div className="p-6 space-y-6">
-          {/* Cards principais em grid */}
           <div className="grid grid-cols-1 gap-6">
-            {/* Suporte */}
             <Card className="p-6 bg-orange-50/50 border-orange-100">
               <div className="flex items-center gap-2 mb-6">
                 <ListChecks className="w-7 h-7 text-orange-500" />
@@ -94,7 +91,6 @@ const ProjectConfiguration = ({
               </div>
             </Card>
 
-            {/* Integrações */}
             <Card className="p-6 bg-orange-50/50 border-orange-100">
               <div className="flex items-center gap-2 mb-6">
                 <Database className="w-7 h-7 text-orange-500" />
@@ -178,7 +174,6 @@ const ProjectConfiguration = ({
             </Card>
           </div>
 
-          {/* Tema */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Palette className="w-5 h-5 text-orange-500" />
@@ -194,13 +189,18 @@ const ProjectConfiguration = ({
                     </div>
                     <Badge className="bg-orange-100 text-orange-600">+50h designer</Badge>
                   </div>
-                  <div className="relative aspect-video rounded-lg overflow-hidden">
+                  <a 
+                    href={`/lovable-uploads/${selectedTheme}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative aspect-video rounded-lg overflow-hidden hover:opacity-90 transition-opacity cursor-pointer ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
                     <img
                       src={`/lovable-uploads/${selectedTheme}`}
                       alt="Preview do tema"
                       className="w-full h-full object-cover"
                     />
-                  </div>
+                  </a>
                 </div>
               ) : (
                 <div className="flex justify-between items-start">
@@ -214,7 +214,6 @@ const ProjectConfiguration = ({
             </Card>
           </div>
 
-          {/* Recursos Adicionais */}
           {(security.length > 0 || marketing.length > 0 || performance.length > 0) && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
