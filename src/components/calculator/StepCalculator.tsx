@@ -47,6 +47,14 @@ const steps = [
   { step: "contract" as Step, label: "Contrato" }
 ];
 
+interface Configuration {
+  poHours: number;
+  customTheme: boolean;
+  hasCRM: boolean;
+  selectedERP: string | null;
+  crmName?: string;
+}
+
 const StepCalculator = ({
   currentStep,
   setCurrentStep,
@@ -68,6 +76,13 @@ const StepCalculator = ({
   const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformType | null>(null);
+  const [configuration, setConfiguration] = useState<Configuration>({
+    poHours: 4,
+    customTheme: false,
+    hasCRM: false,
+    selectedERP: null,
+    crmName: undefined
+  });
 
   useEffect(() => {
     const planId = searchParams.get('plan');
@@ -191,6 +206,10 @@ const StepCalculator = ({
     scrollToTop();
   };
 
+  const handleConfigurationUpdate = (newConfig: Configuration) => {
+    setConfiguration(newConfig);
+  };
+
   const renderStepContent = () => {
     const totalPrice = calculatePrice();
     const implementationPrice = totalPrice;
@@ -225,6 +244,7 @@ const StepCalculator = ({
             setAverageTicket={setAverageTicket}
             monthlyOrders={monthlyOrders}
             setMonthlyOrders={setMonthlyOrders}
+            onConfigurationUpdate={handleConfigurationUpdate}
           />
         );
       case "summary":
@@ -236,6 +256,12 @@ const StepCalculator = ({
             monthlyRevenue={monthlyRevenue}
             onPlanSelect={setPaymentPlan}
             selectedPlan={paymentPlan}
+            selectedTheme={selectedTheme}
+            poFrequency={configuration.poHours.toString()}
+            hasCRM={configuration.hasCRM}
+            crmName={configuration.crmName}
+            selectedERP={configuration.selectedERP}
+            poHours={configuration.poHours}
           />
         );
       case "contract":

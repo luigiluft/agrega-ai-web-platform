@@ -49,8 +49,17 @@ const TasksStep = ({
   averageTicket,
   setAverageTicket,
   monthlyOrders,
-  setMonthlyOrders
-}: TasksStepProps) => {
+  setMonthlyOrders,
+  onConfigurationUpdate // Adicionando nova prop para atualizar configuração
+}: TasksStepProps & {
+  onConfigurationUpdate?: (config: {
+    poHours: number;
+    customTheme: boolean;
+    hasCRM: boolean;
+    selectedERP: string | null;
+    crmName?: string;
+  }) => void;
+}) => {
   const [configPrice, setConfigPrice] = useState({
     implementation: selectedPlan.baseImplementationPrice,
     maintenance: selectedPlan.baseMaintenancePrice
@@ -79,10 +88,26 @@ const TasksStep = ({
       implementation: implementationPrice,
       maintenance: maintenancePrice
     });
+
+    // Propagar as alterações para o componente pai
+    if (onConfigurationUpdate) {
+      onConfigurationUpdate(config);
+    }
   };
 
   const handleERPSelect = (erpId: string) => {
-    setSelectedERP(selectedERP === erpId ? null : erpId);
+    const newSelectedERP = selectedERP === erpId ? null : erpId;
+    setSelectedERP(newSelectedERP);
+    
+    // Atualizar a configuração quando o ERP é alterado
+    if (onConfigurationUpdate) {
+      onConfigurationUpdate({
+        poHours: selectedPlan.basePOHours,
+        customTheme: false,
+        hasCRM: false,
+        selectedERP: newSelectedERP,
+      });
+    }
   };
 
   return (
