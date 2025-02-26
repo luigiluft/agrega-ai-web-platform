@@ -1,3 +1,4 @@
+
 import { Plan } from "@/types/calculator-types";
 import { SummaryStepProps } from "@/types/calculator-steps";
 import { useToast } from "@/components/ui/use-toast";
@@ -17,7 +18,11 @@ const SummaryStep = ({
   poFrequency,
   hasCRM,
   crmName,
-  selectedERP
+  selectedERP,
+  security,
+  marketing,
+  performance,
+  poHours
 }: SummaryStepProps & { 
   onPlanSelect: (plan: Plan) => void;
   selectedPlan: Plan | null;
@@ -26,6 +31,10 @@ const SummaryStep = ({
   hasCRM?: boolean;
   crmName?: string;
   selectedERP?: string | null;
+  security?: string[];
+  marketing?: string[];
+  performance?: string[];
+  poHours?: number;
 }) => {
   const { toast } = useToast();
   const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
@@ -41,13 +50,21 @@ const SummaryStep = ({
   const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0) +
     selectedExtensionDetails.reduce((acc, ext) => acc + (ext?.implementationHours || 0), 0);
 
-  const handlePlanSelect = (plan: Plan) => {
-    onPlanSelect(plan);
-    toast({
-      title: "Plano selecionado",
-      description: `Você selecionou o plano ${plan.name}`,
-    });
-  };
+  // Automaticamente seleciona o plano anual se não houver plano selecionado
+  if (!selectedPlan) {
+    const annualPlan = {
+      id: 'annual',
+      name: 'Plano Anual',
+      description: '',
+      features: [],
+      baseImplementationPrice: 0,
+      baseMaintenancePrice: 0,
+      basePOHours: 0,
+      maxIntegrations: 0
+    } as Plan;
+    
+    onPlanSelect(annualPlan);
+  }
 
   return (
     <div className="space-y-6">
@@ -63,6 +80,11 @@ const SummaryStep = ({
             hasCRM={hasCRM}
             crmName={crmName}
             selectedERP={selectedERP}
+            security={security}
+            marketing={marketing}
+            performance={performance}
+            poHours={poHours}
+            totalHours={totalHours}
           />
           <SelectedExtensions selectedExtensions={selectedExtensions} />
         </div>
@@ -72,7 +94,7 @@ const SummaryStep = ({
           maintenancePrice={maintenancePrice}
           revenueShare={revenueShare}
           totalHours={totalHours}
-          onPlanSelect={handlePlanSelect}
+          onPlanSelect={onPlanSelect}
           selectedPlan={selectedPlan}
         />
       </div>
