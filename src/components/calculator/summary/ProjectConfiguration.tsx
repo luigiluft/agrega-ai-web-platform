@@ -1,5 +1,5 @@
 
-import { Package, Calendar, Palette, Database, Shield, Rocket, Gauge, Clock } from "lucide-react";
+import { Package, Calendar, Palette, Database, Shield, Rocket, Gauge, Clock, Check } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +24,7 @@ interface ProjectConfigurationProps {
   marketing?: MarketingFeature[];
   performance?: PerformanceFeature[];
   poHours?: number;
+  totalHours?: number;
 }
 
 const ProjectConfiguration = ({
@@ -35,7 +36,8 @@ const ProjectConfiguration = ({
   security = [],
   marketing = [],
   performance = [],
-  poHours
+  poHours,
+  totalHours
 }: ProjectConfigurationProps) => {
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -57,148 +59,177 @@ const ProjectConfiguration = ({
   };
 
   return (
-    <Card className="p-6 space-y-6">
-      <h3 className="text-xl font-semibold flex items-center gap-2">
-        <Package className="w-5 h-5 text-primary" />
-        Configurações do Projeto
-      </h3>
-
+    <Card className="p-6">
       <div className="space-y-6">
-        {/* Suporte do PO */}
-        <div className="space-y-3">
-          <div className="flex items-start gap-4">
-            <Clock className="w-5 h-5 text-gray-500 mt-1" />
-            <div className="flex-1">
-              <h4 className="font-medium">Suporte do Product Owner</h4>
-              <p className="text-sm text-gray-600">
-                {poHours && getPoFrequencyText(poHours)}
-              </p>
+        {/* Cabeçalho do Projeto */}
+        <div>
+          <h3 className="text-xl font-semibold flex items-center gap-2 mb-4">
+            <Package className="w-5 h-5 text-primary" />
+            Resumo do Projeto
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-primary" />
+              <span className="text-sm text-gray-600">Total de Horas:</span>
+              <Badge variant="secondary">{totalHours}h</Badge>
             </div>
-            <Badge variant="secondary">{poHours}h/mês</Badge>
-          </div>
-        </div>
-
-        {/* Tema */}
-        <div className="space-y-3">
-          <div className="flex items-start gap-4">
-            <Palette className="w-5 h-5 text-gray-500 mt-1" />
-            <div className="flex-1">
-              <h4 className="font-medium">Tema</h4>
-              {selectedTheme ? (
-                <div className="flex items-center gap-2">
-                  <p className="text-sm text-gray-600">Tema personalizado</p>
-                  <Badge className="bg-primary/10 text-primary hover:bg-primary/20">+50h</Badge>
-                </div>
-              ) : (
-                <p className="text-sm text-gray-600">Tema padrão otimizado</p>
-              )}
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-primary" />
+              <span className="text-sm text-gray-600">Previsão de Entrega:</span>
+              <Badge variant="secondary">{Math.ceil((totalHours || 0) / 6)} semanas</Badge>
             </div>
           </div>
         </div>
 
         <Separator />
 
-        {/* Integrações */}
-        <div className="space-y-4">
-          <h4 className="font-medium">Integrações</h4>
-          
-          {/* CRM */}
-          {(hasCRM || crmName) && (
-            <div className="flex items-start gap-4">
-              <Database className="w-5 h-5 text-gray-500 mt-1" />
-              <div className="flex-1">
-                <p className="text-sm font-medium">CRM</p>
-                <p className="text-sm text-gray-600">
-                  Integração com {crmName || "CRM personalizado"}
-                </p>
-                <Badge className="mt-1 bg-primary/10 text-primary hover:bg-primary/20">+8h</Badge>
+        {/* Suporte e Manutenção */}
+        <div className="space-y-3">
+          <h4 className="font-medium flex items-center gap-2">
+            <Clock className="w-4 h-4 text-primary" />
+            Suporte e Manutenção
+          </h4>
+          <div className="bg-accent/20 p-4 rounded-lg">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">Suporte do Product Owner</p>
+                <Badge>{poHours}h/mês</Badge>
               </div>
+              <p className="text-sm text-gray-600">
+                {poHours && getPoFrequencyText(poHours)}
+              </p>
             </div>
-          )}
-
-          {/* ERP */}
-          {selectedERP && (
-            <div className="flex items-start gap-4">
-              <Database className="w-5 h-5 text-gray-500 mt-1" />
-              <div className="flex-1">
-                <p className="text-sm font-medium">ERP</p>
-                <p className="text-sm text-gray-600">
-                  Integração com {selectedERP.charAt(0).toUpperCase() + selectedERP.slice(1)}
-                </p>
-                <Badge className="mt-1 bg-primary/10 text-primary hover:bg-primary/20">+16h</Badge>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
+
+        {/* Design e Tema */}
+        <div className="space-y-3">
+          <h4 className="font-medium flex items-center gap-2">
+            <Palette className="w-4 h-4 text-primary" />
+            Design e Tema
+          </h4>
+          <div className="bg-accent/20 p-4 rounded-lg">
+            {selectedTheme ? (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium">Tema Personalizado</p>
+                  <Badge variant="secondary">+50h</Badge>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Design customizado com sua identidade visual
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600">
+                Tema padrão otimizado para conversão
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Integrações */}
+        {(hasCRM || selectedERP) && (
+          <div className="space-y-3">
+            <h4 className="font-medium flex items-center gap-2">
+              <Database className="w-4 h-4 text-primary" />
+              Integrações
+            </h4>
+            <div className="bg-accent/20 p-4 rounded-lg space-y-4">
+              {(hasCRM || crmName) && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium">CRM</p>
+                    <Badge variant="secondary">+8h</Badge>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Integração com {crmName || "CRM personalizado"}
+                  </p>
+                </div>
+              )}
+              {selectedERP && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium">ERP</p>
+                    <Badge variant="secondary">+16h</Badge>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Integração com {selectedERP.charAt(0).toUpperCase() + selectedERP.slice(1)}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Recursos Adicionais */}
         {(security.length > 0 || marketing.length > 0 || performance.length > 0) && (
-          <>
-            <Separator />
+          <div className="space-y-3">
+            <h4 className="font-medium">Recursos Adicionais</h4>
             <div className="space-y-4">
-              <h4 className="font-medium">Recursos Adicionais</h4>
-
               {/* Segurança */}
               {security.length > 0 && (
-                <div className="flex items-start gap-4">
-                  <Shield className="w-5 h-5 text-gray-500 mt-1" />
-                  <div className="flex-1">
+                <div className="bg-accent/20 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="w-4 h-4 text-primary" />
                     <p className="text-sm font-medium">Segurança e Compliance</p>
-                    <div className="space-y-1 mt-1">
-                      {security.map(id => {
-                        const option = securityOptions.find(opt => opt.id === id);
-                        return option && (
-                          <div key={id} className="flex items-center gap-2">
-                            <p className="text-sm text-gray-600">{option.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {security.map(id => {
+                      const option = securityOptions.find(opt => opt.id === id);
+                      return option && (
+                        <div key={id} className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-green-500" />
+                          <p className="text-sm text-gray-600">{option.name}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {/* Marketing */}
               {marketing.length > 0 && (
-                <div className="flex items-start gap-4">
-                  <Rocket className="w-5 h-5 text-gray-500 mt-1" />
-                  <div className="flex-1">
+                <div className="bg-accent/20 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Rocket className="w-4 h-4 text-primary" />
                     <p className="text-sm font-medium">Marketing Digital</p>
-                    <div className="space-y-1 mt-1">
-                      {marketing.map(id => {
-                        const option = marketingOptions.find(opt => opt.id === id);
-                        return option && (
-                          <div key={id} className="flex items-center gap-2">
-                            <p className="text-sm text-gray-600">{option.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {marketing.map(id => {
+                      const option = marketingOptions.find(opt => opt.id === id);
+                      return option && (
+                        <div key={id} className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-green-500" />
+                          <p className="text-sm text-gray-600">{option.name}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {/* Performance */}
               {performance.length > 0 && (
-                <div className="flex items-start gap-4">
-                  <Gauge className="w-5 h-5 text-gray-500 mt-1" />
-                  <div className="flex-1">
+                <div className="bg-accent/20 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Gauge className="w-4 h-4 text-primary" />
                     <p className="text-sm font-medium">Performance e Acessibilidade</p>
-                    <div className="space-y-1 mt-1">
-                      {performance.map(id => {
-                        const option = performanceOptions.find(opt => opt.id === id);
-                        return option && (
-                          <div key={id} className="flex items-center gap-2">
-                            <p className="text-sm text-gray-600">{option.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {performance.map(id => {
+                      const option = performanceOptions.find(opt => opt.id === id);
+                      return option && (
+                        <div key={id} className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-green-500" />
+                          <p className="text-sm text-gray-600">{option.name}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
     </Card>
