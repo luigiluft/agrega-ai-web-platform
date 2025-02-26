@@ -6,6 +6,7 @@ import ProjectConfiguration from "../summary/ProjectConfiguration";
 import SelectedExtensions from "../summary/SelectedExtensions";
 import InvestmentSummary from "../summary/InvestmentSummary";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
+import { SecurityFeature, MarketingFeature, PerformanceFeature } from "@/types/calculator-new-features";
 
 const SummaryStep = ({ 
   selectedTasks, 
@@ -66,6 +67,11 @@ const SummaryStep = ({
     onPlanSelect(annualPlan);
   }
 
+  // Converter os arrays de string para os tipos corretos
+  const securityFeatures = security?.map(s => s as SecurityFeature) || [];
+  const marketingFeatures = marketing?.map(m => m as MarketingFeature) || [];
+  const performanceFeatures = performance?.map(p => p as PerformanceFeature) || [];
+
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
@@ -80,9 +86,9 @@ const SummaryStep = ({
             hasCRM={hasCRM}
             crmName={crmName}
             selectedERP={selectedERP}
-            security={security}
-            marketing={marketing}
-            performance={performance}
+            security={securityFeatures}
+            marketing={marketingFeatures}
+            performance={performanceFeatures}
             poHours={poHours}
             totalHours={totalHours}
           />
