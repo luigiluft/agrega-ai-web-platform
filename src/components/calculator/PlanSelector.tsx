@@ -53,15 +53,15 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
       name: "FullCommerce",
       description: "Solução completa e personalizada",
       features: [
-        "8 integrações",
+        "4 integrações",
         "Suporte 24/7",
         "Infraestrutura dedicada",
-        "16h PO/mês",
+        "24h PO/mês",
       ],
       baseImplementationPrice: 50000,
       baseMaintenancePrice: 12000,
-      basePOHours: 16,
-      maxIntegrations: 8,
+      basePOHours: 24,
+      maxIntegrations: 4,
       supportLevel: "24/7",
       layout: "enterprise"
     },
@@ -82,10 +82,6 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-        Escolha o plano ideal para seu negócio
-      </h2>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {plans.map((plan) => (
           <motion.div
@@ -112,10 +108,11 @@ const PlanSelector = ({ selectedPlan, onPlanSelect }: PlanSelectorProps) => {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1">
+                    <p className="text-base font-medium text-gray-600">A partir de</p>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-primary">
-                        A partir de {plan.baseMaintenancePrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                      <span className="text-3xl font-bold text-primary">
+                        {plan.baseMaintenancePrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                       </span>
                       <span className="text-sm text-gray-500">/mês</span>
                     </div>
