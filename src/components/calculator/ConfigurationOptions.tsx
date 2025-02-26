@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plan } from "@/types/calculator-types";
 import { Input } from "@/components/ui/input";
@@ -10,24 +11,29 @@ import { Minus, Plus } from "lucide-react";
 
 const crmOptions = [
   {
-    id: "salesforce",
-    name: "Salesforce",
-    image: "https://www.salesforce.com/news/wp-content/uploads/sites/3/2021/05/Salesforce-logo.jpg",
-  },
-  {
     id: "hubspot",
     name: "HubSpot",
-    image: "https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Logos-Full-Color.png",
+    image: "/lovable-uploads/73f995a5-6a9f-4274-8593-e4fec168a2d4.png",
   },
   {
     id: "rdstation",
     name: "RD Station",
-    image: "https://rdstation.com/blog/wp-content/uploads/2019/10/rd-station-logo.png",
+    image: "/lovable-uploads/60845eb2-07c0-4fa0-9ea3-c9b026627f27.png",
   },
   {
     id: "pipedrive",
     name: "Pipedrive",
-    image: "https://www.pipedrive.com/en/brand/logo",
+    image: "/lovable-uploads/f01d886e-7ec8-425b-b406-9d2d8c8fd94a.png",
+  },
+  {
+    id: "tiny",
+    name: "Tiny",
+    image: "/lovable-uploads/bf82d247-a2d9-41cc-af14-4a13c149bec2.png",
+  },
+  {
+    id: "bling",
+    name: "Bling",
+    image: "/lovable-uploads/127f1152-e8da-4bef-b098-3d5a01fc61a5.png",
   },
   {
     id: "outro",
