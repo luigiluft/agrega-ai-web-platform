@@ -71,8 +71,8 @@ const StepCalculator = ({
   monthlyOrders,
   setMonthlyOrders
 }: StepCalculatorProps) => {
-  const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [paymentPlan, setPaymentPlan] = useState<Plan | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformType | null>(null);
@@ -256,7 +256,7 @@ const StepCalculator = ({
             monthlyRevenue={monthlyRevenue}
             onPlanSelect={setPaymentPlan}
             selectedPlan={paymentPlan}
-            selectedTheme={selectedTheme}
+            selectedTheme={selectedTheme?.image}
             poFrequency={configuration.poHours.toString()}
             hasCRM={configuration.hasCRM}
             crmName={configuration.crmName}
