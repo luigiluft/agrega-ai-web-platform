@@ -60,8 +60,11 @@ const SummaryStep = ({
   const SECURITY_IMPLEMENTATION_COST = 2000; // Custo de implementação por feature de segurança
   const MARKETING_IMPLEMENTATION_COST = 1500; // Custo de implementação por feature de marketing
   const PERFORMANCE_IMPLEMENTATION_COST = 1800; // Custo de implementação por feature de performance
+  const THEME_HOURS = selectedTheme ? 50 : 0; // Horas para tema personalizado
+  const CRM_HOURS = hasCRM ? 24 : 0; // Horas para integração CRM
+  const ERP_HOURS = selectedERP ? 24 : 0; // Horas para integração ERP
 
-  // Cálculos de custos de implementação
+  // Cálculos de horas de implementação
   const implementationHours = selectedTasks.reduce((acc, task) => 
     task.type !== "recurring" ? acc + task.hours : acc, 0);
   
@@ -72,16 +75,29 @@ const SummaryStep = ({
   const extensionImplementationHours = selectedExtensionDetails.reduce((acc, ext) => 
     acc + (ext?.implementationHours || 0), 0);
 
-  // Custos adicionais de implementação
+  // Horas de recursos adicionais
+  const securityHours = (security?.length || 0) * 8; // 8 horas por feature
+  const marketingHours = (marketing?.length || 0) * 6; // 6 horas por feature
+  const performanceHours = (performance?.length || 0) * 8; // 8 horas por feature
+
+  // Total de horas
+  const totalImplementationHours = 
+    implementationHours + 
+    extensionImplementationHours + 
+    THEME_HOURS +
+    CRM_HOURS +
+    ERP_HOURS +
+    securityHours +
+    marketingHours +
+    performanceHours;
+
+  // Cálculos de custos de implementação
+  const baseImplementationCost = implementationHours * HOUR_RATE;
+  const extensionsImplementationCost = extensionImplementationHours * HOUR_RATE;
   const securityImplementationCost = security?.length ? security.length * SECURITY_IMPLEMENTATION_COST : 0;
   const marketingImplementationCost = marketing?.length ? marketing.length * MARKETING_IMPLEMENTATION_COST : 0;
   const performanceImplementationCost = performance?.length ? performance.length * PERFORMANCE_IMPLEMENTATION_COST : 0;
-  const themeCustomizationCost = selectedTheme ? 50 * DESIGN_HOUR_RATE : 0;
-
-  // Total de horas e custo de implementação
-  const totalHours = implementationHours + extensionImplementationHours;
-  const baseImplementationCost = implementationHours * HOUR_RATE;
-  const extensionsImplementationCost = extensionImplementationHours * HOUR_RATE;
+  const themeCustomizationCost = selectedTheme ? THEME_HOURS * DESIGN_HOUR_RATE : 0;
   
   const totalImplementationCost = 
     baseImplementationCost + 
@@ -132,6 +148,7 @@ const SummaryStep = ({
             marketing={marketing}
             performance={performance}
             poHours={poHours}
+            totalHours={totalImplementationHours}
           />
           <SelectedExtensions selectedExtensions={selectedExtensions} />
         </div>
@@ -140,7 +157,7 @@ const SummaryStep = ({
           totalPrice={totalImplementationCost}
           maintenancePrice={totalMonthlyCost}
           revenueShare={revenueShare}
-          totalHours={totalHours}
+          totalHours={totalImplementationHours}
           onPlanSelect={onPlanSelect}
           selectedPlan={selectedPlan}
           securityCost={securityImplementationCost}
