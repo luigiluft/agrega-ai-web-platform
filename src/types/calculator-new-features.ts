@@ -1,5 +1,5 @@
 
-export type SupportLevel = 'basic' | 'standard' | 'premium';
+export type SupportLevel = 'basic' | 'standard' | 'priority';
 export type SecurityFeature = 'ssl' | 'lgpd' | 'pentests' | 'waf';
 export type MarketingFeature = 'seo' | 'email' | 'analytics' | 'social';
 export type PerformanceFeature = 'cdn' | 'cache' | 'optimization' | 'accessibility';
