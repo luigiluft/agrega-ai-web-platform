@@ -1,10 +1,11 @@
+
 import { Plan } from "@/types/calculator-types";
 import { SummaryStepProps } from "@/types/calculator-steps";
-import { useToast } from "@/components/ui/use-toast";
 import ProjectConfiguration from "../summary/ProjectConfiguration";
 import SelectedExtensions from "../summary/SelectedExtensions";
 import InvestmentSummary from "../summary/InvestmentSummary";
 import { ecommerceExtensions } from "@/data/ecommerceExtensions";
+import { SecurityFeature, MarketingFeature, PerformanceFeature } from "@/types/calculator-new-features";
 
 const SummaryStep = ({ 
   selectedTasks, 
@@ -17,7 +18,11 @@ const SummaryStep = ({
   poFrequency,
   hasCRM,
   crmName,
-  selectedERP
+  selectedERP,
+  security,
+  marketing,
+  performance,
+  poHours
 }: SummaryStepProps & { 
   onPlanSelect: (plan: Plan) => void;
   selectedPlan: Plan | null;
@@ -26,8 +31,29 @@ const SummaryStep = ({
   hasCRM?: boolean;
   crmName?: string;
   selectedERP?: string | null;
+  security?: SecurityFeature[];
+  marketing?: MarketingFeature[];
+  performance?: PerformanceFeature[];
+  poHours?: number;
 }) => {
-  const { toast } = useToast();
+  // Automaticamente define o plano como anual
+  if (!selectedPlan) {
+    const annualPlan = {
+      id: 'annual',
+      name: 'Plano Anual',
+      description: 'Pagamento em 12x',
+      features: [],
+      baseImplementationPrice: totalPrice,
+      baseMaintenancePrice: 0,
+      basePOHours: poHours || 0,
+      maxIntegrations: 4,
+      supportLevel: 'priority',
+      layout: 'custom'
+    } as Plan;
+    onPlanSelect(annualPlan);
+  }
+
+  // Cálculos de custos
   const maintenanceTasks = selectedTasks.filter(task => task.type === "recurring");
   const HOUR_RATE = 185;
   const maintenancePrice = maintenanceTasks.reduce((acc, task) => acc + task.hours * HOUR_RATE, 0);
@@ -38,16 +64,22 @@ const SummaryStep = ({
     ecommerceExtensions.find(ext => ext.id === id)
   ).filter(Boolean);
 
-  const totalHours = selectedTasks.reduce((acc, task) => acc + task.hours, 0) +
-    selectedExtensionDetails.reduce((acc, ext) => acc + (ext?.implementationHours || 0), 0);
+  // Cálculo do total de horas e custos
+  const implementationHours = selectedTasks.reduce((acc, task) => 
+    task.type !== "recurring" ? acc + task.hours : acc, 0);
+  const extensionHours = selectedExtensionDetails.reduce((acc, ext) => 
+    acc + (ext?.implementationHours || 0), 0);
+  const totalHours = implementationHours + extensionHours;
 
-  const handlePlanSelect = (plan: Plan) => {
-    onPlanSelect(plan);
-    toast({
-      title: "Plano selecionado",
-      description: `Você selecionou o plano ${plan.name}`,
-    });
-  };
+  // Custos adicionais baseados nas features selecionadas
+  const securityCost = security?.length ? security.length * 2000 : 0;
+  const marketingCost = marketing?.length ? marketing.length * 1500 : 0;
+  const performanceCost = performance?.length ? performance.length * 1800 : 0;
+  const themeCustomizationCost = selectedTheme ? 50 * HOUR_RATE : 0;
+  
+  // Custos totais
+  const implementationCost = totalPrice + securityCost + marketingCost + performanceCost + themeCustomizationCost;
+  const monthlyMaintenanceCost = maintenancePrice + (poHours ? poHours * HOUR_RATE : 0);
 
   return (
     <div className="space-y-6">
@@ -63,17 +95,26 @@ const SummaryStep = ({
             hasCRM={hasCRM}
             crmName={crmName}
             selectedERP={selectedERP}
+            security={security}
+            marketing={marketing}
+            performance={performance}
+            poHours={poHours}
+            totalHours={totalHours}
           />
           <SelectedExtensions selectedExtensions={selectedExtensions} />
         </div>
 
         <InvestmentSummary
-          totalPrice={totalPrice}
-          maintenancePrice={maintenancePrice}
+          totalPrice={implementationCost}
+          maintenancePrice={monthlyMaintenanceCost}
           revenueShare={revenueShare}
           totalHours={totalHours}
-          onPlanSelect={handlePlanSelect}
+          onPlanSelect={onPlanSelect}
           selectedPlan={selectedPlan}
+          securityCost={securityCost}
+          marketingCost={marketingCost}
+          performanceCost={performanceCost}
+          supportCost={poHours ? poHours * HOUR_RATE : 0}
         />
       </div>
     </div>

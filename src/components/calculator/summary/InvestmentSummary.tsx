@@ -1,5 +1,5 @@
 
-import { Clock } from "lucide-react";
+import { Clock, Calculator, Package, Calendar } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -23,48 +23,100 @@ const InvestmentSummary = ({
   maintenancePrice,
   revenueShare,
   totalHours,
-  onPlanSelect,
   selectedPlan,
   securityCost = 0,
   marketingCost = 0,
   performanceCost = 0,
   supportCost = 0
 }: InvestmentSummaryProps) => {
-  const REVENUE_SHARE_PERCENT = "2";
+  const REVENUE_SHARE_PERCENT = "3";
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
-  const additionalCosts = securityCost + marketingCost + performanceCost;
-  const finalImplementationPrice = totalPrice + additionalCosts;
-  const finalMonthlyPrice = maintenancePrice + supportCost;
+  const installments = 12; // Plano anual fixo
+  const installmentValue = totalPrice / installments;
 
   return (
-    <Card className="p-6 space-y-6">
-      <h3 className="text-xl font-semibold flex items-center gap-2">
-        <Clock className="w-5 h-5 text-primary" />
-        Investimento
-      </h3>
+    <Card className="p-6 space-y-6 border-2 border-orange-200">
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-semibold flex items-center gap-2">
+          <Calculator className="w-5 h-5 text-orange-500" />
+          Investimento
+        </h3>
+        <Badge variant="secondary" className="bg-orange-100 text-orange-600">
+          Plano Anual
+        </Badge>
+      </div>
 
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h4 className="font-medium">Implementação</h4>
-          <span className="text-lg font-semibold">{formatCurrency(finalImplementationPrice)}</span>
-        </div>
-
-        {finalMonthlyPrice > 0 && (
-          <div className="flex justify-between items-center">
-            <h4 className="font-medium">Manutenção Mensal</h4>
-            <span className="text-lg">{formatCurrency(finalMonthlyPrice)}</span>
+        <div className="bg-orange-50 p-4 rounded-lg space-y-3">
+          <h4 className="font-medium text-gray-700 flex items-center gap-2">
+            <Package className="w-4 h-4 text-orange-500" />
+            Implementação
+          </h4>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600">Desenvolvimento base</span>
+              <span>{formatCurrency(totalPrice - (securityCost + marketingCost + performanceCost))}</span>
+            </div>
+            {securityCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Segurança e Compliance</span>
+                <span>{formatCurrency(securityCost)}</span>
+              </div>
+            )}
+            {marketingCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Marketing Digital</span>
+                <span>{formatCurrency(marketingCost)}</span>
+              </div>
+            )}
+            {performanceCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Performance e Acessibilidade</span>
+                <span>{formatCurrency(performanceCost)}</span>
+              </div>
+            )}
+            <Separator className="my-2" />
+            <div className="flex justify-between items-center font-medium">
+              <span>Total da Implementação</span>
+              <span className="text-lg">{formatCurrency(totalPrice)}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm text-gray-600">
+              <span>Parcelamento</span>
+              <span>{installments}x de {formatCurrency(installmentValue)}</span>
+            </div>
           </div>
-        )}
-
-        <div className="flex justify-between items-center">
-          <h4 className="font-medium">Revenue Share</h4>
-          <span className="text-lg">{formatCurrency(revenueShare)}/mês ({REVENUE_SHARE_PERCENT}%)</span>
         </div>
 
-        <Separator />
+        <div className="bg-orange-50 p-4 rounded-lg space-y-3">
+          <h4 className="font-medium text-gray-700 flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-orange-500" />
+            Custos Mensais
+          </h4>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600">Manutenção</span>
+              <span>{formatCurrency(maintenancePrice - supportCost)}</span>
+            </div>
+            {supportCost > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600">Suporte P.O.</span>
+                <span>{formatCurrency(supportCost)}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600">Revenue Share ({REVENUE_SHARE_PERCENT}%)</span>
+              <span>{formatCurrency(revenueShare)}/mês</span>
+            </div>
+            <Separator className="my-2" />
+            <div className="flex justify-between items-center font-medium">
+              <span>Total Mensal</span>
+              <span className="text-lg">{formatCurrency(maintenancePrice + revenueShare)}</span>
+            </div>
+          </div>
+        </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
           <div className="flex justify-between items-center mb-2">
