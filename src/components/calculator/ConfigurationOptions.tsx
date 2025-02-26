@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plan } from "@/types/calculator-types";
 import { Input } from "@/components/ui/input";
@@ -135,21 +134,34 @@ const ConfigurationOptions = ({ selectedPlan, onConfigurationChange }: Configura
         </Card>
       </div>
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="custom-theme">Tema customizado (+50h)</Label>
-          <Switch
-            id="custom-theme"
-            checked={customTheme}
-            onCheckedChange={handleThemeChange}
-          />
+      <Card className={`p-6 transition-all duration-300 ${customTheme ? 'border-primary bg-primary/5' : ''}`}>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="custom-theme" className="text-lg font-medium">Tema customizado</Label>
+              <p className="text-sm text-gray-500 mt-1">Personalização completa do tema (+50h)</p>
+            </div>
+            <Switch
+              id="custom-theme"
+              checked={customTheme}
+              onCheckedChange={handleThemeChange}
+            />
+          </div>
+          {customTheme && (
+            <div className="mt-4 p-4 bg-white rounded-lg border border-primary/20">
+              <p className="text-sm text-gray-600">
+                Adicional de 50 horas para personalização completa do tema, incluindo:
+              </p>
+              <ul className="mt-2 space-y-1 text-sm text-gray-600">
+                <li>• Cores e tipografia personalizadas</li>
+                <li>• Layout exclusivo</li>
+                <li>• Elementos visuais únicos</li>
+                <li>• Adaptação completa à sua marca</li>
+              </ul>
+            </div>
+          )}
         </div>
-        {customTheme && (
-          <p className="text-sm text-gray-500">
-            Adicional de 50 horas para personalização completa do tema
-          </p>
-        )}
-      </div>
+      </Card>
 
       <div className="space-y-4">
         <Label>Integração com CRM</Label>
