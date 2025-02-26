@@ -2,6 +2,114 @@ import { Extension } from "@/types/calculator-types";
 
 export const ecommerceExtensions: Extension[] = [
   {
+    id: "ssl-premium",
+    name: "Certificado SSL Premium",
+    description: "Certificado SSL com validação estendida e garantia de $1.5M",
+    price: 699,
+    implementationHours: 2,
+    maintenanceHours: 1,
+    category: "Segurança e Compliance"
+  },
+  {
+    id: "lgpd",
+    name: "Compliance LGPD",
+    description: "Implementação completa das diretrizes da LGPD",
+    price: 4500,
+    implementationHours: 40,
+    maintenanceHours: 4,
+    category: "Segurança e Compliance"
+  },
+  {
+    id: "pentests",
+    name: "Testes de Penetração",
+    description: "Testes de segurança completos e relatório detalhado",
+    price: 3500,
+    implementationHours: 20,
+    maintenanceHours: 2,
+    category: "Segurança e Compliance"
+  },
+  {
+    id: "waf",
+    name: "Web Application Firewall",
+    description: "Proteção contra ataques web e monitoramento",
+    price: 1500,
+    implementationHours: 8,
+    maintenanceHours: 2,
+    category: "Segurança e Compliance"
+  },
+  {
+    id: "seo",
+    name: "Otimização SEO",
+    description: "Configuração completa de SEO técnico e estrutural",
+    price: 2500,
+    implementationHours: 20,
+    maintenanceHours: 4,
+    category: "Marketing Digital"
+  },
+  {
+    id: "email-marketing",
+    name: "E-mail Marketing",
+    description: "Integração com plataforma de e-mail marketing e automações",
+    price: 1800,
+    implementationHours: 16,
+    maintenanceHours: 2,
+    category: "Marketing Digital"
+  },
+  {
+    id: "analytics",
+    name: "Google Analytics 4",
+    description: "Implementação do GA4 com eventos personalizados",
+    price: 1200,
+    implementationHours: 8,
+    maintenanceHours: 1,
+    category: "Marketing Digital"
+  },
+  {
+    id: "social",
+    name: "Redes Sociais",
+    description: "Integração com principais redes sociais e pixel",
+    price: 1500,
+    implementationHours: 12,
+    maintenanceHours: 2,
+    category: "Marketing Digital"
+  },
+  {
+    id: "cdn",
+    name: "CDN Enterprise",
+    description: "Distribuição global de conteúdo com edge locations",
+    price: 2000,
+    implementationHours: 8,
+    maintenanceHours: 2,
+    category: "Performance e Acessibilidade"
+  },
+  {
+    id: "cache",
+    name: "Sistema de Cache",
+    description: "Cache em múltiplas camadas com invalidação inteligente",
+    price: 1500,
+    implementationHours: 16,
+    maintenanceHours: 2,
+    category: "Performance e Acessibilidade"
+  },
+  {
+    id: "performance",
+    name: "Otimização de Performance",
+    description: "Otimização de imagens, código e recursos",
+    price: 2800,
+    implementationHours: 24,
+    maintenanceHours: 3,
+    category: "Performance e Acessibilidade"
+  },
+  {
+    id: "accessibility",
+    name: "Acessibilidade WCAG",
+    description: "Conformidade com WCAG 2.1 nível AA",
+    price: 3500,
+    implementationHours: 32,
+    maintenanceHours: 4,
+    category: "Performance e Acessibilidade"
+  },
+  {
     id: "b2b-suite",
     name: "B2B eCommerce Suite",
     category: "B2B",
@@ -270,114 +378,6 @@ export const ecommerceExtensions: Extension[] = [
     price: 645,
     implementationHours: 16,
     maintenanceHours: 1
-  },
-  {
-    id: "ssl-premium",
-    name: "Certificado SSL Premium",
-    description: "Certificado SSL com validação estendida e garantia de $1.5M",
-    price: 699,
-    implementationHours: 2,
-    maintenanceHours: 1,
-    category: "Segurança e Compliance"
-  },
-  {
-    id: "lgpd",
-    name: "Compliance LGPD",
-    description: "Implementação completa das diretrizes da LGPD",
-    price: 4500,
-    implementationHours: 40,
-    maintenanceHours: 4,
-    category: "Segurança e Compliance"
-  },
-  {
-    id: "pentests",
-    name: "Testes de Penetração",
-    description: "Testes de segurança completos e relatório detalhado",
-    price: 3500,
-    implementationHours: 20,
-    maintenanceHours: 2,
-    category: "Segurança e Compliance"
-  },
-  {
-    id: "waf",
-    name: "Web Application Firewall",
-    description: "Proteção contra ataques web e monitoramento",
-    price: 1500,
-    implementationHours: 8,
-    maintenanceHours: 2,
-    category: "Segurança e Compliance"
-  },
-  {
-    id: "seo",
-    name: "Otimização SEO",
-    description: "Configuração completa de SEO técnico e estrutural",
-    price: 2500,
-    implementationHours: 20,
-    maintenanceHours: 4,
-    category: "Marketing Digital"
-  },
-  {
-    id: "email-marketing",
-    name: "E-mail Marketing",
-    description: "Integração com plataforma de e-mail marketing e automações",
-    price: 1800,
-    implementationHours: 16,
-    maintenanceHours: 2,
-    category: "Marketing Digital"
-  },
-  {
-    id: "analytics",
-    name: "Google Analytics 4",
-    description: "Implementação do GA4 com eventos personalizados",
-    price: 1200,
-    implementationHours: 8,
-    maintenanceHours: 1,
-    category: "Marketing Digital"
-  },
-  {
-    id: "social",
-    name: "Redes Sociais",
-    description: "Integração com principais redes sociais e pixel",
-    price: 1500,
-    implementationHours: 12,
-    maintenanceHours: 2,
-    category: "Marketing Digital"
-  },
-  {
-    id: "cdn",
-    name: "CDN Enterprise",
-    description: "Distribuição global de conteúdo com edge locations",
-    price: 2000,
-    implementationHours: 8,
-    maintenanceHours: 2,
-    category: "Performance e Acessibilidade"
-  },
-  {
-    id: "cache",
-    name: "Sistema de Cache",
-    description: "Cache em múltiplas camadas com invalidação inteligente",
-    price: 1500,
-    implementationHours: 16,
-    maintenanceHours: 2,
-    category: "Performance e Acessibilidade"
-  },
-  {
-    id: "performance",
-    name: "Otimização de Performance",
-    description: "Otimização de imagens, código e recursos",
-    price: 2800,
-    implementationHours: 24,
-    maintenanceHours: 3,
-    category: "Performance e Acessibilidade"
-  },
-  {
-    id: "accessibility",
-    name: "Acessibilidade WCAG",
-    description: "Conformidade com WCAG 2.1 nível AA",
-    price: 3500,
-    implementationHours: 32,
-    maintenanceHours: 4,
-    category: "Performance e Acessibilidade"
   }
 ].map(extension => ({
   ...extension,
