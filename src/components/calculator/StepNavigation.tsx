@@ -14,7 +14,7 @@ const StepNavigation = ({ currentStep, onNext, onPrevious }: StepNavigationProps
 
   return (
     <div className="flex justify-between mt-8">
-      {currentStep !== "plan" && (
+      {currentStep !== "platform" && (
         <Button
           onClick={onPrevious}
           className="bg-white text-primary border-2 border-primary hover:bg-primary/5 px-6 py-2 rounded-full flex items-center gap-2 transition-all duration-300"

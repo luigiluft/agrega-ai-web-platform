@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Building2, Users, Store, Settings } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
 export type PlatformType = "b2b" | "b2c" | "d2c" | "custom";
 
@@ -51,6 +53,8 @@ const platforms = [
 ];
 
 const PlatformStep = ({ selectedPlatform, onPlatformSelect }: PlatformStepProps) => {
+  const [customDetails, setCustomDetails] = useState("");
+
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
@@ -101,6 +105,24 @@ const PlatformStep = ({ selectedPlatform, onPlatformSelect }: PlatformStepProps)
           );
         })}
       </div>
+
+      {selectedPlatform === "custom" && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-3"
+        >
+          <label className="block text-sm font-medium text-gray-700">
+            Por favor, descreva seu modelo de negócio personalizado
+          </label>
+          <Textarea
+            value={customDetails}
+            onChange={(e) => setCustomDetails(e.target.value)}
+            placeholder="Explique como você pretende combinar diferentes modelos de negócio..."
+            className="min-h-[120px]"
+          />
+        </motion.div>
+      )}
     </div>
   );
 };
