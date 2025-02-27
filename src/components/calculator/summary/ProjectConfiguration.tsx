@@ -100,7 +100,7 @@ const ProjectConfiguration = ({
                   <p className="text-sm text-gray-600">Sistemas integrados ao seu e-commerce</p>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 min-h-[160px]">
                 {(hasCRM || crmName) && (
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <div className="flex items-start gap-4">
