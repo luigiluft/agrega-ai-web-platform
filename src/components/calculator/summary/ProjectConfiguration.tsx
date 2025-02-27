@@ -100,7 +100,7 @@ const ProjectConfiguration = ({
                   <p className="text-sm text-gray-600">Sistemas integrados ao seu e-commerce</p>
                 </div>
               </div>
-              <div className="space-y-4 min-h-[160px]">
+              <div className="space-y-4 min-h-[220px]">
                 {(hasCRM || crmName) && (
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <div className="flex items-start gap-4">
@@ -190,21 +190,14 @@ const ProjectConfiguration = ({
                     </div>
                     <Badge className="bg-orange-100 text-orange-600">+50h designer</Badge>
                   </div>
-                  <div className="relative">
-                    <img
-                      src="/lovable-uploads/fe383840-7b19-41ef-bbe3-76a09f04228b.png"
-                      alt="Demonstração do tema"
-                      className="w-full rounded-lg"
-                    />
-                    <a 
-                      href={`/lovable-uploads/${selectedTheme}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block mt-2 px-3 py-2 bg-orange-50 border border-orange-100 rounded-md text-sm text-orange-600 hover:bg-orange-100 transition-colors text-center font-medium"
-                    >
-                      Visualizar tema completo
-                    </a>
-                  </div>
+                  <a 
+                    href={`/lovable-uploads/${selectedTheme}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-4 py-3 bg-orange-50 border border-orange-100 rounded-md text-sm text-orange-600 hover:bg-orange-100 transition-colors text-center font-medium"
+                  >
+                    Visualizar tema completo
+                  </a>
                 </div>
               ) : (
                 <div className="flex justify-between items-start">
