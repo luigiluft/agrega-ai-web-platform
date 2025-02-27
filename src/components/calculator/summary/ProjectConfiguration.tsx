@@ -101,6 +101,7 @@ const ProjectConfiguration = ({
                 </div>
               </div>
               <div className="space-y-4 min-h-[280px]">
+                {/* Sempre exibir o card do CRM se ele estiver selecionado */}
                 {(hasCRM || crmName) && (
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <div className="flex items-start gap-4">
@@ -142,6 +143,7 @@ const ProjectConfiguration = ({
                     </div>
                   </div>
                 )}
+                {/* Sempre exibir o card do ERP se ele estiver selecionado */}
                 {selectedERP && (
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <div className="flex items-start gap-4">
@@ -166,6 +168,7 @@ const ProjectConfiguration = ({
                     </div>
                   </div>
                 )}
+                {/* Exibir mensagem se nenhuma integração estiver selecionada */}
                 {!hasCRM && !crmName && !selectedERP && (
                   <div className="flex items-center justify-center h-24 bg-white rounded-lg">
                     <p className="text-sm text-gray-500">Nenhuma integração selecionada</p>
