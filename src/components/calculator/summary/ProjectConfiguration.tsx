@@ -100,7 +100,7 @@ const ProjectConfiguration = ({
                   <p className="text-sm text-gray-600">Sistemas integrados ao seu e-commerce</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 {(hasCRM || crmName) && (
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <div className="flex items-start gap-4">
@@ -167,7 +167,7 @@ const ProjectConfiguration = ({
                   </div>
                 )}
                 {!hasCRM && !crmName && !selectedERP && (
-                  <div className="flex items-center justify-center h-24 bg-white rounded-lg col-span-full">
+                  <div className="flex items-center justify-center h-24 bg-white rounded-lg">
                     <p className="text-sm text-gray-500">Nenhuma integração selecionada</p>
                   </div>
                 )}
